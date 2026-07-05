@@ -1,0 +1,893 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>E-Waste Management — Mindstec Distribution</title>
+<meta name="description" content="Recycle your end-of-life electronics at zero cost. Mindstec's authorized e-waste programme with Deshwal Waste Management — toll-free pickup and 27 collection centres across India.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mindstec Distribution">
+<meta property="og:title" content="E-Waste Management — Mindstec Distribution">
+<meta property="og:description" content="Recycle your end-of-life electronics at zero cost. Mindstec's authorized e-waste programme with Deshwal Waste Management — toll-free pickup and 27 collection centres across India.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="mindstec-logo-web.png">
+<meta name="theme-color" content="#0C0C0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ────────────────────────────── TOKENS ────────────────────────────── */
+:root{
+  --red:#CC0001;
+  --ink:#0C0C0C;
+  --ink-2:#111111;
+  --panel:#161616;
+  --white:#FAFAFA;
+  --grey:#9A9A9A;
+  --grey-dark:#6B6B6B;
+  --line:rgba(255,255,255,.12);
+  --line-soft:rgba(255,255,255,.07);
+  --display:'Archivo',sans-serif;
+  --body:'Inter',sans-serif;
+  --pad:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:var(--ink);color:var(--white);font-family:var(--body);
+  font-size:16px;line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;border:none;background:none;color:inherit;cursor:pointer}
+a,button{cursor:pointer}
+img{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* ────────────────────────────── TYPE ────────────────────────────── */
+.display{
+  font-family:var(--display);font-weight:600;letter-spacing:-.03em;
+  line-height:1.02;color:var(--white);
+}
+.display em{font-family:var(--display);font-style:normal;font-weight:inherit;letter-spacing:inherit;color:var(--red)}
+.label{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--grey);
+}
+.label--red{color:var(--red)}
+.lede{font-size:clamp(16px,1.3vw,19px);color:var(--grey);line-height:1.7;font-weight:400}
+.line-mask{display:block;overflow:hidden}
+.w{display:inline-block;will-change:transform}
+
+/* ────────────────────────────── PRIMITIVES ────────────────────────────── */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:12px;
+  font-size:14px;font-weight:500;letter-spacing:.02em;
+  padding:16px 28px;min-height:48px;border:1px solid var(--line);
+  border-radius:2px;overflow:hidden;transition:color .3s var(--ease),border-color .3s var(--ease);
+  background:transparent;color:var(--white);
+}
+.btn::before{
+  content:'';position:absolute;inset:0;background:var(--red);
+  transform:scaleY(0);transform-origin:bottom;transition:transform .35s var(--ease);
+  z-index:0;
+}
+.btn:hover::before{transform:scaleY(1)}
+.btn:hover{border-color:var(--red);color:#fff}
+.btn > *{position:relative;z-index:1}
+.btn--solid{background:var(--red);border-color:var(--red)}
+.btn--solid::before{background:#fff}
+.btn--solid:hover{color:var(--ink)}
+.btn svg{width:15px;height:15px;transition:transform .3s var(--ease)}
+.btn:hover svg{transform:translate(2px,-2px)}
+.rule{height:1px;background:var(--line-soft);margin:0 var(--pad)}
+.num{font-family:var(--display);font-size:12px;font-weight:500;letter-spacing:.12em;color:var(--grey-dark)}
+
+/* ────────────────────────────── PRELOADER ────────────────────────────── */
+#preloader{
+  position:fixed;inset:0;z-index:300;background:var(--ink);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+}
+html.js #preloader{display:flex}
+#preloader img{height:52px;width:auto}
+.pre-bar{width:180px;height:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.pre-bar i{display:block;height:100%;width:100%;background:var(--red);transform:scaleX(0);transform-origin:left}
+
+/* ────────────────────────────── NAV ────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  height:76px;padding:0 var(--pad);
+  border-bottom:1px solid transparent;
+  transition:transform .5s var(--ease),background .4s,border-color .4s;
+}
+.nav.is-solid{background:rgba(12,12,12,.88);backdrop-filter:blur(16px);border-color:var(--line-soft)}
+.nav.is-hidden{transform:translateY(-100%)}
+.logo{display:flex;align-items:center}
+.logo img{height:38px;width:auto;display:block}
+.foot-brand .logo img{height:48px}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none}
+.nav-links li{display:flex;align-items:center}
+.nav-links a{
+  display:inline-flex;align-items:center;line-height:1;
+  font-size:13.5px;font-weight:500;color:var(--grey);padding:10px 14px;
+  border-radius:2px;transition:color .25s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.active{color:var(--white);position:relative}
+.nav-links a.active::after{content:'';position:absolute;left:14px;right:14px;bottom:4px;height:2px;background:var(--red)}
+.nav-item{position:relative}
+.nav-item > a{display:inline-flex;align-items:center;gap:6px}
+.nav-item > a svg{width:12px;height:12px;transition:transform .3s var(--ease)}
+.nav-item:hover > a svg,.nav-item:focus-within > a svg{transform:rotate(180deg)}
+.sub{
+  position:absolute;top:100%;left:6px;min-width:190px;z-index:95;
+  background:rgba(14,14,14,.97);backdrop-filter:blur(16px);
+  border:1px solid var(--line-soft);border-radius:2px;padding:8px;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s;
+}
+.nav-item:hover .sub,.nav-item:focus-within .sub{opacity:1;visibility:visible;transform:translateY(4px)}
+.sub a{display:block;font-size:13.5px;color:var(--grey);padding:10px 14px;border-radius:2px;white-space:nowrap}
+.sub a:hover{color:var(--white);background:var(--ink-2)}
+.sub a.sub-active{color:var(--white);border-left:2px solid var(--red);border-radius:0}
+.nav-cta{display:flex;align-items:center;gap:20px}
+.nav-region{
+  display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);
+  padding:10px 0;background:none;transition:color .25s;
+}
+.nav-region:hover{color:var(--white)}
+.nav-region svg{width:14px;height:14px}
+.nav .btn{padding:12px 22px;min-height:44px}
+.burger{display:none;flex-direction:column;gap:5px;padding:12px;min-width:44px;min-height:44px;justify-content:center;align-items:center}
+.burger span{display:block;width:22px;height:1.5px;background:var(--white);transition:transform .3s var(--ease),opacity .3s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.drawer{
+  position:fixed;inset:0;z-index:80;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);
+  opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s;
+}
+.drawer.open{opacity:1;visibility:visible}
+.drawer a{
+  font-family:var(--display);font-size:clamp(26px,7vw,42px);font-weight:600;
+  letter-spacing:-.02em;color:var(--grey);padding:8px 0;line-height:1.1;
+  border-bottom:1px solid var(--line-soft);transition:color .25s,padding-left .3s var(--ease);
+}
+.drawer a:hover{color:var(--white);padding-left:12px}
+.drawer a.drawer-sub{font-size:clamp(18px,4.5vw,24px);font-weight:500;padding-left:28px;color:var(--grey-dark)}
+.drawer a.drawer-sub:hover{padding-left:36px}
+.drawer .drawer-meta{margin-top:40px;display:flex;gap:32px}
+
+/* ────────────────────────────── HERO ────────────────────────────── */
+.shero{padding:clamp(150px,20vh,220px) var(--pad) 0;display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(32px,5vw,80px);align-items:end}
+.shero h1{font-size:clamp(42px,7vw,104px)}
+.shero-side{padding-bottom:12px}
+.shero-side p{font-size:16px;color:var(--grey);line-height:1.75;max-width:40ch}
+.shero-meta{
+  display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap;
+  margin:clamp(36px,6vh,64px) var(--pad) 0;padding:28px 0;
+  border-top:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft);
+}
+.shero-meta .fact b{display:block;font-family:var(--display);font-size:15px;font-weight:600;color:var(--white)}
+.shero-meta .fact span{font-size:12px;color:var(--grey);letter-spacing:.06em;text-transform:uppercase}
+
+/* ────────────────────────────── OVERVIEW ────────────────────────────── */
+.ov{
+  display:grid;grid-template-columns:1fr 2.2fr;gap:clamp(28px,5vw,90px);
+  padding:clamp(80px,11vw,150px) var(--pad);
+}
+.ov-label{align-self:start;position:sticky;top:110px}
+.ov-state{font-size:clamp(26px,3.2vw,48px);line-height:1.16;letter-spacing:-.02em;font-family:var(--display);font-weight:600}
+.ov-state em{color:var(--red);font-style:normal}
+.ov-copy{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,44px)}
+.ov-copy p{font-size:15.5px;color:var(--grey);line-height:1.85}
+
+/* ────────────────────────────── BENEFITS ────────────────────────────── */
+.ben{padding:clamp(70px,9vw,120px) var(--pad)}
+.ben-head h2{font-size:clamp(36px,5vw,72px);margin-top:18px;max-width:14ch}
+.ben-grid{
+  display:grid;grid-template-columns:1fr 1fr;
+  border:1px solid var(--line-soft);border-radius:2px;margin-top:clamp(36px,5vw,60px);
+}
+.ben-cell{padding:clamp(28px,3.5vw,48px);border-right:1px solid var(--line-soft);border-bottom:1px solid var(--line-soft)}
+.ben-cell:nth-child(2n){border-right:none}
+.ben-cell:nth-last-child(-n+2){border-bottom:none}
+.ben-cell .num{display:block;margin-bottom:40px}
+.ben-cell h3{font-family:var(--display);font-size:clamp(19px,1.8vw,25px);font-weight:600;letter-spacing:-.02em;margin-bottom:13px}
+.ben-cell p{font-size:14.5px;color:var(--grey);line-height:1.8}
+
+/* ────────────────────────────── DO'S & DON'TS ────────────────────────────── */
+.dd{padding:clamp(70px,9vw,120px) var(--pad)}
+.dd-head h2{font-size:clamp(36px,5vw,72px);margin-top:18px}
+.dd-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,64px);margin-top:clamp(36px,5vw,60px)}
+.dd-col h3{
+  font-family:var(--display);font-size:clamp(20px,2vw,27px);font-weight:600;
+  letter-spacing:-.02em;padding-bottom:18px;border-bottom:1px solid var(--line);
+}
+.dd-col ul{list-style:none;margin-top:8px}
+.dd-col li{
+  display:grid;grid-template-columns:22px 1fr;gap:14px;align-items:start;
+  padding:18px 0;border-bottom:1px solid var(--line-soft);
+  font-size:14.5px;color:var(--grey);line-height:1.7;
+}
+.dd-col li svg{width:18px;height:18px;margin-top:3px}
+.dd-do li svg{stroke:var(--red)}
+.dd-dont li svg{stroke:var(--grey-dark)}
+
+/* ────────────────────────────── PLAN ────────────────────────────── */
+.plan{
+  display:grid;grid-template-columns:1fr 1.1fr;gap:clamp(32px,5.5vw,90px);
+  padding:clamp(80px,11vw,150px) var(--pad);align-items:start;
+}
+.plan-media{position:relative;overflow:hidden;border-radius:2px;aspect-ratio:4/5;position:sticky;top:100px}
+.plan-media img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;filter:brightness(.7) saturate(.9)}
+.plan-media .plan-tag{
+  position:absolute;left:18px;bottom:18px;z-index:2;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#fff;
+  background:rgba(12,12,12,.55);padding:7px 11px;border-radius:2px;backdrop-filter:blur(6px);
+}
+.plan-body h2{font-size:clamp(34px,4.5vw,64px);margin-top:18px}
+.plan-body > p{font-size:15.5px;color:var(--grey);line-height:1.85;margin-top:22px;max-width:56ch}
+.steps{margin-top:clamp(32px,4vw,48px)}
+.step{
+  display:grid;grid-template-columns:64px 1fr;gap:18px;
+  padding:24px 0;border-top:1px solid var(--line-soft);
+}
+.step:last-child{border-bottom:1px solid var(--line-soft)}
+.step .num{padding-top:5px}
+.step h4{font-family:var(--display);font-size:17px;font-weight:600;letter-spacing:-.01em;margin-bottom:6px}
+.step p{font-size:14px;color:var(--grey);line-height:1.75}
+.plan-note{
+  margin-top:28px;padding:20px 22px;border:1px solid var(--line-soft);border-left:2px solid var(--red);
+  border-radius:2px;font-size:14px;color:var(--grey);line-height:1.75;
+}
+.plan-note b{color:var(--white);font-weight:600}
+
+/* ────────────────────────────── COLLECTION CENTRES ────────────────────────────── */
+.cc{padding:clamp(70px,9vw,120px) var(--pad) clamp(80px,10vw,140px)}
+.cc-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:32px;flex-wrap:wrap;margin-bottom:clamp(32px,5vw,52px);
+}
+.cc-head h2{font-size:clamp(36px,5vw,72px);margin-top:18px}
+.cc-call{
+  display:flex;flex-direction:column;gap:4px;text-align:right;
+}
+.cc-call span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.cc-call a{font-family:var(--display);font-size:clamp(20px,2.2vw,30px);font-weight:600;letter-spacing:-.01em;transition:color .25s}
+.cc-call a:hover{color:var(--red)}
+.cc-call small{font-size:12px;color:var(--grey-dark)}
+.cc-filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:clamp(28px,4vw,40px)}
+.cc-filters button{
+  font-size:13px;font-weight:500;color:var(--grey);padding:11px 18px;min-height:44px;
+  border:1px solid var(--line-soft);border-radius:2px;transition:color .25s,border-color .25s,background .25s;
+}
+.cc-filters button:hover{color:var(--white)}
+.cc-filters button.on{color:var(--white);border-color:var(--red);background:rgba(204,0,1,.08)}
+.cc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.cc-card{
+  border:1px solid var(--line-soft);border-radius:2px;padding:22px 24px;
+  display:flex;flex-direction:column;gap:10px;transition:border-color .3s,background .3s;
+}
+.cc-card:hover{border-color:var(--line);background:var(--ink-2)}
+.cc-card .cc-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.cc-card h3{font-family:var(--display);font-size:18px;font-weight:600;letter-spacing:-.01em}
+.cc-card .cc-op{font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--grey-dark);border:1px solid var(--line-soft);padding:4px 8px;border-radius:2px;white-space:nowrap}
+.cc-card address{font-style:normal;font-size:13px;color:var(--grey);line-height:1.65;flex:1}
+.cc-card .cc-contact{display:flex;align-items:center;justify-content:space-between;gap:10px;padding-top:12px;border-top:1px solid var(--line-soft)}
+.cc-card .cc-contact span{font-size:12.5px;color:var(--grey-dark)}
+.cc-card .cc-contact a{font-size:13.5px;font-weight:500;color:var(--white);transition:color .25s}
+.cc-card .cc-contact a:hover{color:var(--red)}
+
+/* ────────────────────────────── CTA ────────────────────────────── */
+.cta{position:relative;padding:clamp(110px,15vw,200px) var(--pad);overflow:hidden}
+.cta-bg{position:absolute;inset:0}
+.cta-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.35) saturate(.85)}
+.cta-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(12,12,12,.92) 20%,rgba(12,12,12,.5))}
+.cta-inner{position:relative;z-index:2}
+.cta h2{font-size:clamp(42px,6.5vw,100px);max-width:13ch}
+.cta .cta-row{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-top:clamp(36px,5vw,60px)}
+.cta .cta-actions{display:flex;gap:16px;flex-wrap:wrap}
+.cta .cta-contacts{display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap}
+.cta .c-item{display:flex;flex-direction:column;gap:4px}
+.cta .c-item span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.cta .c-item a{font-size:15px;font-weight:500;padding:4px 0;transition:color .25s}
+.cta .c-item a:hover{color:var(--red)}
+
+/* ────────────────────────────── FOOTER ────────────────────────────── */
+footer{border-top:1px solid var(--line-soft)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:48px;padding:clamp(48px,6vw,80px) var(--pad)}
+.foot-brand p{font-size:14px;color:var(--grey);line-height:1.7;max-width:280px;margin-top:16px}
+.foot-col h5{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:18px}
+.foot-col a{display:block;font-size:14px;color:var(--grey);padding:5px 0;transition:color .25s;width:fit-content}
+.foot-col a:hover{color:var(--white)}
+.foot-col address{font-style:normal;font-size:13px;color:var(--grey);line-height:1.7}
+.foot-bottom{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:24px var(--pad);border-top:1px solid var(--line-soft);
+}
+.foot-bottom p,.foot-bottom a{font-size:12.5px;color:var(--grey-dark)}
+.foot-bottom .legal{display:flex;gap:24px}
+.foot-bottom a{transition:color .25s;padding:4px 0}
+.foot-bottom a:hover{color:var(--grey)}
+.foot-social{display:flex;gap:4px}
+.foot-social a{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  color:var(--grey);border-radius:2px;transition:color .25s,background .25s;
+}
+.foot-social a:hover{color:var(--white);background:var(--ink-2)}
+.foot-social svg{width:17px;height:17px}
+.foot-mark{
+  font-family:var(--display);font-weight:700;letter-spacing:-.045em;line-height:.82;
+  font-size:clamp(72px,14vw,220px);color:#151515;text-align:center;
+  padding:clamp(20px,4vw,48px) var(--pad) 0;user-select:none;pointer-events:none;
+  overflow:hidden;white-space:nowrap;
+}
+.foot-mark i{font-style:normal;color:#1d1414}
+
+/* ────────────────────────────── REVEALS ────────────────────────────── */
+html.js .reveal{opacity:0;transform:translateY(36px)}
+html.js .reveal-img{clip-path:inset(0 0 100% 0)}
+@media (prefers-reduced-motion:reduce){
+  html.js .reveal{opacity:1;transform:none}
+  html.js .reveal-img{clip-path:none}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* ────────────────────────────── RESPONSIVE ────────────────────────────── */
+@media(max-width:1100px){
+  .cc-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .nav-links,.nav-region{display:none}
+  .burger{display:flex}
+  .shero{grid-template-columns:1fr}
+  .shero-side{padding-bottom:0}
+  .ov{grid-template-columns:1fr}
+  .ov-label{position:static}
+  .ov-copy{grid-template-columns:1fr}
+  .ben-grid{grid-template-columns:1fr}
+  .ben-cell{border-right:none!important;border-bottom:1px solid var(--line-soft)!important}
+  .ben-cell:last-child{border-bottom:none!important}
+  .dd-grid{grid-template-columns:1fr}
+  .plan{grid-template-columns:1fr}
+  .plan-media{position:relative;top:0;aspect-ratio:16/10}
+  .cc-head{flex-direction:column;align-items:flex-start}
+  .cc-call{text-align:left}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav .btn{display:none}
+  .shero{padding-top:130px}
+  .cc-grid{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr}
+  .cta .cta-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader" aria-hidden="true">
+  <img src="mindstec-logo-web.png" alt="">
+  <div class="pre-bar"><i></i></div>
+</div>
+<script>setTimeout(function(){var p=document.getElementById('preloader');if(p)p.style.display='none';},6000);</script>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-item">
+        <a href="about.html">About
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="about.html">About Us</a>
+          <a href="partners.html">Partners</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="solutions.html">Solutions
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="solution.html?s=digital-signage">Digital Signage</a>
+          <a href="solution.html?s=control-rooms">Control Rooms</a>
+          <a href="solution.html?s=conferencing">Conferencing &amp; Collaboration</a>
+          <a href="solution.html?s=hospitality">Hospitality AV</a>
+          <a href="solution.html?s=broadcast">Broadcast &amp; Production</a>
+          <a href="solution.html?s=live-events">Live Events &amp; Immersive</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="blogs.html" class="active" aria-current="page">Resources
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="blogs.html">Blogs</a>
+          <a href="ewaste.html" class="sub-active">E-Waste Management</a>
+          <a href="experience.html">Experience Centre</a>
+        </div>
+      </li>
+      <li><a href="index.html#work">Installations</a></li>
+    </ul>
+  </nav>
+  <div class="nav-cta">
+    <button class="nav-region" id="regionBtn" aria-label="Change region, current region India">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>
+      <span id="regionLabel">India</span>
+    </button>
+    <a class="btn btn--solid" href="contact.html"><span>Talk to us</span></a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="partners.html" class="drawer-sub">Partners</a>
+  <a href="solutions.html">Solutions</a>
+  <a href="blogs.html">Blogs</a>
+  <a href="experience.html" class="drawer-sub">Experience Centre</a>
+  <a href="ewaste.html" class="drawer-sub">E-Waste Management</a>
+  <a href="contact.html">Contact</a>
+  <div class="drawer-meta">
+    <span class="label">India · Africa · Poland</span>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="shero" aria-label="E-waste management">
+  <h1 class="display" id="sheroH">
+    <span class="line-mask"><span class="w">End of life.</span></span>
+    <span class="line-mask"><span class="w"><em>Not end of story.</em></span></span>
+  </h1>
+  <div class="shero-side reveal" id="sheroSide">
+    <span class="label label--red" style="display:block;margin-bottom:18px">E-Waste Management</span>
+    <p>Around 90% of electronic equipment is recyclable. Our authorized programme with Deshwal Waste Management takes back end-of-life electronics anywhere in India — at zero cost to you.</p>
+  </div>
+</section>
+<div class="shero-meta reveal">
+  <div class="fact"><b>1800 102 9077</b><span>Toll-free pickup line</span></div>
+  <div class="fact"><b>27 drop points</b><span>Across India</span></div>
+  <div class="fact"><b>Deshwal WM</b><span>Authorized recycler</span></div>
+  <div class="fact"><b>₹0</b><span>Cost to the consumer</span></div>
+</div>
+
+<!-- OVERVIEW -->
+<section class="ov" aria-label="Overview">
+  <div class="ov-label reveal"><span class="label label--red">Overview</span></div>
+  <div>
+    <p class="ov-state reveal">Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of it <em>gets a second life.</em></p>
+    <div class="ov-copy reveal">
+      <p>E-waste is the informal name for electronic products nearing the end of their useful life — computers, televisions, displays, copiers, phones, audio equipment and batteries. Many of their components contain hazardous materials that pose a real threat to human health and the environment when disposed of improperly.</p>
+      <p>Most of these products can be reused, refurbished or recycled in an environmentally sound manner. Under India's E-Waste (Management &amp; Handling) Rules, Mindstec runs a compliant take-back programme so the hardware we distribute never ends up where it shouldn't.</p>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- BENEFITS -->
+<section class="ben" aria-label="Benefits of e-waste recycling">
+  <div class="ben-head reveal">
+    <span class="label label--red">Why recycle</span>
+    <h2 class="display">What responsible recycling <em>gives back.</em></h2>
+  </div>
+  <div class="ben-grid reveal">
+    <div class="ben-cell">
+      <span class="num">01</span>
+      <h3>Conserves natural resources</h3>
+      <p>Metals recovered from circuit boards, and the plastics and glass in monitors and televisions, go into new products — reducing the need to mine new raw materials.</p>
+    </div>
+    <div class="ben-cell">
+      <span class="num">02</span>
+      <h3>Supports the community</h3>
+      <p>Donated electronics become refurbished computers and phones for low-income families, schools and non-profits — access to technology they couldn't otherwise afford.</p>
+    </div>
+    <div class="ben-cell">
+      <span class="num">03</span>
+      <h3>Creates local employment</h3>
+      <p>With around 90% of electronic equipment recyclable, demand for recycling builds new firms and new jobs — and a second market for the recovered materials.</p>
+    </div>
+    <div class="ben-cell">
+      <span class="num">04</span>
+      <h3>Protects health &amp; environment</h3>
+      <p>CRTs and monitors contain lead; circuit boards carry cadmium, mercury and chromium. Safe recycling keeps these toxins out of trashcans, landfills and groundwater.</p>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- DO'S & DON'TS -->
+<section class="dd" aria-label="Do's and don'ts">
+  <div class="dd-head reveal">
+    <span class="label label--red">Handle with care</span>
+    <h2 class="display">Do's &amp; <em>don'ts.</em></h2>
+  </div>
+  <div class="dd-grid">
+    <div class="dd-col dd-do reveal">
+      <h3>Always</h3>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Check the product catalogue for end-of-life handling information before you dispose of anything.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Make sure only authorized recyclers and dismantlers handle your electronic products.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Call the toll-free line to dispose of products that have reached end of life.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Drop used electronics, batteries and accessories at your nearest authorized e-waste collection point.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>Disconnect batteries and protect any glass surfaces against breakage before handing equipment over.</li>
+      </ul>
+    </div>
+    <div class="dd-col dd-dont reveal">
+      <h3>Never</h3>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>Dismantle electronic products on your own.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>Throw electronics into bins marked with the "Do not dispose" sign.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>Hand e-waste to informal, unorganized collectors like local scrap dealers or rag pickers.</li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>Mix electronics with municipal garbage that ultimately reaches landfills.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- PLAN -->
+<section class="plan" aria-label="Our e-waste management plan">
+  <div class="plan-media reveal-img">
+    <img src="assets/img/unsplash-1518770660439-4636190af475-w1400.jpg" alt="A close-up of an electronic circuit board with gold and green traces" loading="lazy">
+    <span class="plan-tag">Authorized recycling — Deshwal Waste Management</span>
+  </div>
+  <div class="plan-body">
+    <span class="label label--red reveal">The programme</span>
+    <h2 class="display reveal">How your hardware <em>comes back around.</em></h2>
+    <p class="reveal">In India, most e-waste ends up in the informal sector, recycled with no consideration for health or the environment. Abiding by all pertinent e-waste laws, Mindstec has partnered with <b style="color:var(--white)">Deshwal Waste Management Pvt. Ltd.</b> — a recycler authorized by the appropriate government agencies — to provide drop-off centres and environmentally sound processing of end-of-life electronics.</p>
+    <div class="steps">
+      <div class="step reveal">
+        <span class="num">01</span>
+        <div>
+          <h4>Raise a pickup request</h4>
+          <p>Call the toll-free line 1800 102 9077, Monday to Friday, 10:00 AM – 5:30 PM — or drop your e-waste at any collection centre below.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <span class="num">02</span>
+        <div>
+          <h4>Collection &amp; transport</h4>
+          <p>Deshwal Waste Management, our authorized recycler, collects the equipment and transports it to the nearest collection centre.</p>
+        </div>
+      </div>
+      <div class="step reveal">
+        <span class="num">03</span>
+        <div>
+          <h4>Environmentally sound recycling</h4>
+          <p>Equipment is processed at government-authorized facilities in compliance with India's E-Waste Management &amp; Handling Rules.</p>
+        </div>
+      </div>
+    </div>
+    <p class="plan-note reveal"><b>Free of charge.</b> No fee is charged for giving goods for recycling, and no monetary benefit is offered in return — the sole aim of the programme is to keep the environment clean.</p>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- COLLECTION CENTRES -->
+<section class="cc" aria-label="Collection centres">
+  <div class="cc-head">
+    <div class="reveal">
+      <span class="label label--red">Drop points</span>
+      <h2 class="display">Collection centres <em>across India.</em></h2>
+    </div>
+    <div class="cc-call reveal">
+      <span>Toll-free pickup</span>
+      <a href="tel:18001029077">1800 102 9077</a>
+      <small>Mon–Fri, 10:00 AM – 5:30 PM</small>
+    </div>
+  </div>
+  <div class="cc-filters reveal" role="group" aria-label="Filter collection centres">
+    <button class="on" data-f="all">All centres</button>
+    <button data-f="deshwal">Deshwal Waste Management</button>
+    <button data-f="rtl">Reliable Trans Logistics</button>
+  </div>
+  <div class="cc-grid" id="ccGrid"></div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-bg" aria-hidden="true">
+    <img src="assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy">
+  </div>
+  <div class="cta-inner">
+    <span class="label label--red">Do your part</span>
+    <h2 class="display" id="ctaH" style="margin-top:20px">
+      <span class="line-mask"><span class="w">Recycle it right.</span></span>
+      <span class="line-mask"><span class="w"><em>It costs nothing.</em></span></span>
+    </h2>
+    <div class="cta-row reveal">
+      <div class="cta-actions">
+        <a class="btn btn--solid" href="tel:18001029077"><span>Call 1800 102 9077</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 2 .7 2.9a2 2 0 0 1-.5 2.1L8 10a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.5c.9.3 1.9.6 2.9.7a2 2 0 0 1 1.7 2z"/></svg>
+        </a>
+        <a class="btn" href="contact.html"><span>Talk to Mindstec</span></a>
+      </div>
+      <div class="cta-contacts">
+        <div class="c-item"><span>India operations</span><a href="tel:+918045256922">+91 80 4525 6922</a></div>
+        <div class="c-item"><span>Write to us</span><a href="mailto:india@mindstec.com">india@mindstec.com</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+      <p>Mindstec Distribution bridges the gap between the manufacturer and the dealer, increasing the efficiency of overall operations.</p>
+      <div class="foot-social" style="margin-top:20px">
+        <a href="https://www.linkedin.com/company/mindstec/" aria-label="Mindstec on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+        <a href="https://www.instagram.com/mindstec.distribution/" aria-label="Mindstec on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.youtube.com/channel/UCrmKbX0DP9TZBP2zJ5PHiXA" aria-label="Mindstec on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.7 8.1c.2-1.6 1.4-2.7 3-2.8C7.7 5.1 10 5 12 5s4.3.1 6.3.3c1.6.1 2.8 1.2 3 2.8.1 1.2.2 2.6.2 3.9s-.1 2.7-.2 3.9c-.2 1.6-1.4 2.7-3 2.8-2 .2-4.3.3-6.3.3s-4.3-.1-6.3-.3c-1.6-.1-2.8-1.2-3-2.8-.1-1.2-.2-2.6-.2-3.9s.1-2.7.2-3.9z"/><path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Solutions</h5>
+      <a href="solution.html?s=digital-signage">Digital Signage</a>
+      <a href="solution.html?s=control-rooms">Control Rooms</a>
+      <a href="solution.html?s=conferencing">Conferencing</a>
+      <a href="solution.html?s=hospitality">Hospitality AV</a>
+      <a href="solution.html?s=broadcast">Broadcast</a>
+      <a href="solution.html?s=live-events">Live Events</a>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="about.html">About Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="experience.html">Experience Centre</a>
+      <a href="ewaste.html">E-Waste Management</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="index.html#work">Installations</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="foot-col">
+      <h5>Bangalore HQ</h5>
+      <address>No. 5M-645, Banaswadi Village,<br>OMBR Layout, Bangalore 560043, India</address>
+      <a href="tel:+918045256922" style="margin-top:10px">+91 80 4525 6922</a>
+      <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+    </div>
+  </div>
+  <div class="foot-mark" aria-hidden="true">MINDSTEC<i>.</i></div>
+  <div class="foot-bottom">
+    <p>© 2026 Mindstec Distribution. All rights reserved.</p>
+    <div class="legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const { animate: mAnimate } = window.Motion || {};
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── Collection centres data (from mindstec.com/in/e-waste-management) ── */
+  const CENTRES = [
+    { g: 'deshwal', city: 'New Delhi', addr: 'B1/14 Basement, EROS Apartment, 56, Nehru Place, New Delhi 110019', name: 'Mr. Ashwani', tel: '9555999163' },
+    { g: 'deshwal', city: 'Manesar', addr: 'Plot No. 292, Sector-7, IMT Manesar, Haryana 122050', name: 'Mr. Kishore', tel: '9873592319' },
+    { g: 'deshwal', city: 'Ahmedabad', addr: 'G/D No. 1051, Vishal Estate, Opp. Bharat Petrol Pump, Sarkhej Bavla Road, Taluka Sanand, Santhal, Ahmedabad 382210', name: 'Mr. Mukesh Parikh', tel: '9727355189' },
+    { g: 'deshwal', city: 'Pune', addr: 'Survey No. 119, Deokar Building, Pune Alandi Road, Kalas, Vishrantwadi, Pune 411015, Maharashtra', name: 'Mr. Samar Pan', tel: '9834480443' },
+    { g: 'deshwal', city: 'Mumbai (Thane)', addr: '105, Sewanti Chhaya Building, Dombivali East, Ayre Road, Kalyan-Dombivali, Thane, Mumbai 421201', name: 'Mr. Anjani Tripathi', tel: '9643013881' },
+    { g: 'deshwal', city: 'Chennai', addr: 'Survey No. 91 & 92/2, No. 1/33, Kumaran Rice Mill Compound, Tirupati Road, Vellavedu, Chennai 602107, Tamil Nadu', name: 'Mr. Gyaniram Choudhary', tel: '9080113177' },
+    { g: 'deshwal', city: 'Jaipur', addr: 'Plot No. 1, Sita Nagar 2, Heerapur Rajni Pura, Heerawala, Ajmer Road, Jaipur 302024, Rajasthan', name: 'Mr. Shravan Swami', tel: '9261118000' },
+    { g: 'deshwal', city: 'Kolkata', addr: '3/7, Jadavgarh, P.S. Garfa, Kolkata 700078', name: 'Mr. Indresh', tel: '7415191708' },
+    { g: 'deshwal', city: 'Bengaluru', addr: 'B-39, 3rd Cross Road, Near Bharat Sevashram Sangha, Jakkur, Bengaluru 560064, Karnataka', name: 'Mr. Lokesh', tel: '9873592320' },
+    { g: 'rtl', city: 'New Delhi', addr: 'B-13, Okhla Phase-2, New Delhi', name: 'Mr. Ibrahim', tel: '9555493838' },
+    { g: 'rtl', city: 'Chennai', addr: 'No. 389, Sembium Road, Kathevedu, Puzhal, Chennai 600066', name: 'Mr. Dwevdi', tel: '9884309370' },
+    { g: 'rtl', city: 'Jammu', addr: 'Panamma Chowk, Jammu 180001', name: 'Mr. Narender Kumar', tel: '9419622202' },
+    { g: 'rtl', city: 'Patna', addr: 'South Gandhi Maidan, behind IMA Hall, Slimpur Ohra, Patna 800001', name: 'Mr. Satendra Prasad', tel: '9431079451' },
+    { g: 'rtl', city: 'Ranchi', addr: 'Mahadeo Munda, Near Kali Mandir, Chutia, Ranchi 834001', name: 'Mr. Briju Kumar', tel: '9113728020' },
+    { g: 'rtl', city: 'Ahmedabad', addr: '23 Manorath Complex, Sarapur, Ahmedabad 380052', name: 'Mr. Rajesh Patel', tel: '9374887483' },
+    { g: 'rtl', city: 'Mumbai (Bhiwandi)', addr: 'Kolher Village, Near Kolher Vajan Kanta, Bhiwandi, Mumbai', name: 'Mr. Sanjay Kumar', tel: '9999434721' },
+    { g: 'rtl', city: 'Kolkata', addr: '161/1 M G Road, Bangur Building, Kolkata 700007', name: 'Mr. M Tiwari', tel: '9831744758' },
+    { g: 'rtl', city: 'Bhubaneshwar', addr: '24/711, Bhimpur, New Airport Road, Bhubaneshwar 751020', name: 'Mr. Basant', tel: '9338933801' },
+    { g: 'rtl', city: 'Guwahati', addr: 'A K Azad Road, Rehabari Tinali, Near Namghar, Guwahati', name: 'Mr. Raju', tel: '7002649709' },
+    { g: 'rtl', city: 'Nagpur', addr: 'J P Complex, MIDC T-Point, Amravati Road, Wadi, Nagpur 440024', name: 'Mr. Kailash', tel: '9823361807' },
+    { g: 'rtl', city: 'Bengaluru (Nelamangala)', addr: 'No. 63 A, Dasanapur, NH-4 Tumkur Road, Behind Hanuman Temple, Nelamangala, Bangalore 562123', name: 'Mr. Singh', tel: '9379757223' },
+    { g: 'rtl', city: 'Pune', addr: 'Lane No. 14, Opp. Municipal Garden, Tiger Nagar, Pune 411015', name: 'Mr. Deepak', tel: '9730007723' },
+    { g: 'rtl', city: 'Jaipur', addr: 'Plant No. 20, Dyanand Nagar, Jodla Power House, Bhandarana Road, Jaipur', name: 'Mr. Nawrang', tel: '9351755333' },
+    { g: 'rtl', city: 'Ludhiana', addr: 'Plot No. 17, Transport Nagar, Ludhiana', name: 'Mr. Birbal', tel: '9316055333' },
+    { g: 'rtl', city: 'Chandigarh', addr: 'SCO 1086-87, Cabin No. 7, Sector 22B, Chandigarh', name: 'Mr. Jaiver', tel: '9312255333' },
+    { g: 'rtl', city: 'Hyderabad', addr: '1-A 600/12, Prakash Nagar, Hyderabad', name: 'Mr. Jammal', tel: '9346086996' },
+    { g: 'rtl', city: 'Raipur', addr: 'Near Gurudwara, Station Road, Raipur', name: 'Mr. R. L. Sahu', tel: '9302228182' }
+  ];
+  const OPS = { deshwal: 'Deshwal WM', rtl: 'Reliable Trans' };
+  const grid = document.getElementById('ccGrid');
+  function renderCentres(f) {
+    grid.innerHTML = CENTRES.filter(c => f === 'all' || c.g === f).map(c => `
+      <div class="cc-card">
+        <div class="cc-top"><h3>${c.city}</h3><span class="cc-op">${OPS[c.g]}</span></div>
+        <address>${c.addr}</address>
+        <div class="cc-contact"><span>${c.name}</span><a href="tel:+91${c.tel}">${c.tel}</a></div>
+      </div>`).join('');
+    if (!reduceMotion && window.gsap) {
+      gsap.fromTo('.cc-card', { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: .55, stagger: .03, ease: 'power3.out' });
+    }
+  }
+  renderCentres('all');
+  document.querySelectorAll('.cc-filters button').forEach(b => {
+    b.addEventListener('click', () => {
+      document.querySelectorAll('.cc-filters button').forEach(x => x.classList.toggle('on', x === b));
+      renderCentres(b.dataset.f);
+    });
+  });
+
+  let lenis = null;
+  if (!reduceMotion) {
+    lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: -70 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  function setDrawer(open) {
+    drawer.classList.toggle('open', open);
+    drawer.setAttribute('aria-hidden', String(!open));
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (lenis) open ? lenis.stop() : lenis.start();
+  }
+  burger.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false);
+  });
+
+  const nav = document.getElementById('nav');
+  let lastY = 0;
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate(self) {
+      const y = self.scroll();
+      nav.classList.toggle('is-solid', y > 40);
+      if (!drawer.classList.contains('open')) {
+        nav.classList.toggle('is-hidden', y > 500 && y > lastY + 4);
+      }
+      if (Math.abs(y - lastY) > 4) lastY = y;
+    }
+  });
+
+  const regions = ['India', 'Africa', 'Poland'];
+  const regionLabel = document.getElementById('regionLabel');
+  const regionBtn = document.getElementById('regionBtn');
+  let ri = 0;
+  regionBtn.addEventListener('click', () => {
+    ri = (ri + 1) % regions.length;
+    regionLabel.textContent = regions[ri];
+    regionBtn.setAttribute('aria-label', 'Change region, current region ' + regions[ri]);
+  });
+
+  if (reduceMotion) {
+    const pre0 = document.getElementById('preloader');
+    if (pre0) pre0.remove();
+    return wireInteractions();
+  }
+
+  /* ── Hero intro ── */
+  const intro = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
+  intro.fromTo('#sheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: .12 })
+    .fromTo('#sheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .8 }, '-=.6')
+    .fromTo('.shero-meta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .7 }, '-=.5');
+
+  /* ── Preloader ── */
+  const pre = document.getElementById('preloader');
+  if (pre) {
+    const barTween = gsap.to('.pre-bar i', { scaleX: .7, duration: 1.4, ease: 'power1.out' });
+    let exited = false;
+    const exitPre = () => {
+      if (exited) return;
+      exited = true;
+      barTween.kill();
+      gsap.timeline()
+        .to('.pre-bar i', { scaleX: 1, duration: .4, ease: 'power2.inOut' })
+        .to(pre, { yPercent: -100, duration: .7, ease: 'power4.inOut' }, '+=.15')
+        .add(() => { pre.remove(); }, '>')
+        .add(() => { intro.play(); }, '-=.45');
+    };
+    if (document.readyState === 'complete') exitPre();
+    else {
+      window.addEventListener('load', exitPre);
+      setTimeout(exitPre, 3500);
+    }
+  } else {
+    intro.play();
+  }
+
+  /* ── Generic reveals ── */
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 86%', once: true }
+    });
+  });
+  gsap.utils.toArray('.reveal-img').forEach(el => {
+    gsap.to(el, {
+      clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power4.inOut',
+      scrollTrigger: { trigger: el, start: 'top 82%', once: true }
+    });
+  });
+
+  /* ── CTA ── */
+  gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
+    yPercent: 0, duration: 1.1, stagger: .1, ease: 'power4.out',
+    scrollTrigger: { trigger: '#contact', start: 'top 72%', once: true }
+  });
+  gsap.fromTo('.cta-bg img', { yPercent: -6 }, {
+    yPercent: 6, ease: 'none',
+    scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+
+  /* ── Footer mark ── */
+  gsap.fromTo('.foot-mark', { yPercent: 30, opacity: .4 }, {
+    yPercent: 0, opacity: 1, ease: 'none',
+    scrollTrigger: { trigger: 'footer', start: 'top 90%', end: 'bottom bottom', scrub: true }
+  });
+
+  wireInteractions();
+
+  function wireInteractions() {
+    if (mAnimate && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('pointermove', e => {
+          const r = btn.getBoundingClientRect();
+          const dx = (e.clientX - r.left - r.width / 2) * .18;
+          const dy = (e.clientY - r.top - r.height / 2) * .3;
+          mAnimate(btn, { x: dx, y: dy }, { type: 'spring', stiffness: 300, damping: 24 });
+        });
+        btn.addEventListener('pointerleave', () => {
+          mAnimate(btn, { x: 0, y: 0 }, { type: 'spring', stiffness: 200, damping: 18 });
+        });
+      });
+    }
+  }
+});
+</script>
+</body>
+</html>

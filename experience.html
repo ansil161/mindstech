@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Experience Centre — Mindstec Distribution</title>
+<meta name="description" content="Walk into the Mindstec Experience Centre in Bengaluru — live control rooms, collaboration suites, digital signage and broadcast demos from 25 global AV brands, all under one roof.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mindstec Distribution">
+<meta property="og:title" content="Experience Centre — Mindstec Distribution">
+<meta property="og:description" content="Walk into the Mindstec Experience Centre in Bengaluru — live control rooms, collaboration suites, digital signage and broadcast demos from 25 global AV brands, all under one roof.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="mindstec-logo-web.png">
+<meta name="theme-color" content="#0C0C0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.pexels.com">
+<link rel="preconnect" href="https://images.unsplash.com">
+<script>document.documentElement.classList.add('js')</script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ────────────────────────────── TOKENS ────────────────────────────── */
+:root{
+  --red:#CC0001;
+  --ink:#0C0C0C;
+  --ink-2:#111111;
+  --panel:#161616;
+  --white:#FAFAFA;
+  --grey:#9A9A9A;
+  --grey-dark:#6B6B6B;
+  --line:rgba(255,255,255,.12);
+  --line-soft:rgba(255,255,255,.07);
+  --display:'Archivo',sans-serif;
+  --body:'Inter',sans-serif;
+  --pad:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:var(--ink);color:var(--white);font-family:var(--body);
+  font-size:16px;line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;border:none;background:none;color:inherit;cursor:pointer}
+a,button{cursor:pointer}
+img{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* ────────────────────────────── TYPE ────────────────────────────── */
+.display{
+  font-family:var(--display);font-weight:600;letter-spacing:-.03em;
+  line-height:1.02;color:var(--white);
+}
+.display em{font-family:var(--display);font-style:normal;font-weight:inherit;letter-spacing:inherit;color:var(--red)}
+.label{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--grey);
+}
+.label--red{color:var(--red)}
+.lede{font-size:clamp(16px,1.3vw,19px);color:var(--grey);line-height:1.7;font-weight:400}
+.line-mask{display:block;overflow:hidden}
+.w{display:inline-block;will-change:transform}
+
+/* ────────────────────────────── PRIMITIVES ────────────────────────────── */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:12px;
+  font-size:14px;font-weight:500;letter-spacing:.02em;
+  padding:16px 28px;min-height:48px;border:1px solid var(--line);
+  border-radius:2px;overflow:hidden;transition:color .3s var(--ease),border-color .3s var(--ease);
+  background:transparent;color:var(--white);
+}
+.btn::before{
+  content:'';position:absolute;inset:0;background:var(--red);
+  transform:scaleY(0);transform-origin:bottom;transition:transform .35s var(--ease);
+  z-index:0;
+}
+.btn:hover::before{transform:scaleY(1)}
+.btn:hover{border-color:var(--red);color:#fff}
+.btn > *{position:relative;z-index:1}
+.btn--solid{background:var(--red);border-color:var(--red)}
+.btn--solid::before{background:#fff}
+.btn--solid:hover{color:var(--ink)}
+.btn svg{width:15px;height:15px;transition:transform .3s var(--ease)}
+.btn:hover svg{transform:translate(2px,-2px)}
+.rule{height:1px;background:var(--line-soft);margin:0 var(--pad)}
+.num{font-family:var(--display);font-size:12px;font-weight:500;letter-spacing:.12em;color:var(--grey-dark)}
+
+/* ────────────────────────────── PRELOADER ────────────────────────────── */
+#preloader{
+  position:fixed;inset:0;z-index:300;background:var(--ink);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+}
+html.js #preloader{display:flex}
+#preloader img{height:52px;width:auto}
+.pre-bar{width:180px;height:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.pre-bar i{display:block;height:100%;width:100%;background:var(--red);transform:scaleX(0);transform-origin:left}
+
+/* ────────────────────────────── NAV ────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  height:76px;padding:0 var(--pad);
+  border-bottom:1px solid transparent;
+  transition:transform .5s var(--ease),background .4s,border-color .4s;
+}
+.nav.is-solid{background:rgba(12,12,12,.88);backdrop-filter:blur(16px);border-color:var(--line-soft)}
+.nav.is-hidden{transform:translateY(-100%)}
+.logo{display:flex;align-items:center}
+.logo img{height:38px;width:auto;display:block}
+.foot-brand .logo img{height:48px}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none}
+.nav-links li{display:flex;align-items:center}
+.nav-links a{
+  display:inline-flex;align-items:center;line-height:1;
+  font-size:13.5px;font-weight:500;color:var(--grey);padding:10px 14px;
+  border-radius:2px;transition:color .25s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.active{color:var(--white);position:relative}
+.nav-links a.active::after{content:'';position:absolute;left:14px;right:14px;bottom:4px;height:2px;background:var(--red)}
+.nav-item{position:relative}
+.nav-item > a{display:inline-flex;align-items:center;gap:6px}
+.nav-item > a svg{width:12px;height:12px;transition:transform .3s var(--ease)}
+.nav-item:hover > a svg,.nav-item:focus-within > a svg{transform:rotate(180deg)}
+.sub{
+  position:absolute;top:100%;left:6px;min-width:190px;z-index:95;
+  background:rgba(14,14,14,.97);backdrop-filter:blur(16px);
+  border:1px solid var(--line-soft);border-radius:2px;padding:8px;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s;
+}
+.nav-item:hover .sub,.nav-item:focus-within .sub{opacity:1;visibility:visible;transform:translateY(4px)}
+.sub a{display:block;font-size:13.5px;color:var(--grey);padding:10px 14px;border-radius:2px;white-space:nowrap}
+.sub a:hover{color:var(--white);background:var(--ink-2)}
+.sub a.sub-active{color:var(--white);border-left:2px solid var(--red);border-radius:0}
+.nav-cta{display:flex;align-items:center;gap:20px}
+.nav-region{
+  display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);
+  padding:10px 0;background:none;transition:color .25s;
+}
+.nav-region:hover{color:var(--white)}
+.nav-region svg{width:14px;height:14px}
+.nav .btn{padding:12px 22px;min-height:44px}
+.burger{display:none;flex-direction:column;gap:5px;padding:12px;min-width:44px;min-height:44px;justify-content:center;align-items:center}
+.burger span{display:block;width:22px;height:1.5px;background:var(--white);transition:transform .3s var(--ease),opacity .3s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.drawer{
+  position:fixed;inset:0;z-index:80;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);
+  opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s;
+}
+.drawer.open{opacity:1;visibility:visible}
+.drawer a{
+  font-family:var(--display);font-size:clamp(30px,8vw,48px);font-weight:600;
+  letter-spacing:-.02em;color:var(--grey);padding:9px 0;line-height:1.1;
+  border-bottom:1px solid var(--line-soft);transition:color .25s,padding-left .3s var(--ease);
+}
+.drawer a:hover{color:var(--white);padding-left:12px}
+.drawer a.drawer-sub{font-size:clamp(20px,5vw,26px);font-weight:500;padding-left:28px;color:var(--grey-dark)}
+.drawer a.drawer-sub:hover{padding-left:36px}
+.drawer .drawer-meta{margin-top:40px;display:flex;gap:32px}
+
+/* ────────────────────────────── HERO ────────────────────────────── */
+.xhero{
+  position:relative;min-height:96svh;display:flex;flex-direction:column;
+  justify-content:flex-end;padding:140px var(--pad) clamp(44px,7vh,84px);
+  overflow:hidden;
+}
+.xhero-bg{position:absolute;inset:0;z-index:0}
+.xhero-bg img{width:100%;height:112%;object-fit:cover;filter:brightness(.5) saturate(.9);will-change:transform}
+.xhero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,var(--ink) 2%,rgba(12,12,12,.55) 34%,rgba(12,12,12,.25) 65%,rgba(12,12,12,.55));
+}
+.xhero-inner{position:relative;z-index:2;max-width:1280px}
+.xhero .label{display:block;margin-bottom:22px}
+.xhero h1{font-size:clamp(46px,8vw,118px)}
+.xhero-foot{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:36px;flex-wrap:wrap;margin-top:clamp(28px,4vh,48px);
+}
+.xhero-foot .lede{max-width:52ch}
+.xhero-actions{display:flex;gap:14px;flex-wrap:wrap}
+.xhero-meta{
+  display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap;
+  margin:0 var(--pad);padding:26px 0;
+  border-bottom:1px solid var(--line-soft);
+}
+.xhero-meta .fact b{display:block;font-family:var(--display);font-size:15px;font-weight:600;color:var(--white)}
+.xhero-meta .fact span{font-size:12px;color:var(--grey);letter-spacing:.06em;text-transform:uppercase}
+
+/* ────────────────────────────── OVERVIEW ────────────────────────────── */
+.ov{
+  display:grid;grid-template-columns:1fr 2.2fr;gap:clamp(28px,5vw,90px);
+  padding:clamp(80px,11vw,150px) var(--pad);
+}
+.ov-label{align-self:start;position:sticky;top:110px}
+.ov-state{font-size:clamp(26px,3.2vw,48px);line-height:1.16;letter-spacing:-.02em;font-family:var(--display);font-weight:600}
+.ov-state em{color:var(--red);font-style:normal}
+.ov-copy{margin-top:34px;display:grid;grid-template-columns:1fr 1fr;gap:clamp(20px,3vw,44px)}
+.ov-copy p{font-size:15.5px;color:var(--grey);line-height:1.85}
+
+/* ────────────────────────────── ZONES ────────────────────────────── */
+.zones{padding:clamp(70px,9vw,120px) var(--pad) clamp(80px,10vw,140px)}
+.zones-head{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  gap:32px;flex-wrap:wrap;margin-bottom:clamp(40px,6vw,72px);
+}
+.zones-head h2{font-size:clamp(36px,5vw,72px);margin-top:18px}
+.zones-head p{font-size:15px;color:var(--grey);max-width:38ch;line-height:1.75}
+.zgrid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,3.5vw,56px) clamp(20px,3vw,48px)}
+.zcard{display:block}
+.zcard-media{position:relative;overflow:hidden;border-radius:2px;aspect-ratio:16/10}
+.zcard-media img{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  filter:brightness(.72);transition:filter .5s,transform .8s var(--ease);
+}
+.zcard:hover .zcard-media img{filter:brightness(.9);transform:scale(1.04)}
+.zcard-media .zcat{
+  position:absolute;top:16px;left:16px;z-index:2;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:#fff;
+  background:rgba(12,12,12,.55);padding:7px 11px;border-radius:2px;backdrop-filter:blur(6px);
+}
+.zcard-body{padding:22px 0 0;display:flex;flex-direction:column;gap:10px}
+.zcard-body .ztitle{display:flex;align-items:baseline;gap:16px}
+.zcard-body h3{font-family:var(--display);font-size:clamp(20px,2vw,27px);font-weight:600;letter-spacing:-.02em;transition:color .3s}
+.zcard:hover h3{color:var(--red)}
+.zcard-body p{font-size:14.5px;color:var(--grey);line-height:1.75;max-width:52ch}
+.zcard-go{
+  display:inline-flex;align-items:center;gap:9px;margin-top:4px;
+  font-size:13.5px;font-weight:500;color:var(--grey);transition:color .3s,gap .3s var(--ease);
+}
+.zcard:hover .zcard-go{color:var(--white);gap:14px}
+.zcard-go svg{width:14px;height:14px}
+
+/* ────────────────────────────── FILM ────────────────────────────── */
+.film{padding:clamp(70px,9vw,120px) var(--pad)}
+.film-head{margin-bottom:clamp(32px,5vw,56px)}
+.film-head h2{font-size:clamp(36px,5vw,72px);margin-top:18px;max-width:16ch}
+.film-frame{position:relative;overflow:hidden;border-radius:2px;aspect-ratio:16/9;background:var(--panel)}
+.film-frame video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.film-cover{
+  position:absolute;inset:0;z-index:3;cursor:pointer;
+  background-size:cover;background-position:center;
+  display:flex;align-items:center;justify-content:center;
+  transition:opacity .6s var(--ease),visibility .6s;
+}
+.film-cover::before{content:'';position:absolute;inset:0;background:rgba(12,12,12,.35);transition:background .4s}
+.film-cover:hover::before{background:rgba(12,12,12,.2)}
+.film-cover.is-hidden{opacity:0;visibility:hidden;pointer-events:none}
+.film-play{
+  position:relative;z-index:2;width:96px;height:96px;border-radius:50%;
+  background:var(--red);display:flex;align-items:center;justify-content:center;
+  transition:transform .35s var(--ease),background .3s;
+}
+.film-cover:hover .film-play{transform:scale(1.08)}
+.film-play svg{width:26px;height:26px;fill:#fff;margin-left:4px}
+.film-cover .film-tag{
+  position:absolute;left:24px;bottom:22px;z-index:2;
+  font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:#fff;
+  display:flex;align-items:center;gap:10px;
+}
+.film-cover .film-tag::before{content:'';width:24px;height:1px;background:var(--red)}
+.film-note{margin-top:18px;font-size:13px;color:var(--grey-dark)}
+
+/* ────────────────────────────── WHO ────────────────────────────── */
+.who{padding:clamp(70px,9vw,120px) var(--pad)}
+.who-head h2{font-size:clamp(36px,5vw,72px);margin-top:18px}
+.who-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  border:1px solid var(--line-soft);border-radius:2px;margin-top:clamp(36px,5vw,60px);
+}
+.who-cell{padding:clamp(28px,3.5vw,48px);border-right:1px solid var(--line-soft)}
+.who-cell:last-child{border-right:none}
+.who-cell .num{display:block;margin-bottom:44px}
+.who-cell h3{font-family:var(--display);font-size:clamp(20px,1.9vw,26px);font-weight:600;letter-spacing:-.02em;margin-bottom:14px}
+.who-cell p{font-size:14.5px;color:var(--grey);line-height:1.8}
+
+/* ────────────────────────────── VISIT ────────────────────────────── */
+.visit{
+  display:grid;grid-template-columns:1.1fr 1fr;gap:clamp(32px,6vw,100px);
+  padding:clamp(80px,11vw,150px) var(--pad);
+}
+.visit-left h2{font-size:clamp(38px,5.2vw,80px);margin-top:18px}
+.visit-left p{font-size:15.5px;color:var(--grey);line-height:1.8;margin-top:24px;max-width:44ch}
+.visit-actions{display:flex;gap:14px;flex-wrap:wrap;margin-top:36px}
+.visit-rows{display:flex;flex-direction:column;justify-content:center}
+.vrow{
+  display:grid;grid-template-columns:64px 1fr;gap:18px;
+  padding:24px 0;border-top:1px solid var(--line-soft);
+}
+.vrow:last-child{border-bottom:1px solid var(--line-soft)}
+.vrow .num{padding-top:5px}
+.vrow h4{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:7px}
+.vrow p,.vrow a{font-size:15.5px;line-height:1.65;color:var(--white)}
+.vrow a{display:inline-block;padding:2px 0;transition:color .25s}
+.vrow a:hover{color:var(--red)}
+.vrow .sub-note{font-size:13px;color:var(--grey);margin-top:3px}
+
+/* ────────────────────────────── CTA ────────────────────────────── */
+.cta{position:relative;padding:clamp(110px,15vw,200px) var(--pad);overflow:hidden}
+.cta-bg{position:absolute;inset:0}
+.cta-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.35) saturate(.85)}
+.cta-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(12,12,12,.92) 20%,rgba(12,12,12,.5))}
+.cta-inner{position:relative;z-index:2}
+.cta h2{font-size:clamp(42px,6.5vw,100px);max-width:13ch}
+.cta .cta-row{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-top:clamp(36px,5vw,60px)}
+.cta .cta-actions{display:flex;gap:16px;flex-wrap:wrap}
+.cta .cta-contacts{display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap}
+.cta .c-item{display:flex;flex-direction:column;gap:4px}
+.cta .c-item span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.cta .c-item a{font-size:15px;font-weight:500;padding:4px 0;transition:color .25s}
+.cta .c-item a:hover{color:var(--red)}
+
+/* ────────────────────────────── FOOTER ────────────────────────────── */
+footer{border-top:1px solid var(--line-soft)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:48px;padding:clamp(48px,6vw,80px) var(--pad)}
+.foot-brand p{font-size:14px;color:var(--grey);line-height:1.7;max-width:280px;margin-top:16px}
+.foot-col h5{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:18px}
+.foot-col a{display:block;font-size:14px;color:var(--grey);padding:5px 0;transition:color .25s;width:fit-content}
+.foot-col a:hover{color:var(--white)}
+.foot-col address{font-style:normal;font-size:13px;color:var(--grey);line-height:1.7}
+.foot-bottom{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:24px var(--pad);border-top:1px solid var(--line-soft);
+}
+.foot-bottom p,.foot-bottom a{font-size:12.5px;color:var(--grey-dark)}
+.foot-bottom .legal{display:flex;gap:24px}
+.foot-bottom a{transition:color .25s;padding:4px 0}
+.foot-bottom a:hover{color:var(--grey)}
+.foot-social{display:flex;gap:4px}
+.foot-social a{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  color:var(--grey);border-radius:2px;transition:color .25s,background .25s;
+}
+.foot-social a:hover{color:var(--white);background:var(--ink-2)}
+.foot-social svg{width:17px;height:17px}
+.foot-mark{
+  font-family:var(--display);font-weight:700;letter-spacing:-.045em;line-height:.82;
+  font-size:clamp(72px,14vw,220px);color:#151515;text-align:center;
+  padding:clamp(20px,4vw,48px) var(--pad) 0;user-select:none;pointer-events:none;
+  overflow:hidden;white-space:nowrap;
+}
+.foot-mark i{font-style:normal;color:#1d1414}
+
+/* ────────────────────────────── REVEALS ────────────────────────────── */
+html.js .reveal{opacity:0;transform:translateY(36px)}
+html.js .reveal-img{clip-path:inset(0 0 100% 0)}
+@media (prefers-reduced-motion:reduce){
+  html.js .reveal{opacity:1;transform:none}
+  html.js .reveal-img{clip-path:none}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* ────────────────────────────── RESPONSIVE ────────────────────────────── */
+@media(max-width:900px){
+  .nav-links,.nav-region{display:none}
+  .burger{display:flex}
+  .ov{grid-template-columns:1fr}
+  .ov-label{position:static}
+  .ov-copy{grid-template-columns:1fr}
+  .zgrid{grid-template-columns:1fr}
+  .who-grid{grid-template-columns:1fr}
+  .who-cell{border-right:none;border-bottom:1px solid var(--line-soft)}
+  .who-cell:last-child{border-bottom:none}
+  .visit{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav .btn{display:none}
+  .xhero{min-height:88svh;padding-top:120px}
+  .film-play{width:72px;height:72px}
+  .foot-grid{grid-template-columns:1fr}
+  .cta .cta-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader" aria-hidden="true">
+  <img src="mindstec-logo-web.png" alt="">
+  <div class="pre-bar"><i></i></div>
+</div>
+<script>setTimeout(function(){var p=document.getElementById('preloader');if(p)p.style.display='none';},6000);</script>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-item">
+        <a href="about.html">About
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="about.html">About Us</a>
+          <a href="partners.html">Partners</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="solutions.html">Solutions
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="solution.html?s=digital-signage">Digital Signage</a>
+          <a href="solution.html?s=control-rooms">Control Rooms</a>
+          <a href="solution.html?s=conferencing">Conferencing &amp; Collaboration</a>
+          <a href="solution.html?s=hospitality">Hospitality AV</a>
+          <a href="solution.html?s=broadcast">Broadcast &amp; Production</a>
+          <a href="solution.html?s=live-events">Live Events &amp; Immersive</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="blogs.html" class="active" aria-current="page">Resources
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="blogs.html">Blogs</a>
+          <a href="ewaste.html">E-Waste Management</a>
+          <a href="experience.html" class="sub-active">Experience Centre</a>
+        </div>
+      </li>
+      <li><a href="index.html#work">Installations</a></li>
+    </ul>
+  </nav>
+  <div class="nav-cta">
+    <button class="nav-region" id="regionBtn" aria-label="Change region, current region India">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>
+      <span id="regionLabel">India</span>
+    </button>
+    <a class="btn btn--solid" href="contact.html"><span>Talk to us</span></a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="partners.html" class="drawer-sub">Partners</a>
+  <a href="solutions.html">Solutions</a>
+  <a href="blogs.html">Blogs</a>
+  <a href="experience.html" class="drawer-sub">Experience Centre</a>
+  <a href="ewaste.html" class="drawer-sub">E-Waste Management</a>
+  <a href="contact.html">Contact</a>
+  <div class="drawer-meta">
+    <span class="label">India · Africa · Poland</span>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="xhero" aria-label="The Mindstec Experience Centre">
+  <div class="xhero-bg" aria-hidden="true">
+    <img src="assets/img/unsplash-1605810230434-7631ac76ec81-w2000.jpg" alt="" id="xheroImg">
+  </div>
+  <div class="xhero-inner">
+    <span class="label label--red reveal" id="xheroLabel">Experience Centre — Bengaluru</span>
+    <h1 class="display" id="xheroH">
+      <span class="line-mask"><span class="w">Don't imagine it.</span></span>
+      <span class="line-mask"><span class="w"><em>Walk into it.</em></span></span>
+    </h1>
+    <div class="xhero-foot reveal" id="xheroFoot">
+      <p class="lede">A hands-on floor where technology meets functionality — live control rooms, collaboration suites, signage and broadcast, running side by side so you can judge them the way your clients will.</p>
+      <div class="xhero-actions">
+        <a class="btn btn--solid" href="contact.html?s=visit"><span>Book a visit</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="btn" href="#film"><span>Watch the film</span>
+          <svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M8 5.5v13l11-6.5z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="xhero-meta reveal">
+  <div class="fact"><b>6 live zones</b><span>Running demos daily</span></div>
+  <div class="fact"><b>25 brands</b><span>On the floor</span></div>
+  <div class="fact"><b>OMBR Layout</b><span>Bangalore, India</span></div>
+  <div class="fact"><b>By appointment</b><span>Guided walkthroughs</span></div>
+</div>
+
+<!-- OVERVIEW -->
+<section class="ov" aria-label="Overview">
+  <div class="ov-label reveal"><span class="label label--red">Overview</span></div>
+  <div>
+    <p class="ov-state reveal">Spec sheets tell you what a system should do. The Experience Centre shows you what it <em>actually does</em> — live, integrated, and under real conditions.</p>
+    <div class="ov-copy reveal">
+      <p>Our Bengaluru Experience Centre is a dynamic, hands-on environment designed to showcase the power of integrated AV. The floor runs live demonstrations of control room systems, collaborative meeting technologies, digital signage and more — real products from 25 global brands, wired together the way they'd be deployed on site.</p>
+      <p>Visitors explore real-world applications, test system interoperability across brands, and work directly with our technical experts. Whether you're a consultant writing a spec, an integrator validating a design, or an enterprise client choosing a standard — this is the shortest path from shortlist to certainty.</p>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- ZONES -->
+<section class="zones" aria-label="Demo zones on the floor">
+  <div class="zones-head">
+    <div class="reveal">
+      <span class="label label--red">On the floor</span>
+      <h2 class="display">Six zones. All <em>live.</em></h2>
+    </div>
+    <p class="reveal">Every zone runs shipping product — no mock-ups, no renders. Walk from one vertical to the next and see how the pieces interoperate.</p>
+  </div>
+  <div class="zgrid">
+
+    <a class="zcard" href="solution.html?s=control-rooms">
+      <div class="zcard-media reveal-img">
+        <img src="assets/img/pexels-11783119-w1400.jpg" alt="An operator facing a dark wall of monitors with red timecode displays" loading="lazy">
+        <span class="zcat">Zone 01</span>
+      </div>
+      <div class="zcard-body reveal">
+        <div class="ztitle"><span class="num">01</span><h3>Control Room Wall</h3></div>
+        <p>A 24/7-rated video wall driven by live processors — switch sources, split layouts and stress-test the workflow your operators will actually use.</p>
+        <span class="zcard-go">Explore the vertical <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="zcard" href="solution.html?s=conferencing">
+      <div class="zcard-media reveal-img">
+        <img src="assets/img/pexels-13323673-w1400.jpg" alt="A dark-toned conference room with a wall-mounted display and leather chairs" loading="lazy">
+        <span class="zcat">Zone 02</span>
+      </div>
+      <div class="zcard-body reveal">
+        <div class="ztitle"><span class="num">02</span><h3>Collaboration Suite</h3></div>
+        <p>A fully wired hybrid meeting room — interactive display, PTZ cameras, ceiling audio and room booking, joined to a real call so you can hear the difference.</p>
+        <span class="zcard-go">Explore the vertical <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="zcard" href="solution.html?s=digital-signage">
+      <div class="zcard-media reveal-img">
+        <img src="assets/img/pexels-3402937-w1400.jpg" alt="A street at night covered in glowing digital signs and screen facades" loading="lazy">
+        <span class="zcat">Zone 03</span>
+      </div>
+      <div class="zcard-body reveal">
+        <div class="ztitle"><span class="num">03</span><h3>Signage Gallery</h3></div>
+        <p>Indoor LED, professional panels and wayfinding running scheduled content from a live CMS — compare brightness, pitch and processing side by side.</p>
+        <span class="zcard-go">Explore the vertical <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="zcard" href="solution.html?s=broadcast">
+      <div class="zcard-media reveal-img">
+        <img src="assets/img/pexels-7865064-w1400.jpg" alt="Two professional pedestal cameras in a dark television studio facing a lit set" loading="lazy">
+        <span class="zcat">Zone 04</span>
+      </div>
+      <div class="zcard-body reveal">
+        <div class="ztitle"><span class="num">04</span><h3>Broadcast Corner</h3></div>
+        <p>Cameras, vision mixing and live graphics in a compact production setup — see a multi-camera stream go from lens to output in one take.</p>
+        <span class="zcard-go">Explore the vertical <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="zcard" href="solution.html?s=hospitality">
+      <div class="zcard-media reveal-img">
+        <img src="assets/img/pexels-29870245-w1400.jpg" alt="A dark stone-walled luxury lounge with glowing cube lamps" loading="lazy">
+        <span class="zcat">Zone 05</span>
+      </div>
+      <div class="zcard-body reveal">
+        <div class="ztitle"><span class="num">05</span><h3>Audio &amp; Hospitality Lounge</h3></div>
+        <p>Invisible and architectural speakers, guest-room IPTV and background audio staged as a lounge — technology that disappears until you press play.</p>
+        <span class="zcard-go">Explore the vertical <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
+
+    <a class="zcard" href="solution.html?s=conferencing">
+      <div class="zcard-media reveal-img">
+        <img src="assets/img/unsplash-1558494949-ef010cbdcc31-w1400.jpg" alt="Rows of illuminated network equipment racks in a dark server room" loading="lazy">
+        <span class="zcat">Zone 06</span>
+      </div>
+      <div class="zcard-body reveal">
+        <div class="ztitle"><span class="num">06</span><h3>AV-over-IP Backbone</h3></div>
+        <p>The rack room that ties the floor together — AV-over-IP switching, extension and control, so you can trace every signal path end to end.</p>
+        <span class="zcard-go">Explore the vertical <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+      </div>
+    </a>
+
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- FILM -->
+<section class="film" id="film" aria-label="Experience Centre film">
+  <div class="film-head reveal">
+    <span class="label label--red">The film</span>
+    <h2 class="display">Step inside before <em>you step inside.</em></h2>
+  </div>
+  <div class="film-frame reveal-img">
+    <video id="xcVideo" preload="none" playsinline controls
+      poster="assets/img/pexels-17323801-w1920.jpg"
+      aria-label="Video tour of the Mindstec Experience Centre in Bengaluru">
+      <source src="https://www.mindstec.com/wp-content/uploads/2025/05/Mindstec-Experience-Centre.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+    <div class="film-cover" id="filmCover" role="button" tabindex="0" aria-label="Play the Experience Centre film"
+      style="background-image:url('assets/img/pexels-17323801-w1920.jpg')">
+      <span class="film-play" aria-hidden="true">
+        <svg viewBox="0 0 24 24"><path d="M8 5.5v13l11-6.5z"/></svg>
+      </span>
+      <span class="film-tag">Mindstec Experience Centre — Bengaluru</span>
+    </div>
+  </div>
+  <p class="film-note">Filmed on the floor of our Bengaluru centre. Streams on demand — press play.</p>
+</section>
+
+<div class="rule"></div>
+
+<!-- WHO -->
+<section class="who" aria-label="Who the centre is for">
+  <div class="who-head reveal">
+    <span class="label label--red">Who it's for</span>
+    <h2 class="display">Built for the people <em>who decide.</em></h2>
+  </div>
+  <div class="who-grid reveal">
+    <div class="who-cell">
+      <span class="num">01</span>
+      <h3>Consultants</h3>
+      <p>Validate a specification against live hardware before it goes to tender — compare brands in the same room, under the same light, on the same network.</p>
+    </div>
+    <div class="who-cell">
+      <span class="num">02</span>
+      <h3>System Integrators</h3>
+      <p>Prove a design to your client without building a demo room of your own. Bring them in, walk the floor, and close on what they've already seen working.</p>
+    </div>
+    <div class="who-cell">
+      <span class="num">03</span>
+      <h3>Enterprise Clients</h3>
+      <p>Choosing a standard for a hundred rooms? Sit in one first. Test the workflow, the audio and the ergonomics before you commit the budget.</p>
+    </div>
+  </div>
+</section>
+
+<div class="rule"></div>
+
+<!-- VISIT -->
+<section class="visit" aria-label="Plan your visit">
+  <div class="visit-left reveal">
+    <span class="label label--red">Plan your visit</span>
+    <h2 class="display">See it running, <em>in person.</em></h2>
+    <p>Visits are guided and by appointment, so the floor is set up around what you're evaluating. Tell us what you want to see and we'll have it live when you arrive.</p>
+    <div class="visit-actions">
+      <a class="btn btn--solid" href="contact.html?s=visit"><span>Book a visit</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+      <a class="btn" href="https://www.google.com/maps/place/MINDSTEC+DISTRIBUTION+PRIVATE+LIMITED/@13.0108201,77.6558671,849m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bae171505942e5f:0x89ccc127b403eb0e!8m2!3d13.0108201!4d77.658442!16s%2Fg%2F11ckqsxnqv" target="_blank" rel="noopener"><span>Open in Google Maps</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+    </div>
+  </div>
+  <div class="visit-rows">
+    <div class="vrow reveal">
+      <span class="num">01</span>
+      <div>
+        <h4>Where</h4>
+        <p>No. 5M-645, Banaswadi Village,<br>OMBR Layout, Bangalore 560043, India</p>
+      </div>
+    </div>
+    <div class="vrow reveal">
+      <span class="num">02</span>
+      <div>
+        <h4>Call ahead</h4>
+        <a href="tel:+918045256922">+91 80 4525 6922</a>
+        <p class="sub-note">Mon–Fri, business hours IST</p>
+      </div>
+    </div>
+    <div class="vrow reveal">
+      <span class="num">03</span>
+      <div>
+        <h4>Write to us</h4>
+        <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+        <p class="sub-note">Tell us which zones you want live</p>
+      </div>
+    </div>
+    <div class="vrow reveal">
+      <span class="num">04</span>
+      <div>
+        <h4>Format</h4>
+        <p>Guided walkthrough, 60–90 minutes</p>
+        <p class="sub-note">With a product specialist for your vertical</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-bg" aria-hidden="true">
+    <img src="assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy">
+  </div>
+  <div class="cta-inner">
+    <span class="label label--red">Next step</span>
+    <h2 class="display" id="ctaH" style="margin-top:20px">
+      <span class="line-mask"><span class="w">Start selling.</span></span>
+      <span class="line-mask"><span class="w"><em>Start growing.</em></span></span>
+    </h2>
+    <div class="cta-row reveal">
+      <div class="cta-actions">
+        <a class="btn btn--solid" href="contact.html?s=visit"><span>Book a visit</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="btn" href="solutions.html"><span>See all solutions</span></a>
+      </div>
+      <div class="cta-contacts">
+        <div class="c-item"><span>India operations</span><a href="tel:+918045256922">+91 80 4525 6922</a></div>
+        <div class="c-item"><span>Global enquiries</span><a href="mailto:info@mindstec.com">info@mindstec.com</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+      <p>Mindstec Distribution bridges the gap between the manufacturer and the dealer, increasing the efficiency of overall operations.</p>
+      <div class="foot-social" style="margin-top:20px">
+        <a href="https://www.linkedin.com/company/mindstec/" aria-label="Mindstec on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+        <a href="https://www.instagram.com/mindstec.distribution/" aria-label="Mindstec on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.youtube.com/channel/UCrmKbX0DP9TZBP2zJ5PHiXA" aria-label="Mindstec on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.7 8.1c.2-1.6 1.4-2.7 3-2.8C7.7 5.1 10 5 12 5s4.3.1 6.3.3c1.6.1 2.8 1.2 3 2.8.1 1.2.2 2.6.2 3.9s-.1 2.7-.2 3.9c-.2 1.6-1.4 2.7-3 2.8-2 .2-4.3.3-6.3.3s-4.3-.1-6.3-.3c-1.6-.1-2.8-1.2-3-2.8-.1-1.2-.2-2.6-.2-3.9s.1-2.7.2-3.9z"/><path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Solutions</h5>
+      <a href="solution.html?s=digital-signage">Digital Signage</a>
+      <a href="solution.html?s=control-rooms">Control Rooms</a>
+      <a href="solution.html?s=conferencing">Conferencing</a>
+      <a href="solution.html?s=hospitality">Hospitality AV</a>
+      <a href="solution.html?s=broadcast">Broadcast</a>
+      <a href="solution.html?s=live-events">Live Events</a>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="about.html">About Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="experience.html">Experience Centre</a>
+      <a href="ewaste.html">E-Waste Management</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="index.html#work">Installations</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="foot-col">
+      <h5>Bangalore HQ</h5>
+      <address>No. 5M-645, Banaswadi Village,<br>OMBR Layout, Bangalore 560043, India</address>
+      <a href="tel:+918045256922" style="margin-top:10px">+91 80 4525 6922</a>
+      <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+    </div>
+  </div>
+  <div class="foot-mark" aria-hidden="true">MINDSTEC<i>.</i></div>
+  <div class="foot-bottom">
+    <p>© 2026 Mindstec Distribution. All rights reserved.</p>
+    <div class="legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const { animate: mAnimate } = window.Motion || {};
+  gsap.registerPlugin(ScrollTrigger);
+
+  let lenis = null;
+  if (!reduceMotion) {
+    lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: -70 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  function setDrawer(open) {
+    drawer.classList.toggle('open', open);
+    drawer.setAttribute('aria-hidden', String(!open));
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (lenis) open ? lenis.stop() : lenis.start();
+  }
+  burger.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false);
+  });
+
+  const nav = document.getElementById('nav');
+  let lastY = 0;
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate(self) {
+      const y = self.scroll();
+      nav.classList.toggle('is-solid', y > 40);
+      if (!drawer.classList.contains('open')) {
+        nav.classList.toggle('is-hidden', y > 500 && y > lastY + 4);
+      }
+      if (Math.abs(y - lastY) > 4) lastY = y;
+    }
+  });
+
+  const regions = ['India', 'Africa', 'Poland'];
+  const regionLabel = document.getElementById('regionLabel');
+  const regionBtn = document.getElementById('regionBtn');
+  let ri = 0;
+  regionBtn.addEventListener('click', () => {
+    ri = (ri + 1) % regions.length;
+    regionLabel.textContent = regions[ri];
+    regionBtn.setAttribute('aria-label', 'Change region, current region ' + regions[ri]);
+  });
+
+  /* ── Film player (streams the real centre tour on demand) ── */
+  const video = document.getElementById('xcVideo');
+  const cover = document.getElementById('filmCover');
+  if (video && cover) {
+    const startFilm = () => {
+      cover.classList.add('is-hidden');
+      video.play().catch(() => {});
+    };
+    cover.addEventListener('click', startFilm);
+    cover.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); startFilm(); }
+    });
+    /* pause when scrolled out of view */
+    new IntersectionObserver(entries => {
+      entries.forEach(en => { if (!en.isIntersecting && !video.paused) video.pause(); });
+    }, { threshold: .15 }).observe(video);
+  }
+
+  if (reduceMotion) {
+    const pre0 = document.getElementById('preloader');
+    if (pre0) pre0.remove();
+    return wireInteractions();
+  }
+
+  /* ── Hero intro ── */
+  const intro = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
+  intro.fromTo('#xheroImg', { scale: 1.08 }, { scale: 1, duration: 1.6, ease: 'power2.out' }, 0)
+    .fromTo('#xheroLabel', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .7 }, .1)
+    .fromTo('#xheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: .12 }, .2)
+    .fromTo('#xheroFoot', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .8 }, '-=.55')
+    .fromTo('.xhero-meta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .7 }, '-=.5');
+
+  /* ── Preloader ── */
+  const pre = document.getElementById('preloader');
+  if (pre) {
+    const barTween = gsap.to('.pre-bar i', { scaleX: .7, duration: 1.4, ease: 'power1.out' });
+    let exited = false;
+    const exitPre = () => {
+      if (exited) return;
+      exited = true;
+      barTween.kill();
+      gsap.timeline()
+        .to('.pre-bar i', { scaleX: 1, duration: .4, ease: 'power2.inOut' })
+        .to(pre, { yPercent: -100, duration: .7, ease: 'power4.inOut' }, '+=.15')
+        .add(() => { pre.remove(); }, '>')
+        .add(() => { intro.play(); }, '-=.45');
+    };
+    if (document.readyState === 'complete') exitPre();
+    else {
+      window.addEventListener('load', exitPre);
+      setTimeout(exitPre, 3500);
+    }
+  } else {
+    intro.play();
+  }
+
+  /* ── Hero parallax ── */
+  gsap.fromTo('#xheroImg', { yPercent: 0 }, {
+    yPercent: -8, ease: 'none',
+    scrollTrigger: { trigger: '.xhero', start: 'top top', end: 'bottom top', scrub: true }
+  });
+
+  /* ── Generic reveals ── */
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 86%', once: true }
+    });
+  });
+  gsap.utils.toArray('.reveal-img').forEach(el => {
+    gsap.to(el, {
+      clipPath: 'inset(0 0 0% 0)', duration: 1.2, ease: 'power4.inOut',
+      scrollTrigger: { trigger: el, start: 'top 82%', once: true }
+    });
+  });
+
+  /* ── CTA ── */
+  gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
+    yPercent: 0, duration: 1.1, stagger: .1, ease: 'power4.out',
+    scrollTrigger: { trigger: '#contact', start: 'top 72%', once: true }
+  });
+  gsap.fromTo('.cta-bg img', { yPercent: -6 }, {
+    yPercent: 6, ease: 'none',
+    scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+
+  /* ── Footer mark ── */
+  gsap.fromTo('.foot-mark', { yPercent: 30, opacity: .4 }, {
+    yPercent: 0, opacity: 1, ease: 'none',
+    scrollTrigger: { trigger: 'footer', start: 'top 90%', end: 'bottom bottom', scrub: true }
+  });
+
+  wireInteractions();
+
+  function wireInteractions() {
+    if (mAnimate && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('pointermove', e => {
+          const r = btn.getBoundingClientRect();
+          const dx = (e.clientX - r.left - r.width / 2) * .18;
+          const dy = (e.clientY - r.top - r.height / 2) * .3;
+          mAnimate(btn, { x: dx, y: dy }, { type: 'spring', stiffness: 300, damping: 24 });
+        });
+        btn.addEventListener('pointerleave', () => {
+          mAnimate(btn, { x: 0, y: 0 }, { type: 'spring', stiffness: 200, damping: 18 });
+        });
+      });
+    }
+  }
+});
+</script>
+</body>
+</html>

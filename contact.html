@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact Us — Mindstec Distribution</title>
+<meta name="description" content="Have a project? Get in touch with Mindstec Distribution — Bangalore HQ, +91 80 4525 6922, india@mindstec.com.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mindstec Distribution">
+<meta property="og:title" content="Contact Us — Mindstec Distribution">
+<meta property="og:description" content="Have a project? Get in touch with Mindstec Distribution — Bangalore HQ, +91 80 4525 6922, india@mindstec.com.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="mindstec-logo-web.png">
+<meta name="theme-color" content="#0C0C0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ────────────────────────────── TOKENS ────────────────────────────── */
+:root{
+  --red:#CC0001;
+  --ink:#0C0C0C;
+  --ink-2:#111111;
+  --panel:#161616;
+  --white:#FAFAFA;
+  --grey:#9A9A9A;
+  --grey-dark:#6B6B6B;
+  --line:rgba(255,255,255,.12);
+  --line-soft:rgba(255,255,255,.07);
+  --display:'Archivo',sans-serif;
+  --body:'Inter',sans-serif;
+  --pad:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:var(--ink);color:var(--white);font-family:var(--body);
+  font-size:16px;line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;border:none;background:none;color:inherit;cursor:pointer}
+a,button{cursor:pointer}
+img{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* ────────────────────────────── TYPE ────────────────────────────── */
+.display{
+  font-family:var(--display);font-weight:600;letter-spacing:-.03em;
+  line-height:1.02;color:var(--white);
+}
+.display em{font-family:var(--display);font-style:normal;font-weight:inherit;letter-spacing:inherit;color:var(--red)}
+.label{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--grey);
+}
+.label--red{color:var(--red)}
+.line-mask{display:block;overflow:hidden}
+.w{display:inline-block;will-change:transform}
+
+/* ────────────────────────────── PRIMITIVES ────────────────────────────── */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:12px;
+  font-size:14px;font-weight:500;letter-spacing:.02em;
+  padding:16px 28px;min-height:48px;border:1px solid var(--line);
+  border-radius:2px;overflow:hidden;transition:color .3s var(--ease),border-color .3s var(--ease);
+  background:transparent;color:var(--white);
+}
+.btn::before{
+  content:'';position:absolute;inset:0;background:var(--red);
+  transform:scaleY(0);transform-origin:bottom;transition:transform .35s var(--ease);
+  z-index:0;
+}
+.btn:hover::before{transform:scaleY(1)}
+.btn:hover{border-color:var(--red);color:#fff}
+.btn > *{position:relative;z-index:1}
+.btn--solid{background:var(--red);border-color:var(--red)}
+.btn--solid::before{background:#fff}
+.btn--solid:hover{color:var(--ink)}
+.btn svg{width:15px;height:15px;transition:transform .3s var(--ease)}
+.btn:hover svg{transform:translate(2px,-2px)}
+.num{font-family:var(--display);font-size:12px;font-weight:500;letter-spacing:.12em;color:var(--grey-dark)}
+
+/* ────────────────────────────── PRELOADER ────────────────────────────── */
+#preloader{
+  position:fixed;inset:0;z-index:300;background:var(--ink);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+}
+html.js #preloader{display:flex}
+#preloader img{height:52px;width:auto}
+.pre-bar{width:180px;height:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.pre-bar i{display:block;height:100%;width:100%;background:var(--red);transform:scaleX(0);transform-origin:left}
+
+/* ────────────────────────────── NAV ────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  height:76px;padding:0 var(--pad);
+  border-bottom:1px solid transparent;
+  transition:transform .5s var(--ease),background .4s,border-color .4s;
+}
+.nav.is-solid{background:rgba(12,12,12,.88);backdrop-filter:blur(16px);border-color:var(--line-soft)}
+.nav.is-hidden{transform:translateY(-100%)}
+.logo{display:flex;align-items:center}
+.logo img{height:38px;width:auto;display:block}
+.foot-brand .logo img{height:48px}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none}
+.nav-links li{display:flex;align-items:center}
+.nav-links a{
+  display:inline-flex;align-items:center;line-height:1;
+  font-size:13.5px;font-weight:500;color:var(--grey);padding:10px 14px;
+  border-radius:2px;transition:color .25s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.active{color:var(--white);position:relative}
+.nav-links a.active::after{content:'';position:absolute;left:14px;right:14px;bottom:4px;height:2px;background:var(--red)}
+.nav-item{position:relative}
+.nav-item > a{display:inline-flex;align-items:center;gap:6px}
+.nav-item > a svg{width:12px;height:12px;transition:transform .3s var(--ease)}
+.nav-item:hover > a svg,.nav-item:focus-within > a svg{transform:rotate(180deg)}
+.sub{
+  position:absolute;top:100%;left:6px;min-width:190px;z-index:95;
+  background:rgba(14,14,14,.97);backdrop-filter:blur(16px);
+  border:1px solid var(--line-soft);border-radius:2px;padding:8px;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s;
+}
+.nav-item:hover .sub,.nav-item:focus-within .sub{opacity:1;visibility:visible;transform:translateY(4px)}
+.sub a{display:block;font-size:13.5px;color:var(--grey);padding:10px 14px;border-radius:2px;white-space:nowrap}
+.sub a:hover{color:var(--white);background:var(--ink-2)}
+.sub a.sub-active{color:var(--white);border-left:2px solid var(--red);border-radius:0}
+.nav-cta{display:flex;align-items:center;gap:20px}
+.nav-region{
+  display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);
+  padding:10px 0;background:none;transition:color .25s;
+}
+.nav-region:hover{color:var(--white)}
+.nav-region svg{width:14px;height:14px}
+.nav .btn{padding:12px 22px;min-height:44px}
+.burger{display:none;flex-direction:column;gap:5px;padding:12px;min-width:44px;min-height:44px;justify-content:center;align-items:center}
+.burger span{display:block;width:22px;height:1.5px;background:var(--white);transition:transform .3s var(--ease),opacity .3s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.drawer{
+  position:fixed;inset:0;z-index:80;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);
+  opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s;
+}
+.drawer.open{opacity:1;visibility:visible}
+.drawer a{
+  font-family:var(--display);font-size:clamp(30px,8vw,48px);font-weight:600;
+  letter-spacing:-.02em;color:var(--grey);padding:9px 0;line-height:1.1;
+  border-bottom:1px solid var(--line-soft);transition:color .25s,padding-left .3s var(--ease);
+}
+.drawer a:hover{color:var(--white);padding-left:12px}
+.drawer a.drawer-sub{font-size:clamp(20px,5vw,26px);font-weight:500;padding-left:28px;color:var(--grey-dark)}
+.drawer a.drawer-sub:hover{padding-left:36px}
+.drawer .drawer-meta{margin-top:40px;display:flex;gap:32px}
+
+/* ────────────────────────────── CONTACT HERO ────────────────────────────── */
+.chero{padding:clamp(140px,18vh,200px) var(--pad) clamp(48px,7vw,80px)}
+.chero .label{display:block;margin-bottom:22px}
+.chero h1{font-size:clamp(46px,7.5vw,110px);max-width:13ch}
+
+/* ────────────────────────────── CONTACT LAYOUT ────────────────────────────── */
+.contact-layout{
+  display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(40px,6vw,96px);
+  padding:0 var(--pad) clamp(80px,11vw,150px);align-items:start;
+}
+
+/* form */
+.cform{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line-soft)}
+.cform .frow{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.cform .field{
+  border-bottom:1px solid var(--line-soft);padding:26px 0 18px;position:relative;
+}
+.cform .frow .field:first-child{border-right:1px solid var(--line-soft);padding-right:24px}
+.cform .frow .field:last-child{padding-left:24px}
+.cform label{
+  display:block;font-size:11px;font-weight:500;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--grey-dark);margin-bottom:10px;
+}
+.cform input,.cform textarea,.cform select{
+  width:100%;background:transparent;border:none;outline:none;
+  font-family:var(--body);font-size:16px;color:var(--white);
+  padding:4px 0;border-radius:0;
+}
+.cform select{appearance:none;-webkit-appearance:none;cursor:pointer}
+.cform select option{background:var(--ink-2);color:var(--white)}
+.cform textarea{resize:vertical;min-height:120px;line-height:1.7}
+.cform input::placeholder,.cform textarea::placeholder{color:#4A4A4A}
+.cform .field::after{
+  content:'';position:absolute;left:0;bottom:-1px;height:1px;width:100%;
+  background:var(--red);transform:scaleX(0);transform-origin:left;
+  transition:transform .45s var(--ease);
+}
+.cform .field:focus-within::after{transform:scaleX(1)}
+.cform .field:focus-within label{color:var(--red)}
+.cform .fsubmit{margin-top:36px;display:flex;align-items:center;gap:24px;flex-wrap:wrap}
+.cform .fnote{font-size:13px;color:var(--grey-dark);max-width:34ch;line-height:1.6}
+
+/* info side */
+.cinfo{display:flex;flex-direction:column;gap:0;border-top:1px solid var(--line-soft)}
+.cinfo .ci{
+  display:grid;grid-template-columns:52px 1fr;gap:16px;align-items:baseline;
+  padding:28px 0;border-bottom:1px solid var(--line-soft);
+}
+.cinfo .ci b{display:block;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:8px}
+.cinfo .ci a,.cinfo .ci address{
+  font-family:var(--display);font-size:clamp(17px,1.6vw,21px);font-weight:500;
+  color:var(--white);font-style:normal;line-height:1.5;transition:color .25s;display:block;width:fit-content;
+}
+.cinfo .ci a:hover{color:var(--red)}
+.cinfo .regions-mini{padding:28px 0;border-bottom:1px solid var(--line-soft)}
+.cinfo .regions-mini b{display:block;font-size:11px;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:14px}
+.cinfo .regions-mini .rm{display:flex;justify-content:space-between;gap:16px;padding:7px 0;flex-wrap:wrap}
+.cinfo .regions-mini .rm span{font-size:14px;color:var(--grey)}
+.cinfo .regions-mini .rm a{font-size:14px;font-weight:500;transition:color .25s}
+.cinfo .regions-mini .rm a:hover{color:var(--red)}
+.cinfo .socials{display:flex;gap:4px;padding-top:24px}
+.cinfo .socials a{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  color:var(--grey);border:1px solid var(--line-soft);border-radius:2px;
+  transition:color .25s,border-color .25s;
+}
+.cinfo .socials a:hover{color:var(--white);border-color:var(--red)}
+.cinfo .socials svg{width:17px;height:17px}
+
+/* map */
+.map-band{padding:0 var(--pad) clamp(80px,11vw,150px)}
+.map-frame{
+  position:relative;border:1px solid var(--line-soft);border-radius:2px;overflow:hidden;
+  aspect-ratio:21/9;min-height:320px;background:var(--ink-2);
+}
+.map-frame iframe{
+  position:absolute;inset:0;width:100%;height:100%;border:0;
+  filter:grayscale(1) invert(.92) contrast(.9) brightness(.9);
+}
+.map-frame .map-tag{
+  position:absolute;left:20px;bottom:18px;z-index:2;
+  background:var(--ink);border:1px solid var(--line-soft);border-radius:2px;
+  padding:14px 18px;max-width:300px;
+}
+.map-frame .map-tag b{display:block;font-family:var(--display);font-size:14px;font-weight:600;margin-bottom:4px}
+.map-frame .map-tag span{font-size:12px;color:var(--grey);line-height:1.6;display:block}
+.map-frame .map-tag a{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:500;color:var(--red);margin-top:8px}
+.map-frame .map-tag a svg{width:12px;height:12px}
+
+/* ────────────────────────────── FOOTER ────────────────────────────── */
+footer{border-top:1px solid var(--line-soft)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:48px;padding:clamp(48px,6vw,80px) var(--pad)}
+.foot-brand p{font-size:14px;color:var(--grey);line-height:1.7;max-width:280px;margin-top:16px}
+.foot-col h5{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:18px}
+.foot-col a{display:block;font-size:14px;color:var(--grey);padding:5px 0;transition:color .25s;width:fit-content}
+.foot-col a:hover{color:var(--white)}
+.foot-col address{font-style:normal;font-size:13px;color:var(--grey);line-height:1.7}
+.foot-bottom{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:24px var(--pad);border-top:1px solid var(--line-soft);
+}
+.foot-bottom p,.foot-bottom a{font-size:12.5px;color:var(--grey-dark)}
+.foot-bottom .legal{display:flex;gap:24px}
+.foot-bottom a{transition:color .25s;padding:4px 0}
+.foot-bottom a:hover{color:var(--grey)}
+.foot-social{display:flex;gap:4px}
+.foot-social a{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  color:var(--grey);border-radius:2px;transition:color .25s,background .25s;
+}
+.foot-social a:hover{color:var(--white);background:var(--ink-2)}
+.foot-social svg{width:17px;height:17px}
+.foot-mark{
+  font-family:var(--display);font-weight:700;letter-spacing:-.045em;line-height:.82;
+  font-size:clamp(72px,14vw,220px);color:#151515;text-align:center;
+  padding:clamp(20px,4vw,48px) var(--pad) 0;user-select:none;pointer-events:none;
+  overflow:hidden;white-space:nowrap;
+}
+.foot-mark i{font-style:normal;color:#1d1414}
+
+/* ────────────────────────────── REVEALS ────────────────────────────── */
+html.js .reveal{opacity:0;transform:translateY(36px)}
+@media (prefers-reduced-motion:reduce){
+  html.js .reveal{opacity:1;transform:none}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* ────────────────────────────── RESPONSIVE ────────────────────────────── */
+@media(max-width:900px){
+  .nav-links,.nav-region{display:none}
+  .burger{display:flex}
+  .contact-layout{grid-template-columns:1fr}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav .btn{display:none}
+  .chero{padding-top:120px}
+  .cform .frow{grid-template-columns:1fr}
+  .cform .frow .field:first-child{border-right:none;padding-right:0}
+  .cform .frow .field:last-child{padding-left:0}
+  .map-frame{aspect-ratio:4/3}
+  .foot-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader" aria-hidden="true">
+  <img src="mindstec-logo-web.png" alt="">
+  <div class="pre-bar"><i></i></div>
+</div>
+<script>setTimeout(function(){var p=document.getElementById('preloader');if(p)p.style.display='none';},6000);</script>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-item">
+        <a href="about.html">About
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="about.html">About Us</a>
+          <a href="partners.html">Partners</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="solutions.html">Solutions
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="solution.html?s=digital-signage">Digital Signage</a>
+          <a href="solution.html?s=control-rooms">Control Rooms</a>
+          <a href="solution.html?s=conferencing">Conferencing &amp; Collaboration</a>
+          <a href="solution.html?s=hospitality">Hospitality AV</a>
+          <a href="solution.html?s=broadcast">Broadcast &amp; Production</a>
+          <a href="solution.html?s=live-events">Live Events &amp; Immersive</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="blogs.html">Resources
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="blogs.html">Blogs</a>
+          <a href="ewaste.html">E-Waste Management</a>
+          <a href="experience.html">Experience Centre</a>
+        </div>
+      </li>
+      <li><a href="index.html#work">Installations</a></li>
+      <li><a href="contact.html" class="active" aria-current="page">Contact</a></li>
+    </ul>
+  </nav>
+  <div class="nav-cta">
+    <button class="nav-region" id="regionBtn" aria-label="Change region, current region India">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>
+      <span id="regionLabel">India</span>
+    </button>
+    <a class="btn btn--solid" href="#cform"><span>Send a message</span></a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="partners.html" class="drawer-sub">Partners</a>
+  <a href="solutions.html">Solutions</a>
+  <a href="blogs.html">Blogs</a>
+  <a href="experience.html" class="drawer-sub">Experience Centre</a>
+  <a href="ewaste.html" class="drawer-sub">E-Waste Management</a>
+  <a href="contact.html">Contact</a>
+  <div class="drawer-meta">
+    <span class="label">India · Africa · Poland</span>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="chero" aria-label="Contact Mindstec">
+  <span class="label label--red">Contact us</span>
+  <h1 class="display" id="cheroH">
+    <span class="line-mask"><span class="w">Have a project?</span></span>
+    <span class="line-mask"><span class="w"><em>Get in touch.</em></span></span>
+  </h1>
+</section>
+
+<!-- FORM + INFO -->
+<div class="contact-layout">
+  <form class="cform reveal" id="cform" aria-label="Contact form">
+    <div class="frow">
+      <div class="field">
+        <label for="fName">Name</label>
+        <input id="fName" name="name" type="text" placeholder="Your name" autocomplete="name" required>
+      </div>
+      <div class="field">
+        <label for="fPhone">Phone</label>
+        <input id="fPhone" name="phone" type="tel" placeholder="+91 ..." autocomplete="tel">
+      </div>
+    </div>
+    <div class="field">
+      <label for="fEmail">Email address</label>
+      <input id="fEmail" name="email" type="email" placeholder="you@company.com" autocomplete="email" required>
+    </div>
+    <div class="field">
+      <label for="fSubject">Subject</label>
+      <select id="fSubject" name="subject">
+        <option value="General enquiry">General enquiry</option>
+        <option value="Digital Signage">Digital Signage</option>
+        <option value="Control Rooms">Control Rooms</option>
+        <option value="Conferencing & Collaboration">Conferencing &amp; Collaboration</option>
+        <option value="Hospitality AV">Hospitality AV</option>
+        <option value="Broadcast & Production">Broadcast &amp; Production</option>
+        <option value="Live Events & Immersive">Live Events &amp; Immersive</option>
+        <option value="Become a partner">Become a partner</option>
+        <option value="Become a reseller">Become a reseller</option>
+        <option value="Visit the Experience Centre">Visit the Experience Centre</option>
+      </select>
+    </div>
+    <div class="field">
+      <label for="fMsg">Message</label>
+      <textarea id="fMsg" name="message" placeholder="How can we help you? Feel free to get in touch!" required></textarea>
+    </div>
+    <div class="fsubmit">
+      <button class="btn btn--solid" type="submit"><span>Send message</span>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </button>
+      <p class="fnote">Your message opens in your email client, addressed to our Bangalore team.</p>
+    </div>
+  </form>
+
+  <aside class="cinfo reveal" aria-label="Contact details">
+    <div class="ci">
+      <span class="num">01</span>
+      <div>
+        <b>Call us</b>
+        <a href="tel:+918045256922">+91 80 4525 6922</a>
+      </div>
+    </div>
+    <div class="ci">
+      <span class="num">02</span>
+      <div>
+        <b>Visit us</b>
+        <address>No. 5M-645, Banaswadi Village,<br>OMBR Layout, Bangalore 560043, India</address>
+      </div>
+    </div>
+    <div class="ci">
+      <span class="num">03</span>
+      <div>
+        <b>Write to us</b>
+        <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+      </div>
+    </div>
+    <div class="regions-mini">
+      <b>Regional desks</b>
+      <div class="rm"><span>India — SAARC</span><a href="mailto:india@mindstec.com">india@mindstec.com</a></div>
+      <div class="rm"><span>Africa</span><a href="mailto:africa@mindstec.com">africa@mindstec.com</a></div>
+      <div class="rm"><span>Poland — CEE</span><a href="mailto:poland@mindstec.com">poland@mindstec.com</a></div>
+      <div class="rm"><span>Partnerships</span><a href="mailto:partners@mindstec.com">partners@mindstec.com</a></div>
+    </div>
+    <div class="socials">
+      <a href="https://www.linkedin.com/company/mindstec/" aria-label="Mindstec on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+      <a href="https://www.instagram.com/mindstec.distribution/" aria-label="Mindstec on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
+      <a href="https://www.youtube.com/channel/UCrmKbX0DP9TZBP2zJ5PHiXA" aria-label="Mindstec on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.7 8.1c.2-1.6 1.4-2.7 3-2.8C7.7 5.1 10 5 12 5s4.3.1 6.3.3c1.6.1 2.8 1.2 3 2.8.1 1.2.2 2.6.2 3.9s-.1 2.7-.2 3.9c-.2 1.6-1.4 2.7-3 2.8-2 .2-4.3.3-6.3.3s-4.3-.1-6.3-.3c-1.6-.1-2.8-1.2-3-2.8-.1-1.2-.2-2.6-.2-3.9s.1-2.7.2-3.9z"/><path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg></a>
+    </div>
+  </aside>
+</div>
+
+<!-- MAP -->
+<div class="map-band reveal">
+  <div class="map-frame">
+    <iframe title="Map showing the Mindstec Distribution office in Bangalore" loading="lazy" referrerpolicy="no-referrer-when-downgrade"
+      src="https://maps.google.com/maps?q=MINDSTEC%20DISTRIBUTION%20PRIVATE%20LIMITED%2C%20OMBR%20Layout%2C%20Bangalore&z=15&output=embed"></iframe>
+    <div class="map-tag">
+      <b>Mindstec Distribution — Bangalore HQ</b>
+      <span>No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043</span>
+      <a href="https://www.google.com/maps/place/MINDSTEC+DISTRIBUTION+PRIVATE+LIMITED/@13.0108201,77.6558671,849m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bae171505942e5f:0x89ccc127b403eb0e!8m2!3d13.0108201!4d77.658442!16s%2Fg%2F11ckqsxnqv" target="_blank" rel="noopener">Open in Google Maps
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+      </a>
+    </div>
+  </div>
+</div>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+      <p>Mindstec Distribution bridges the gap between the manufacturer and the dealer, increasing the efficiency of overall operations.</p>
+      <div class="foot-social" style="margin-top:20px">
+        <a href="https://www.linkedin.com/company/mindstec/" aria-label="Mindstec on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+        <a href="https://www.instagram.com/mindstec.distribution/" aria-label="Mindstec on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.youtube.com/channel/UCrmKbX0DP9TZBP2zJ5PHiXA" aria-label="Mindstec on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.7 8.1c.2-1.6 1.4-2.7 3-2.8C7.7 5.1 10 5 12 5s4.3.1 6.3.3c1.6.1 2.8 1.2 3 2.8.1 1.2.2 2.6.2 3.9s-.1 2.7-.2 3.9c-.2 1.6-1.4 2.7-3 2.8-2 .2-4.3.3-6.3.3s-4.3-.1-6.3-.3c-1.6-.1-2.8-1.2-3-2.8-.1-1.2-.2-2.6-.2-3.9s.1-2.7.2-3.9z"/><path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Solutions</h5>
+      <a href="solution.html?s=digital-signage">Digital Signage</a>
+      <a href="solution.html?s=control-rooms">Control Rooms</a>
+      <a href="solution.html?s=conferencing">Conferencing</a>
+      <a href="solution.html?s=hospitality">Hospitality AV</a>
+      <a href="solution.html?s=broadcast">Broadcast</a>
+      <a href="solution.html?s=live-events">Live Events</a>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="about.html">About Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="experience.html">Experience Centre</a>
+      <a href="ewaste.html">E-Waste Management</a>
+      <a href="index.html#work">Installations</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="foot-col">
+      <h5>Bangalore HQ</h5>
+      <address>No. 5M-645, Banaswadi Village,<br>OMBR Layout, Bangalore 560043, India</address>
+      <a href="tel:+918045256922" style="margin-top:10px">+91 80 4525 6922</a>
+      <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+    </div>
+  </div>
+  <div class="foot-mark" aria-hidden="true">MINDSTEC<i>.</i></div>
+  <div class="foot-bottom">
+    <p>© 2026 Mindstec Distribution. All rights reserved.</p>
+    <div class="legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const { animate: mAnimate } = window.Motion || {};
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── Pre-select subject from ?s= (sent by solution pages) ── */
+  const slugSubject = {
+    'digital-signage': 'Digital Signage',
+    'control-rooms': 'Control Rooms',
+    'conferencing': 'Conferencing & Collaboration',
+    'hospitality': 'Hospitality AV',
+    'broadcast': 'Broadcast & Production',
+    'live-events': 'Live Events & Immersive',
+    'partner': 'Become a partner',
+    'reseller': 'Become a reseller',
+    'visit': 'Visit the Experience Centre'
+  };
+  const s = new URLSearchParams(location.search).get('s');
+  if (s && slugSubject[s]) document.getElementById('fSubject').value = slugSubject[s];
+
+  /* ── Form → mailto ── */
+  document.getElementById('cform').addEventListener('submit', e => {
+    e.preventDefault();
+    const v = id => document.getElementById(id).value.trim();
+    const body = [
+      'Name: ' + v('fName'),
+      'Phone: ' + v('fPhone'),
+      'Email: ' + v('fEmail'),
+      '',
+      v('fMsg')
+    ].join('\n');
+    location.href = 'mailto:india@mindstec.com'
+      + '?subject=' + encodeURIComponent('[Website] ' + v('fSubject'))
+      + '&body=' + encodeURIComponent(body);
+  });
+
+  /* ── Lenis ── */
+  let lenis = null;
+  if (!reduceMotion) {
+    lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: -90 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ── Drawer ── */
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  function setDrawer(open) {
+    drawer.classList.toggle('open', open);
+    drawer.setAttribute('aria-hidden', String(!open));
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (lenis) open ? lenis.stop() : lenis.start();
+  }
+  burger.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false);
+  });
+
+  /* ── Nav ── */
+  const nav = document.getElementById('nav');
+  let lastY = 0;
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate(self) {
+      const y = self.scroll();
+      nav.classList.toggle('is-solid', y > 40);
+      if (!drawer.classList.contains('open')) {
+        nav.classList.toggle('is-hidden', y > 500 && y > lastY + 4);
+      }
+      if (Math.abs(y - lastY) > 4) lastY = y;
+    }
+  });
+
+  /* ── Region ── */
+  const regions = ['India', 'Africa', 'Poland'];
+  const regionLabel = document.getElementById('regionLabel');
+  const regionBtn = document.getElementById('regionBtn');
+  let ri = 0;
+  regionBtn.addEventListener('click', () => {
+    ri = (ri + 1) % regions.length;
+    regionLabel.textContent = regions[ri];
+    regionBtn.setAttribute('aria-label', 'Change region, current region ' + regions[ri]);
+  });
+
+  if (reduceMotion) {
+    const pre0 = document.getElementById('preloader');
+    if (pre0) pre0.remove();
+    return wireInteractions();
+  }
+
+  /* ── Hero intro ── */
+  const intro = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
+  intro.fromTo('.chero .label', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .6 })
+    .fromTo('#cheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: .12 }, '-=.3')
+    .fromTo('.cform .field, .cform .fsubmit', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: .7, stagger: .07 }, '-=.5')
+    .fromTo('.cinfo', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .8 }, '-=.7');
+
+  // the form/info animate via intro, not scroll reveal
+  document.querySelectorAll('.cform, .cinfo').forEach(el => el.classList.remove('reveal'));
+
+  /* ── Preloader ── */
+  const pre = document.getElementById('preloader');
+  if (pre) {
+    const barTween = gsap.to('.pre-bar i', { scaleX: .7, duration: 1.4, ease: 'power1.out' });
+    let exited = false;
+    const exitPre = () => {
+      if (exited) return;
+      exited = true;
+      barTween.kill();
+      gsap.timeline()
+        .to('.pre-bar i', { scaleX: 1, duration: .4, ease: 'power2.inOut' })
+        .to(pre, { yPercent: -100, duration: .7, ease: 'power4.inOut' }, '+=.15')
+        .add(() => { pre.remove(); }, '>')
+        .add(() => { intro.play(); }, '-=.45');
+    };
+    if (document.readyState === 'complete') exitPre();
+    else {
+      window.addEventListener('load', exitPre);
+      setTimeout(exitPre, 3500);
+    }
+  } else {
+    intro.play();
+  }
+
+  /* ── Reveals (map band) ── */
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 86%', once: true }
+    });
+  });
+
+  /* ── Footer mark ── */
+  gsap.fromTo('.foot-mark', { yPercent: 30, opacity: .4 }, {
+    yPercent: 0, opacity: 1, ease: 'none',
+    scrollTrigger: { trigger: 'footer', start: 'top 90%', end: 'bottom bottom', scrub: true }
+  });
+
+  wireInteractions();
+
+  function wireInteractions() {
+    if (mAnimate && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('pointermove', e => {
+          const r = btn.getBoundingClientRect();
+          const dx = (e.clientX - r.left - r.width / 2) * .18;
+          const dy = (e.clientY - r.top - r.height / 2) * .3;
+          mAnimate(btn, { x: dx, y: dy }, { type: 'spring', stiffness: 300, damping: 24 });
+        });
+        btn.addEventListener('pointerleave', () => {
+          mAnimate(btn, { x: 0, y: 0 }, { type: 'spring', stiffness: 200, damping: 18 });
+        });
+      });
+    }
+  }
+});
+</script>
+</body>
+</html>

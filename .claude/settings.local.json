@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(claude plugin *)",
+      "Bash(gh api *)",
+      "WebFetch(domain:api.github.com)",
+      "WebFetch(domain:raw.githubusercontent.com)",
+      "Bash(npx uipro-cli *)",
+      "Bash(Get-ChildItem -Recurse \"D:\\\\Digital Vint\\\\mindstec\\\\.claude\")",
+      "Bash(python scripts/search.py \"premium AV technology distribution global enterprise dark luxury\" --design-system -p \"Mindstec\")",
+      "Bash(python .claude/skills/ui-ux-pro-max/scripts/search.py \"premium AV technology distribution global enterprise dark luxury\" --design-system -p \"Mindstec\")",
+      "Bash(dir \"D:\\\\Digital Vint\\\\mindstec\")",
+      "Bash(npm create *)",
+      "Bash(python -c ' *)"
+    ]
+  }
+}

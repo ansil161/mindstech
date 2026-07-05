@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blogs — Mindstec Distribution</title>
+<meta name="description" content="Guides, insights and buying advice from the Mindstec AV floor — interactive displays, digital signage, AV-over-IP, conferencing and broadcast.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mindstec Distribution">
+<meta property="og:title" content="Blogs — Mindstec Distribution">
+<meta property="og:description" content="Guides, insights and buying advice from the Mindstec AV floor — interactive displays, digital signage, AV-over-IP, conferencing and broadcast.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="mindstec-logo-web.png">
+<meta name="theme-color" content="#0C0C0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<script>document.documentElement.classList.add('js')</script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ────────────────────────────── TOKENS ────────────────────────────── */
+:root{
+  --red:#CC0001;
+  --ink:#0C0C0C;
+  --ink-2:#111111;
+  --panel:#161616;
+  --white:#FAFAFA;
+  --grey:#9A9A9A;
+  --grey-dark:#6B6B6B;
+  --line:rgba(255,255,255,.12);
+  --line-soft:rgba(255,255,255,.07);
+  --display:'Archivo',sans-serif;
+  --body:'Inter',sans-serif;
+  --pad:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:var(--ink);color:var(--white);font-family:var(--body);
+  font-size:16px;line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;border:none;background:none;color:inherit;cursor:pointer}
+a,button{cursor:pointer}
+img{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* ────────────────────────────── TYPE ────────────────────────────── */
+.display{
+  font-family:var(--display);font-weight:600;letter-spacing:-.03em;
+  line-height:1.02;color:var(--white);
+}
+.display em{font-family:var(--display);font-style:normal;font-weight:inherit;letter-spacing:inherit;color:var(--red)}
+.label{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--grey);
+}
+.label--red{color:var(--red)}
+.lede{font-size:clamp(16px,1.3vw,19px);color:var(--grey);line-height:1.7;font-weight:400}
+.line-mask{display:block;overflow:hidden}
+.w{display:inline-block;will-change:transform}
+
+/* ────────────────────────────── PRIMITIVES ────────────────────────────── */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:12px;
+  font-size:14px;font-weight:500;letter-spacing:.02em;
+  padding:16px 28px;min-height:48px;border:1px solid var(--line);
+  border-radius:2px;overflow:hidden;transition:color .3s var(--ease),border-color .3s var(--ease);
+  background:transparent;color:var(--white);
+}
+.btn::before{
+  content:'';position:absolute;inset:0;background:var(--red);
+  transform:scaleY(0);transform-origin:bottom;transition:transform .35s var(--ease);
+  z-index:0;
+}
+.btn:hover::before{transform:scaleY(1)}
+.btn:hover{border-color:var(--red);color:#fff}
+.btn > *{position:relative;z-index:1}
+.btn--solid{background:var(--red);border-color:var(--red)}
+.btn--solid::before{background:#fff}
+.btn--solid:hover{color:var(--ink)}
+.btn svg{width:15px;height:15px;transition:transform .3s var(--ease)}
+.btn:hover svg{transform:translate(2px,-2px)}
+.rule{height:1px;background:var(--line-soft);margin:0 var(--pad)}
+.num{font-family:var(--display);font-size:12px;font-weight:500;letter-spacing:.12em;color:var(--grey-dark)}
+
+/* ────────────────────────────── PRELOADER ────────────────────────────── */
+#preloader{
+  position:fixed;inset:0;z-index:300;background:var(--ink);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+}
+html.js #preloader{display:flex}
+#preloader img{height:52px;width:auto}
+.pre-bar{width:180px;height:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.pre-bar i{display:block;height:100%;width:100%;background:var(--red);transform:scaleX(0);transform-origin:left}
+
+/* ────────────────────────────── NAV ────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  height:76px;padding:0 var(--pad);
+  border-bottom:1px solid transparent;
+  transition:transform .5s var(--ease),background .4s,border-color .4s;
+}
+.nav.is-solid{background:rgba(12,12,12,.88);backdrop-filter:blur(16px);border-color:var(--line-soft)}
+.nav.is-hidden{transform:translateY(-100%)}
+.logo{display:flex;align-items:center}
+.logo img{height:38px;width:auto;display:block}
+.foot-brand .logo img{height:48px}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none}
+.nav-links li{display:flex;align-items:center}
+.nav-links a{
+  display:inline-flex;align-items:center;line-height:1;
+  font-size:13.5px;font-weight:500;color:var(--grey);padding:10px 14px;
+  border-radius:2px;transition:color .25s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.active{color:var(--white);position:relative}
+.nav-links a.active::after{content:'';position:absolute;left:14px;right:14px;bottom:4px;height:2px;background:var(--red)}
+.nav-item{position:relative}
+.nav-item > a{display:inline-flex;align-items:center;gap:6px}
+.nav-item > a svg{width:12px;height:12px;transition:transform .3s var(--ease)}
+.nav-item:hover > a svg,.nav-item:focus-within > a svg{transform:rotate(180deg)}
+.sub{
+  position:absolute;top:100%;left:6px;min-width:190px;z-index:95;
+  background:rgba(14,14,14,.97);backdrop-filter:blur(16px);
+  border:1px solid var(--line-soft);border-radius:2px;padding:8px;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s;
+}
+.nav-item:hover .sub,.nav-item:focus-within .sub{opacity:1;visibility:visible;transform:translateY(4px)}
+.sub a{display:block;font-size:13.5px;color:var(--grey);padding:10px 14px;border-radius:2px;white-space:nowrap}
+.sub a:hover{color:var(--white);background:var(--ink-2)}
+.sub a.sub-active{color:var(--white);border-left:2px solid var(--red);border-radius:0}
+.nav-cta{display:flex;align-items:center;gap:20px}
+.nav-region{
+  display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);
+  padding:10px 0;background:none;transition:color .25s;
+}
+.nav-region:hover{color:var(--white)}
+.nav-region svg{width:14px;height:14px}
+.nav .btn{padding:12px 22px;min-height:44px}
+.burger{display:none;flex-direction:column;gap:5px;padding:12px;min-width:44px;min-height:44px;justify-content:center;align-items:center}
+.burger span{display:block;width:22px;height:1.5px;background:var(--white);transition:transform .3s var(--ease),opacity .3s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.drawer{
+  position:fixed;inset:0;z-index:80;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);
+  opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s;
+}
+.drawer.open{opacity:1;visibility:visible}
+.drawer a{
+  font-family:var(--display);font-size:clamp(26px,7vw,42px);font-weight:600;
+  letter-spacing:-.02em;color:var(--grey);padding:8px 0;line-height:1.1;
+  border-bottom:1px solid var(--line-soft);transition:color .25s,padding-left .3s var(--ease);
+}
+.drawer a:hover{color:var(--white);padding-left:12px}
+.drawer a.drawer-sub{font-size:clamp(18px,4.5vw,24px);font-weight:500;padding-left:28px;color:var(--grey-dark)}
+.drawer a.drawer-sub:hover{padding-left:36px}
+.drawer .drawer-meta{margin-top:40px;display:flex;gap:32px}
+
+/* ────────────────────────────── HERO ────────────────────────────── */
+.shero{padding:clamp(150px,20vh,220px) var(--pad) 0;display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(32px,5vw,80px);align-items:end}
+.shero h1{font-size:clamp(44px,7.2vw,108px)}
+.shero-side{padding-bottom:12px}
+.shero-side p{font-size:16px;color:var(--grey);line-height:1.75;max-width:40ch}
+
+/* ────────────────────────────── FEATURED ────────────────────────────── */
+.bfeat{
+  display:block;margin:clamp(48px,7vh,80px) var(--pad) 0;
+  border:1px solid var(--line-soft);border-radius:2px;
+  padding:clamp(28px,4vw,56px);position:relative;overflow:hidden;
+  transition:border-color .3s,background .3s;
+}
+.bfeat:hover{border-color:var(--line);background:var(--ink-2)}
+.bfeat .bf-meta{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
+.bfeat .bf-meta .cat{
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--red);
+  border:1px solid rgba(204,0,1,.35);padding:6px 10px;border-radius:2px;
+}
+.bfeat .bf-meta time{font-size:13px;color:var(--grey-dark)}
+.bfeat h2{font-size:clamp(28px,3.8vw,56px);margin-top:22px;max-width:22ch;transition:color .3s}
+.bfeat:hover h2{color:var(--red)}
+.bfeat p{font-size:15.5px;color:var(--grey);line-height:1.8;margin-top:18px;max-width:62ch}
+.bfeat .bf-go{
+  display:inline-flex;align-items:center;gap:10px;margin-top:28px;
+  font-size:14px;font-weight:500;color:var(--white);
+  padding:6px 0;border-bottom:1px solid var(--line);
+  transition:color .3s,border-color .3s,gap .3s var(--ease);
+}
+.bfeat:hover .bf-go{color:var(--red);border-color:var(--red);gap:16px}
+.bfeat .bf-go svg{width:15px;height:15px}
+.bfeat .bf-tag{
+  position:absolute;top:clamp(28px,4vw,56px);right:clamp(28px,4vw,56px);
+  font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey-dark);
+}
+
+/* ────────────────────────────── GRID ────────────────────────────── */
+.bwrap{padding:clamp(48px,6vw,80px) var(--pad) clamp(80px,10vw,140px)}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.bcard{
+  display:flex;flex-direction:column;gap:14px;
+  border:1px solid var(--line-soft);border-radius:2px;padding:26px 28px;
+  transition:border-color .3s,background .3s,transform .4s var(--ease);
+}
+.bcard:hover{border-color:var(--line);background:var(--ink-2);transform:translateY(-4px)}
+.bcard .bc-meta{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bcard .bc-meta .cat{font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--red)}
+.bcard .bc-meta time{font-size:12px;color:var(--grey-dark)}
+.bcard h3{
+  font-family:var(--display);font-size:clamp(18px,1.6vw,22px);font-weight:600;
+  letter-spacing:-.015em;line-height:1.25;transition:color .3s;
+}
+.bcard:hover h3{color:var(--red)}
+.bcard p{font-size:13.5px;color:var(--grey);line-height:1.7;flex:1}
+.bcard .bc-go{
+  display:inline-flex;align-items:center;gap:8px;
+  font-size:13px;font-weight:500;color:var(--grey);
+  padding-top:14px;border-top:1px solid var(--line-soft);
+  transition:color .3s,gap .3s var(--ease);
+}
+.bcard:hover .bc-go{color:var(--white);gap:13px}
+.bcard .bc-go svg{width:13px;height:13px}
+.ball{
+  display:flex;justify-content:center;margin-top:clamp(32px,5vw,52px);
+}
+
+/* ────────────────────────────── CTA ────────────────────────────── */
+.cta{position:relative;padding:clamp(110px,15vw,200px) var(--pad);overflow:hidden}
+.cta-bg{position:absolute;inset:0}
+.cta-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.35) saturate(.85)}
+.cta-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(12,12,12,.92) 20%,rgba(12,12,12,.5))}
+.cta-inner{position:relative;z-index:2}
+.cta h2{font-size:clamp(42px,6.5vw,100px);max-width:13ch}
+.cta .cta-row{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-top:clamp(36px,5vw,60px)}
+.cta .cta-actions{display:flex;gap:16px;flex-wrap:wrap}
+.cta .cta-contacts{display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap}
+.cta .c-item{display:flex;flex-direction:column;gap:4px}
+.cta .c-item span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.cta .c-item a{font-size:15px;font-weight:500;padding:4px 0;transition:color .25s}
+.cta .c-item a:hover{color:var(--red)}
+
+/* ────────────────────────────── FOOTER ────────────────────────────── */
+footer{border-top:1px solid var(--line-soft)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:48px;padding:clamp(48px,6vw,80px) var(--pad)}
+.foot-brand p{font-size:14px;color:var(--grey);line-height:1.7;max-width:280px;margin-top:16px}
+.foot-col h5{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:18px}
+.foot-col a{display:block;font-size:14px;color:var(--grey);padding:5px 0;transition:color .25s;width:fit-content}
+.foot-col a:hover{color:var(--white)}
+.foot-col address{font-style:normal;font-size:13px;color:var(--grey);line-height:1.7}
+.foot-bottom{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:24px var(--pad);border-top:1px solid var(--line-soft);
+}
+.foot-bottom p,.foot-bottom a{font-size:12.5px;color:var(--grey-dark)}
+.foot-bottom .legal{display:flex;gap:24px}
+.foot-bottom a{transition:color .25s;padding:4px 0}
+.foot-bottom a:hover{color:var(--grey)}
+.foot-social{display:flex;gap:4px}
+.foot-social a{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  color:var(--grey);border-radius:2px;transition:color .25s,background .25s;
+}
+.foot-social a:hover{color:var(--white);background:var(--ink-2)}
+.foot-social svg{width:17px;height:17px}
+.foot-mark{
+  font-family:var(--display);font-weight:700;letter-spacing:-.045em;line-height:.82;
+  font-size:clamp(72px,14vw,220px);color:#151515;text-align:center;
+  padding:clamp(20px,4vw,48px) var(--pad) 0;user-select:none;pointer-events:none;
+  overflow:hidden;white-space:nowrap;
+}
+.foot-mark i{font-style:normal;color:#1d1414}
+
+/* ────────────────────────────── REVEALS ────────────────────────────── */
+html.js .reveal{opacity:0;transform:translateY(36px)}
+@media (prefers-reduced-motion:reduce){
+  html.js .reveal{opacity:1;transform:none}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* ────────────────────────────── RESPONSIVE ────────────────────────────── */
+@media(max-width:1100px){
+  .bgrid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:900px){
+  .nav-links,.nav-region{display:none}
+  .burger{display:flex}
+  .shero{grid-template-columns:1fr}
+  .shero-side{padding-bottom:0}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .nav .btn{display:none}
+  .shero{padding-top:130px}
+  .bgrid{grid-template-columns:1fr}
+  .bfeat .bf-tag{position:static;display:block;margin-bottom:14px}
+  .foot-grid{grid-template-columns:1fr}
+  .cta .cta-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader" aria-hidden="true">
+  <img src="mindstec-logo-web.png" alt="">
+  <div class="pre-bar"><i></i></div>
+</div>
+<script>setTimeout(function(){var p=document.getElementById('preloader');if(p)p.style.display='none';},6000);</script>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-item">
+        <a href="about.html">About
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="about.html">About Us</a>
+          <a href="partners.html">Partners</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="solutions.html">Solutions
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="solution.html?s=digital-signage">Digital Signage</a>
+          <a href="solution.html?s=control-rooms">Control Rooms</a>
+          <a href="solution.html?s=conferencing">Conferencing &amp; Collaboration</a>
+          <a href="solution.html?s=hospitality">Hospitality AV</a>
+          <a href="solution.html?s=broadcast">Broadcast &amp; Production</a>
+          <a href="solution.html?s=live-events">Live Events &amp; Immersive</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="blogs.html" class="active" aria-current="page">Resources
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="blogs.html" class="sub-active">Blogs</a>
+          <a href="ewaste.html">E-Waste Management</a>
+          <a href="experience.html">Experience Centre</a>
+        </div>
+      </li>
+      <li><a href="index.html#work">Installations</a></li>
+    </ul>
+  </nav>
+  <div class="nav-cta">
+    <button class="nav-region" id="regionBtn" aria-label="Change region, current region India">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>
+      <span id="regionLabel">India</span>
+    </button>
+    <a class="btn btn--solid" href="contact.html"><span>Talk to us</span></a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="partners.html" class="drawer-sub">Partners</a>
+  <a href="solutions.html">Solutions</a>
+  <a href="blogs.html">Blogs</a>
+  <a href="experience.html" class="drawer-sub">Experience Centre</a>
+  <a href="ewaste.html" class="drawer-sub">E-Waste Management</a>
+  <a href="contact.html">Contact</a>
+  <div class="drawer-meta">
+    <span class="label">India · Africa · Poland</span>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="shero" aria-label="Blogs">
+  <h1 class="display" id="sheroH">
+    <span class="line-mask"><span class="w">Notes from</span></span>
+    <span class="line-mask"><span class="w">the <em>AV floor.</em></span></span>
+  </h1>
+  <div class="shero-side reveal" id="sheroSide">
+    <span class="label label--red" style="display:block;margin-bottom:18px">Blogs — The Mindstec Journal</span>
+    <p>Buying guides, explainers and field notes from our product specialists — the same advice we give integrators and enterprise clients every day, written down.</p>
+  </div>
+</section>
+
+<!-- FEATURED -->
+<a class="bfeat reveal" href="https://www.mindstec.com/in/interactive-whiteboard-buying-guide-for-schools-offices/" target="_blank" rel="noopener">
+  <span class="bf-tag">Featured</span>
+  <div class="bf-meta">
+    <span class="cat">Buying guide</span>
+    <time datetime="2026-01-20">20 Jan 2026</time>
+  </div>
+  <h2 class="display">Interactive Whiteboard Buying Guide for Schools &amp; Offices</h2>
+  <p>Modern learning and workspaces are evolving, and the traditional whiteboard is no longer enough. What to look for in touch technology, software ecosystems and installation before you commit a classroom or boardroom budget.</p>
+  <span class="bf-go">Read the article
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+  </span>
+</a>
+
+<!-- GRID -->
+<div class="bwrap">
+  <div class="bgrid">
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/why-interactive-display-panels-are-better-than-normal-led-tvs/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Displays</span><time datetime="2026-01-20">20 Jan 2026</time></div>
+      <h3>Why Interactive Display Panels Are Better Than Normal LED TVs</h3>
+      <p>In collaborative workplaces, standard LED TVs fall short on interactivity and productivity — here's where interactive panels pull ahead.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/how-ai-iot-shaping-future-commercial-display-solutions/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Signage</span><time datetime="2026-01-20">20 Jan 2026</time></div>
+      <h3>How AI and IoT Are Shaping the Future of Commercial Displays</h3>
+      <p>Commercial displays are no longer passive screens — AI and IoT are turning them into responsive, data-driven communication surfaces.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/what-is-a-conference-room-monitor-a-simple-guide/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Collaboration</span><time datetime="2026-01-20">20 Jan 2026</time></div>
+      <h3>What Is a Conference Room Monitor? A Simple Guide</h3>
+      <p>Meetings are no longer whiteboards and talk — how a dedicated conference room monitor changes what a meeting space can do.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/ipad-stand-for-conference-why-every-event-needs-one/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Workspace</span><time datetime="2025-12-24">24 Dec 2025</time></div>
+      <h3>iPad Stand for Conference: A Must-Have Tool for Modern Events</h3>
+      <p>In tech-driven events, the right mounting hardware keeps presenters, check-in desks and breakout rooms running without friction.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/digital-signage-monitors-beginners-guide/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Signage</span><time datetime="2025-12-24">24 Dec 2025</time></div>
+      <h3>What Are Digital Signage Monitors? A Beginner's Guide</h3>
+      <p>Grabbing attention quickly is everything in retail — the difference between consumer TVs and purpose-built signage monitors, explained.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/international-time-zone-clocks-for-airports-and-airlines/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Infrastructure</span><time datetime="2025-12-23">23 Dec 2025</time></div>
+      <h3>Why Airports and Airlines Rely on Time Zone Clocks</h3>
+      <p>Aviation runs on precision across countries and time zones — how synchronised clock systems keep operations on schedule.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/what-is-hdmi-presentation-switcher-simple-explanation/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Collaboration</span><time datetime="2025-12-22">22 Dec 2025</time></div>
+      <h3>What Is an HDMI Presentation Switcher? A Simple Explanation</h3>
+      <p>Meeting rooms and classrooms juggle multiple video sources — a presentation switcher is the piece that makes it seamless.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/what-is-ipad-wireless-charging-wall-mount-and-how-it-works/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Workspace</span><time datetime="2025-11-14">14 Nov 2025</time></div>
+      <h3>What Is an iPad Wireless Charging Wall Mount and How Does It Work?</h3>
+      <p>Room panels that never die and never dangle a cable — the hardware behind always-on iPad deployments.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/what-is-a-video-capture-card-beginners-guide/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Broadcast</span><time datetime="2025-11-14">14 Nov 2025</time></div>
+      <h3>What Is a Video Capture Card? A Beginner's Guide</h3>
+      <p>Ever wondered how live streams look so clean? The capture card is doing the heavy lifting — here's how it works.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/interactive-whiteboards-in-the-classroom-future-of-learning/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Education</span><time datetime="2025-11-14">14 Nov 2025</time></div>
+      <h3>The Future of Learning: Role of Interactive Whiteboards in EdTech</h3>
+      <p>Interactive whiteboards are becoming the mainstay of the evolving classroom — what that shift means for schools.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/what-is-video-over-ip-solution-av-industry-revolution/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">AV-over-IP</span><time datetime="2025-11-14">14 Nov 2025</time></div>
+      <h3>How Video over IP Solutions Are Revolutionizing the AV Industry</h3>
+      <p>The AV world's biggest transformation yet — why signal distribution is moving off dedicated cabling and onto the network.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+    <a class="bcard reveal" href="https://www.mindstec.com/in/distribution-amplifier-role-in-broadcasting-media/" target="_blank" rel="noopener">
+      <div class="bc-meta"><span class="cat">Broadcast</span><time datetime="2025-09-23">23 Sep 2025</time></div>
+      <h3>Role of Distribution Amplifiers in Broadcasting and Media</h3>
+      <p>From live sports telecasts to studio production, reliable signal delivery is non-negotiable — where distribution amplifiers fit in.</p>
+      <span class="bc-go">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+    </a>
+
+  </div>
+  <div class="ball reveal">
+    <a class="btn" href="https://www.mindstec.com/in/blogs/" target="_blank" rel="noopener"><span>Browse all articles on mindstec.com</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+    </a>
+  </div>
+</div>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-bg" aria-hidden="true">
+    <img src="assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy">
+  </div>
+  <div class="cta-inner">
+    <span class="label label--red">Talk shop with us</span>
+    <h2 class="display" id="ctaH" style="margin-top:20px">
+      <span class="line-mask"><span class="w">Questions the blog</span></span>
+      <span class="line-mask"><span class="w"><em>didn't answer?</em></span></span>
+    </h2>
+    <div class="cta-row reveal">
+      <div class="cta-actions">
+        <a class="btn btn--solid" href="contact.html"><span>Ask a specialist</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="btn" href="solutions.html"><span>See our solutions</span></a>
+      </div>
+      <div class="cta-contacts">
+        <div class="c-item"><span>India operations</span><a href="tel:+918045256922">+91 80 4525 6922</a></div>
+        <div class="c-item"><span>Write to us</span><a href="mailto:india@mindstec.com">india@mindstec.com</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+      <p>Mindstec Distribution bridges the gap between the manufacturer and the dealer, increasing the efficiency of overall operations.</p>
+      <div class="foot-social" style="margin-top:20px">
+        <a href="https://www.linkedin.com/company/mindstec/" aria-label="Mindstec on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+        <a href="https://www.instagram.com/mindstec.distribution/" aria-label="Mindstec on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.youtube.com/channel/UCrmKbX0DP9TZBP2zJ5PHiXA" aria-label="Mindstec on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.7 8.1c.2-1.6 1.4-2.7 3-2.8C7.7 5.1 10 5 12 5s4.3.1 6.3.3c1.6.1 2.8 1.2 3 2.8.1 1.2.2 2.6.2 3.9s-.1 2.7-.2 3.9c-.2 1.6-1.4 2.7-3 2.8-2 .2-4.3.3-6.3.3s-4.3-.1-6.3-.3c-1.6-.1-2.8-1.2-3-2.8-.1-1.2-.2-2.6-.2-3.9s.1-2.7.2-3.9z"/><path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Solutions</h5>
+      <a href="solution.html?s=digital-signage">Digital Signage</a>
+      <a href="solution.html?s=control-rooms">Control Rooms</a>
+      <a href="solution.html?s=conferencing">Conferencing</a>
+      <a href="solution.html?s=hospitality">Hospitality AV</a>
+      <a href="solution.html?s=broadcast">Broadcast</a>
+      <a href="solution.html?s=live-events">Live Events</a>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="about.html">About Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="experience.html">Experience Centre</a>
+      <a href="ewaste.html">E-Waste Management</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="foot-col">
+      <h5>Bangalore HQ</h5>
+      <address>No. 5M-645, Banaswadi Village,<br>OMBR Layout, Bangalore 560043, India</address>
+      <a href="tel:+918045256922" style="margin-top:10px">+91 80 4525 6922</a>
+      <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+    </div>
+  </div>
+  <div class="foot-mark" aria-hidden="true">MINDSTEC<i>.</i></div>
+  <div class="foot-bottom">
+    <p>© 2026 Mindstec Distribution. All rights reserved.</p>
+    <div class="legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const { animate: mAnimate } = window.Motion || {};
+  gsap.registerPlugin(ScrollTrigger);
+
+  let lenis = null;
+  if (!reduceMotion) {
+    lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: -70 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  function setDrawer(open) {
+    drawer.classList.toggle('open', open);
+    drawer.setAttribute('aria-hidden', String(!open));
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (lenis) open ? lenis.stop() : lenis.start();
+  }
+  burger.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false);
+  });
+
+  const nav = document.getElementById('nav');
+  let lastY = 0;
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate(self) {
+      const y = self.scroll();
+      nav.classList.toggle('is-solid', y > 40);
+      if (!drawer.classList.contains('open')) {
+        nav.classList.toggle('is-hidden', y > 500 && y > lastY + 4);
+      }
+      if (Math.abs(y - lastY) > 4) lastY = y;
+    }
+  });
+
+  const regions = ['India', 'Africa', 'Poland'];
+  const regionLabel = document.getElementById('regionLabel');
+  const regionBtn = document.getElementById('regionBtn');
+  let ri = 0;
+  regionBtn.addEventListener('click', () => {
+    ri = (ri + 1) % regions.length;
+    regionLabel.textContent = regions[ri];
+    regionBtn.setAttribute('aria-label', 'Change region, current region ' + regions[ri]);
+  });
+
+  if (reduceMotion) {
+    const pre0 = document.getElementById('preloader');
+    if (pre0) pre0.remove();
+    return wireInteractions();
+  }
+
+  /* ── Hero intro ── */
+  const intro = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
+  intro.fromTo('#sheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: .12 })
+    .fromTo('#sheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .8 }, '-=.6');
+
+  /* ── Preloader ── */
+  const pre = document.getElementById('preloader');
+  if (pre) {
+    const barTween = gsap.to('.pre-bar i', { scaleX: .7, duration: 1.4, ease: 'power1.out' });
+    let exited = false;
+    const exitPre = () => {
+      if (exited) return;
+      exited = true;
+      barTween.kill();
+      gsap.timeline()
+        .to('.pre-bar i', { scaleX: 1, duration: .4, ease: 'power2.inOut' })
+        .to(pre, { yPercent: -100, duration: .7, ease: 'power4.inOut' }, '+=.15')
+        .add(() => { pre.remove(); }, '>')
+        .add(() => { intro.play(); }, '-=.45');
+    };
+    if (document.readyState === 'complete') exitPre();
+    else {
+      window.addEventListener('load', exitPre);
+      setTimeout(exitPre, 3500);
+    }
+  } else {
+    intro.play();
+  }
+
+  /* ── Generic reveals ── */
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 86%', once: true }
+    });
+  });
+
+  /* ── CTA ── */
+  gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
+    yPercent: 0, duration: 1.1, stagger: .1, ease: 'power4.out',
+    scrollTrigger: { trigger: '#contact', start: 'top 72%', once: true }
+  });
+  gsap.fromTo('.cta-bg img', { yPercent: -6 }, {
+    yPercent: 6, ease: 'none',
+    scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+
+  /* ── Footer mark ── */
+  gsap.fromTo('.foot-mark', { yPercent: 30, opacity: .4 }, {
+    yPercent: 0, opacity: 1, ease: 'none',
+    scrollTrigger: { trigger: 'footer', start: 'top 90%', end: 'bottom bottom', scrub: true }
+  });
+
+  wireInteractions();
+
+  function wireInteractions() {
+    if (mAnimate && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('pointermove', e => {
+          const r = btn.getBoundingClientRect();
+          const dx = (e.clientX - r.left - r.width / 2) * .18;
+          const dy = (e.clientY - r.top - r.height / 2) * .3;
+          mAnimate(btn, { x: dx, y: dy }, { type: 'spring', stiffness: 300, damping: 24 });
+        });
+        btn.addEventListener('pointerleave', () => {
+          mAnimate(btn, { x: 0, y: 0 }, { type: 'spring', stiffness: 200, damping: 18 });
+        });
+      });
+    }
+  }
+});
+</script>
+</body>
+</html>

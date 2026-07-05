@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Partners — Mindstec Distribution</title>
+<meta name="description" content="Mindstec represents 25+ world-class AV manufacturers — displays, audio, broadcast, collaboration and connectivity brands distributed across the Middle East, Africa and Asia.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Mindstec Distribution">
+<meta property="og:title" content="Partners — Mindstec Distribution">
+<meta property="og:description" content="Mindstec represents 25+ world-class AV manufacturers — displays, audio, broadcast, collaboration and connectivity brands distributed across the Middle East, Africa and Asia.">
+<meta name="twitter:card" content="summary">
+<link rel="icon" type="image/png" href="mindstec-logo-web.png">
+<meta name="theme-color" content="#0C0C0C">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.mindstec.com">
+<script>document.documentElement.classList.add('js')</script>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ────────────────────────────── TOKENS ────────────────────────────── */
+:root{
+  --red:#CC0001;
+  --ink:#0C0C0C;
+  --ink-2:#111111;
+  --panel:#161616;
+  --white:#FAFAFA;
+  --grey:#9A9A9A;
+  --grey-dark:#6B6B6B;
+  --line:rgba(255,255,255,.12);
+  --line-soft:rgba(255,255,255,.07);
+  --display:'Archivo',sans-serif;
+  --body:'Inter',sans-serif;
+  --pad:clamp(20px,5vw,72px);
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:auto}
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto!important}
+body{
+  background:var(--ink);color:var(--white);font-family:var(--body);
+  font-size:16px;line-height:1.6;overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;border:none;background:none;color:inherit;cursor:pointer}
+a,button{cursor:pointer}
+img{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+:focus-visible{outline:2px solid var(--red);outline-offset:3px}
+
+/* ────────────────────────────── TYPE ────────────────────────────── */
+.display{
+  font-family:var(--display);font-weight:600;letter-spacing:-.03em;
+  line-height:1.02;color:var(--white);
+}
+.display em{font-family:var(--display);font-style:normal;font-weight:inherit;letter-spacing:inherit;color:var(--red)}
+.label{
+  font-family:var(--body);font-size:12px;font-weight:500;
+  letter-spacing:.18em;text-transform:uppercase;color:var(--grey);
+}
+.label--red{color:var(--red)}
+.lede{font-size:clamp(16px,1.3vw,19px);color:var(--grey);line-height:1.7;font-weight:400}
+.line-mask{display:block;overflow:hidden}
+.w{display:inline-block;will-change:transform}
+
+/* ────────────────────────────── PRIMITIVES ────────────────────────────── */
+.btn{
+  position:relative;display:inline-flex;align-items:center;gap:12px;
+  font-size:14px;font-weight:500;letter-spacing:.02em;
+  padding:16px 28px;min-height:48px;border:1px solid var(--line);
+  border-radius:2px;overflow:hidden;transition:color .3s var(--ease),border-color .3s var(--ease);
+  background:transparent;color:var(--white);
+}
+.btn::before{
+  content:'';position:absolute;inset:0;background:var(--red);
+  transform:scaleY(0);transform-origin:bottom;transition:transform .35s var(--ease);
+  z-index:0;
+}
+.btn:hover::before{transform:scaleY(1)}
+.btn:hover{border-color:var(--red);color:#fff}
+.btn > *{position:relative;z-index:1}
+.btn--solid{background:var(--red);border-color:var(--red)}
+.btn--solid::before{background:#fff}
+.btn--solid:hover{color:var(--ink)}
+.btn svg{width:15px;height:15px;transition:transform .3s var(--ease)}
+.btn:hover svg{transform:translate(2px,-2px)}
+.section-head{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:32px;
+  padding:0 var(--pad);margin-bottom:clamp(40px,6vw,80px);
+}
+.section-head h2{font-size:clamp(34px,4.6vw,64px)}
+.section-head .side{max-width:340px;padding-bottom:8px}
+.rule{height:1px;background:var(--line-soft);margin:0 var(--pad)}
+.num{font-family:var(--display);font-size:12px;font-weight:500;letter-spacing:.12em;color:var(--grey-dark)}
+
+/* ────────────────────────────── PRELOADER ────────────────────────────── */
+#preloader{
+  position:fixed;inset:0;z-index:300;background:var(--ink);
+  display:none;flex-direction:column;align-items:center;justify-content:center;gap:28px;
+}
+html.js #preloader{display:flex}
+#preloader img{height:52px;width:auto}
+.pre-bar{width:180px;height:2px;background:rgba(255,255,255,.12);overflow:hidden}
+.pre-bar i{display:block;height:100%;width:100%;background:var(--red);transform:scaleX(0);transform-origin:left}
+
+/* ────────────────────────────── NAV ────────────────────────────── */
+.nav{
+  position:fixed;top:0;left:0;right:0;z-index:90;
+  display:flex;align-items:center;justify-content:space-between;
+  height:76px;padding:0 var(--pad);
+  border-bottom:1px solid transparent;
+  transition:transform .5s var(--ease),background .4s,border-color .4s;
+}
+.nav.is-solid{background:rgba(12,12,12,.88);backdrop-filter:blur(16px);border-color:var(--line-soft)}
+.nav.is-hidden{transform:translateY(-100%)}
+.logo{display:flex;align-items:center}
+.logo img{height:38px;width:auto;display:block}
+.foot-brand .logo img{height:48px}
+.nav-links{display:flex;align-items:center;gap:8px;list-style:none}
+.nav-links li{display:flex;align-items:center}
+.nav-links a{
+  display:inline-flex;align-items:center;line-height:1;
+  font-size:13.5px;font-weight:500;color:var(--grey);padding:10px 14px;
+  border-radius:2px;transition:color .25s;
+}
+.nav-links a:hover{color:var(--white)}
+.nav-links a.active{color:var(--white);position:relative}
+.nav-links a.active::after{content:'';position:absolute;left:14px;right:14px;bottom:4px;height:2px;background:var(--red)}
+.nav-item{position:relative}
+.nav-item > a{display:inline-flex;align-items:center;gap:6px}
+.nav-item > a svg{width:12px;height:12px;transition:transform .3s var(--ease)}
+.nav-item:hover > a svg,.nav-item:focus-within > a svg{transform:rotate(180deg)}
+.sub{
+  position:absolute;top:100%;left:6px;min-width:190px;z-index:95;
+  background:rgba(14,14,14,.97);backdrop-filter:blur(16px);
+  border:1px solid var(--line-soft);border-radius:2px;padding:8px;
+  opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .25s var(--ease),transform .25s var(--ease),visibility .25s;
+}
+.nav-item:hover .sub,.nav-item:focus-within .sub{opacity:1;visibility:visible;transform:translateY(4px)}
+.sub a{display:block;font-size:13.5px;color:var(--grey);padding:10px 14px;border-radius:2px;white-space:nowrap}
+.sub a:hover{color:var(--white);background:var(--ink-2)}
+.sub a.sub-active{color:var(--white);border-left:2px solid var(--red);border-radius:0}
+.nav-cta{display:flex;align-items:center;gap:20px}
+.nav-region{
+  display:flex;align-items:center;gap:8px;font-size:13px;color:var(--grey);
+  padding:10px 0;background:none;transition:color .25s;
+}
+.nav-region:hover{color:var(--white)}
+.nav-region svg{width:14px;height:14px}
+.nav .btn{padding:12px 22px;min-height:44px}
+.burger{display:none;flex-direction:column;gap:5px;padding:12px;min-width:44px;min-height:44px;justify-content:center;align-items:center}
+.burger span{display:block;width:22px;height:1.5px;background:var(--white);transition:transform .3s var(--ease),opacity .3s}
+.burger[aria-expanded="true"] span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.burger[aria-expanded="true"] span:nth-child(2){opacity:0}
+.burger[aria-expanded="true"] span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.drawer{
+  position:fixed;inset:0;z-index:80;background:var(--ink);
+  display:flex;flex-direction:column;justify-content:center;padding:0 var(--pad);
+  opacity:0;visibility:hidden;transition:opacity .4s var(--ease),visibility .4s;
+}
+.drawer.open{opacity:1;visibility:visible}
+.drawer a{
+  font-family:var(--display);font-size:clamp(30px,8vw,48px);font-weight:600;
+  letter-spacing:-.02em;color:var(--grey);padding:9px 0;line-height:1.1;
+  border-bottom:1px solid var(--line-soft);transition:color .25s,padding-left .3s var(--ease);
+}
+.drawer a:hover{color:var(--white);padding-left:12px}
+.drawer a.drawer-sub{font-size:clamp(20px,5vw,26px);font-weight:500;padding-left:28px;color:var(--grey-dark)}
+.drawer a.drawer-sub:hover{padding-left:36px}
+.drawer .drawer-meta{margin-top:40px;display:flex;gap:32px}
+
+/* ────────────────────────────── HERO ────────────────────────────── */
+.phero{padding:clamp(150px,20vh,220px) var(--pad) 0;display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(32px,5vw,80px);align-items:end}
+.phero h1{font-size:clamp(46px,7vw,108px)}
+.phero-side{padding-bottom:12px}
+.phero-side p{font-size:16px;color:var(--grey);line-height:1.75;max-width:40ch}
+.phero-meta{
+  display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap;
+  margin:clamp(36px,6vh,64px) var(--pad) 0;padding-top:28px;
+  border-top:1px solid var(--line-soft);
+}
+.phero-meta .fact b{display:block;font-family:var(--display);font-size:15px;font-weight:600;color:var(--white)}
+.phero-meta .fact span{font-size:12px;color:var(--grey);letter-spacing:.06em;text-transform:uppercase}
+
+/* ────────────────────────────── FILTERS ────────────────────────────── */
+.filters{
+  display:flex;gap:10px;flex-wrap:wrap;
+  padding:clamp(48px,7vw,90px) var(--pad) clamp(32px,4vw,48px);
+}
+.filter-btn{
+  font-size:13px;font-weight:500;letter-spacing:.04em;color:var(--grey);
+  border:1px solid var(--line);border-radius:2px;padding:12px 20px;min-height:44px;
+  transition:color .25s,border-color .25s,background .25s;
+}
+.filter-btn:hover{color:var(--white);border-color:rgba(255,255,255,.3)}
+.filter-btn.on{color:#fff;background:var(--red);border-color:var(--red)}
+.filter-count{font-size:12px;color:var(--grey-dark);margin-left:6px}
+
+/* ────────────────────────────── PARTNER GRID ────────────────────────────── */
+.pgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:clamp(14px,1.8vw,24px);padding:0 var(--pad) clamp(80px,10vw,140px)}
+.p-card{border:1px solid var(--line-soft);border-radius:2px;overflow:hidden;background:var(--ink-2);transition:border-color .35s}
+.p-card:hover{border-color:rgba(255,255,255,.25)}
+.p-card.is-hidden{display:none}
+.p-logo{
+  background:#F7F6F3;aspect-ratio:16/9;display:flex;align-items:center;justify-content:center;
+  padding:12%;position:relative;overflow:hidden;
+}
+.p-logo img{
+  max-width:100%;max-height:100%;width:auto;height:auto;object-fit:contain;
+  filter:grayscale(1);opacity:.82;transform:scale(.98);
+  transition:filter .5s var(--ease),opacity .5s,transform .6s var(--ease);
+}
+.p-card:hover .p-logo img{filter:grayscale(0);opacity:1;transform:scale(1.04)}
+.p-logo .p-index{
+  position:absolute;top:12px;left:12px;
+  font-family:var(--display);font-size:10px;letter-spacing:.12em;color:#999;
+}
+.p-body{padding:18px 20px 20px;display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.p-body h3{font-family:var(--display);font-size:16.5px;font-weight:600;letter-spacing:-.01em}
+.p-body .p-cat{font-size:11.5px;color:var(--grey);letter-spacing:.06em;text-transform:uppercase;white-space:nowrap}
+
+/* ────────────────────────────── WHY BAND ────────────────────────────── */
+.why{padding:clamp(80px,10vw,140px) 0}
+.why-list{border-top:1px solid var(--line-soft)}
+.why-row{
+  display:grid;grid-template-columns:80px 1fr 1.2fr;gap:24px;align-items:baseline;
+  padding:38px var(--pad);border-bottom:1px solid var(--line-soft);transition:background .35s;
+}
+.why-row:hover{background:var(--ink-2)}
+.why-row h3{font-family:var(--display);font-size:clamp(22px,2.4vw,34px);font-weight:600;letter-spacing:-.015em}
+.why-row p{font-size:15px;color:var(--grey);line-height:1.75;max-width:56ch}
+
+/* ────────────────────────────── CTA ────────────────────────────── */
+.cta{position:relative;padding:clamp(110px,15vw,200px) var(--pad);overflow:hidden}
+.cta-bg{position:absolute;inset:0}
+.cta-bg img{width:100%;height:100%;object-fit:cover;filter:brightness(.35) saturate(.85)}
+.cta-bg::after{content:'';position:absolute;inset:0;background:linear-gradient(to right,rgba(12,12,12,.92) 20%,rgba(12,12,12,.5))}
+.cta-inner{position:relative;z-index:2}
+.cta h2{font-size:clamp(42px,6.5vw,100px);max-width:12ch}
+.cta .cta-row{display:flex;align-items:flex-end;justify-content:space-between;gap:40px;flex-wrap:wrap;margin-top:clamp(36px,5vw,60px)}
+.cta .cta-actions{display:flex;gap:16px;flex-wrap:wrap}
+.cta .cta-contacts{display:flex;gap:clamp(24px,4vw,64px);flex-wrap:wrap}
+.cta .c-item{display:flex;flex-direction:column;gap:4px}
+.cta .c-item span{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey)}
+.cta .c-item a{font-size:15px;font-weight:500;padding:4px 0;transition:color .25s}
+.cta .c-item a:hover{color:var(--red)}
+
+/* ────────────────────────────── FOOTER ────────────────────────────── */
+footer{border-top:1px solid var(--line-soft)}
+.foot-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1.2fr;gap:48px;padding:clamp(48px,6vw,80px) var(--pad)}
+.foot-brand p{font-size:14px;color:var(--grey);line-height:1.7;max-width:280px;margin-top:16px}
+.foot-col h5{font-size:12px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--grey-dark);margin-bottom:18px}
+.foot-col a{display:block;font-size:14px;color:var(--grey);padding:5px 0;transition:color .25s;width:fit-content}
+.foot-col a:hover{color:var(--white)}
+.foot-col address{font-style:normal;font-size:13px;color:var(--grey);line-height:1.7}
+.foot-bottom{
+  display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;
+  padding:24px var(--pad);border-top:1px solid var(--line-soft);
+}
+.foot-bottom p,.foot-bottom a{font-size:12.5px;color:var(--grey-dark)}
+.foot-bottom .legal{display:flex;gap:24px}
+.foot-bottom a{transition:color .25s;padding:4px 0}
+.foot-bottom a:hover{color:var(--grey)}
+.foot-social{display:flex;gap:4px}
+.foot-social a{
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  color:var(--grey);border-radius:2px;transition:color .25s,background .25s;
+}
+.foot-social a:hover{color:var(--white);background:var(--ink-2)}
+.foot-social svg{width:17px;height:17px}
+.foot-mark{
+  font-family:var(--display);font-weight:700;letter-spacing:-.045em;line-height:.82;
+  font-size:clamp(72px,14vw,220px);color:#151515;text-align:center;
+  padding:clamp(20px,4vw,48px) var(--pad) 0;user-select:none;pointer-events:none;
+  overflow:hidden;white-space:nowrap;
+}
+.foot-mark i{font-style:normal;color:#1d1414}
+
+/* ────────────────────────────── REVEALS ────────────────────────────── */
+html.js .reveal{opacity:0;transform:translateY(36px)}
+@media (prefers-reduced-motion:reduce){
+  html.js .reveal{opacity:1;transform:none}
+  *,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important}
+}
+
+/* ────────────────────────────── RESPONSIVE ────────────────────────────── */
+@media(max-width:1100px){
+  .pgrid{grid-template-columns:repeat(3,1fr)}
+}
+@media(max-width:900px){
+  .nav-links,.nav-region{display:none}
+  .burger{display:flex}
+  .phero{grid-template-columns:1fr}
+  .phero-side{padding-bottom:0}
+  .pgrid{grid-template-columns:repeat(2,1fr)}
+  .why-row{grid-template-columns:56px 1fr}
+  .why-row p{grid-column:2}
+  .foot-grid{grid-template-columns:1fr 1fr}
+}
+@media(max-width:640px){
+  .section-head{flex-direction:column;align-items:flex-start;gap:16px}
+  .nav .btn{display:none}
+  .phero{padding-top:130px}
+  .pgrid{grid-template-columns:1fr}
+  .p-logo{aspect-ratio:2/1}
+  .foot-grid{grid-template-columns:1fr}
+  .cta .cta-row{flex-direction:column;align-items:flex-start}
+}
+</style>
+</head>
+<body>
+
+<!-- PRELOADER -->
+<div id="preloader" aria-hidden="true">
+  <img src="mindstec-logo-web.png" alt="">
+  <div class="pre-bar"><i></i></div>
+</div>
+<script>setTimeout(function(){var p=document.getElementById('preloader');if(p)p.style.display='none';},6000);</script>
+
+<!-- NAV -->
+<header class="nav" id="nav">
+  <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+  <nav aria-label="Primary">
+    <ul class="nav-links">
+      <li><a href="index.html">Home</a></li>
+      <li class="nav-item">
+        <a href="about.html" class="active" aria-current="page">About
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="about.html">About Us</a>
+          <a href="partners.html" class="sub-active">Partners</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="solutions.html">Solutions
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="solution.html?s=digital-signage">Digital Signage</a>
+          <a href="solution.html?s=control-rooms">Control Rooms</a>
+          <a href="solution.html?s=conferencing">Conferencing &amp; Collaboration</a>
+          <a href="solution.html?s=hospitality">Hospitality AV</a>
+          <a href="solution.html?s=broadcast">Broadcast &amp; Production</a>
+          <a href="solution.html?s=live-events">Live Events &amp; Immersive</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a href="blogs.html">Resources
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </a>
+        <div class="sub">
+          <a href="blogs.html">Blogs</a>
+          <a href="ewaste.html">E-Waste Management</a>
+          <a href="experience.html">Experience Centre</a>
+        </div>
+      </li>
+      <li><a href="index.html#work">Installations</a></li>
+    </ul>
+  </nav>
+  <div class="nav-cta">
+    <button class="nav-region" id="regionBtn" aria-label="Change region, current region India">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z"/></svg>
+      <span id="regionLabel">India</span>
+    </button>
+    <a class="btn btn--solid" href="contact.html"><span>Talk to us</span></a>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false" aria-controls="drawer">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<!-- MOBILE DRAWER -->
+<div class="drawer" id="drawer" aria-hidden="true">
+  <a href="index.html">Home</a>
+  <a href="about.html">About Us</a>
+  <a href="partners.html" class="drawer-sub">Partners</a>
+  <a href="solutions.html">Solutions</a>
+  <a href="blogs.html">Blogs</a>
+  <a href="experience.html" class="drawer-sub">Experience Centre</a>
+  <a href="ewaste.html" class="drawer-sub">E-Waste Management</a>
+  <a href="contact.html">Contact</a>
+  <div class="drawer-meta">
+    <span class="label">India · Africa · Poland</span>
+  </div>
+</div>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="phero" aria-label="Our partners">
+  <h1 class="display" id="pheroH">
+    <span class="line-mask"><span class="w">World-class brands.</span></span>
+    <span class="line-mask"><span class="w"><em>One distributor.</em></span></span>
+  </h1>
+  <div class="phero-side reveal" id="pheroSide">
+    <span class="label label--red" style="display:block;margin-bottom:18px">Our Partners</span>
+    <p>Twenty-five manufacturers, one price list. We represent the world's leading AV brands across displays, audio, broadcast, collaboration and connectivity — so our dealers can specify an entire project from a single partner.</p>
+  </div>
+</section>
+<div class="phero-meta reveal">
+  <div class="fact"><b>25 brands</b><span>Represented portfolio</span></div>
+  <div class="fact"><b>5 categories</b><span>Every AV vertical covered</span></div>
+  <div class="fact"><b>3 regions</b><span>Middle East · Africa · Asia</span></div>
+</div>
+
+<!-- FILTERS -->
+<div class="filters" id="filters" role="group" aria-label="Filter partners by category">
+  <button class="filter-btn on" data-filter="all">All<span class="filter-count">25</span></button>
+  <button class="filter-btn" data-filter="displays">Displays &amp; Video Walls</button>
+  <button class="filter-btn" data-filter="audio">Audio</button>
+  <button class="filter-btn" data-filter="broadcast">Broadcast &amp; Media</button>
+  <button class="filter-btn" data-filter="collab">Collaboration &amp; Control</button>
+  <button class="filter-btn" data-filter="infra">Connectivity &amp; Infrastructure</button>
+</div>
+
+<!-- PARTNER GRID -->
+<div class="pgrid" id="pgrid">
+  <div class="p-card" data-cat="displays">
+    <div class="p-logo"><span class="p-index">01</span><img src="assets/uploads/2019/03/1.png" alt="Avocor logo" loading="lazy"></div>
+    <div class="p-body"><h3>Avocor</h3><span class="p-cat">Interactive displays</span></div>
+  </div>
+  <div class="p-card" data-cat="displays">
+    <div class="p-logo"><span class="p-index">02</span><img src="assets/uploads/2025/04/christie_250x250.png" alt="Christie logo" loading="lazy"></div>
+    <div class="p-body"><h3>Christie</h3><span class="p-cat">Projection</span></div>
+  </div>
+  <div class="p-card" data-cat="displays">
+    <div class="p-logo"><span class="p-index">03</span><img src="assets/uploads/2025/04/datapath-1.png" alt="Datapath logo" loading="lazy"></div>
+    <div class="p-body"><h3>Datapath</h3><span class="p-cat">Video wall control</span></div>
+  </div>
+  <div class="p-card" data-cat="displays">
+    <div class="p-logo"><span class="p-index">04</span><img src="assets/uploads/2025/04/polywall_250x250.png" alt="Polywall logo" loading="lazy"></div>
+    <div class="p-body"><h3>Polywall</h3><span class="p-cat">Videowall software</span></div>
+  </div>
+  <div class="p-card" data-cat="displays">
+    <div class="p-logo"><span class="p-index">05</span><img src="assets/uploads/2025/04/magnum-2-1.png" alt="Magnum Clear Vision logo" loading="lazy"></div>
+    <div class="p-body"><h3>Magnum</h3><span class="p-cat">Projection screens</span></div>
+  </div>
+  <div class="p-card" data-cat="audio">
+    <div class="p-logo"><span class="p-index">06</span><img src="assets/uploads/2026/03/Screenshot-2026-03-24-124551.png" alt="Sonance logo" loading="lazy"></div>
+    <div class="p-body"><h3>Sonance</h3><span class="p-cat">Architectural audio</span></div>
+  </div>
+  <div class="p-card" data-cat="audio">
+    <div class="p-logo"><span class="p-index">07</span><img src="assets/uploads/2025/04/RDL-1.png" alt="RDL Radio Design Labs logo" loading="lazy"></div>
+    <div class="p-body"><h3>RDL</h3><span class="p-cat">Pro audio interfaces</span></div>
+  </div>
+  <div class="p-card" data-cat="broadcast">
+    <div class="p-logo"><span class="p-index">08</span><img src="assets/uploads/2026/04/Untitled-design-27.png" alt="Amino logo" loading="lazy"></div>
+    <div class="p-body"><h3>Amino</h3><span class="p-cat">IPTV &amp; streaming</span></div>
+  </div>
+  <div class="p-card" data-cat="broadcast">
+    <div class="p-logo"><span class="p-index">09</span><img src="assets/uploads/2026/04/a1966c_b6188e7c73814b5fa62a8a2fdb076fe5mv2.jpeg" alt="SalrayWorks logo" loading="lazy"></div>
+    <div class="p-body"><h3>SalrayWorks</h3><span class="p-cat">Broadcast cameras</span></div>
+  </div>
+  <div class="p-card" data-cat="broadcast">
+    <div class="p-logo"><span class="p-index">10</span><img src="assets/uploads/2025/04/telycam_250x250.png" alt="Telycam logo" loading="lazy"></div>
+    <div class="p-body"><h3>Telycam</h3><span class="p-cat">PTZ cameras</span></div>
+  </div>
+  <div class="p-card" data-cat="collab">
+    <div class="p-logo"><span class="p-index">11</span><img src="assets/uploads/2026/04/Untitled-design-19.png" alt="Humelab logo" loading="lazy"></div>
+    <div class="p-body"><h3>Humelab</h3><span class="p-cat">Hospitality tech</span></div>
+  </div>
+  <div class="p-card" data-cat="broadcast">
+    <div class="p-logo"><span class="p-index">12</span><img src="assets/uploads/2025/06/7-1.png" alt="Vizrt logo" loading="lazy"></div>
+    <div class="p-body"><h3>Vizrt</h3><span class="p-cat">Live production</span></div>
+  </div>
+  <div class="p-card" data-cat="broadcast">
+    <div class="p-logo"><span class="p-index">13</span><img src="assets/uploads/2026/04/Untitled-design-26-1.png" alt="Lemco logo" loading="lazy"></div>
+    <div class="p-body"><h3>Lemco</h3><span class="p-cat">RF &amp; IPTV headend</span></div>
+  </div>
+  <div class="p-card" data-cat="collab">
+    <div class="p-logo"><span class="p-index">14</span><img src="assets/uploads/2025/04/T1V-Orange-Standard-Logo-1.png" alt="T1V logo" loading="lazy"></div>
+    <div class="p-body"><h3>T1V</h3><span class="p-cat">Visual collaboration</span></div>
+  </div>
+  <div class="p-card" data-cat="collab">
+    <div class="p-logo"><span class="p-index">15</span><img src="assets/uploads/2025/04/GoGet_Filled_RGB_Black-1.png" alt="GoGet logo" loading="lazy"></div>
+    <div class="p-body"><h3>GoGet</h3><span class="p-cat">Workspace booking</span></div>
+  </div>
+  <div class="p-card" data-cat="collab">
+    <div class="p-logo"><span class="p-index">16</span><img src="assets/uploads/2025/04/iPort_Logo_250x250.png" alt="iPort logo" loading="lazy"></div>
+    <div class="p-body"><h3>iPort</h3><span class="p-cat">iPad enclosures</span></div>
+  </div>
+  <div class="p-card" data-cat="collab">
+    <div class="p-logo"><span class="p-index">17</span><img src="assets/uploads/2025/04/logo-300x300-1.png" alt="RTI logo" loading="lazy"></div>
+    <div class="p-body"><h3>RTI</h3><span class="p-cat">Control &amp; automation</span></div>
+  </div>
+  <div class="p-card" data-cat="collab">
+    <div class="p-logo"><span class="p-index">18</span><img src="assets/uploads/2025/04/SCT_250W.png" alt="Sound Control Technologies logo" loading="lazy"></div>
+    <div class="p-body"><h3>SCT</h3><span class="p-cat">Camera interfaces</span></div>
+  </div>
+  <div class="p-card" data-cat="infra">
+    <div class="p-logo"><span class="p-index">19</span><img src="assets/uploads/2025/04/Blustream_Logo-3-1.png" alt="Blustream logo" loading="lazy"></div>
+    <div class="p-body"><h3>Blustream</h3><span class="p-cat">AV distribution</span></div>
+  </div>
+  <div class="p-card" data-cat="infra">
+    <div class="p-logo"><span class="p-index">20</span><img src="assets/uploads/2025/04/netgearav_250x250.png" alt="NETGEAR AV logo" loading="lazy"></div>
+    <div class="p-body"><h3>NETGEAR AV</h3><span class="p-cat">AV networking</span></div>
+  </div>
+  <div class="p-card" data-cat="infra">
+    <div class="p-logo"><span class="p-index">21</span><img src="assets/uploads/2025/04/kordz_250x250.png" alt="Kordz logo" loading="lazy"></div>
+    <div class="p-body"><h3>Kordz</h3><span class="p-cat">Connectivity</span></div>
+  </div>
+  <div class="p-card" data-cat="infra">
+    <div class="p-logo"><span class="p-index">22</span><img src="assets/uploads/2025/04/btech_250x250.png" alt="B-Tech AV Mounts logo" loading="lazy"></div>
+    <div class="p-body"><h3>B-Tech</h3><span class="p-cat">AV mounts</span></div>
+  </div>
+  <div class="p-card" data-cat="infra">
+    <div class="p-logo"><span class="p-index">23</span><img src="assets/uploads/2025/04/MTC_new-1.png" alt="MTC logo" loading="lazy"></div>
+    <div class="p-body"><h3>MTC</h3><span class="p-cat">Mounting solutions</span></div>
+  </div>
+  <div class="p-card" data-cat="infra">
+    <div class="p-logo"><span class="p-index">24</span><img src="assets/uploads/2025/04/sapling-1.png" alt="Sapling logo" loading="lazy"></div>
+    <div class="p-body"><h3>Sapling</h3><span class="p-cat">Synchronised clocks</span></div>
+  </div>
+  <div class="p-card" data-cat="infra">
+    <div class="p-logo"><span class="p-index">25</span><img src="assets/uploads/2025/04/Wavex-Transparent-Logo-Source_1024-1.png" alt="Wavex logo" loading="lazy"></div>
+    <div class="p-body"><h3>Wavex</h3><span class="p-cat">AV accessories</span></div>
+  </div>
+</div>
+
+<div class="rule"></div>
+
+<!-- WHY PARTNER -->
+<section class="why" aria-label="Why partner with Mindstec">
+  <div class="section-head">
+    <div>
+      <span class="label label--red">For manufacturers &amp; dealers</span>
+      <h2 class="display" style="margin-top:16px">Why brands choose <em>Mindstec</em></h2>
+    </div>
+  </div>
+  <div class="why-list">
+    <div class="why-row reveal">
+      <span class="num">01</span>
+      <h3>One price list, every category</h3>
+      <p>A curated portfolio that lets integrators specify an entire project — displays, audio, control, connectivity — from a single distribution partner.</p>
+    </div>
+    <div class="why-row reveal">
+      <span class="num">02</span>
+      <h3>Real market access</h3>
+      <p>Established dealer networks across the Middle East, Africa and Asia, with in-region stock, local currency and logistics built for each market.</p>
+    </div>
+    <div class="why-row reveal">
+      <span class="num">03</span>
+      <h3>Growth without competition</h3>
+      <p>We support dealers with sales, marketing and promotion — and we never compete with them. Product specialists back every brand we carry.</p>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta" id="contact">
+  <div class="cta-bg" aria-hidden="true">
+    <img src="assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy">
+  </div>
+  <div class="cta-inner">
+    <span class="label label--red">Partner with us</span>
+    <h2 class="display" id="ctaH" style="margin-top:20px">
+      <span class="line-mask"><span class="w">Your brand,</span></span>
+      <span class="line-mask"><span class="w"><em>our region.</em></span></span>
+    </h2>
+    <div class="cta-row reveal">
+      <div class="cta-actions">
+        <a class="btn btn--solid" href="contact.html?s=partner"><span>Become a partner</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M7 17L17 7M9 7h8v8"/></svg>
+        </a>
+        <a class="btn" href="contact.html?s=reseller"><span>Become a reseller</span></a>
+      </div>
+      <div class="cta-contacts">
+        <div class="c-item"><span>Partnerships</span><a href="mailto:partners@mindstec.com">partners@mindstec.com</a></div>
+        <div class="c-item"><span>India operations</span><a href="tel:+918045256922">+91 80 4525 6922</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <a class="logo" href="index.html" aria-label="Mindstec home"><img src="mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today"></a>
+      <p>Mindstec Distribution bridges the gap between the manufacturer and the dealer, increasing the efficiency of overall operations.</p>
+      <div class="foot-social" style="margin-top:20px">
+        <a href="https://www.linkedin.com/company/mindstec/" aria-label="Mindstec on LinkedIn"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg></a>
+        <a href="https://www.instagram.com/mindstec.distribution/" aria-label="Mindstec on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg></a>
+        <a href="https://www.youtube.com/channel/UCrmKbX0DP9TZBP2zJ5PHiXA" aria-label="Mindstec on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M2.7 8.1c.2-1.6 1.4-2.7 3-2.8C7.7 5.1 10 5 12 5s4.3.1 6.3.3c1.6.1 2.8 1.2 3 2.8.1 1.2.2 2.6.2 3.9s-.1 2.7-.2 3.9c-.2 1.6-1.4 2.7-3 2.8-2 .2-4.3.3-6.3.3s-4.3-.1-6.3-.3c-1.6-.1-2.8-1.2-3-2.8-.1-1.2-.2-2.6-.2-3.9s.1-2.7.2-3.9z"/><path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg></a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h5>Quick links</h5>
+      <a href="about.html">About Us</a>
+      <a href="partners.html">Partners</a>
+      <a href="solutions.html">Solutions</a>
+  <a href="experience.html">Experience Centre</a>
+      <a href="ewaste.html">E-Waste Management</a>
+      <a href="index.html#work">Installations</a>
+      <a href="contact.html">Contact Us</a>
+    </div>
+    <div class="foot-col">
+      <h5>Company</h5>
+      <a href="index.html#edge">Why Mindstec</a>
+      <a href="blogs.html">Blogs</a>
+      <a href="contact.html">E-waste programme</a>
+    </div>
+    <div class="foot-col">
+      <h5>Bangalore HQ</h5>
+      <address>No. 5M-645, Banaswadi Village,<br>OMBR Layout, Bangalore 560043, India</address>
+      <a href="tel:+918045256922" style="margin-top:10px">+91 80 4525 6922</a>
+      <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+    </div>
+  </div>
+  <div class="foot-mark" aria-hidden="true">MINDSTEC<i>.</i></div>
+  <div class="foot-bottom">
+    <p>© 2026 Mindstec Distribution. All rights reserved.</p>
+    <div class="legal">
+      <a href="#">Privacy</a>
+      <a href="#">Terms</a>
+      <a href="#">Disclaimer</a>
+    </div>
+  </div>
+</footer>
+
+<!-- SCRIPTS -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/motion@11.11.13/dist/motion.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const { animate: mAnimate } = window.Motion || {};
+  gsap.registerPlugin(ScrollTrigger);
+
+  /* ── Lenis smooth scroll ── */
+  let lenis = null;
+  if (!reduceMotion) {
+    lenis = new Lenis({ duration: 1.15, easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+    lenis.on('scroll', ScrollTrigger.update);
+    gsap.ticker.add(time => lenis.raf(time * 1000));
+    gsap.ticker.lagSmoothing(0);
+  }
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href');
+      if (id.length < 2) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      if (lenis) lenis.scrollTo(target, { offset: -70 });
+      else target.scrollIntoView({ behavior: 'smooth' });
+    });
+  });
+
+  /* ── Mobile drawer ── */
+  const burger = document.getElementById('burger');
+  const drawer = document.getElementById('drawer');
+  function setDrawer(open) {
+    drawer.classList.toggle('open', open);
+    drawer.setAttribute('aria-hidden', String(!open));
+    burger.setAttribute('aria-expanded', String(open));
+    burger.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+    if (lenis) open ? lenis.stop() : lenis.start();
+  }
+  burger.addEventListener('click', () => setDrawer(!drawer.classList.contains('open')));
+  drawer.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setDrawer(false)));
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape' && drawer.classList.contains('open')) setDrawer(false);
+  });
+
+  /* ── Nav ── */
+  const nav = document.getElementById('nav');
+  let lastY = 0;
+  ScrollTrigger.create({
+    start: 0,
+    end: 'max',
+    onUpdate(self) {
+      const y = self.scroll();
+      nav.classList.toggle('is-solid', y > 40);
+      if (!drawer.classList.contains('open')) {
+        nav.classList.toggle('is-hidden', y > 500 && y > lastY + 4);
+      }
+      if (Math.abs(y - lastY) > 4) lastY = y;
+    }
+  });
+
+  /* ── Region switcher ── */
+  const regions = ['India', 'Africa', 'Poland'];
+  const regionLabel = document.getElementById('regionLabel');
+  const regionBtn = document.getElementById('regionBtn');
+  let ri = 0;
+  regionBtn.addEventListener('click', () => {
+    ri = (ri + 1) % regions.length;
+    regionLabel.textContent = regions[ri];
+    regionBtn.setAttribute('aria-label', 'Change region, current region ' + regions[ri]);
+  });
+
+  /* ── Filters (works with and without motion) ── */
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const cards = gsap.utils.toArray('.p-card');
+  const allBtn = document.querySelector('.filter-btn[data-filter="all"]');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      const f = btn.dataset.filter;
+      const showing = [];
+      cards.forEach(card => {
+        const show = f === 'all' || card.dataset.cat === f;
+        card.classList.toggle('is-hidden', !show);
+        if (show) showing.push(card);
+      });
+      if (!reduceMotion && window.gsap) {
+        gsap.fromTo(showing, { opacity: 0, y: 22 },
+          { opacity: 1, y: 0, duration: .5, stagger: .04, ease: 'power2.out', overwrite: true });
+      }
+    });
+  });
+
+  if (reduceMotion) {
+    const pre0 = document.getElementById('preloader');
+    if (pre0) pre0.remove();
+    return wireInteractions();
+  }
+
+  /* ── Hero intro ── */
+  const intro = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
+  intro.fromTo('#pheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: .12 })
+    .fromTo('#pheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: .8 }, '-=.6')
+    .fromTo('.phero-meta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: .7 }, '-=.5')
+    .fromTo('.filter-btn', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: .5, stagger: .05 }, '-=.4');
+
+  /* ── Preloader ── */
+  const pre = document.getElementById('preloader');
+  if (pre) {
+    const barTween = gsap.to('.pre-bar i', { scaleX: .7, duration: 1.4, ease: 'power1.out' });
+    let exited = false;
+    const exitPre = () => {
+      if (exited) return;
+      exited = true;
+      barTween.kill();
+      gsap.timeline()
+        .to('.pre-bar i', { scaleX: 1, duration: .4, ease: 'power2.inOut' })
+        .to(pre, { yPercent: -100, duration: .7, ease: 'power4.inOut' }, '+=.15')
+        .add(() => { pre.remove(); }, '>')
+        .add(() => { intro.play(); }, '-=.45');
+    };
+    if (document.readyState === 'complete') exitPre();
+    else {
+      window.addEventListener('load', exitPre);
+      setTimeout(exitPre, 3500);
+    }
+  } else {
+    intro.play();
+  }
+
+  /* ── Card grid entrance ── */
+  ScrollTrigger.batch('.p-card', {
+    start: 'top 88%',
+    once: true,
+    onEnter: batch => gsap.fromTo(batch, { opacity: 0, y: 40 },
+      { opacity: 1, y: 0, duration: .7, stagger: .06, ease: 'power2.out', overwrite: true })
+  });
+  gsap.set('.p-card', { opacity: 0 });
+
+  /* ── Generic reveals ── */
+  gsap.utils.toArray('.reveal').forEach(el => {
+    gsap.to(el, {
+      opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+      scrollTrigger: { trigger: el, start: 'top 86%', once: true }
+    });
+  });
+  gsap.utils.toArray('.section-head').forEach(head => {
+    gsap.fromTo(head.querySelectorAll('h2, .label'),
+      { opacity: 0, y: 30 },
+      { opacity: 1, y: 0, duration: .9, stagger: .08, ease: 'power3.out',
+        scrollTrigger: { trigger: head, start: 'top 84%', once: true } });
+  });
+
+  /* ── CTA ── */
+  gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
+    yPercent: 0, duration: 1.1, stagger: .1, ease: 'power4.out',
+    scrollTrigger: { trigger: '#contact', start: 'top 72%', once: true }
+  });
+  gsap.fromTo('.cta-bg img', { yPercent: -6 }, {
+    yPercent: 6, ease: 'none',
+    scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: true }
+  });
+
+  /* ── Footer mark ── */
+  gsap.fromTo('.foot-mark', { yPercent: 30, opacity: .4 }, {
+    yPercent: 0, opacity: 1, ease: 'none',
+    scrollTrigger: { trigger: 'footer', start: 'top 90%', end: 'bottom bottom', scrub: true }
+  });
+
+  wireInteractions();
+
+  function wireInteractions() {
+    if (mAnimate && !reduceMotion && window.matchMedia('(pointer: fine)').matches) {
+      document.querySelectorAll('.btn').forEach(btn => {
+        btn.addEventListener('pointermove', e => {
+          const r = btn.getBoundingClientRect();
+          const dx = (e.clientX - r.left - r.width / 2) * .18;
+          const dy = (e.clientY - r.top - r.height / 2) * .3;
+          mAnimate(btn, { x: dx, y: dy }, { type: 'spring', stiffness: 300, damping: 24 });
+        });
+        btn.addEventListener('pointerleave', () => {
+          mAnimate(btn, { x: 0, y: 0 }, { type: 'spring', stiffness: 200, damping: 18 });
+        });
+      });
+    }
+  }
+});
+</script>
+</body>
+</html>
