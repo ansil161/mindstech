@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry
+from .models import Enquiry, Fieldwork
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
@@ -33,3 +33,20 @@ class EnquiryStatusUpdateSerializer(serializers.ModelSerializer):
         if value not in dict(Enquiry.STATUS_CHOICES):
             raise serializers.ValidationError("Invalid status choice.")
         return value
+
+
+class FieldworkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Fieldwork
+        fields = ['id', 'title', 'location_meta', 'category', 'image', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+    def validate_title(self, value):
+        return strip_tags(value).strip()
+
+    def validate_location_meta(self, value):
+        return strip_tags(value).strip()
+
+    def validate_category(self, value):
+        return strip_tags(value).strip()
+

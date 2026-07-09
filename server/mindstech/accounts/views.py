@@ -2,12 +2,15 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from rest_framework.throttling import ScopedRateThrottle
 from django.conf import settings
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import ensure_csrf_cookie
 
 from accounts.serializers import LoginSerializer, UserProfileSerializer
 from accounts.services import AuthService
 from accounts.utils import StandardResponse
 from accounts.permissions import IsAdminUserOnly
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class LoginView(APIView):
     """
     Handle admin user login. Rate-limited via ScopedRateThrottle.
@@ -73,6 +76,7 @@ class TokenRefreshView(APIView):
         return response
 
 
+@method_decorator(ensure_csrf_cookie, name='dispatch')
 class UserProfileView(APIView):
     """
     Retrieve current authenticated user's profile details.
