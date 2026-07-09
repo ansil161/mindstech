@@ -7,9 +7,13 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
+# Frontend (Client)
 node_modules
+client/node_modules
 dist
+client/dist
 dist-ssr
+client/dist-ssr
 *.local
 
 # Editor directories and files
