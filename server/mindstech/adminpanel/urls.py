@@ -14,9 +14,12 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
+from .views import EnquirySubmitView, EnquiryAdminListView, EnquiryAdminDetailView
 
 urlpatterns = [
-    
+    path('enquiries/submit/', EnquirySubmitView.as_view(), name='enquiry-submit'),
+    path('enquiries/', EnquiryAdminListView.as_view(), name='enquiry-list'),
+    path('enquiries/<int:pk>/', EnquiryAdminDetailView.as_view(), name='enquiry-detail'),
 ]
+
