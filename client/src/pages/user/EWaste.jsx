@@ -278,7 +278,7 @@ const EWaste = () => {
         <div className="plan-body">
           <span className="label label--red reveal">The programme</span>
           <h2 className="display reveal">How your hardware <em>comes back around.</em></h2>
-          <p className="reveal">In India, most e-waste ends up in the informal sector, recycled with no consideration for health or the environment. Abiding by all pertinent e-waste laws, Mindstec has partnered with <b style="color:var(--white)">Deshwal Waste Management Pvt. Ltd.</b> — a recycler authorized by the appropriate government agencies — to provide drop-off centres and environmentally sound processing of end-of-life electronics.</p>
+          <p className="reveal">In India, most e-waste ends up in the informal sector, recycled with no consideration for health or the environment. Abiding by all pertinent e-waste laws, Mindstec has partnered with <b style={{ color: 'var(--white)' }}>Deshwal Waste Management Pvt. Ltd.</b> — a recycler authorized by the appropriate government agencies — to provide drop-off centres and environmentally sound processing of end-of-life electronics.</p>
           <div className="steps">
             <div className="step reveal">
               <span className="num">01</span>

@@ -61,45 +61,6 @@ const STATIC_PROJECTS = [
   }
 ];
 
-const STATIC_SOLUTIONS = [
-  { 
-    title: 'Digital Signage', 
-    desc: 'LED walls, professional display panels and wayfinding for retail, transport and public space.', 
-    slug: 'digital-signage',
-    image: '/assets/img/pexels-3402937-w700.jpg'
-  },
-  { 
-    title: 'Control Rooms', 
-    desc: 'Video wall processors, KVM and 24/7-rated displays for command and monitoring environments.', 
-    slug: 'control-rooms',
-    image: '/assets/img/unsplash-1551288049-bebda4e38f71-w700.jpg'
-  },
-  { 
-    title: 'Conferencing & Collaboration', 
-    desc: 'Hybrid meeting rooms, ceiling audio, cameras and AV-over-IP for the modern workplace.', 
-    slug: 'conferencing',
-    image: '/assets/img/pexels-13323673-w700.jpg'
-  },
-  { 
-    title: 'Hospitality AV', 
-    desc: 'Guest-room entertainment, ballroom systems and background audio for hotels and venues.', 
-    slug: 'hospitality',
-    image: '/assets/img/pexels-29870245-w700.jpg'
-  },
-  { 
-    title: 'Broadcast & Production', 
-    desc: 'Cameras, switching, streaming and studio infrastructure for broadcasters and creators.', 
-    slug: 'broadcast',
-    image: '/assets/img/unsplash-1516035069371-29a1b244cc32-w700.jpg'
-  },
-  { 
-    title: 'Live Events & Immersive', 
-    desc: 'Touring-grade LED, projection mapping and spatial audio for events and experiential spaces.', 
-    slug: 'live-events',
-    image: '/assets/img/pexels-13230484-w700.jpg'
-  }
-];
-
 const Home = () => {
   const containerRef = useRef(null);
   const mapBaseRef = useRef(null);
@@ -111,7 +72,7 @@ const Home = () => {
   const dotsRef = useRef([]);
 
   const [fieldwork, setFieldwork] = useState(STATIC_PROJECTS);
-  const [solutions, setSolutions] = useState(STATIC_SOLUTIONS);
+  const [solutions, setSolutions] = useState([]);
 
   useEffect(() => {
     const fetchSolutions = async () => {
