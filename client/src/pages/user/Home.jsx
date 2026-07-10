@@ -755,7 +755,7 @@ const Home = () => {
             })}
 
             {/* Pins with Pulsating Rings & Hub Chip Labels */}
-            {Object.entries(CITIES).map(([key, city], idx) => {
+            {Object.entries(CITIES).filter(([key, city]) => city.chip).map(([key, city], idx) => {
               const p = project(city.lat, city.lng);
               const w = city.label.length * 6.4 + 18;
               const above = p.y > 60;
