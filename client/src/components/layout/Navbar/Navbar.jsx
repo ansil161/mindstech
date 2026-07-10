@@ -12,24 +12,19 @@ const Navbar = ({ drawerOpen, setDrawerOpen, region, cycleRegion }) => {
     const nav = navRef.current;
     if (!nav) return;
 
-    let lastY = 0;
     const trigger = ScrollTrigger.create({
       start: 0,
       end: 'max',
       onUpdate(self) {
         const y = self.scroll();
         nav.classList.toggle('is-solid', y > 40);
-        if (!drawerOpen) {
-          nav.classList.toggle('is-hidden', y > 500 && y > lastY + 4);
-        }
-        if (Math.abs(y - lastY) > 4) lastY = y;
       },
     });
 
     return () => {
       trigger.kill();
     };
-  }, [drawerOpen]);
+  }, []);
 
   // Handle installations link navigation vs section scroll on Home page
   const handleInstallationsClick = (e) => {
