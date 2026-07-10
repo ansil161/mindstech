@@ -184,10 +184,18 @@ const SolutionDetails = () => {
       ScrollTrigger.refresh();
 
       // Entrance timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
-      intro.fromTo('#dTitle .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.12 })
-        .fromTo('#dIntro', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.7')
-        .fromTo('.dhero-row .fact', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, '-=.6');
+      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      intro.fromTo('#dTitle .w', 
+          { yPercent: 115, rotate: 2 }, 
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
+        .fromTo('#dIntro', 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, duration: 1.0 }, 
+          '-=.9')
+        .fromTo('.dhero-row .fact', 
+          { opacity: 0, y: 20 }, 
+          { opacity: 1, y: 0, duration: 0.8 }, 
+          '-=.7');
 
       // Hero image parallax
       gsap.fromTo('#dHeroImg', { yPercent: -12 }, {
@@ -206,11 +214,11 @@ const SolutionDetails = () => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 1.2,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: el,
-            start: 'top 86%',
+            start: 'top 88%',
             once: true,
           }
         });
@@ -219,11 +227,11 @@ const SolutionDetails = () => {
       gsap.utils.toArray('.reveal-img').forEach(el => {
         gsap.to(el, {
           clipPath: 'inset(0 0 0% 0)',
-          duration: 1.2,
+          duration: 1.4,
           ease: 'power4.inOut',
           scrollTrigger: {
             trigger: el,
-            start: 'top 82%',
+            start: 'top 84%',
             once: true,
           }
         });

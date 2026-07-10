@@ -19,21 +19,29 @@ const Solutions = () => {
       }
 
       // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
-      intro.fromTo('#sheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.12 })
-        .fromTo('#sheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.6')
-        .fromTo('.shero-meta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, '-=.5');
+      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      intro.fromTo('#sheroH .w', 
+          { yPercent: 115, rotate: 2 }, 
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
+        .fromTo('#sheroSide', 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, duration: 1.0 }, 
+          '-=.8')
+        .fromTo('.shero-meta', 
+          { opacity: 0, y: 20 }, 
+          { opacity: 1, y: 0, duration: 0.8 }, 
+          '-=.6');
 
       // Generic reveals
       gsap.utils.toArray('.reveal').forEach(el => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 1.2,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: el,
-            start: 'top 86%',
+            start: 'top 88%',
             once: true,
           }
         });
@@ -42,11 +50,11 @@ const Solutions = () => {
       gsap.utils.toArray('.reveal-img').forEach(el => {
         gsap.to(el, {
           clipPath: 'inset(0 0 0% 0)',
-          duration: 1.2,
+          duration: 1.4,
           ease: 'power4.inOut',
           scrollTrigger: {
             trigger: el,
-            start: 'top 82%',
+            start: 'top 84%',
             once: true,
           }
         });

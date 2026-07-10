@@ -19,10 +19,18 @@ const About = () => {
       }
 
       // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
-      intro.fromTo('#aheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.12 })
-        .fromTo('#aheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.6')
-        .fromTo('.ahero-meta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, '-=.5');
+      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      intro.fromTo('#aheroH .w', 
+          { yPercent: 115, rotate: 2 }, 
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
+        .fromTo('#aheroSide', 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, duration: 1.0 }, 
+          '-=.8')
+        .fromTo('.ahero-meta', 
+          { opacity: 0, y: 20 }, 
+          { opacity: 1, y: 0, duration: 0.8 }, 
+          '-=.6');
 
       // Hero image parallax
       gsap.fromTo('#aheroImg', { yPercent: -8 }, {
@@ -37,17 +45,21 @@ const About = () => {
       });
 
       // Story word ink-in
-      gsap.to('.story-text .st-w', {
-        color: '#FAFAFA',
-        stagger: 0.5,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.story',
-          start: 'top 70%',
-          end: 'top 5%',
-          scrub: true,
+      gsap.fromTo('.story-text .st-w', 
+        { opacity: 0.18 },
+        {
+          opacity: 1,
+          color: '#FAFAFA',
+          stagger: 0.35,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.story',
+            start: 'top 75%',
+            end: 'top 15%',
+            scrub: true,
+          }
         }
-      });
+      );
 
       // Generic reveals
       gsap.utils.toArray('.reveal').forEach(el => {

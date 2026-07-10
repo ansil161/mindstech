@@ -52,11 +52,20 @@ const Contact = () => {
       }
 
       // Entrance sequence
-      const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
+      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
       intro.fromTo('.chero .label', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 })
-        .fromTo('#cheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.12 }, '-=.3')
-        .fromTo('.cform .field, .cform .fsubmit', { opacity: 0, y: 22 }, { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 }, '-=.5')
-        .fromTo('.cinfo', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.7');
+        .fromTo('#cheroH .w', 
+          { yPercent: 115, rotate: 2 }, 
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' }, 
+          '-=.4')
+        .fromTo('.cform .field, .cform .fsubmit', 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.07 }, 
+          '-=.8')
+        .fromTo('.cinfo', 
+          { opacity: 0, y: 20 }, 
+          { opacity: 1, y: 0, duration: 0.9 }, 
+          '-=.9');
 
       // Map reveal
       gsap.to('.map-band', {

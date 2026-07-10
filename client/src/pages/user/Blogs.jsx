@@ -38,9 +38,14 @@ const Blogs = () => {
       }
 
       // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
-      intro.fromTo('#sheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.12 })
-        .fromTo('#sheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.6');
+      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      intro.fromTo('#sheroH .w', 
+          { yPercent: 115, rotate: 2 }, 
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
+        .fromTo('#sheroSide', 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, duration: 1.0 }, 
+          '-=.8');
     }, containerRef);
 
     return () => ctx.revert();

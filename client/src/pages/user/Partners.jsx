@@ -52,22 +52,33 @@ const Partners = () => {
       }
 
       // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
-      intro.fromTo('#pheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.12 })
-        .fromTo('#pheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.6')
-        .fromTo('.phero-meta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, '-=.5')
-        .fromTo('.filter-btn', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.05 }, '-=.4');
+      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      intro.fromTo('#pheroH .w', 
+          { yPercent: 115, rotate: 2 }, 
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
+        .fromTo('#pheroSide', 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, duration: 1.0 }, 
+          '-=.8')
+        .fromTo('.phero-meta', 
+          { opacity: 0, y: 20 }, 
+          { opacity: 1, y: 0, duration: 0.8 }, 
+          '-=.6')
+        .fromTo('.filter-btn', 
+          { opacity: 0, y: 14 }, 
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.05 }, 
+          '-=.5');
 
       // Generic reveals
       gsap.utils.toArray('.reveal').forEach(el => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 1.2,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: el,
-            start: 'top 86%',
+            start: 'top 88%',
             once: true,
           }
         });
@@ -75,10 +86,11 @@ const Partners = () => {
 
       gsap.utils.toArray('.section-head').forEach(head => {
         gsap.fromTo(head.querySelectorAll('h2, .label'),
-          { opacity: 0, y: 30 },
+          { opacity: 0, y: 30, filter: 'blur(4px)' },
           {
             opacity: 1,
             y: 0,
+            filter: 'blur(0px)',
             duration: 0.9,
             stagger: 0.08,
             ease: 'power3.out',

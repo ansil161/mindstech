@@ -145,13 +145,26 @@ const Home = () => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
       // Hero intro timeline
-      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
-      intro.fromTo('#heroImg', { scale: 1.12, filter: 'brightness(.3) saturate(.9)' },
-          { scale: 1, filter: 'brightness(.62) saturate(.9)', duration: 1.6, ease: 'power2.out' })
-        .fromTo('#heroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.09 }, '-=1.1')
-        .fromTo('#heroBrief', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=0.6')
-        .fromTo('#heroFoot', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, '-=0.5')
-        .fromTo('#cueLine', { scaleX: 0 }, { scaleX: 1, duration: 0.6 }, '-=0.4');
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+      intro.fromTo('#heroImg', 
+          { scale: 1.15, filter: 'brightness(.2) saturate(.8)' },
+          { scale: 1, filter: 'brightness(.58) saturate(1)', duration: 2.2, ease: 'power2.out' })
+        .fromTo('#heroH .w', 
+          { yPercent: 115, rotate: 2 }, 
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.09, ease: 'power4.out' }, 
+          '-=1.8')
+        .fromTo('#heroBrief', 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, duration: 1.2 }, 
+          '-=1.2')
+        .fromTo('#heroFoot', 
+          { opacity: 0, y: 20 }, 
+          { opacity: 1, y: 0, duration: 1.0 }, 
+          '-=0.9')
+        .fromTo('#cueLine', 
+          { scaleX: 0 }, 
+          { scaleX: 1, duration: 0.8 }, 
+          '-=0.7');
 
       const runIntro = () => {
         intro.play();
@@ -181,29 +194,33 @@ const Home = () => {
         }
       });
 
-      // 3. Statement color transitions
-      gsap.to('#stText .st-w', {
-        color: (i, t) => t.parentElement.tagName === 'EM' ? '#CC0001' : '#FAFAFA',
-        stagger: 0.6,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.statement',
-          start: 'top 72%',
-          end: 'top 15%',
-          scrub: true,
+      // 3. Statement word color transition
+      gsap.fromTo('#stText .st-w', 
+        { opacity: 0.18 },
+        {
+          opacity: 1,
+          color: (i, t) => t.parentElement.tagName === 'EM' ? '#CC0001' : '#FAFAFA',
+          stagger: 0.4,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '.statement',
+            start: 'top 75%',
+            end: 'top 18%',
+            scrub: true,
+          }
         }
-      });
+      );
 
       // 4. Reveal triggers
       gsap.utils.toArray('.reveal').forEach((el) => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
-          duration: 1,
+          duration: 1.2,
           ease: 'power3.out',
           scrollTrigger: {
             trigger: el,
-            start: 'top 86%',
+            start: 'top 88%',
             once: true,
           }
         });
@@ -335,18 +352,26 @@ const Home = () => {
 
     const qx = gsap.quickTo(preview, 'left', { duration: 0.45, ease: 'power3' });
     const qy = gsap.quickTo(preview, 'top', { duration: 0.45, ease: 'power3' });
+    const qRotate = gsap.quickTo(preview, 'rotate', { duration: 0.45, ease: 'power3' });
+    let lastX = 0;
     let shown = false;
 
     const onPointerMove = (e) => {
       qx(e.clientX + 28);
       qy(e.clientY - 100);
+      
+      const velocity = (e.clientX - lastX) * 0.08;
+      const angle = Math.min(Math.max(velocity, -10), 10);
+      qRotate(angle);
+      lastX = e.clientX;
     };
 
     const fadePreview = (show) => {
       gsap.to(preview, {
         opacity: show ? 1 : 0,
         scale: show ? 1 : 0.92,
-        duration: 0.3,
+        rotate: show ? undefined : 0,
+        duration: 0.35,
         ease: 'power2.out',
         overwrite: 'auto',
       });
