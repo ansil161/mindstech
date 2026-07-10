@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry, Fieldwork
+from .models import Enquiry, Fieldwork, Solution, Blog
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
@@ -49,4 +49,50 @@ class FieldworkSerializer(serializers.ModelSerializer):
 
     def validate_category(self, value):
         return strip_tags(value).strip()
+
+
+class SolutionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Solution
+        fields = ['id', 'title', 'desc', 'slug', 'image', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+    def validate_title(self, value):
+        return strip_tags(value).strip()
+
+    def validate_desc(self, value):
+        return strip_tags(value).strip()
+
+    def validate_slug(self, value):
+        return strip_tags(value).strip()
+
+
+class BlogSerializer(serializers.ModelSerializer):
+    date = serializers.SerializerMethodField()
+    dateStr = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Blog
+        fields = ['id', 'title', 'desc', 'href', 'cat', 'publish_date', 'date', 'dateStr', 'is_featured', 'created_at']
+        read_only_fields = ['id', 'created_at', 'date', 'dateStr']
+
+    def get_date(self, obj):
+        return obj.publish_date.strftime("%d %b %Y") if obj.publish_date else ""
+
+    def get_dateStr(self, obj):
+        return obj.publish_date.strftime("%Y-%m-%d") if obj.publish_date else ""
+
+    def validate_title(self, value):
+        return strip_tags(value).strip()
+
+    def validate_desc(self, value):
+        return strip_tags(value).strip()
+
+    def validate_href(self, value):
+        return strip_tags(value).strip()
+
+    def validate_cat(self, value):
+        return strip_tags(value).strip()
+
+
 

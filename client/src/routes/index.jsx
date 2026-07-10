@@ -1,15 +1,20 @@
 import { createBrowserRouter, Outlet } from 'react-router-dom';
 import Layout from '../components/layout/Layout.jsx';
-import Home from '../pages/Home';
-import About from '../pages/About';
-import Solutions from '../pages/Solutions';
-import SolutionDetails from '../pages/SolutionDetails';
-import Partners from '../pages/Partners';
-import Blogs from '../pages/Blogs';
-import Experience from '../pages/Experience';
-import Contact from '../pages/Contact';
-import EWaste from '../pages/EWaste';
-import NotFound from '../pages/NotFound';
+import Home from '../pages/user/Home';
+import About from '../pages/user/About';
+import Solutions from '../pages/user/Solutions';
+import SolutionDetails from '../pages/user/SolutionDetails';
+import Partners from '../pages/user/Partners';
+import Blogs from '../pages/user/Blogs';
+import Experience from '../pages/user/Experience';
+import Contact from '../pages/user/Contact';
+import EWaste from '../pages/user/EWaste';
+import NotFound from '../pages/user/NotFound';
+
+// Admin Imports
+import AdminLogin from '../pages/admin/AdminLogin';
+import AdminDashboard from '../pages/admin/AdminDashboard';
+import ProtectedRoute from '../components/admin/ProtectedRoute';
 
 export const router = createBrowserRouter([
   {
@@ -58,7 +63,20 @@ export const router = createBrowserRouter([
     ],
   },
   {
+    path: '/admin/login',
+    element: <AdminLogin />,
+  },
+  {
+    path: '/admin/dashboard',
+    element: (
+      <ProtectedRoute>
+        <AdminDashboard />
+      </ProtectedRoute>
+    ),
+  },
+  {
     path: '*',
     element: <NotFound />,
   },
 ]);
+

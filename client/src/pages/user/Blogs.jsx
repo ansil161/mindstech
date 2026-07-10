@@ -1,13 +1,34 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Button from '../components/common/Button/Button.jsx';
+import Button from '../../components/common/Button/Button.jsx';
+import axios from '../../api/axios';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Blogs = () => {
   const containerRef = useRef(null);
+  const [posts, setPosts] = useState([]);
+  const [featuredPost, setFeaturedPost] = useState(null);
 
+  useEffect(() => {
+    const fetchBlogs = async () => {
+      try {
+        const res = await axios.get('/admin/blogs/');
+        if (res.data && res.data.length > 0) {
+          const featured = res.data.find(b => b.is_featured) || res.data[0];
+          setFeaturedPost(featured);
+          const remaining = res.data.filter(b => b.id !== featured.id);
+          setPosts(remaining);
+        }
+      } catch (err) {
+        console.error("Failed to load dynamic blogs:", err);
+      }
+    };
+    fetchBlogs();
+  }, []);
+
+  // Entrance and scroll reveals
   useEffect(() => {
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -19,8 +40,42 @@ const Blogs = () => {
       // Hero Entrance Timeline
       const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
       intro.fromTo('#sheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.12 })
-        .fromTo('#sheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.6')
-        .fromTo('.bfeat', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.5');
+        .fromTo('#sheroSide', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.6');
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
+
+  useEffect(() => {
+    // Clear any existing ScrollTriggers to prevent duplicates on state updates
+    const triggers = ScrollTrigger.getAll().filter(t => 
+      t.trigger && (t.trigger.classList.contains('reveal') || t.trigger.classList.contains('bfeat'))
+    );
+    triggers.forEach(t => t.kill());
+
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set('.reveal', { opacity: 1, y: 0 });
+        gsap.set('.bfeat', { opacity: 1, y: 0 });
+        return;
+      }
+
+      // Featured post slide up
+      gsap.fromTo('.bfeat', 
+        { opacity: 0, y: 30 },
+        { 
+          opacity: 1, 
+          y: 0, 
+          duration: 0.8, 
+          ease: 'power4.out',
+          scrollTrigger: {
+            trigger: '.bfeat',
+            start: 'top 86%',
+            once: true,
+          }
+        }
+      );
 
       // Generic reveals
       gsap.utils.toArray('.reveal').forEach(el => {
@@ -62,107 +117,15 @@ const Blogs = () => {
       });
     }, containerRef);
 
-    return () => ctx.revert();
-  }, []);
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
 
-  const posts = [
-    {
-      href: 'https://www.mindstec.com/in/why-interactive-display-panels-are-better-than-normal-led-tvs/',
-      cat: 'Displays',
-      date: '20 Jan 2026',
-      dateStr: '2026-01-20',
-      title: 'Why Interactive Display Panels Are Better Than Normal LED TVs',
-      desc: "In collaborative workplaces, standard LED TVs fall short on interactivity and productivity — here's where interactive panels pull ahead."
-    },
-    {
-      href: 'https://www.mindstec.com/in/how-ai-iot-shaping-future-commercial-display-solutions/',
-      cat: 'Signage',
-      date: '20 Jan 2026',
-      dateStr: '2026-01-20',
-      title: 'How AI and IoT Are Shaping the Future of Commercial Displays',
-      desc: 'Commercial displays are no longer passive screens — AI and IoT are turning them into responsive, data-driven communication surfaces.'
-    },
-    {
-      href: 'https://www.mindstec.com/in/what-is-a-conference-room-monitor-a-simple-guide/',
-      cat: 'Collaboration',
-      date: '20 Jan 2026',
-      dateStr: '2026-01-20',
-      title: 'What Is a Conference Room Monitor? A Simple Guide',
-      desc: 'Meetings are no longer whiteboards and talk — how a dedicated conference room monitor changes what a meeting space can do.'
-    },
-    {
-      href: 'https://www.mindstec.com/in/ipad-stand-for-conference-why-every-event-needs-one/',
-      cat: 'Workspace',
-      date: '24 Dec 2025',
-      dateStr: '2025-12-24',
-      title: 'iPad Stand for Conference: A Must-Have Tool for Modern Events',
-      desc: 'In tech-driven events, the right mounting hardware keeps presenters, check-in desks and breakout rooms running without friction.'
-    },
-    {
-      href: 'https://www.mindstec.com/in/digital-signage-monitors-beginners-guide/',
-      cat: 'Signage',
-      date: '24 Dec 2025',
-      dateStr: '2025-12-24',
-      title: "What Are Digital Signage Monitors? A Beginner's Guide",
-      desc: 'Grabbing attention quickly is everything in retail — the difference between consumer TVs and purpose-built signage monitors, explained.'
-    },
-    {
-      href: 'https://www.mindstec.com/in/international-time-zone-clocks-for-airports-and-airlines/',
-      cat: 'Infrastructure',
-      date: '23 Dec 2025',
-      dateStr: '2025-12-23',
-      title: 'Why Airports and Airlines Rely on Time Zone Clocks',
-      desc: 'Aviation runs on precision across countries and time zones — how synchronised clock systems keep operations on schedule.'
-    },
-    {
-      href: 'https://www.mindstec.com/in/what-is-hdmi-presentation-switcher-simple-explanation/',
-      cat: 'Collaboration',
-      date: '22 Dec 2025',
-      dateStr: '2025-12-22',
-      title: 'What Is an HDMI Presentation Switcher? A Simple Explanation',
-      desc: 'Meeting rooms and classrooms juggle multiple video sources — a presentation switcher is the piece that makes it seamless.'
-    },
-    {
-      href: 'https://www.mindstec.com/in/what-is-ipad-wireless-charging-wall-mount-and-how-it-works/',
-      cat: 'Workspace',
-      date: '14 Nov 2025',
-      dateStr: '2025-11-14',
-      title: 'What Is an iPad Wireless Charging Wall Mount and How Does It Work?',
-      desc: 'Room panels that never die and never dangle a cable — the hardware behind always-on iPad deployments.'
-    },
-    {
-      href: 'https://www.mindstec.com/in/what-is-a-video-capture-card-beginners-guide/',
-      cat: 'Broadcast',
-      date: '14 Nov 2025',
-      dateStr: '2025-11-14',
-      title: "What Is a Video Capture Card? A Beginner's Guide",
-      desc: "Ever wondered how live streams look so clean? The capture card is doing the heavy lifting — here's how it works."
-    },
-    {
-      href: 'https://www.mindstec.com/in/interactive-whiteboards-in-the-classroom-future-of-learning/',
-      cat: 'Education',
-      date: '14 Nov 2025',
-      dateStr: '2025-11-14',
-      title: 'The Future of Learning: Role of Interactive Whiteboards in EdTech',
-      desc: 'Interactive whiteboards are becoming the mainstay of the evolving classroom — what that shift means for schools.'
-    },
-    {
-      href: 'https://www.mindstec.com/in/what-is-video-over-ip-solution-av-industry-revolution/',
-      cat: 'AV-over-IP',
-      date: '14 Nov 2025',
-      dateStr: '2025-11-14',
-      title: 'How Video over IP Solutions Are Revolutionizing the AV Industry',
-      desc: "The AV world's biggest transformation yet — why signal distribution is moving off dedicated cabling and onto the network."
-    },
-    {
-      href: 'https://www.mindstec.com/in/distribution-amplifier-role-in-broadcasting-media/',
-      cat: 'Broadcast',
-      date: '23 Sep 2025',
-      dateStr: '2025-09-23',
-      title: 'Role of Distribution Amplifiers in Broadcasting and Media',
-      desc: 'From live sports telecasts to studio production, reliable signal delivery is non-negotiable — where distribution amplifiers fit in.'
-    }
-  ];
+    return () => {
+      ctx.revert();
+      clearTimeout(timer);
+    };
+  }, [posts, featuredPost]);
 
   return (
     <main id="top" ref={containerRef}>
@@ -179,21 +142,23 @@ const Blogs = () => {
       </section>
 
       {/* FEATURED */}
-      <a className="bfeat reveal" href="https://www.mindstec.com/in/interactive-whiteboard-buying-guide-for-schools-offices/" target="_blank" rel="noopener noreferrer">
-        <span className="bf-tag">Featured</span>
-        <div className="bf-meta">
-          <span className="cat">Buying guide</span>
-          <time datetime="2026-01-20">20 Jan 2026</time>
-        </div>
-        <h2 className="display">Interactive Whiteboard Buying Guide for Schools &amp; Offices</h2>
-        <p>Modern learning and workspaces are evolving, and the traditional whiteboard is no longer enough. What to look for in touch technology, software ecosystems and installation before you commit a classroom or boardroom budget.</p>
-        <span className="bf-go">
-          Read the article
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-            <path d="M7 17L17 7M9 7h8v8" />
-          </svg>
-        </span>
-      </a>
+      {featuredPost && (
+        <a className="bfeat" href={featuredPost.href} target="_blank" rel="noopener noreferrer">
+          <span className="bf-tag">Featured</span>
+          <div className="bf-meta">
+            <span className="cat">{featuredPost.cat}</span>
+            <time datetime={featuredPost.dateStr || featuredPost.publish_date}>{featuredPost.date}</time>
+          </div>
+          <h2 className="display">{featuredPost.title}</h2>
+          <p>{featuredPost.desc}</p>
+          <span className="bf-go">
+            Read the article
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </span>
+        </a>
+      )}
 
       {/* GRID */}
       <div className="bwrap">
@@ -202,7 +167,7 @@ const Blogs = () => {
             <a className="bcard reveal" href={post.href} target="_blank" rel="noopener noreferrer" key={idx}>
               <div className="bc-meta">
                 <span className="cat">{post.cat}</span>
-                <time datetime={post.dateStr}>{post.date}</time>
+                <time datetime={post.dateStr || post.publish_date}>{post.date}</time>
               </div>
               <h3>{post.title}</h3>
               <p>{post.desc}</p>

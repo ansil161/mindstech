@@ -1,8 +1,9 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Button from '../components/common/Button/Button.jsx';
+import Button from '../../components/common/Button/Button.jsx';
+import axios from '../../api/axios';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,6 +30,76 @@ const project = (lat, lng) => ({
   y: (90 - lat) * (400 / 180),
 });
 
+const STATIC_PROJECTS = [
+  {
+    id: 'static-1',
+    title: "Government command centre",
+    location_meta: "New Delhi, India — 48-screen video wall",
+    category: "Control room",
+    image: "/assets/img/pexels-11783119-w1400.jpg"
+  },
+  {
+    id: 'static-2',
+    title: "Luxury hotel, full property AV",
+    location_meta: "Bangalore, India — 280 rooms and ballroom",
+    category: "Hospitality",
+    image: "/assets/img/unsplash-1551882547-ff40c63fe5fa-w1100.jpg"
+  },
+  {
+    id: 'static-3',
+    title: "Broadcast studio fit-out",
+    location_meta: "Nairobi, Kenya — production and streaming",
+    category: "Broadcast",
+    image: "/assets/img/pexels-7865064-w1100.jpg"
+  },
+  {
+    id: 'static-4',
+    title: "Enterprise meeting rooms",
+    location_meta: "Warsaw, Poland — 32 conference spaces",
+    category: "Corporate",
+    image: "/assets/img/pexels-13141583-w1400.jpg"
+  }
+];
+
+const STATIC_SOLUTIONS = [
+  { 
+    title: 'Digital Signage', 
+    desc: 'LED walls, professional display panels and wayfinding for retail, transport and public space.', 
+    slug: 'digital-signage',
+    image: '/assets/img/pexels-3402937-w700.jpg'
+  },
+  { 
+    title: 'Control Rooms', 
+    desc: 'Video wall processors, KVM and 24/7-rated displays for command and monitoring environments.', 
+    slug: 'control-rooms',
+    image: '/assets/img/unsplash-1551288049-bebda4e38f71-w700.jpg'
+  },
+  { 
+    title: 'Conferencing & Collaboration', 
+    desc: 'Hybrid meeting rooms, ceiling audio, cameras and AV-over-IP for the modern workplace.', 
+    slug: 'conferencing',
+    image: '/assets/img/pexels-13323673-w700.jpg'
+  },
+  { 
+    title: 'Hospitality AV', 
+    desc: 'Guest-room entertainment, ballroom systems and background audio for hotels and venues.', 
+    slug: 'hospitality',
+    image: '/assets/img/pexels-29870245-w700.jpg'
+  },
+  { 
+    title: 'Broadcast & Production', 
+    desc: 'Cameras, switching, streaming and studio infrastructure for broadcasters and creators.', 
+    slug: 'broadcast',
+    image: '/assets/img/unsplash-1516035069371-29a1b244cc32-w700.jpg'
+  },
+  { 
+    title: 'Live Events & Immersive', 
+    desc: 'Touring-grade LED, projection mapping and spatial audio for events and experiential spaces.', 
+    slug: 'live-events',
+    image: '/assets/img/pexels-13230484-w700.jpg'
+  }
+];
+
 const Home = () => {
   const containerRef = useRef(null);
   const mapBaseRef = useRef(null);
@@ -39,6 +110,72 @@ const Home = () => {
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
 
+  const [fieldwork, setFieldwork] = useState(STATIC_PROJECTS);
+  const [solutions, setSolutions] = useState(STATIC_SOLUTIONS);
+
+  useEffect(() => {
+    const fetchSolutions = async () => {
+      try {
+        const res = await axios.get('/admin/solutions/');
+        if (res.data && res.data.length > 0) {
+          setSolutions(res.data);
+        }
+      } catch (err) {
+        console.error("Failed to load dynamic solutions:", err);
+      }
+    };
+    fetchSolutions();
+  }, []);
+
+  useEffect(() => {
+    const fetchFieldwork = async () => {
+      try {
+        const res = await axios.get('/admin/fieldwork/');
+        if (res.data && res.data.length > 0) {
+          setFieldwork(res.data);
+        }
+      } catch (err) {
+        console.error("Failed to load dynamic fieldwork:", err);
+      }
+    };
+    fetchFieldwork();
+  }, []);
+
+  // Separate effect for reveal-img GSAP animations triggered when fieldwork items render
+  useEffect(() => {
+    if (fieldwork.length === 0) return;
+
+    // Clear any existing ScrollTriggers on these elements to prevent duplicates
+    const triggers = ScrollTrigger.getAll().filter(t => 
+      t.trigger && t.trigger.classList.contains('reveal-img')
+    );
+    triggers.forEach(t => t.kill());
+
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray('.reveal-img').forEach((el) => {
+        gsap.to(el, {
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 1.2,
+          ease: 'power4.inOut',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 82%',
+            once: true,
+          }
+        });
+      });
+    }, containerRef);
+
+    // Refresh ScrollTrigger to recalculate metrics since card list height changed
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+
+    return () => {
+      ctx.revert();
+      clearTimeout(timer);
+    };
+  }, [fieldwork]);
 
   // preloader and entrance animation
   useEffect(() => {
@@ -111,18 +248,7 @@ const Home = () => {
         });
       });
 
-      gsap.utils.toArray('.reveal-img').forEach((el) => {
-        gsap.to(el, {
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 1.2,
-          ease: 'power4.inOut',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 82%',
-            once: true,
-          }
-        });
-      });
+
 
       // 5. Section heads cascade
       gsap.utils.toArray('.section-head').forEach((head) => {
@@ -277,17 +403,20 @@ const Home = () => {
       });
     });
 
-    solList.addEventListener('pointermove', onPointerMove);
-    solList.addEventListener('pointerleave', () => {
+    const onPointerLeave = () => {
       fadePreview(false);
       shown = false;
-    });
+    };
+
+    solList.addEventListener('pointermove', onPointerMove);
+    solList.addEventListener('pointerleave', onPointerLeave);
 
     return () => {
       solList.removeEventListener('pointermove', onPointerMove);
+      solList.removeEventListener('pointerleave', onPointerLeave);
       gsap.killTweensOf(preview);
     };
-  }, []);
+  }, [solutions]);
 
   // Edge accordion logic (matches original scrollHeight mapping)
   useEffect(() => {
@@ -442,15 +571,6 @@ const Home = () => {
     );
   };
 
-  const solutions = [
-    { title: 'Digital Signage', desc: 'LED walls, professional display panels and wayfinding for retail, transport and public space.', slug: 'digital-signage' },
-    { title: 'Control Rooms', desc: 'Video wall processors, KVM and 24/7-rated displays for command and monitoring environments.', slug: 'control-rooms' },
-    { title: 'Conferencing & Collaboration', desc: 'Hybrid meeting rooms, ceiling audio, cameras and AV-over-IP for the modern workplace.', slug: 'conferencing' },
-    { title: 'Hospitality AV', desc: 'Guest-room entertainment, ballroom systems and background audio for hotels and venues.', slug: 'hospitality' },
-    { title: 'Broadcast & Production', desc: 'Cameras, switching, streaming and studio infrastructure for broadcasters and creators.', slug: 'broadcast' },
-    { title: 'Live Events & Immersive', desc: 'Touring-grade LED, projection mapping and spatial audio for events and experiential spaces.', slug: 'live-events' },
-  ];
-
   const edgeItems = [
     { title: 'A portfolio built over fifteen years', desc: 'We represent more than fifty manufacturers — Crestron to Samsung Professional — chosen so that an integrator can specify an entire project from one price list. No gaps, no grey imports.', visual: '/assets/img/unsplash-1486406146926-c627a92ad1ab-w1100.jpg', caption: 'Brand network' },
     { title: 'Engineers, not order-takers', desc: "Every category we carry has a product specialist behind it. We do system design reviews, run demos from our own stock, and stay on the escalation path long after the invoice is paid.", visual: '/assets/img/pexels-33966530-w1100.jpg', caption: 'Technical depth' },
@@ -541,12 +661,9 @@ const Home = () => {
           ))}
         </div>
         <div className="sol-preview" id="solPreview" ref={solPreviewRef} aria-hidden="true">
-          <img src="/assets/img/pexels-3402937-w700.jpg" alt="" loading="lazy" />
-          <img src="/assets/img/unsplash-1551288049-bebda4e38f71-w700.jpg" alt="" loading="lazy" />
-          <img src="/assets/img/pexels-13323673-w700.jpg" alt="" loading="lazy" />
-          <img src="/assets/img/pexels-29870245-w700.jpg" alt="" loading="lazy" />
-          <img src="/assets/img/unsplash-1516035069371-29a1b244cc32-w700.jpg" alt="" loading="lazy" />
-          <img src="/assets/img/pexels-13230484-w700.jpg" alt="" loading="lazy" />
+          {solutions.map((sol, i) => (
+            <img key={i} src={sol.image} alt={sol.title} loading="lazy" />
+          ))}
         </div>
       </section>
 
@@ -752,46 +869,18 @@ const Home = () => {
           <p className="lede side">A sample of projects our partners have delivered with equipment we supplied.</p>
         </div>
         <div className="work-grid">
-          <figure className="project reveal-img">
-            <img src="/assets/img/pexels-11783119-w1400.jpg" alt="An operator facing a dark wall of broadcast monitors with red timecode displays" loading="lazy" />
-            <figcaption>
-              <div>
-                <div className="p-title">Government command centre</div>
-                <div className="p-meta">New Delhi, India — 48-screen video wall</div>
-              </div>
-              <span className="p-tag">Control room</span>
-            </figcaption>
-          </figure>
-          <figure className="project reveal-img">
-            <img src="/assets/img/unsplash-1551882547-ff40c63fe5fa-w1100.jpg" alt="A resort hotel courtyard with pools and palm trees at dusk" loading="lazy" />
-            <figcaption>
-              <div>
-                <div className="p-title">Luxury hotel, full property AV</div>
-                <div className="p-meta">Bangalore, India — 280 rooms and ballroom</div>
-              </div>
-              <span className="p-tag">Hospitality</span>
-            </figcaption>
-          </figure>
-          <figure className="project reveal-img">
-            <img src="/assets/img/pexels-7865064-w1100.jpg" alt="Two professional pedestal cameras in a dark television studio facing a lit set" loading="lazy" />
-            <figcaption>
-              <div>
-                <div className="p-title">Broadcast studio fit-out</div>
-                <div className="p-meta">Nairobi, Kenya — production and streaming</div>
-              </div>
-              <span className="p-tag">Broadcast</span>
-            </figcaption>
-          </figure>
-          <figure className="project reveal-img">
-            <img src="/assets/img/pexels-13141583-w1400.jpg" alt="A dimly lit modern office interior with dark furniture and a reflective floor" loading="lazy" />
-            <figcaption>
-              <div>
-                <div className="p-title">Enterprise meeting rooms</div>
-                <div className="p-meta">Warsaw, Poland — 32 conference spaces</div>
-              </div>
-              <span className="p-tag">Corporate</span>
-            </figcaption>
-          </figure>
+          {fieldwork.map((project) => (
+            <figure key={project.id} className="project reveal-img">
+              <img src={project.image} alt={project.title} loading="lazy" />
+              <figcaption>
+                <div>
+                  <div className="p-title">{project.title}</div>
+                  <div className="p-meta">{project.location_meta}</div>
+                </div>
+                <span className="p-tag">{project.category}</span>
+              </figcaption>
+            </figure>
+          ))}
         </div>
         <div className="work-more reveal">
           <Button href="#contact" className="text-link">

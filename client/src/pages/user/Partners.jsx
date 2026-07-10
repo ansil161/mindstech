@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import Button from '../components/common/Button/Button.jsx';
+import Button from '../../components/common/Button/Button.jsx';
+
 
 gsap.registerPlugin(ScrollTrigger);
 

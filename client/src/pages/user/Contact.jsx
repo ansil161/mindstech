@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import axios from '../../api/axios';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -26,6 +27,10 @@ const Contact = () => {
   const [phone, setPhone] = useState('');
   const [email, setEmail] = useState('');
   const [msg, setMsg] = useState('');
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState('');
 
   // Handle auto subject pre-select on parameter load
   useEffect(() => {
@@ -70,20 +75,46 @@ const Contact = () => {
     return () => ctx.revert();
   }, []);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const body = [
-      'Name: ' + name,
-      'Phone: ' + phone,
-      'Email: ' + email,
-      '',
-      msg
-    ].join('\n');
+    setIsSubmitting(true);
+    setSubmitSuccess(false);
+    setSubmitError('');
 
-    window.location.href = 'mailto:india@mindstec.com'
-      + '?subject=' + encodeURIComponent('[Website] ' + subject)
-      + '&body=' + encodeURIComponent(body);
+    try {
+      await axios.post('/admin/enquiries/submit/', {
+        name,
+        phone: phone || 'N/A',
+        email,
+        subject,
+        message: msg
+      });
+      setSubmitSuccess(true);
+      setName('');
+      setPhone('');
+      setEmail('');
+      setMsg('');
+      setSubject('General enquiries');
+    } catch (err) {
+      console.error(err);
+      const errorData = err.response?.data;
+      let errorMsg = 'Something went wrong. Please try again.';
+      if (errorData) {
+        if (typeof errorData === 'object') {
+          // Flatten field validation errors (e.g. {email: ["Enter a valid email"]})
+          const firstKey = Object.keys(errorData)[0];
+          const firstVal = errorData[firstKey];
+          errorMsg = Array.isArray(firstVal) ? `${firstKey}: ${firstVal[0]}` : `${firstKey}: ${firstVal}`;
+        } else if (typeof errorData === 'string') {
+          errorMsg = errorData;
+        }
+      }
+      setSubmitError(errorMsg);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
 
   return (
     <main id="top" ref={containerRef}>
@@ -163,14 +194,54 @@ const Contact = () => {
             ></textarea>
           </div>
 
+          {submitSuccess && (
+            <div style={{
+              margin: '20px 0',
+              padding: '16px',
+              borderRadius: '4px',
+              background: 'rgba(34, 197, 94, 0.1)',
+              border: '1px solid rgba(34, 197, 94, 0.25)',
+              color: '#4ade80',
+              fontSize: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}>
+              <svg style={{ width: '20px', height: '20px', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Thank you! Your enquiry has been submitted successfully. Our team will get back to you shortly.</span>
+            </div>
+          )}
+
+          {submitError && (
+            <div style={{
+              margin: '20px 0',
+              padding: '16px',
+              borderRadius: '4px',
+              background: 'rgba(239, 68, 68, 0.1)',
+              border: '1px solid rgba(239, 68, 68, 0.25)',
+              color: '#f87171',
+              fontSize: '14px',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px'
+            }}>
+              <svg style={{ width: '20px', height: '20px', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+              <span>{submitError}</span>
+            </div>
+          )}
+
           <div className="fsubmit">
-            <button type="submit" className="btn btn--solid">
-              <span>Send message</span>
+            <button type="submit" className="btn btn--solid" disabled={isSubmitting} style={{ cursor: isSubmitting ? 'not-allowed' : 'pointer' }}>
+              <span>{isSubmitting ? 'Sending inquiry...' : 'Send message'}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M7 17L17 7M9 7h8v8" />
               </svg>
             </button>
-            <p className="fnote">Your message opens in your email client, addressed to our Bangalore team.</p>
+            <p className="fnote">Your inquiry is transmitted securely to our India office in Bangalore.</p>
           </div>
         </form>
 

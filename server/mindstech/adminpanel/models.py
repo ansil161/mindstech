@@ -32,11 +32,43 @@ class Fieldwork(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        db_table = 'fieldwork'
+        
         ordering = ['-created_at']
-        verbose_name_plural = 'Fieldwork Projects'
+        
 
     def __str__(self):
         return f"{self.title} - {self.category} ({self.location_meta})"
+
+
+class Solution(models.Model):
+    title = models.CharField(max_length=150)
+    desc = models.TextField()
+    slug = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='solutions/')
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.title} ({self.slug})"
+
+
+class Blog(models.Model):
+    title = models.CharField(max_length=200)
+    desc = models.TextField()
+    href = models.CharField(max_length=250)
+    cat = models.CharField(max_length=100)
+    publish_date = models.DateField()
+    is_featured = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-publish_date', '-created_at']
+
+    def __str__(self):
+        return f"{self.title} ({self.cat})"
+
+
 
 

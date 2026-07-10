@@ -17,7 +17,9 @@ Including another URLconf
 from django.urls import path
 from .views import (
     EnquirySubmitView, EnquiryAdminListView, EnquiryAdminDetailView,
-    FieldworkListCreateView, FieldworkDetailView
+    FieldworkListCreateView, FieldworkDetailView,
+    SolutionListCreateView, SolutionDetailView,
+    BlogListCreateView, BlogDetailView
 )
 
 urlpatterns = [
@@ -26,5 +28,9 @@ urlpatterns = [
     path('enquiries/<int:pk>/', EnquiryAdminDetailView.as_view(), name='enquiry-detail'),
     path('fieldwork/', FieldworkListCreateView.as_view(), name='fieldwork-list-create'),
     path('fieldwork/<int:pk>/', FieldworkDetailView.as_view(), name='fieldwork-detail'),
+    path('solutions/', SolutionListCreateView.as_view(), name='solution-list-create'),
+    path('solutions/<int:pk>/', SolutionDetailView.as_view(), name='solution-detail'),
+    path('blogs/', BlogListCreateView.as_view(), name='blog-list-create'),
+    path('blogs/<int:pk>/', BlogDetailView.as_view(), name='blog-detail'),
 ]
 
