@@ -6,6 +6,7 @@ import Lenis from 'lenis';
 import Navbar from './Navbar/Navbar.jsx';
 import Drawer from './Drawer/Drawer.jsx';
 import Footer from './Footer/Footer.jsx';
+import ChatWidget from '../chat/ChatWidget.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -125,6 +126,9 @@ const Layout = ({ children }) => {
 
       {/* Footer component */}
       <Footer />
+
+      {/* Floating chatbot assistant */}
+      <ChatWidget />
     </div>
   );
 };
