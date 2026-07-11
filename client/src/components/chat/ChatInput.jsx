@@ -19,26 +19,15 @@ const ChatInput = () => {
   return (
     <div className="p-4 bg-[#0d0d0f] border-t border-white/5 select-none">
       <form onSubmit={handleSubmit} className="relative flex items-center h-[56px] bg-[#1A1A1E]/60 border border-white/10 backdrop-blur-md rounded-[28px] pl-5 pr-1.5 shadow-inner">
-        {/* Microphone Icon */}
-        <svg 
-          xmlns="http://www.w3.org/2000/svg" 
-          fill="none" 
-          viewBox="0 0 24 24" 
-          strokeWidth={1.8} 
-          stroke="currentColor" 
-          className="w-5 h-5 text-white/30 mr-3 flex-shrink-0"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 18.75a6 6 0 0 0 6-6v-1.5m-6 7.5a6 6 0 0 1-6-6v-1.5m6 7.5v3.75m-3.75 0h7.5M12 15.75a3 3 0 0 0 3-3v-6a3 3 0 0 0-6 0v6a3 3 0 0 0 3 3Z" />
-        </svg>
-
-        {/* Input field - centered vertically */}
+        {/* Input field - centered vertically with focus-visible outline disabled */}
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value.slice(0, CHAR_LIMIT))}
           placeholder="Type your inquiry..."
           disabled={isLoading}
-          className="flex-grow bg-transparent text-white placeholder-white/30 text-[15px] font-sans focus:outline-none focus:ring-0 border-none outline-none disabled:opacity-50 py-1"
+          className="flex-grow bg-transparent text-white placeholder-white/30 text-[15px] font-sans focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none outline-none disabled:opacity-50 py-1"
+          style={{ outline: 'none', border: 'none', boxShadow: 'none' }}
         />
 
         {/* Submit Action Button - 44px circular, red gradient, click and hover scaling, subtle glow */}

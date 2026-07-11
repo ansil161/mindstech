@@ -13,35 +13,8 @@ const MOCK_HISTORY = [
   {
     id: 'msg-welcome',
     role: 'assistant',
-    content: `👋 Hi there!
-
-I'm your AI Assistant.
-
-I can help you with:
-
-- Company Information
-- Products & Services
-- FAQs
-- Contact Details
-- Policies
-
-How can I help you today?`,
-    timestamp: new Date(Date.now() - 3600000 * 2).toISOString(), // 2 hours ago
-  },
-  {
-    id: 'msg-user-demo-1',
-    role: 'user',
-    content: 'What services do you provide?',
-    timestamp: new Date(Date.now() - 3600000).toISOString(), // 1 hour ago
-  },
-  {
-    id: 'msg-assistant-demo-1',
-    role: 'assistant',
-    content: 'Mindstec specializes in Enterprise RAG integration, custom web applications (React/Next.js/Django), cloud architecture (AWS/GCP), and custom AI Agent engineering.',
-    timestamp: new Date(Date.now() - 3500000).toISOString(),
-    sources: [
-      { document_name: 'Solutions Catalog', source: 'https://mindstech.com/solutions' }
-    ]
+    content: 'Hi there! How can I help you today?',
+    timestamp: new Date().toISOString(),
   }
 ];
 
