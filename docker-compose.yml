@@ -9,7 +9,7 @@ services:
     restart: unless-stopped
 
   qdrant:
-    image: qdrant/qdrant:v1.9.1
+    image: qdrant/qdrant:v1.10.0
     container_name: mindstec-qdrant
     ports:
       - "6333:6333"

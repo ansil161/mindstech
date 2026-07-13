@@ -54,7 +54,7 @@ class Settings(BaseSettings):
 
     # Semantic Retrieval Settings
     RETRIEVAL_TOP_K: int = 5
-    RETRIEVAL_MIN_SCORE: float = 0.70
+    RETRIEVAL_MIN_SCORE: float = 0.30
     RETRIEVAL_ENABLE_RERANK: bool = False
 
 

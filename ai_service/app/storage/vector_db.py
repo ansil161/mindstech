@@ -137,16 +137,16 @@ class QdrantManager:
                 if filter_conditions:
                     q_filters = qmodels.Filter(must=filter_conditions)
 
-            search_results = self.client.search(
+            search_results = self.client.query_points(
                 collection_name=self.collection_name,
-                query_vector=query_vector,
+                query=query_vector,
                 limit=limit,
                 query_filter=q_filters,
                 score_threshold=min_score if min_score > 0 else None
             )
 
             results = []
-            for hit in search_results:
+            for hit in search_results.points:
                 results.append({
                     "id": hit.id,
                     "score": hit.score,

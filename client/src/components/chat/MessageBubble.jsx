@@ -28,7 +28,7 @@ const MessageBubble = ({ message }) => {
   return (
     <motion.div
       className={`flex w-full ${isUser ? 'justify-end' : 'justify-start'}`}
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ 
         type: 'spring', 
@@ -39,29 +39,28 @@ const MessageBubble = ({ message }) => {
       layout
     >
       {isUser ? (
-        /* User message container - Max width 72%, rounded-[18px], px-5 py-3.5 */
-        <div className="flex flex-col items-end max-w-[78%]">
-          <div className="bg-gradient-to-br from-[#E30613] to-[#B00020] text-white text-[14px] px-4 py-3 rounded-[18px] rounded-tr-[4px] shadow-[0_4px_15px_rgba(227,6,19,0.12)] leading-[1.6] select-text">
-            <p className="whitespace-pre-wrap font-medium">{message.content}</p>
+        /* User message container - Max width 75%, rounded 20px, transparent background with soft border */
+        <div className="flex flex-col items-end max-w-[75%] select-none">
+          <div className="bg-transparent border border-neutral-300/80 text-neutral-800 text-[14px] px-4 py-3 rounded-[20px] rounded-tr-[4px] shadow-none leading-[1.6] select-text font-sans font-medium break-words w-full">
+            <p className="whitespace-pre-wrap">{message.content}</p>
           </div>
-          {/* Timestamp - 11px, 45% opacity */}
-          <span className="text-[11px] text-white/45 mt-2 px-1 uppercase tracking-wider font-semibold select-none">
+          {/* Timestamp - 10px, high contrast dark gray text */}
+          <span className="text-[10px] text-neutral-400 mt-1.5 px-1 uppercase tracking-wider font-semibold">
             {message.timestamp ? new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
           </span>
         </div>
       ) : (
-        /* Assistant message container - Max width 80%, rounded-[18px], px-5 py-3.5, avatar aligned with first line */
-        <div className="flex items-start space-x-3 max-w-[88%]">
-          <SupportAvatar size={30} showOnlineBadge={false} className="mt-1" />
+        /* Assistant message container - Max width 75%, rounded 20px, avatar visible next to message */
+        <div className="flex items-start space-x-3.5 max-w-[75%] select-none">
+          <SupportAvatar size={32} showOnlineBadge={false} className="mt-0.5" />
           <div className="flex flex-col">
-            <div className="bg-[#1A1A1E] border border-white/5 text-white text-[14px] px-4 py-3 rounded-[18px] rounded-tl-[4px] shadow-[0_4px_15px_rgba(0,0,0,0.25)] leading-[1.6] select-text">
-
-              {renderMarkdown(displayedContent)}
-              {/* Render references/sources when streaming completes */}
-              {wordCount >= words.length && <SourceReferences sources={message.sources} />}
+            <div className="bg-white border border-neutral-100 text-neutral-800 text-[14px] px-4 py-3 rounded-[20px] rounded-tl-[4px] shadow-sm leading-[1.6] select-text font-sans break-words">
+              <div className="prose prose-sm max-w-none text-neutral-800">
+                {renderMarkdown(displayedContent)}
+              </div>
             </div>
-            {/* Timestamp - 11px, 45% opacity */}
-            <span className="text-[11px] text-white/45 mt-2 px-1 uppercase tracking-wider font-semibold select-none">
+            {/* Timestamp */}
+            <span className="text-[10px] text-neutral-400 mt-1.5 px-1 uppercase tracking-wider font-semibold">
               {message.timestamp ? new Date(message.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}
             </span>
           </div>

@@ -8,6 +8,7 @@ export const ChatProvider = ({ children }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationId] = useState(() => `session_${Math.random().toString(36).substr(2, 9)}`);
   const [theme, setTheme] = useState(() => {
     // Read theme from localStorage or fallback to system dark preference
     const savedTheme = localStorage.getItem('chat-theme');
@@ -15,18 +16,18 @@ export const ChatProvider = ({ children }) => {
     return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
   });
 
-  // Populate mock historical conversation on startup
+  // Populate historical conversation on startup for this session
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const history = await chatApi.getConversationHistory();
+        const history = await chatApi.getConversationHistory(conversationId);
         setMessages(history);
       } catch (error) {
         console.error('Failed to load chat history:', error);
       }
     };
     fetchHistory();
-  }, []);
+  }, [conversationId]);
 
   // Sync theme with HTML class attribute for Tailwind dark support
   useEffect(() => {
@@ -86,7 +87,7 @@ How can I help you today?`,
     setIsTyping(true);
 
     try {
-      const response = await chatApi.sendMessage(content.trim());
+      const response = await chatApi.sendMessage(content.trim(), conversationId);
       
       const assistantMessage = {
         id: `msg-assistant-${Date.now()}`,
@@ -113,7 +114,7 @@ How can I help you today?`,
       setIsLoading(false);
       setIsTyping(false);
     }
-  }, []);
+  }, [conversationId]);
 
   const value = useMemo(
     () => ({

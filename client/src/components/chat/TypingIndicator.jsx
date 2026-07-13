@@ -7,7 +7,7 @@ const dotVariants = {
     y: '0%',
   },
   animate: {
-    y: '100%',
+    y: '80%',
   },
 };
 
@@ -28,37 +28,38 @@ const dotTransition = (delay) => ({
 
 const TypingIndicator = () => {
   return (
-    <div className="flex items-start space-x-3 w-full select-none">
-      <SupportAvatar size={30} showOnlineBadge={false} className="mt-1" />
+    <div className="flex items-start space-x-3.5 w-full select-none">
+      {/* Bot avatar visible while typing */}
+      <SupportAvatar size={32} showOnlineBadge={false} className="mt-0.5" />
       <div className="flex flex-col">
         <motion.div
-          className="flex items-center space-x-2 px-4 py-3 rounded-[18px] rounded-tl-[4px] bg-[#1A1A1E] border border-white/5 shadow-[0_4px_15px_rgba(0,0,0,0.2)]"
+          className="flex items-center space-x-2 px-4 py-3 rounded-[20px] rounded-tl-[4px] bg-white border border-neutral-100 shadow-sm"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.2 }}
         >
-          <span className="text-[13px] text-white/60 font-medium tracking-wide font-sans">
-            Support Agent is typing...
+          <span className="text-[13px] text-neutral-500 font-sans font-medium">
+            AI Assistant is typing
           </span>
 
-          <div className="flex items-center space-x-1 ml-1 pt-1">
+          <div className="flex items-center space-x-1.5 ml-1 pt-1">
             <motion.div
-              className="w-1.5 h-1.5 rounded-full bg-[#E30613]"
+              className="w-1.5 h-1.5 rounded-full bg-[#E31E24]"
               variants={dotVariants}
               initial="initial"
               animate="animate"
               transition={dotTransition(0)}
             />
             <motion.div
-              className="w-1.5 h-1.5 rounded-full bg-[#E30613]"
+              className="w-1.5 h-1.5 rounded-full bg-[#E31E24]"
               variants={dotVariants}
               initial="initial"
               animate="animate"
               transition={dotTransition(0.15)}
             />
             <motion.div
-              className="w-1.5 h-1.5 rounded-full bg-[#E30613]"
+              className="w-1.5 h-1.5 rounded-full bg-[#E31E24]"
               variants={dotVariants}
               initial="initial"
               animate="animate"

@@ -12,11 +12,11 @@ export const parseInlineMarkdown = (text) => {
 
   return parts.map((part, index) => {
     if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={index} className="font-semibold text-white">{part.slice(2, -2)}</strong>;
+      return <strong key={index} className="font-bold text-neutral-900">{part.slice(2, -2)}</strong>;
     }
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
-        <code key={index} className="px-1.5 py-0.5 rounded bg-white/10 font-mono text-xs text-red-400 border border-white/5">
+        <code key={index} className="px-1.5 py-0.5 rounded bg-neutral-100 font-mono text-xs text-red-650 border border-neutral-200/50">
           {part.slice(1, -1)}
         </code>
       );
@@ -31,7 +31,7 @@ export const parseInlineMarkdown = (text) => {
           href={linkMatch[2]} 
           target="_blank" 
           rel="noopener noreferrer" 
-          className="text-red-400 hover:text-red-300 underline transition-colors"
+          className="text-blue-600 hover:text-blue-500 underline transition-colors"
         >
           {linkMatch[1]}
         </a>
@@ -59,7 +59,7 @@ export const renderMarkdown = (markdownText) => {
   const flushList = (key) => {
     if (currentList.length > 0) {
       elements.push(
-        <ul key={`list-${key}`} className="list-disc pl-5 my-2 space-y-1 text-sm text-white/95">
+        <ul key={`list-${key}`} className="list-disc pl-5 my-2 space-y-1 text-sm text-neutral-750">
           {currentList}
         </ul>
       );
@@ -76,11 +76,11 @@ export const renderMarkdown = (markdownText) => {
         // Close code block
         inCodeBlock = false;
         elements.push(
-          <div key={`code-${i}`} className="my-3 rounded-lg overflow-hidden border border-white/10 bg-black/40 font-mono text-xs text-green-400 shadow-inner">
+          <div key={`code-${i}`} className="my-3 rounded-lg overflow-hidden border border-neutral-200 bg-neutral-50 font-mono text-xs text-emerald-800 shadow-inner">
             {codeLang && (
-              <div className="bg-white/5 px-4 py-1.5 text-[10px] text-white/40 border-b border-white/5 uppercase tracking-wider flex justify-between items-center">
+              <div className="bg-neutral-100 px-4 py-1.5 text-[10px] text-neutral-500 border-b border-neutral-200 uppercase tracking-wider flex justify-between items-center">
                 <span>{codeLang}</span>
-                <span className="text-white/20 select-none">Code</span>
+                <span className="text-neutral-400 select-none">Code</span>
               </div>
             )}
             <pre className="p-4 overflow-x-auto whitespace-pre">
@@ -120,7 +120,7 @@ export const renderMarkdown = (markdownText) => {
     // Handle headers
     if (line.trim().startsWith('###')) {
       elements.push(
-        <h4 key={`h3-${i}`} className="text-base font-semibold mt-3 mb-1 text-white border-b border-white/5 pb-1">
+        <h4 key={`h3-${i}`} className="text-base font-bold mt-3 mb-1 text-neutral-900 border-b border-neutral-100 pb-1">
           {parseInlineMarkdown(line.trim().substring(4))}
         </h4>
       );
@@ -128,7 +128,7 @@ export const renderMarkdown = (markdownText) => {
     }
     if (line.trim().startsWith('##')) {
       elements.push(
-        <h3 key={`h2-${i}`} className="text-lg font-bold mt-4 mb-2 text-white border-b border-white/10 pb-1">
+        <h3 key={`h2-${i}`} className="text-lg font-bold mt-4 mb-2 text-neutral-900 border-b border-neutral-200 pb-1">
           {parseInlineMarkdown(line.trim().substring(3))}
         </h3>
       );
@@ -145,7 +145,7 @@ export const renderMarkdown = (markdownText) => {
 
     // Standard paragraph line
     elements.push(
-      <p key={`p-${i}`} className="text-sm my-1 leading-relaxed text-white/95">
+      <p key={`p-${i}`} className="text-sm my-1 leading-relaxed text-neutral-750">
         {parseInlineMarkdown(line)}
       </p>
     );
