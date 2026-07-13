@@ -3589,6 +3589,17 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 }
 
 /* Admin Dashboard Layout */
+.admin-dashboard-page, .admin-login-page {
+  --ink: #f8fafc;
+  --ink-2: #ffffff;
+  --panel: #ffffff;
+  --white: #0f172a;
+  --grey: #475569;
+  --grey-dark: #64748b;
+  --line: rgba(15, 23, 42, 0.08);
+  --line-soft: rgba(15, 23, 42, 0.04);
+}
+
 .admin-dashboard-page {
   height: 100vh;
   overflow: hidden;
@@ -3606,7 +3617,7 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
   top: 0;
   overflow-y: auto;
   background: var(--panel);
-  border-right: 1px solid rgba(255, 255, 255, 0.08);
+  border-right: 1px solid var(--line);
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -3616,7 +3627,7 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 
 .admin-sidebar-brand {
   padding: 24px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   gap: 12px;
@@ -3625,14 +3636,15 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 .admin-sidebar-brand img {
   height: 24px;
   object-fit: contain;
+  filter: invert(1) hue-rotate(180deg);
 }
 
 .admin-tag {
   font-size: 10px;
   text-transform: uppercase;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.4);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: var(--grey);
+  border: 1px solid var(--line);
   border-radius: 4px;
   padding: 2px 6px;
   font-weight: 600;
@@ -3659,15 +3671,16 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 }
 
 .admin-sidebar-link:hover {
-  background: rgba(255, 255, 255, 0.04);
+  background: var(--line-soft);
   color: var(--white);
 }
 
 .admin-sidebar-link.active {
-  background: rgba(255, 255, 255, 0.08);
-  color: var(--white);
+  background: rgba(204, 0, 1, 0.05);
+  color: var(--red) !important;
   border-left-color: var(--red);
   border-radius: 8px;
+  font-weight: 600;
 }
 
 .admin-sidebar-link svg {
@@ -3678,8 +3691,8 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 
 .admin-sidebar-footer {
   padding: 16px;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(0, 0, 0, 0.15);
+  border-top: 1px solid var(--line);
+  background: rgba(0, 0, 0, 0.02);
 }
 
 .admin-footer-user {
@@ -3706,7 +3719,7 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 .admin-user-email {
   font-size: 13px;
   font-weight: 600;
-  color: rgba(255, 255, 255, 0.95);
+  color: var(--white);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -3727,7 +3740,7 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 
 .admin-logout-btn:hover {
   color: var(--red);
-  background: rgba(204, 0, 1, 0.1);
+  background: rgba(204, 0, 1, 0.08);
 }
 
 .admin-main {
@@ -3741,12 +3754,12 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 
 .admin-header {
   height: 64px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid var(--line);
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 32px;
-  background: rgba(22, 22, 22, 0.4);
+  background: var(--panel);
   box-sizing: border-box;
 }
 
@@ -3805,12 +3818,13 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 
 .admin-stat-card {
   background: var(--panel);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
   padding: 24px;
   border-radius: 12px;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.01), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
 }
 
 .admin-stat-card::before {
@@ -3857,19 +3871,20 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 
 .admin-welcome-panel {
   background: var(--panel);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--line);
   border-radius: 12px;
   padding: 32px;
   position: relative;
   overflow: hidden;
   box-sizing: border-box;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.01), 0 4px 6px -2px rgba(0, 0, 0, 0.01);
 }
 
 .admin-welcome-bg-logo {
   position: absolute;
   right: -40px;
   bottom: -40px;
-  opacity: 0.03;
+  opacity: 0.05;
   width: 320px;
   pointer-events: none;
 }
@@ -3903,8 +3918,8 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 .admin-welcome-chip {
   font-size: 11px;
   font-family: var(--font-mono);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--line-soft);
+  border: 1px solid var(--line);
   color: var(--grey);
   padding: 6px 12px;
   border-radius: 6px;
@@ -3917,7 +3932,7 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
   .admin-sidebar {
     width: 100%;
     border-right: none;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    border-bottom: 1px solid var(--line);
   }
   .admin-sidebar-nav {
     display: flex;
