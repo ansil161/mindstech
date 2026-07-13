@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { renderMarkdown } from '../../utils/markdown';
 import SourceReferences from './SourceReferences';
+import SupportAvatar from './SupportAvatar';
 
 const MessageBubble = ({ message }) => {
   const isUser = message.role === 'user';
@@ -51,13 +52,10 @@ const MessageBubble = ({ message }) => {
       ) : (
         /* Assistant message container - Max width 80%, rounded-[18px], px-5 py-3.5, avatar aligned with first line */
         <div className="flex items-start space-x-2.5 max-w-[80%] pl-4">
-          <img 
-            src="/mindstec-ai-logo.png" 
-            alt="AI" 
-            className="w-7 h-7 rounded-full border border-white/10 mt-1 object-cover flex-shrink-0 shadow-sm select-none"
-          />
+          <SupportAvatar size={30} showOnlineBadge={false} className="mt-1" />
           <div className="flex flex-col">
             <div className="bg-[#1A1A1E] border border-white/5 text-white text-[15px] px-5 py-3.5 rounded-[18px] rounded-tl-[4px] shadow-[0_4px_15px_rgba(0,0,0,0.25)] leading-[1.62] select-text">
+
               {renderMarkdown(displayedContent)}
               {/* Render references/sources when streaming completes */}
               {wordCount >= words.length && <SourceReferences sources={message.sources} />}

@@ -2,46 +2,48 @@ import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
+import { useTranslation } from 'react-i18next';
 
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Partners = () => {
+  const { t } = useTranslation();
   const [filter, setFilter] = useState('all');
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
 
-  const BRANDS = [
-    { id: '01', name: 'Avocor', cat: 'displays', desc: 'Interactive displays', img: '/assets/uploads/2019/03/1.png' },
-    { id: '02', name: 'Christie', cat: 'displays', desc: 'Projection', img: '/assets/uploads/2025/04/christie_250x250.png' },
-    { id: '03', name: 'Datapath', cat: 'displays', desc: 'Video wall control', img: '/assets/uploads/2025/04/datapath-1.png' },
-    { id: '04', name: 'Polywall', cat: 'displays', desc: 'Videowall software', img: '/assets/uploads/2025/04/polywall_250x250.png' },
-    { id: '05', name: 'Magnum', cat: 'displays', desc: 'Projection screens', img: '/assets/uploads/2025/04/magnum-2-1.png' },
-    { id: '06', name: 'Sonance', cat: 'audio', desc: 'Architectural audio', img: '/assets/uploads/2026/03/Screenshot-2026-03-24-124551.png' },
-    { id: '07', name: 'RDL', cat: 'audio', desc: 'Pro audio interfaces', img: '/assets/uploads/2025/04/RDL-1.png' },
-    { id: '08', name: 'Amino', cat: 'broadcast', desc: 'IPTV & streaming', img: '/assets/uploads/2026/04/Untitled-design-27.png' },
-    { id: '09', name: 'SalrayWorks', cat: 'broadcast', desc: 'Broadcast cameras', img: '/assets/uploads/2026/04/a1966c_b6188e7c73814b5fa62a8a2fdb076fe5mv2.jpeg' },
-    { id: '10', name: 'Telycam', cat: 'broadcast', desc: 'PTZ cameras', img: '/assets/uploads/2025/04/telycam_250x250.png' },
-    { id: '11', name: 'Humelab', cat: 'collab', desc: 'Hospitality tech', img: '/assets/uploads/2026/04/Untitled-design-19.png' },
-    { id: '12', name: 'Vizrt', cat: 'broadcast', desc: 'Live production', img: '/assets/uploads/2025/06/7-1.png' },
-    { id: '13', name: 'Lemco', cat: 'broadcast', desc: 'RF & IPTV headend', img: '/assets/uploads/2026/04/Untitled-design-26-1.png' },
-    { id: '14', name: 'T1V', cat: 'collab', desc: 'Visual collaboration', img: '/assets/uploads/2025/04/T1V-Orange-Standard-Logo-1.png' },
-    { id: '15', name: 'GoGet', cat: 'collab', desc: 'Workspace booking', img: '/assets/uploads/2025/04/GoGet_Filled_RGB_Black-1.png' },
-    { id: '16', name: 'iPort', cat: 'collab', desc: 'iPad enclosures', img: '/assets/uploads/2025/04/iPort_Logo_250x250.png' },
-    { id: '17', name: 'RTI', cat: 'collab', desc: 'Control & automation', img: '/assets/uploads/2025/04/logo-300x300-1.png' },
-    { id: '18', name: 'SCT', cat: 'collab', desc: 'Camera interfaces', img: '/assets/uploads/2025/04/SCT_250W.png' },
-    { id: '19', name: 'Blustream', cat: 'infra', desc: 'AV distribution', img: '/assets/uploads/2025/04/Blustream_Logo-3-1.png' },
-    { id: '20', name: 'NETGEAR AV', cat: 'infra', desc: 'AV networking', img: '/assets/uploads/2025/04/netgearav_250x250.png' },
-    { id: '21', name: 'Kordz', cat: 'infra', desc: 'Connectivity', img: '/assets/uploads/2025/04/kordz_250x250.png' },
-    { id: '22', name: 'B-Tech', cat: 'infra', desc: 'AV mounts', img: '/assets/uploads/2025/04/btech_250x250.png' },
-    { id: '23', name: 'MTC', cat: 'infra', desc: 'Mounting solutions', img: '/assets/uploads/2025/04/MTC_new-1.png' },
-    { id: '24', name: 'Sapling', cat: 'infra', desc: 'Synchronised clocks', img: '/assets/uploads/2025/04/sapling-1.png' },
-    { id: '25', name: 'Wavex', cat: 'infra', desc: 'AV accessories', img: '/assets/uploads/2025/04/Wavex-Transparent-Logo-Source_1024-1.png' }
+  const getBrands = (t) => [
+    { id: '01', name: 'Avocor', cat: 'displays', desc: t('partners.brands.b1'), img: '/assets/uploads/2019/03/1.png' },
+    { id: '02', name: 'Christie', cat: 'displays', desc: t('partners.brands.b2'), img: '/assets/uploads/2025/04/christie_250x250.png' },
+    { id: '03', name: 'Datapath', cat: 'displays', desc: t('partners.brands.b3'), img: '/assets/uploads/2025/04/datapath-1.png' },
+    { id: '04', name: 'Polywall', cat: 'displays', desc: t('partners.brands.b4'), img: '/assets/uploads/2025/04/polywall_250x250.png' },
+    { id: '05', name: 'Magnum', cat: 'displays', desc: t('partners.brands.b5'), img: '/assets/uploads/2025/04/magnum-2-1.png' },
+    { id: '06', name: 'Sonance', cat: 'audio', desc: t('partners.brands.b6'), img: '/assets/uploads/2026/03/Screenshot-2026-03-24-124551.png' },
+    { id: '07', name: 'RDL', cat: 'audio', desc: t('partners.brands.b7'), img: '/assets/uploads/2025/04/RDL-1.png' },
+    { id: '08', name: 'Amino', cat: 'broadcast', desc: t('partners.brands.b8'), img: '/assets/uploads/2026/04/Untitled-design-27.png' },
+    { id: '09', name: 'SalrayWorks', cat: 'broadcast', desc: t('partners.brands.b9'), img: '/assets/uploads/2026/04/a1966c_b6188e7c73814b5fa62a8a2fdb076fe5mv2.jpeg' },
+    { id: '10', name: 'Telycam', cat: 'broadcast', desc: t('partners.brands.b10'), img: '/assets/uploads/2025/04/telycam_250x250.png' },
+    { id: '11', name: 'Humelab', cat: 'collab', desc: t('partners.brands.b11'), img: '/assets/uploads/2026/04/Untitled-design-19.png' },
+    { id: '12', name: 'Vizrt', cat: 'broadcast', desc: t('partners.brands.b12'), img: '/assets/uploads/2025/06/7-1.png' },
+    { id: '13', name: 'Lemco', cat: 'broadcast', desc: t('partners.brands.b13'), img: '/assets/uploads/2026/04/Untitled-design-26-1.png' },
+    { id: '14', name: 'T1V', cat: 'collab', desc: t('partners.brands.b14'), img: '/assets/uploads/2025/04/T1V-Orange-Standard-Logo-1.png' },
+    { id: '15', name: 'GoGet', cat: 'collab', desc: t('partners.brands.b15'), img: '/assets/uploads/2025/04/GoGet_Filled_RGB_Black-1.png' },
+    { id: '16', name: 'iPort', cat: 'collab', desc: t('partners.brands.b16'), img: '/assets/uploads/2025/04/iPort_Logo_250x250.png' },
+    { id: '17', name: 'RTI', cat: 'collab', desc: t('partners.brands.b17'), img: '/assets/uploads/2025/04/logo-300x300-1.png' },
+    { id: '18', name: 'SCT', cat: 'collab', desc: t('partners.brands.b18'), img: '/assets/uploads/2025/04/SCT_250W.png' },
+    { id: '19', name: 'Blustream', cat: 'infra', desc: t('partners.brands.b19'), img: '/assets/uploads/2025/04/Blustream_Logo-3-1.png' },
+    { id: '20', name: 'NETGEAR AV', cat: 'infra', desc: t('partners.brands.b20'), img: '/assets/uploads/2025/04/netgearav_250x250.png' },
+    { id: '21', name: 'Kordz', cat: 'infra', desc: t('partners.brands.b21'), img: '/assets/uploads/2025/04/kordz_250x250.png' },
+    { id: '22', name: 'B-Tech', cat: 'infra', desc: t('partners.brands.b22'), img: '/assets/uploads/2025/04/btech_250x250.png' },
+    { id: '23', name: 'MTC', cat: 'infra', desc: t('partners.brands.b23'), img: '/assets/uploads/2025/04/MTC_new-1.png' },
+    { id: '24', name: 'Sapling', cat: 'infra', desc: t('partners.brands.b24'), img: '/assets/uploads/2025/04/sapling-1.png' },
+    { id: '25', name: 'Wavex', cat: 'infra', desc: t('partners.brands.b25'), img: '/assets/uploads/2025/04/Wavex-Transparent-Logo-Source_1024-1.png' }
   ];
 
   useEffect(() => {
     // Reset cards ref array length
-    cardsRef.current = cardsRef.current.slice(0, BRANDS.length);
+    cardsRef.current = cardsRef.current.slice(0, getBrands(t).length);
 
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -149,6 +151,7 @@ const Partners = () => {
     }, containerRef);
 
     return () => ctx.revert();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Animate cards on filter change
@@ -167,13 +170,13 @@ const Partners = () => {
     }
   }, [filter]);
 
-  const categories = [
-    { code: 'all', label: 'All' },
-    { code: 'displays', label: 'Displays & Video Walls' },
-    { code: 'audio', label: 'Audio' },
-    { code: 'broadcast', label: 'Broadcast & Media' },
-    { code: 'collab', label: 'Collaboration & Control' },
-    { code: 'infra', label: 'Connectivity & Infrastructure' }
+  const getCategories = (t) => [
+    { code: 'all', label: t('partners.categories.all') },
+    { code: 'displays', label: t('partners.categories.displays') },
+    { code: 'audio', label: t('partners.categories.audio') },
+    { code: 'broadcast', label: t('partners.categories.broadcast') },
+    { code: 'collab', label: t('partners.categories.collab') },
+    { code: 'infra', label: t('partners.categories.infra') }
   ];
 
   return (
@@ -181,24 +184,24 @@ const Partners = () => {
       {/* HERO */}
       <section className="phero" aria-label="Our partners">
         <h1 className="display" id="pheroH">
-          <span className="line-mask"><span className="w">World-class brands.</span></span>
-          <span className="line-mask"><span className="w"><em>One distributor.</em></span></span>
+          <span className="line-mask"><span className="w">{t('partners.hero.line1')}</span></span>
+          <span className="line-mask"><span className="w"><em>{t('partners.hero.line2')}</em></span></span>
         </h1>
         <div className="phero-side reveal" id="pheroSide">
-          <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>Our Partners</span>
-          <p>Twenty-five manufacturers, one price list. We represent the world's leading AV brands across displays, audio, broadcast, collaboration and connectivity — so our dealers can specify an entire project from a single partner.</p>
+          <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>{t('partners.hero.label')}</span>
+          <p>{t('partners.hero.brief')}</p>
         </div>
       </section>
 
       <div className="phero-meta reveal">
-        <div className="fact"><b>25 brands</b><span>Represented portfolio</span></div>
-        <div className="fact"><b>5 categories</b><span>Every AV vertical covered</span></div>
-        <div className="fact"><b>3 regions</b><span>Middle East · Africa · Asia</span></div>
+        <div className="fact"><b>{t('partners.meta.fact1_b')}</b><span>{t('partners.meta.fact1_s')}</span></div>
+        <div className="fact"><b>{t('partners.meta.fact2_b')}</b><span>{t('partners.meta.fact2_s')}</span></div>
+        <div className="fact"><b>{t('partners.meta.fact3_b')}</b><span>{t('partners.meta.fact3_s')}</span></div>
       </div>
 
       {/* FILTERS */}
       <div className="filters" id="filters" role="group" aria-label="Filter partners by category">
-        {categories.map(cat => (
+        {getCategories(t).map(cat => (
           <button
             key={cat.code}
             className={`filter-btn ${filter === cat.code ? 'on' : ''}`}
@@ -212,7 +215,7 @@ const Partners = () => {
 
       {/* PARTNER GRID */}
       <div className="pgrid" id="pgrid">
-        {BRANDS.map((brand, i) => {
+        {getBrands(t).map((brand, i) => {
           const isVisible = filter === 'all' || brand.cat === filter;
           return (
             <div
@@ -240,25 +243,25 @@ const Partners = () => {
       <section className="why" aria-label="Why partner with Mindstec">
         <div className="section-head">
           <div>
-            <span className="label label--red">For manufacturers &amp; dealers</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>Why brands choose <em>Mindstec</em></h2>
+            <span className="label label--red">{t('partners.why.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('partners.why.title_main')} <em>{t('partners.why.title_em')}</em></h2>
           </div>
         </div>
         <div className="why-list">
           <div className="why-row reveal">
             <span className="num">01</span>
-            <h3>One price list, every category</h3>
-            <p>A curated portfolio that lets integrators specify an entire project — displays, audio, control, connectivity — from a single distribution partner.</p>
+            <h3>{t('partners.why.p1_title')}</h3>
+            <p>{t('partners.why.p1_desc')}</p>
           </div>
           <div className="why-row reveal">
             <span className="num">02</span>
-            <h3>Real market access</h3>
-            <p>Established dealer networks across the Middle East, Africa and Asia, with in-region stock, local currency and logistics built for each market.</p>
+            <h3>{t('partners.why.p2_title')}</h3>
+            <p>{t('partners.why.p2_desc')}</p>
           </div>
           <div className="why-row reveal">
             <span className="num">03</span>
-            <h3>Growth without competition</h3>
-            <p>We support dealers with sales, marketing and promotion — and we never compete with them. Product specialists back every brand we carry.</p>
+            <h3>{t('partners.why.p3_title')}</h3>
+            <p>{t('partners.why.p3_desc')}</p>
           </div>
         </div>
       </section>
@@ -269,24 +272,24 @@ const Partners = () => {
           <img src="/assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy" />
         </div>
         <div className="cta-inner">
-          <span className="label label--red">Partner with us</span>
+          <span className="label label--red">{t('partners.cta.label')}</span>
           <h2 className="display" id="ctaH" style={{ marginTop: '20px' }}>
-            <span className="line-mask"><span className="w">Your brand,</span></span>
-            <span className="line-mask"><span className="w"><em>our region.</em></span></span>
+            <span className="line-mask"><span className="w">{t('partners.cta.title_main1')}</span></span>
+            <span className="line-mask"><span className="w"><em>{t('partners.cta.title_main2')}</em></span></span>
           </h2>
           <div className="cta-row reveal">
             <div className="cta-actions">
               <Button to="/contact?s=partner" className="btn btn--solid">
-                <span>Become a partner</span>
+                <span>{t('partners.cta.btn1')}</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M9 7h8v8" />
                 </svg>
               </Button>
-              <Button to="/contact?s=reseller" className="btn"><span>Become a reseller</span></Button>
+              <Button to="/contact?s=reseller" className="btn"><span>{t('partners.cta.btn2')}</span></Button>
             </div>
             <div className="cta-contacts">
-              <div className="c-item"><span>Partnerships</span><a href="mailto:partners@mindstec.com">partners@mindstec.com</a></div>
-              <div className="c-item"><span>India operations</span><a href="tel:+918045256922">+91 80 4525 6922</a></div>
+              <div className="c-item"><span>{t('contact_info.partner_label')}</span><a href={`mailto:${t('contact_info.partner_email')}`}>{t('contact_info.partner_email')}</a></div>
+              <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
             </div>
           </div>
         </div>

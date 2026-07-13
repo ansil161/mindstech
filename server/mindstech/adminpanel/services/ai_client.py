@@ -193,3 +193,9 @@ class AIClient:
             "tenant_id": tenant_id
         }
         return self._request("POST", "/chat", json_data=payload)
+
+    def get_chat_history(self, conversation_id: str) -> List[Dict[str, Any]]:
+        """
+        Fetch conversation logs from the AI microservice.
+        """
+        return self._request("GET", f"/chat/history/{conversation_id}")

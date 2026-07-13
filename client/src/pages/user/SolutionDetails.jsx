@@ -3,10 +3,11 @@ import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
+import { useTranslation } from 'react-i18next';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SOLUTIONS = {
+const SOLUTIONS_RAW = {
   'digital-signage': {
     name: 'Digital Signage',
     title: 'Digital <em>Signage</em>',
@@ -161,10 +162,30 @@ const BRAND_BASE = '/assets/uploads/';
 
 const SolutionDetails = () => {
   const { slug } = useParams();
+  const { t } = useTranslation();
   const containerRef = useRef(null);
   
-  const data = SOLUTIONS[slug] || SOLUTIONS['digital-signage'];
-  const nextData = SOLUTIONS[data.next];
+  const slugs = ['digital-signage', 'control-rooms', 'conferencing', 'hospitality', 'broadcast', 'live-events'];
+  const solIndex = slugs.indexOf(slug) !== -1 ? slugs.indexOf(slug) : 0;
+
+  const getSolutionData = (s) => {
+    const raw = SOLUTIONS_RAW[s] || SOLUTIONS_RAW['digital-signage'];
+    return {
+      ...raw,
+      name: t(`solutions.details.${s}.name`, raw.name),
+      title: t(`solutions.details.${s}.title`, raw.title),
+      intro: t(`solutions.details.${s}.intro`, raw.intro),
+      fact: t(`solutions.details.${s}.fact`, raw.fact),
+      capsSide: t(`solutions.details.${s}.capsSide`, raw.capsSide),
+      caps: raw.caps.map((c, i) => [
+        t(`solutions.details.${s}.caps.${i}.title`, c[0]),
+        t(`solutions.details.${s}.caps.${i}.desc`, c[1])
+      ])
+    };
+  };
+
+  const data = getSolutionData(slug);
+  const nextData = getSolutionData(data.next);
 
   useEffect(() => {
     document.title = `${data.name} — Mindstec Distribution`;
@@ -281,7 +302,7 @@ const SolutionDetails = () => {
       {/* DETAIL HERO */}
       <section className="dhero" aria-label={`${data.name} details`}>
         <div className="crumb">
-          <Link to="/solutions">Solutions</Link>
+          <Link to="/solutions">{t('navbar.solutions')}</Link>
           <i>·</i>
           <b id="crumbName">{data.name}</b>
         </div>
@@ -289,20 +310,20 @@ const SolutionDetails = () => {
           {renderTitle(data.title)}
         </h1>
         <div className="dhero-row">
-          <p id="dIntro">{data.intro}</p>
+          <p id="dIntro">{t(`solutions.arr.${solIndex}.desc`)}</p>
           <div className="fact">
-            <b id="dFact">{data.fact}</b>
-            <span>Primary verticals</span>
+            <b id="dFact">{t(`solutions.arr.${solIndex}.cat`)}</b>
+            <span>{t('solutions.primary_verticals', 'Primary verticals')}</span>
           </div>
         </div>
         <div className="dhero-cta reveal" style={{ marginTop: 'clamp(24px, 3vw, 40px)', display: 'flex', gap: '16px', flexWrap: 'wrap' }}>
           <Button solid to="/contact" id="dGetBtn">
-            <span>Get this solution</span>
+            <span>{t('solutions.get_solution', 'Get this solution')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M7 17L17 7M9 7h8v8" />
             </svg>
           </Button>
-          <Button to="/solutions"><span>All solutions</span></Button>
+          <Button to="/solutions"><span>{t('solutions.all_solutions', 'All solutions')}</span></Button>
         </div>
       </section>
 
@@ -315,10 +336,10 @@ const SolutionDetails = () => {
       <section className="caps" aria-label="Capabilities">
         <div className="section-head">
           <div>
-            <span className="label label--red">Capabilities</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>What we <em>deliver</em></h2>
+            <span className="label label--red">{t('solutions.capabilities', 'Capabilities')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('solutions.what_we_deliver_main', 'What we')} <em>{t('solutions.what_we_deliver_em', 'deliver')}</em></h2>
           </div>
-          <p className="lede side" id="dCapsSide">{data.capsSide}</p>
+          <p className="lede side" id="dCapsSide">{t(`solutions.arr.${solIndex}.desc`)}</p>
         </div>
         <div className="caps-list" id="capsList">
           {data.caps.map(([h, p], i) => (
@@ -343,7 +364,7 @@ const SolutionDetails = () => {
 
       {/* BRANDS */}
       <section className="dbrands" aria-label="Brands for this vertical">
-        <h2 className="display">Brands we distribute <em>for this vertical</em></h2>
+        <h2 className="display">{t('solutions.brands_we_distribute', 'Brands we distribute')} <em>{t('solutions.for_this_vertical', 'for this vertical')}</em></h2>
         <div className="dbrands-row" id="dBrandsRow">
           {data.brands.map((brandName, i) => {
             const logoSubPath = BRAND_LOGOS[brandName];
@@ -366,7 +387,7 @@ const SolutionDetails = () => {
         </div>
         <div className="next-inner">
           <div>
-            <span className="label">Next solution</span>
+            <span className="label">{t('solutions.next')}</span>
             <h2 className="display" dangerouslySetInnerHTML={{ __html: nextData.title }} />
           </div>
           <div className="next-arrow" aria-hidden="true">

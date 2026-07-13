@@ -95,13 +95,7 @@ const Layout = ({ children }) => {
     }
   }, [drawerOpen]);
 
-  const cycleRegion = () => {
-    const regions = ['India', 'Africa', 'Poland'];
-    setRegion((prev) => {
-      const idx = regions.indexOf(prev);
-      return regions[(idx + 1) % regions.length];
-    });
-  };
+
 
   return (
     <div className="min-h-screen bg-ink text-white font-body selection:bg-red selection:text-white antialiased">
@@ -110,7 +104,7 @@ const Layout = ({ children }) => {
         drawerOpen={drawerOpen} 
         setDrawerOpen={setDrawerOpen} 
         region={region} 
-        cycleRegion={cycleRegion} 
+        setRegion={setRegion} 
       />
 
       {/* Mobile Drawer */}

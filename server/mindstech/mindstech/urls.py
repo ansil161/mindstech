@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path,include
 from django.conf import settings
 from django.conf.urls.static import static
+from adminpanel.translation_views import TranslateDynamicContentView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/accounts/', include('accounts.urls')),
     path('api/v1/admin/', include('adminpanel.urls')),
+    path('api/v1/translate/', TranslateDynamicContentView.as_view(), name='translate-dynamic'),
 ]
 
 if settings.DEBUG:

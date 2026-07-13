@@ -3,13 +3,20 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import axios from '../../api/axios';
+import { useTranslation } from 'react-i18next';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Blogs = () => {
   const containerRef = useRef(null);
+  const { t } = useTranslation();
   const [posts, setPosts] = useState([]);
   const [featuredPost, setFeaturedPost] = useState(null);
+
+  // Dynamic Translations
+  const { translatedData: translatedPosts, isTranslating: isTranslatingPosts } = useDynamicTranslation(posts, ['title', 'desc', 'cat'], 'blogs_list');
+  const { translatedData: translatedFeatured, isTranslating: isTranslatingFeatured } = useDynamicTranslation(featuredPost, ['title', 'desc', 'cat'], 'featured_blog');
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -137,27 +144,27 @@ const Blogs = () => {
       {/* HERO */}
       <section className="shero" aria-label="Blogs">
         <h1 className="display" id="sheroH">
-          <span className="line-mask"><span className="w">Notes from</span></span>
-          <span className="line-mask"><span className="w">the <em>AV floor.</em></span></span>
+          <span className="line-mask"><span className="w">{t('blogs.hero.line1')}</span></span>
+          <span className="line-mask"><span className="w">{t('blogs.hero.line2', 'the AV floor.')}</span></span>
         </h1>
         <div className="shero-side reveal" id="sheroSide">
-          <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>Blogs — The Mindstec Journal</span>
-          <p>Buying guides, explainers and field notes from our product specialists — the same advice we give integrators and enterprise clients every day, written down.</p>
+          <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>{t('blogs.hero.label')}</span>
+          <p>{t('blogs.hero.brief')}</p>
         </div>
       </section>
 
       {/* FEATURED */}
-      {featuredPost && (
-        <a className="bfeat" href={featuredPost.href} target="_blank" rel="noopener noreferrer">
-          <span className="bf-tag">Featured</span>
+      {translatedFeatured && (
+        <a className={`bfeat ${isTranslatingFeatured ? 'opacity-50' : ''}`} href={translatedFeatured.href} target="_blank" rel="noopener noreferrer" style={{ transition: 'opacity 0.3s' }}>
+          <span className="bf-tag">{t('blogs.featured')}</span>
           <div className="bf-meta">
-            <span className="cat">{featuredPost.cat}</span>
-            <time datetime={featuredPost.dateStr || featuredPost.publish_date}>{featuredPost.date}</time>
+            <span className="cat">{translatedFeatured.cat}</span>
+            <time datetime={translatedFeatured.dateStr || translatedFeatured.publish_date}>{translatedFeatured.date}</time>
           </div>
-          <h2 className="display">{featuredPost.title}</h2>
-          <p>{featuredPost.desc}</p>
+          <h2 className="display">{translatedFeatured.title}</h2>
+          <p>{translatedFeatured.desc}</p>
           <span className="bf-go">
-            Read the article
+            {t('blogs.read_article')}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M7 17L17 7M9 7h8v8" />
             </svg>
@@ -167,8 +174,8 @@ const Blogs = () => {
 
       {/* GRID */}
       <div className="bwrap">
-        <div className="bgrid">
-          {posts.map((post, idx) => (
+        <div className={`bgrid ${isTranslatingPosts ? 'opacity-50' : ''}`} style={{ transition: 'opacity 0.3s' }}>
+          {translatedPosts.map((post, idx) => (
             <a className="bcard reveal" href={post.href} target="_blank" rel="noopener noreferrer" key={idx}>
               <div className="bc-meta">
                 <span className="cat">{post.cat}</span>
@@ -177,7 +184,7 @@ const Blogs = () => {
               <h3>{post.title}</h3>
               <p>{post.desc}</p>
               <span className="bc-go">
-                Read article 
+                {t('blogs.read_article_short')} 
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M9 7h8v8" />
                 </svg>
@@ -187,7 +194,7 @@ const Blogs = () => {
         </div>
         <div className="ball reveal">
           <a className="btn" href="https://www.mindstec.com/in/blogs/" target="_blank" rel="noopener noreferrer">
-            <span>Browse all articles on mindstec.com</span>
+            <span>{t('blogs.browse_all')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M7 17L17 7M9 7h8v8" />
             </svg>
@@ -217,8 +224,8 @@ const Blogs = () => {
               <Button to="/solutions" className="btn"><span>See our solutions</span></Button>
             </div>
             <div className="cta-contacts">
-              <div className="c-item"><span>India operations</span><a href="tel:+918045256922">+91 80 4525 6922</a></div>
-              <div className="c-item"><span>Write to us</span><a href="mailto:india@mindstec.com">india@mindstec.com</a></div>
+              <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
+              <div className="c-item"><span>Email</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
             </div>
           </div>
         </div>

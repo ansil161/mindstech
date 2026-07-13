@@ -1,5 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
+import SupportAvatar from './SupportAvatar';
 
 const dotVariants = {
   initial: {
@@ -16,16 +17,19 @@ const dotTransition = (delay) => ({
   repeatType: 'reverse',
   ease: 'easeInOut',
   delay: delay,
+  y: {
+    duration: 0.4,
+    repeat: Infinity,
+    repeatType: 'reverse',
+    ease: 'easeInOut',
+    delay: delay
+  }
 });
 
 const TypingIndicator = () => {
   return (
-    <div className="flex items-start space-x-2.5 w-full select-none">
-      <img 
-        src="/mindstec-ai-logo.png" 
-        alt="AI" 
-        className="w-7 h-7 rounded-full border border-white/10 mt-1 object-cover flex-shrink-0 shadow-sm"
-      />
+    <div className="flex items-start space-x-2.5 w-full select-none pl-4">
+      <SupportAvatar size={30} showOnlineBadge={false} className="mt-1" />
       <div className="flex flex-col">
         <motion.div
           className="flex items-center space-x-2 px-5 py-3.5 rounded-[18px] rounded-tl-[4px] bg-[#1A1A1E] border border-white/5 shadow-[0_4px_15px_rgba(0,0,0,0.2)]"
@@ -35,8 +39,9 @@ const TypingIndicator = () => {
           transition={{ duration: 0.2 }}
         >
           <span className="text-[13px] text-white/60 font-medium tracking-wide font-sans">
-            Mindstec AI is analyzing
+            Support Agent is typing...
           </span>
+
           <div className="flex items-center space-x-1 ml-1 pt-1">
             <motion.div
               className="w-1.5 h-1.5 rounded-full bg-[#E30613]"

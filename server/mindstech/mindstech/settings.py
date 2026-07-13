@@ -118,6 +118,14 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+# Caching Configuration
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+        'LOCATION': os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0'),
+    }
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 

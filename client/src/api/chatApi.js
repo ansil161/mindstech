@@ -6,7 +6,7 @@
  */
 import apiClient from './axios';
 
-const USE_MOCK = true; // Toggle for mock vs active Django backend communication
+const USE_MOCK = false; // Toggle for mock vs active Django backend communication
 
 // Realistic mock dialogue log to show scroll bars and demo capability
 const MOCK_HISTORY = [

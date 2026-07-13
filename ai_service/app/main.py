@@ -36,6 +36,12 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+from app.api.v1.chat import router as chat_router
+from app.api.v1.ingest import router as ingest_router
+
+app.include_router(chat_router, prefix="/api/v1/internal")
+app.include_router(ingest_router, prefix="/api/v1/internal")
+
 # Configure CORS Middleware
 if settings.BACKEND_CORS_ORIGINS:
     app.add_middleware(

@@ -69,12 +69,12 @@ class Blog(models.Model):
     def __str__(self):
         return f"{self.title} ({self.cat})"
 
-class SynchronizedModel(models.Model):
+class BaseModel(models.Model):
     """
     Abstract base model for tracking document synchronization status,
-    versioning, and tenant mapping.
+    versioning, and .
     """
-    tenant_id = models.CharField(max_length=100, default="default")
+    
     version = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -91,74 +91,67 @@ class SynchronizedModel(models.Model):
         super().save(*args, **kwargs)
 
 
-class FAQ(SynchronizedModel):
-    """
-    Represents Frequently Asked Questions content to be synced to the RAG service.
-    """
-    question = models.TextField()
-    answer = models.TextField()
+class KnowledgeBase(BaseModel):
+    KNOWLEDGE_TYPES = [
+        ("company", "Company Page"),
+        ("faq", "FAQ"),
+        ("product", "Product"),
+        ("policy", "Policy"),
+        ("documentation", "Documentation"),
+    ]
 
-    class Meta:
-        db_table = 'synchronized_faqs'
-
-    def __str__(self):
-        return f"FAQ ({self.id}): {self.question[:50]}..."
-
-
-class Product(SynchronizedModel):
-    """
-    Represents product specification and descriptions synchronized to the search indexes.
-    """
-    name = models.CharField(max_length=200)
-    description = models.TextField()
-
-    class Meta:
-        db_table = 'synchronized_products'
-
-    def __str__(self):
-        return f"Product ({self.id}): {self.name}"
-
-
-class CompanyPage(SynchronizedModel):
-    """
-    Represents corporate static pages (e.g. About Us, Contact, History) for AI ingestion.
-    """
-    title = models.CharField(max_length=200)
+    knowledge_type = models.CharField(
+        max_length=30,
+        choices=KNOWLEDGE_TYPES
+    )
+    title = models.CharField(max_length=255)
     content = models.TextField()
+    is_active = models.BooleanField(default=True)
 
     class Meta:
-        db_table = 'synchronized_company_pages'
+        db_table = "knowledge_base"
+        ordering = ["-updated_at"]
 
     def __str__(self):
-        return f"CompanyPage ({self.id}): {self.title}"
+        return f"{self.get_knowledge_type_display()} - {self.title}"
 
 
-class Policy(SynchronizedModel):
-    """
-    Represents internal procedures, HR guidelines, or security policies.
-    """
-    title = models.CharField(max_length=200)
-    content = models.TextField()
+class Document(BaseModel):
+    STATUS_CHOICES = (
+        ('Uploaded', 'Uploaded'),
+        ('Processing', 'Processing'),
+        ('Pending Review', 'Pending Review'),
+        ('Indexed', 'Indexed'),
+        ('Failed', 'Failed'),
+    )
+
+    title = models.CharField(max_length=255)
+    file = models.FileField(upload_to='documents/')
+    category = models.CharField(max_length=100)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Uploaded')
+    extracted_text = models.TextField(blank=True, null=True)
+    metadata = models.JSONField(default=dict, blank=True)
 
     class Meta:
-        db_table = 'synchronized_policies'
-        verbose_name_plural = 'Policies'
+        db_table = "documents"
+        ordering = ["-updated_at"]
 
     def __str__(self):
-        return f"Policy ({self.id}): {self.title}"
+        return f"{self.title} ({self.category}) - {self.status}"
 
-
-class Documentation(SynchronizedModel):
-    """
-    Represents technical or general document libraries.
-    """
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-
-    class Meta:
-        db_table = 'synchronized_documentation'
-        verbose_name_plural = 'Documentation'
-
-    def __str__(self):
-        return f"Doc ({self.id}): {self.title}"
-
+    def delete(self, *args, **kwargs):
+        from .tasks.ai_tasks import delete_document_task
+        
+        # Trigger Celery task to delete from Qdrant (using ID prefix)
+        delete_document_task.delay(f"document_{self.id}", self.category)
+        
+        # Delete the file from local storage
+        if self.file:
+            import os
+            if os.path.isfile(self.file.path):
+                try:
+                    os.remove(self.file.path)
+                except OSError:
+                    pass
+                    
+        super().delete(*args, **kwargs)

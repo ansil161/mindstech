@@ -51,6 +51,8 @@ apiClient.interceptors.request.use(
     if (csrfToken) {
       config.headers['X-CSRFToken'] = csrfToken;
     }
+    const currentLang = localStorage.getItem('i18nextLng') || 'en';
+    config.headers['Accept-Language'] = currentLang;
     return config;
   },
   (error) => Promise.reject(error)

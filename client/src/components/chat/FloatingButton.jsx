@@ -6,7 +6,7 @@ const FloatingButton = () => {
   const { isOpen, toggleChat } = useChat();
 
   return (
-    <div className="fixed bottom-6 right-6 z-50">
+    <div className="fixed bottom-6 right-6" style={{ zIndex: 99999 }}>
       {/* Outer pulsing ring animation - active when chat is closed to grab attention */}
       {!isOpen && (
         <span className="absolute -top-1 -right-1 flex h-4 w-4 z-10">

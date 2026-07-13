@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -19,6 +20,7 @@ const slugSubject = {
 };
 
 const Contact = () => {
+  const { t } = useTranslation();
   const [searchParams] = useSearchParams();
   const containerRef = useRef(null);
 
@@ -129,10 +131,10 @@ const Contact = () => {
     <main id="top" ref={containerRef}>
       {/* HERO */}
       <section className="chero" aria-label="Contact Mindstec">
-        <span className="label label--red">Contact us</span>
+        <span className="label label--red">{t('contact.label')}</span>
         <h1 className="display" id="cheroH">
-          <span className="line-mask"><span className="w">Have a project?</span></span>
-          <span className="line-mask"><span className="w"><em>Get in touch.</em></span></span>
+          <span className="line-mask"><span className="w">{t('contact.hero.line1')}</span></span>
+          <span className="line-mask"><span className="w"><em>{t('contact.hero.line2')}</em></span></span>
         </h1>
       </section>
 
@@ -142,18 +144,18 @@ const Contact = () => {
         <form className="cform reveal" id="cform" onSubmit={handleSubmit} aria-label="Contact form">
           <div className="frow">
             <div className="field">
-              <label htmlFor="fName">Name</label>
+              <label htmlFor="fName">{t('contact.form.name')}</label>
               <input
                 type="text"
                 id="fName"
-                placeholder="Your name"
+                placeholder={t("contact.form.name_ph")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
               />
             </div>
             <div className="field">
-              <label htmlFor="fPhone">Phone</label>
+              <label htmlFor="fPhone">{t('contact.form.phone')}</label>
               <input
                 type="tel"
                 id="fPhone"
@@ -165,7 +167,7 @@ const Contact = () => {
           </div>
 
           <div className="field">
-            <label htmlFor="fEmail">Email address</label>
+            <label htmlFor="fEmail">{t('contact.form.email')}</label>
             <input
               type="email"
               id="fEmail"
@@ -177,26 +179,26 @@ const Contact = () => {
           </div>
 
           <div className="field">
-            <label htmlFor="fSubject">Subject</label>
+            <label htmlFor="fSubject">{t('contact.form.subject')}</label>
             <select id="fSubject" value={subject} onChange={(e) => setSubject(e.target.value)} required>
-              <option value="General enquiries">General enquiries</option>
-              <option value="Become a partner">Become a partner</option>
-              <option value="Become a reseller">Become a reseller</option>
-              <option value="Visit the Experience Centre">Visit the Experience Centre</option>
-              <option value="Digital Signage">Digital Signage</option>
-              <option value="Control Rooms">Control Rooms</option>
-              <option value="Conferencing &amp; Collaboration">Conferencing &amp; Collaboration</option>
-              <option value="Hospitality AV">Hospitality AV</option>
-              <option value="Broadcast &amp; Production">Broadcast &amp; Production</option>
-              <option value="Live Events &amp; Immersive">Live Events &amp; Immersive</option>
+              <option value="General enquiries">{t('contact.form.opt.general')}</option>
+              <option value="Become a partner">{t('contact.form.opt.partner')}</option>
+              <option value="Become a reseller">{t('contact.form.opt.reseller')}</option>
+              <option value="Visit the Experience Centre">{t('contact.form.opt.experience')}</option>
+              <option value="Digital Signage">{t('contact.form.opt.digital')}</option>
+              <option value="Control Rooms">{t('contact.form.opt.control')}</option>
+              <option value="Conferencing &amp; Collaboration">{t('contact.form.opt.conferencing')}</option>
+              <option value="Hospitality AV">{t('contact.form.opt.hospitality')}</option>
+              <option value="Broadcast &amp; Production">{t('contact.form.opt.broadcast')}</option>
+              <option value="Live Events &amp; Immersive">{t('contact.form.opt.live')}</option>
             </select>
           </div>
 
           <div className="field">
-            <label htmlFor="fMsg">Message</label>
+            <label htmlFor="fMsg">{t('contact.form.message')}</label>
             <textarea
               id="fMsg"
-              placeholder="How can we help you? Feel free to get in touch!"
+              placeholder={t("contact.form.message_ph")}
               value={msg}
               onChange={(e) => setMsg(e.target.value)}
               required

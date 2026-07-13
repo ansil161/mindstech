@@ -5,8 +5,11 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
-from .models import Enquiry, Fieldwork, Solution, Blog
-from .serializers import EnquirySerializer, EnquiryStatusUpdateSerializer, FieldworkSerializer, SolutionSerializer, BlogSerializer
+from .models import Enquiry, Fieldwork, Solution, Blog, KnowledgeBase, Document
+from .serializers import (
+    EnquirySerializer, EnquiryStatusUpdateSerializer, FieldworkSerializer, 
+    SolutionSerializer, BlogSerializer, KnowledgeBaseSerializer, DocumentSerializer
+)
 
 class EnquirySubmitView(APIView):
     """
@@ -201,4 +204,215 @@ class BlogDetailView(APIView):
         )
 
 
+class KnowledgeBaseListCreateView(APIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
 
+    def get(self, request):
+        queryset = KnowledgeBase.objects.all()
+        
+        # Filtering by knowledge_type
+        knowledge_type = request.query_params.get('knowledge_type')
+        if knowledge_type:
+            queryset = queryset.filter(knowledge_type=knowledge_type)
+            
+        # Searching by title
+        search_query = request.query_params.get('search')
+        if search_query:
+            queryset = queryset.filter(title__icontains=search_query)
+
+        # Standard Pagination using PageNumberPagination
+        from rest_framework.pagination import PageNumberPagination
+        paginator = PageNumberPagination()
+        paginator.page_size = 15
+        paginated_queryset = paginator.paginate_queryset(queryset, request, view=self)
+        
+        serializer = KnowledgeBaseSerializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+    def post(self, request):
+        serializer = KnowledgeBaseSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class KnowledgeBaseDetailView(APIView):
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get_object(self, pk):
+        return get_object_or_404(KnowledgeBase, pk=pk)
+
+    def get(self, request, pk):
+        instance = self.get_object(pk)
+        serializer = KnowledgeBaseSerializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        instance = self.get_object(pk)
+        serializer = KnowledgeBaseSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        instance = self.get_object(pk)
+        serializer = KnowledgeBaseSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        instance = self.get_object(pk)
+        instance.delete()
+        return Response({"message": "KnowledgeBase entry deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+from .services.ai_client import AIClient, AIClientError
+from .tasks.ai_tasks import parse_document_task, index_document_task
+
+class ChatBotView(APIView):
+    """
+    Public chatbot query endpoint that retrieves context and invokes LLM generation.
+    """
+    permission_classes = [AllowAny]
+
+    def post(self, request):
+        message = request.data.get("message")
+        conversation_id = request.data.get("conversation_id", "default")
+        category = request.data.get("category")
+        tenant_id = request.data.get("tenant_id", "default")
+
+        if not message:
+            return Response({"error": "Message parameter is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        ai_client = AIClient()
+        try:
+            response_data = ai_client.chat_query(
+                message=message,
+                conversation_id=conversation_id,
+                category=category,
+                tenant_id=tenant_id
+            )
+            return Response(response_data, status=status.HTTP_200_OK)
+        except AIClientError as e:
+            return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+        except Exception as e:
+            return Response({"error": f"An unexpected error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class ChatHistoryView(APIView):
+    """
+    Public endpoint to retrieve the session's conversational logs.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, conversation_id):
+        ai_client = AIClient()
+        try:
+            history = ai_client.get_chat_history(conversation_id)
+            return Response(history, status=status.HTTP_200_OK)
+        except AIClientError as e:
+            return Response({"error": str(e)}, status=status.HTTP_502_BAD_GATEWAY)
+        except Exception as e:
+            return Response({"error": f"An unexpected error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class DocumentListCreateView(APIView):
+    """
+    Endpoint for Documents.
+    GET: List all documents.
+    POST: Upload a new document.
+    """
+    permission_classes = [IsAuthenticated, IsAdminUser]
+    parser_classes = [MultiPartParser, FormParser]
+
+    def get(self, request):
+        documents = Document.objects.all()
+        # Filtering by category
+        category = request.query_params.get('category')
+        if category:
+            documents = documents.filter(category=category)
+            
+        # Searching by title
+        search_query = request.query_params.get('search')
+        if search_query:
+            documents = documents.filter(title__icontains=search_query)
+
+        # Standard Pagination
+        from rest_framework.pagination import PageNumberPagination
+        paginator = PageNumberPagination()
+        paginator.page_size = 15
+        paginated_queryset = paginator.paginate_queryset(documents, request, view=self)
+        
+        serializer = DocumentSerializer(paginated_queryset, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+    def post(self, request):
+        serializer = DocumentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class DocumentDetailView(APIView):
+    """
+    Endpoint for Document details.
+    """
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def get_object(self, pk):
+        return get_object_or_404(Document, pk=pk)
+
+    def get(self, request, pk):
+        instance = self.get_object(pk)
+        serializer = DocumentSerializer(instance)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk):
+        instance = self.get_object(pk)
+        serializer = DocumentSerializer(instance, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def patch(self, request, pk):
+        instance = self.get_object(pk)
+        serializer = DocumentSerializer(instance, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk):
+        instance = self.get_object(pk)
+        instance.delete()
+        return Response({"message": "Document deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+class DocumentParseView(APIView):
+    """
+    Endpoint to trigger parsing of a document.
+    """
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def post(self, request, pk):
+        doc = get_object_or_404(Document, pk=pk)
+        parse_document_task.delay(doc.id)
+        return Response({"message": "Document parsing started.", "status": "Processing"}, status=status.HTTP_200_OK)
+
+
+class DocumentIndexView(APIView):
+    """
+    Endpoint to trigger indexing of a document into Qdrant.
+    """
+    permission_classes = [IsAuthenticated, IsAdminUser]
+
+    def post(self, request, pk):
+        doc = get_object_or_404(Document, pk=pk)
+        index_document_task.delay(doc.id)
+        return Response({"message": "Document indexing started.", "status": "Processing"}, status=status.HTTP_200_OK)

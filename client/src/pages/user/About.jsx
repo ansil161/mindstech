@@ -2,11 +2,13 @@ import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
+import { useTranslation } from 'react-i18next';
 
 
 gsap.registerPlugin(ScrollTrigger);
 
 const About = () => {
+  const { t } = useTranslation();
   const containerRef = useRef(null);
 
   useEffect(() => {
@@ -162,14 +164,14 @@ const About = () => {
   };
 
   const team = [
-    { name: 'Syed Abdul Wahab', role: 'Founder & CEO', img: '/assets/uploads/2026/04/WhatsApp-Image-2026-04-09-at-11.41.55-AM.jpeg' },
-    { name: 'Sabarishan N.', role: 'Managing Director', img: '/assets/uploads/2026/05/Sab-White-Bankground-1.jpg' },
-    { name: 'Manasa Iyer', role: 'Admin & Finance Director', img: '/assets/uploads/2026/04/WhatsApp-Image-2026-04-02-at-3.44.53-PM.jpeg' },
-    { name: 'Karthikeyan Sekar', role: 'Regional Manager, Sales — South', img: '/assets/uploads/2026/04/Karthikeyan-Sekar-Profile-Pic.jpg-5.jpeg' },
-    { name: 'Sneha Shenoy', role: 'HR Operations Manager', img: '/assets/uploads/2026/03/image2.png' },
-    { name: 'Karthikeyan Selvaraj', role: 'Country Head, Projects & Service Support', img: '/assets/uploads/2026/03/image3.png' },
-    { name: 'Flavia Robert', role: 'Finance & Administration Manager', img: '/assets/uploads/2026/03/image4.png' },
-    { name: 'Sajid Ali Kazi', role: 'Regional Sales Manager', img: '/assets/uploads/2026/03/image6.png' }
+    { name: t('about.team.names.founder'), role: t('about.team.roles.founder'), img: '/assets/uploads/2026/04/WhatsApp-Image-2026-04-09-at-11.41.55-AM.jpeg' },
+    { name: t('about.team.names.md'), role: t('about.team.roles.md'), img: '/assets/uploads/2026/05/Sab-White-Bankground-1.jpg' },
+    { name: t('about.team.names.finance_dir'), role: t('about.team.roles.finance_dir'), img: '/assets/uploads/2026/04/WhatsApp-Image-2026-04-02-at-3.44.53-PM.jpeg' },
+    { name: t('about.team.names.sales_south'), role: t('about.team.roles.sales_south'), img: '/assets/uploads/2026/04/Karthikeyan-Sekar-Profile-Pic.jpg-5.jpeg' },
+    { name: t('about.team.names.hr'), role: t('about.team.roles.hr'), img: '/assets/uploads/2026/03/image2.png' },
+    { name: t('about.team.names.country_head'), role: t('about.team.roles.country_head'), img: '/assets/uploads/2026/03/image3.png' },
+    { name: t('about.team.names.finance_mgr'), role: t('about.team.roles.finance_mgr'), img: '/assets/uploads/2026/03/image4.png' },
+    { name: t('about.team.names.sales_mgr'), role: t('about.team.roles.sales_mgr'), img: '/assets/uploads/2026/03/image6.png' }
   ];
 
   return (
@@ -177,15 +179,15 @@ const About = () => {
       {/* HERO */}
       <section className="ahero" aria-label="About Mindstec Distribution">
         <h1 className="display" id="aheroH">
-          <span className="line-mask"><span className="w">Passion.</span></span>
-          <span className="line-mask"><span className="w">Purpose.</span></span>
-          <span className="line-mask"><span className="w"><em>Progress.</em></span></span>
+          <span className="line-mask"><span className="w">{t('about.hero.line1')}</span></span>
+          <span className="line-mask"><span className="w">{t('about.hero.line2')}</span></span>
+          <span className="line-mask"><span className="w"><em>{t('about.hero.line3')}</em></span></span>
         </h1>
         <div className="ahero-side reveal" id="aheroSide">
-          <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>About Us</span>
-          <p>Mindstec Distribution is a leading procurement and distribution specialist for high-end audio-visual solutions across the Middle East, Africa and Asia — bringing cutting-edge AV technology to these regions at accessible prices.</p>
+          <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>{t('about.hero.label')}</span>
+          <p>{t('about.hero.brief')}</p>
           <Button href="#team" className="btn">
-            <span>Meet the team</span>
+            <span>{t('about.hero.meet_team_btn')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M12 5v14M6 13l6 6 6-6" />
             </svg>
@@ -194,15 +196,15 @@ const About = () => {
       </section>
 
       <div className="ahero-meta reveal">
-        <div className="fact"><b>Middle East · Africa · Asia</b><span>Regions served</span></div>
-        <div className="fact"><b>Global partner network</b><span>Manufacturers to dealers</span></div>
-        <div className="fact"><b>Bangalore HQ</b><span>India — SAARC operations</span></div>
+        <div className="fact"><b>{t('about.hero.fact1_b')}</b><span>{t('about.hero.fact1_s')}</span></div>
+        <div className="fact"><b>{t('about.hero.fact2_b')}</b><span>{t('about.hero.fact2_s')}</span></div>
+        <div className="fact"><b>{t('about.hero.fact3_b')}</b><span>{t('about.hero.fact3_s')}</span></div>
       </div>
 
       {/* HERO VISUAL */}
       <div className="ahero-visual reveal-img">
         <img id="aheroImg" src="/assets/uploads/2025/03/about-img-1.jpg" alt="A curved wall of bright video displays inside a dark showroom" fetchpriority="high" />
-        <span className="caption">High-end AV, delivered</span>
+        <span className="caption">{t('about.hero.caption')}</span>
       </div>
 
       {/* STORY */}
@@ -210,25 +212,25 @@ const About = () => {
         <div>
           <div className="story-text" id="storyText">
             <p>
-              {renderWords("We bridge the gap between global AV manufacturers and regional dealers — optimising supply chains, reducing costs and improving the efficiency of every operation in between.")}
+              {renderWords(t('about.story.p1'))}
             </p>
             <p>
-              {renderWords("With deep market knowledge and a tech-savvy team, we help the world's AV brands expand into new markets, and we support our dealers with sales, marketing and promotion — fostering growth without competition.")}
+              {renderWords(t('about.story.p2'))}
             </p>
           </div>
           <div className="story-more reveal">
-            <p>Committed to innovation and customer support, we continuously invest in technical expertise, ensuring seamless integration of AV solutions in high-profile projects worldwide.</p>
-            <p>Driven by excellence and innovation, we empower businesses to stay at the forefront of the evolving AV industry.</p>
+            <p>{t('about.story.more_p1')}</p>
+            <p>{t('about.story.more_p2')}</p>
           </div>
         </div>
         <div className="story-visual">
           <figure className="sv1 reveal-img">
             <img src="/assets/uploads/2025/03/about-img-2.jpg" alt="Extreme close-up of an LED display panel glowing magenta and red" loading="lazy" />
-            <figcaption>Pixel-level expertise</figcaption>
+            <figcaption>{t('about.story.cap1')}</figcaption>
           </figure>
           <figure className="sv2 reveal-img">
             <img src="/assets/uploads/2025/03/cta-bg.jpg" alt="Macro view of an LED video wall surface in blue and pink light" loading="lazy" />
-            <figcaption>Display technology</figcaption>
+            <figcaption>{t('about.story.cap2')}</figcaption>
           </figure>
         </div>
       </section>
@@ -239,25 +241,25 @@ const About = () => {
       <section className="pillars" aria-label="What we do">
         <div className="section-head">
           <div>
-            <span className="label label--red">What we do</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>Built on three <em>pillars.</em></h2>
+            <span className="label label--red">{t('about.pillars.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('about.pillars.title_main')} <em>{t('about.pillars.title_em')}</em></h2>
           </div>
         </div>
         <div className="pillar-list">
           <div className="pillar reveal">
             <span className="num">01</span>
-            <h3>Market access for manufacturers</h3>
-            <p>We help global AV manufacturers expand into the Middle East, Africa and Asia — with local knowledge, an established dealer network and in-region logistics.</p>
+            <h3>{t('about.pillars.p1_title')}</h3>
+            <p>{t('about.pillars.p1_desc')}</p>
           </div>
           <div className="pillar reveal">
             <span className="num">02</span>
-            <h3>Optimised supply chains</h3>
-            <p>Procurement, warehousing and distribution tuned for the region — reducing costs, shortening lead times and improving the efficiency of every project.</p>
+            <h3>{t('about.pillars.p2_title')}</h3>
+            <p>{t('about.pillars.p2_desc')}</p>
           </div>
           <div className="pillar reveal">
             <span className="num">03</span>
-            <h3>Dealer enablement</h3>
-            <p>Sales, marketing and promotional support for our dealers, plus the technical expertise to integrate AV solutions in high-profile projects — growth without competition.</p>
+            <h3>{t('about.pillars.p3_title')}</h3>
+            <p>{t('about.pillars.p3_desc')}</p>
           </div>
         </div>
       </section>
@@ -267,13 +269,13 @@ const About = () => {
         <div className="vm">
           <div className="vm-cell reveal">
             <span className="num">01</span>
-            <h3>Our <em>Vision</em></h3>
-            <p>To be a distribution leader in futuristic, convergent, technology-driven system solutions.</p>
+            <h3>{t('about.vm.vision_title')} <em>{t('about.vm.vision_em')}</em></h3>
+            <p>{t('about.vm.vision_desc')}</p>
           </div>
           <div className="vm-cell reveal">
             <span className="num">02</span>
-            <h3>Our <em>Mission</em></h3>
-            <p>To be a regional leader in cutting-edge audio-visual system solution distribution — creating immense value for our supplier-dealer networks while being first and fastest in bringing the latest technology to the region.</p>
+            <h3>{t('about.vm.mission_title')} <em>{t('about.vm.mission_em')}</em></h3>
+            <p>{t('about.vm.mission_desc')}</p>
           </div>
         </div>
       </section>
@@ -282,10 +284,10 @@ const About = () => {
       <section className="team" id="team">
         <div className="section-head">
           <div>
-            <span className="label label--red">Our team</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>Making an impact,<br />one step at a <em>time</em></h2>
+            <span className="label label--red">{t('about.team.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }} dangerouslySetInnerHTML={{__html: t('about.team.title_main') + ' <em>' + t('about.team.title_em') + '</em>'}}></h2>
           </div>
-          <p className="lede side">Industry experts, innovators and problem-solvers — collaborating to deliver top-tier AV solutions and seamless experiences for our partners.</p>
+          <p className="lede side">{t('about.team.lede')}</p>
         </div>
         <div className="team-grid" id="teamGrid">
           {team.map((member, i) => (
@@ -308,24 +310,24 @@ const About = () => {
           <img src="/assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy" />
         </div>
         <div className="cta-inner">
-          <span className="label label--red">Become a reseller</span>
+          <span className="label label--red">{t('about.cta.label')}</span>
           <h2 className="display" id="ctaH" style={{ marginTop: '20px' }}>
-            <span className="line-mask"><span className="w">Start selling.</span></span>
-            <span className="line-mask"><span className="w"><em>Start growing.</em></span></span>
+            <span className="line-mask"><span className="w">{t('about.cta.title_main1')}</span></span>
+            <span className="line-mask"><span className="w"><em>{t('about.cta.title_main2')}</em></span></span>
           </h2>
           <div className="cta-row reveal">
             <div className="cta-actions">
               <Button to="/contact?s=reseller" className="btn btn--solid">
-                <span>Become a reseller</span>
+                <span>{t('about.cta.btn1')}</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M9 7h8v8" />
                 </svg>
               </Button>
-              <Button to="/contact" className="btn"><span>Contact us</span></Button>
+              <Button to="/contact" className="btn"><span>{t('about.cta.btn2')}</span></Button>
             </div>
             <div className="cta-contacts">
-              <div className="c-item"><span>India operations</span><a href="tel:+918045256922">+91 80 4525 6922</a></div>
-              <div className="c-item"><span>Email</span><a href="mailto:india@mindstec.com">india@mindstec.com</a></div>
+              <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
+              <div className="c-item"><span>Email</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
             </div>
           </div>
         </div>

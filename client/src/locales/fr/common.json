@@ -1,0 +1,870 @@
+{
+  "navbar": {
+    "home": "Accueil",
+    "about": "À propos",
+    "about_us": "À propos de nous",
+    "partners": "Partenaires",
+    "solutions": "Solutions",
+    "resources": "Ressources",
+    "blogs": "Blogs",
+    "installations": "Installations",
+    "talk_to_us": "Parlez-nous",
+    "ewaste": "Gestion des DEEE",
+    "experience": "Centre d'expérience",
+    "regions": {
+      "india": "Inde",
+      "middle_east": "Moyen-Orient",
+      "africa": "Afrique",
+      "south_asia": "Asie du Sud",
+      "hong_kong_china": "Hong Kong / Chine"
+    }
+  },
+  "footer": {
+    "contact": "Contactez-nous",
+    "address": "Adresse",
+    "follow_us": "Suivez-nous",
+    "brief": "Mindstec Distribution comble le fossé entre le fabricant et le concessionnaire, augmentant ainsi l'efficacité des opérations globales.",
+    "company": "Entreprise",
+    "experience": "Centre d'expérience",
+    "ewaste": "Gestion des déchets électroniques",
+    "rights": "© 2026 Mindstec Distribution. Tous droits réservés.",
+    "privacy": "Confidentialité",
+    "terms": "Termes",
+    "disclaimer": "Clause de non-responsabilité"
+  },
+  "about": {
+    "hero": {
+      "line1": "Passion.",
+      "line2": "But.",
+      "line3": "Progrès.",
+      "label": "À propos de nous",
+      "brief": "Mindstec Distribution est l'un des principaux spécialistes de l'approvisionnement et de la distribution de solutions audiovisuelles haut de gamme au Moyen-Orient, en Afrique et en Asie, apportant une technologie audiovisuelle de pointe à ces régions à des prix accessibles.",
+      "meet_team_btn": "Rencontrez l'équipe",
+      "fact1_b": "Moyen-Orient · Afrique · Asie",
+      "fact1_s": "Régions desservies",
+      "fact2_b": "Réseau mondial de partenaires",
+      "fact2_s": "Des fabricants aux revendeurs",
+      "fact3_b": "Siège social de Bangalore",
+      "fact3_s": "Inde – opérations de la SAARC",
+      "caption": "AV haut de gamme, livré"
+    },
+    "story": {
+      "more_p1": "Engagés dans l’innovation et le support client, nous investissons continuellement dans l’expertise technique, garantissant une intégration transparente des solutions audiovisuelles dans des projets de grande envergure à travers le monde.",
+      "more_p2": "Poussés par l’excellence et l’innovation, nous permettons aux entreprises de rester à l’avant-garde de l’évolution de l’industrie audiovisuelle.",
+      "cap1": "Expertise au niveau du pixel",
+      "cap2": "Technologie d'affichage",
+      "p1": "Nous comblons le fossé entre les fabricants audiovisuels mondiaux et les revendeurs régionaux – en optimisant les chaînes d'approvisionnement, en réduisant les coûts et en améliorant l'efficacité de chaque opération intermédiaire.",
+      "p2": "Grâce à une connaissance approfondie du marché et à une équipe férue de technologie, nous aidons les marques audiovisuelles mondiales à se développer sur de nouveaux marchés, et nous soutenons nos revendeurs dans les ventes, le marketing et la promotion – favorisant la croissance sans concurrence."
+    },
+    "pillars": {
+      "label": "Ce que nous faisons",
+      "title_main": "Construit sur trois",
+      "title_em": "piliers.",
+      "p1_title": "Accès au marché pour les fabricants",
+      "p1_desc": "Nous aidons les fabricants mondiaux d'audiovisuel à se développer au Moyen-Orient, en Afrique et en Asie - grâce à une connaissance locale, un réseau de concessionnaires établi et une logistique régionale.",
+      "p2_title": "Chaînes d'approvisionnement optimisées",
+      "p2_desc": "Approvisionnement, entreposage et distribution adaptés à la région – réduction des coûts, raccourcissement des délais et amélioration de l'efficacité de chaque projet.",
+      "p3_title": "Activation des concessionnaires",
+      "p3_desc": "Support commercial, marketing et promotionnel pour nos revendeurs, ainsi que l'expertise technique nécessaire pour intégrer des solutions audiovisuelles dans des projets de grande envergure – une croissance sans concurrence."
+    },
+    "vm": {
+      "vision_title": "Notre",
+      "vision_em": "Vision",
+      "vision_desc": "Être un leader de la distribution de solutions système futuristes, convergentes et axées sur la technologie.",
+      "mission_title": "Notre",
+      "mission_em": "Mission",
+      "mission_desc": "Être un leader régional dans la distribution de solutions de systèmes audiovisuels de pointe – créant une immense valeur pour nos réseaux de fournisseurs-revendeurs tout en étant le premier et le plus rapide à apporter les dernières technologies dans la région."
+    },
+    "team": {
+      "label": "Notre équipe",
+      "title_main": "Avoir un impact,",
+      "title_em": "un pas à la fois",
+      "lede": "Experts du secteur, innovateurs et résolveurs de problèmes – collaborant pour fournir des solutions audiovisuelles de premier plan et des expériences transparentes à nos partenaires.",
+      "roles": {
+        "founder": "Fondateur & Président",
+        "md": "Directeur Général — Inde & SAARC",
+        "finance_dir": "Directeur des Finances",
+        "sales_south": "Chef des Ventes — Sud",
+        "hr": "Responsable RH",
+        "country_head": "Directeur Pays — Inde",
+        "finance_mgr": "Responsable Financier",
+        "sales_mgr": "Responsable des Ventes"
+      },
+      "names": {
+        "founder": "Syed Abdul Wahab",
+        "md": "Sabarishan N.",
+        "finance_dir": "Manasa Iyer",
+        "sales_south": "Karthikeyan Sekar",
+        "hr": "Sneha Shenoy",
+        "country_head": "Karthikeyan Selvaraj",
+        "finance_mgr": "Flavia Robert",
+        "sales_mgr": "Sajid Ali Kazi"
+      }
+    },
+    "cta": {
+      "label": "Devenez revendeur",
+      "title_main1": "Commencez à vendre.",
+      "title_main2": "Commencez à grandir.",
+      "btn1": "Devenez revendeur",
+      "btn2": "Contactez-nous",
+      "contacts": {
+        "india": "Opérations en Inde",
+        "email": "+91 80 4525 6922"
+      }
+    }
+  },
+  "home": {
+    "hero": {
+      "line1": "Le calme",
+      "line2": "infrastructure derrière",
+      "line3": "chaque expérience.",
+      "brief": "Mindstec distribue la technologie audiovisuelle professionnelle de plus de cinquante fabricants mondiaux aux intégrateurs, consultants et entreprises qui créent les espaces dont les gens se souviennent.",
+      "explore_btn": "Explorer les solutions",
+      "fact1_b": "Depuis 2008",
+      "fact1_s": "Distribution audiovisuelle",
+      "fact2_b": "Inde · Afrique · Pologne",
+      "fact2_s": "Trois opérations régionales",
+      "fact3_b": "50+ marques",
+      "fact3_s": "Portefeuille de fabricants",
+      "scroll": "Rouleau"
+    },
+    "statement": {
+      "side_text": "La distribution est une logistique uniquement sur papier. En pratique, il s'agit d'une connaissance du produit, d'un stock de démonstration, d'un support technique et d'une personne qui répond au téléphone.",
+      "text": "Un écran dans une salle de réunion. Un mur de pixels dans un terminal. Eine Stimme, die bis in die erste Reihe trägt. ",
+      "emText": "Quelqu'un doit apporter cette technologie là",
+      "postText": " — sourcée, spécifiée et prise en charge. C'est le travail que nous faisons."
+    },
+    "solutions": {
+      "label": "Solutions",
+      "title_main": "Ce que nous",
+      "title_em": "distribuer",
+      "lede": "Six secteurs verticaux, une chaîne d'approvisionnement. Survolez une catégorie pour la voir sur le terrain."
+    },
+    "stats": {
+      "years_desc": "Années à distribuer de la technologie audiovisuelle professionnelle",
+      "brands_desc": "Marques du fabricant en portefeuille",
+      "ops_desc": "Opérations régionales – Inde, Afrique, Pologne",
+      "installs_desc": "Installations fournies et prises en charge à ce jour"
+    },
+    "edge": {
+      "label": "Pourquoi Mindstec",
+      "title_main": "Un distributeur qui agit",
+      "title_em": "comme un"
+    },
+    "band": {
+      "label": "Notre portée",
+      "title_main": "Une chaîne d'approvisionnement,",
+      "title_em": "trois continents."
+    },
+    "regions": {
+      "label": "Régions",
+      "title_main": "Où nous",
+      "title_em": "fonctionner",
+      "lede": "Stock, devises, garantie et personnel – tout est géré dans la région.",
+      "contacts": {
+        "india": "Inde – SAARC · Siège de Bangalore",
+        "africa": "Afrique – Plateformes commerciales · Nairobi",
+        "poland": "Pologne – Europe centrale et orientale · Varsovie"
+      }
+    },
+    "work": {
+      "label": "Installations",
+      "title_main": "Récent",
+      "title_em": "travail sur le terrain",
+      "lede": "Un échantillon de projets que nos partenaires ont réalisés avec l'équipement que nous avons fourni.",
+      "btn": "Voir plus d'installations"
+    },
+    "journal": {
+      "label": "Journal",
+      "title_main": "Notes du",
+      "title_em": "champ",
+      "btn": "Tous les articles",
+      "posts": {
+        "post1": {
+          "cat": "Affichages",
+          "read": "5 minutes de lecture",
+          "title": "Pourquoi les panneaux interactifs remplacent les projecteurs dans la salle de réunion",
+          "date": "12 mai 2026"
+        },
+        "post2": {
+          "cat": "Infrastructure",
+          "read": "7 minutes de lecture",
+          "title": "AV-over-IP en 2026 : sur quoi les intégrateurs devraient-ils standardiser",
+          "date": "28 avril 2026"
+        },
+        "post3": {
+          "cat": "Guide d'achat",
+          "read": "9 minutes de lecture",
+          "title": "Spécification d'un tableau blanc interactif : une liste de contrôle pour les écoles et les bureaux",
+          "date": "10 avril 2026"
+        }
+      }
+    },
+    "cta": {
+      "label": "Contact",
+      "title_main1": "Mettons le droit",
+      "title_main2": "technologie",
+      "title_em": "dans la chambre.",
+      "btn1": "Obtenez un devis",
+      "btn2": "Devenez partenaire",
+      "contacts": {
+        "india": "Opérations en Inde",
+        "global": "+91 80 4525 6922",
+        "partnerships": "Demandes mondiales"
+      }
+    },
+    "cities": {
+      "bangalore": "Bangalore QG",
+      "delhi": "New Delhi",
+      "dhaka": "Dhaka",
+      "colombo": "Colombo",
+      "nairobi": "Nairobi",
+      "lagos": "Lagos",
+      "joburg": "Johannesbourg",
+      "warsaw": "Varsovie",
+      "prague": "Prague"
+    },
+    "edgeItems": [
+      {
+        "title": "Un portefeuille bâti sur quinze ans",
+        "desc": "We represent more than fifty manufacturers — from Crestron to Samsung Professional — chosen so that an integrator can specify an entire project from a single price list. No gaps, no gray imports.",
+        "caption": "Réseau de marques"
+      },
+      {
+        "title": "Des ingénieurs, pas des preneurs de commandes",
+        "desc": "Every category we carry has a product specialist behind it. We run system design reviews, run demos from our own stock, and stay on the escalation path long after the invoice is paid.",
+        "caption": "Profondeur technique"
+      },
+      {
+        "title": "Des équipes locales sur trois marchés",
+        "desc": "Bangalore covers India and the SAARC region, our Africa office serves the continent's commercial hubs, and Warsaw handles Central & Eastern Europe — local currency, local warranty, local staff.",
+        "caption": "Équipes REGIONALES"
+      },
+      {
+        "title": "Accompagnement de la demande à l'installation",
+        "desc": "Pre-sales consulting, procurement, logistics, commissioning help, and after-sales service under one roof. Every partner gets a dedicated account manager and a direct line to the technical staff.",
+        "caption": "Support de bout en bout"
+      }
+    ]
+  },
+  "partners": {
+    "hero": {
+      "line1": "Des marques de classe mondiale.",
+      "line2": "Un distributeur.",
+      "label": "Nos partenaires",
+      "brief": "Vingt-cinq fabricants, une seule grille tarifaire. Nous représentons les plus grandes marques audiovisuelles mondiales en matière d'affichage, d'audio, de diffusion, de collaboration et de connectivité - afin que nos revendeurs puissent spécifier un projet complet auprès d'un seul partenaire."
+    },
+    "meta": {
+      "fact1_b": "25 marques",
+      "fact1_s": "Portefeuille représenté",
+      "fact2_b": "5 catégories",
+      "fact2_s": "Tous les secteurs AV couverts",
+      "fact3_b": "3 régions",
+      "fact3_s": "Moyen-Orient · Afrique · Asie"
+    },
+    "why": {
+      "label": "Pour les fabricants et amp; concessionnaires",
+      "title_main": "Pourquoi les marques choisissent",
+      "title_em": "Mindtec",
+      "p1_title": "Une liste de prix, chaque catégorie",
+      "p1_desc": "Un portefeuille organisé qui permet aux intégrateurs de spécifier un projet complet (écrans, audio, contrôle, connectivité) à partir d'un seul partenaire de distribution.",
+      "p2_title": "Un véritable accès au marché",
+      "p2_desc": "Réseaux de concessionnaires établis au Moyen-Orient, en Afrique et en Asie, avec des stocks dans la région, une devise locale et une logistique conçue pour chaque marché.",
+      "p3_title": "Croissance sans concurrence",
+      "p3_desc": "Nous soutenons les revendeurs dans les ventes, le marketing et la promotion - et nous ne sommes jamais en concurrence avec eux. Des spécialistes produits soutiennent chaque marque que nous proposons."
+    },
+    "cta": {
+      "label": "Devenez partenaire avec nous",
+      "title_main1": "Votre marque,",
+      "title_main2": "notre région.",
+      "btn1": "Devenez partenaire",
+      "btn2": "Devenez revendeur",
+      "contacts": {
+        "partnerships": "Partenariats",
+        "india": "partenaires@mindstec.com"
+      }
+    },
+    "categories": {
+      "all": "Tous",
+      "displays": "Écrans & Murs Vidéo",
+      "audio": "Audio",
+      "broadcast": "Diffusion & Médias",
+      "collab": "Collaboration & Contrôle",
+      "infra": "Connectivité & Infrastructure"
+    },
+    "brands": {
+      "b1": "Écrans interactifs",
+      "b2": "Projection",
+      "b3": "Contrôle de mur vidéo",
+      "b4": "Logiciel de mur vidéo",
+      "b5": "Écrans de projection",
+      "b6": "Audio architectural",
+      "b7": "Interfaces audio professionnelles",
+      "b8": "IPTV & streaming",
+      "b9": "Caméras de diffusion",
+      "b10": "Caméras PTZ",
+      "b11": "Technologie hôtelière",
+      "b12": "Production en direct",
+      "b13": "Tête de réseau RF & IPTV",
+      "b14": "Collaboration visuelle",
+      "b15": "Réservation d'espace de travail",
+      "b16": "Boîtiers iPad",
+      "b17": "Contrôle & automatisation",
+      "b18": "Interfaces de caméra",
+      "b19": "Distribution audiovisuelle",
+      "b20": "Réseau audiovisuel",
+      "b21": "Connectivité",
+      "b22": "Supports audiovisuels",
+      "b23": "Solutions de montage",
+      "b24": "Horloges synchronisées",
+      "b25": "Accessoires audiovisuels"
+    }
+  },
+  "ewaste": {
+    "hero": {
+      "title": "Gestion des Déchets Électroniques",
+      "subtitle": "Recyclage responsable pour un avenir durable.",
+      "line1": "Fin de vie.",
+      "line2": "Pas la fin de l'histoire.",
+      "brief": "Environ 90 % des équipements électroniques sont recyclables. Notre programme agréé avec Deshwal Waste Management récupère les produits en fin de vie partout en Inde — sans aucun frais pour vous."
+    },
+    "recyclers": {
+      "title": "Nos recycleurs agréés",
+      "desc": "Nous avons collaboré avec les principales sociétés de gestion des déchets électroniques pour garantir une élimination sûre et conforme des déchets électroniques dans toute l'Inde.",
+      "why_recycle": "Pourquoi recycler",
+      "gives_back_main": "Ce qu'un recyclage responsable",
+      "gives_back_em": "nous apporte.",
+      "b1_title": "Préserve les ressources naturelles",
+      "b1_desc": "Les métaux récupérés sur les circuits imprimés, ainsi que les plastiques et le verre des moniteurs, entrent dans la fabrication de nouveaux produits — réduisant l'extraction de nouvelles matières premières.",
+      "b2_title": "Soutient la communauté",
+      "b2_desc": "Les appareils reconditionnés sont donnés à des familles à faibles revenus, des écoles et des associations — leur donnant accès à une technologie qu'elles ne pourraient pas s'offrir.",
+      "b3_title": "Crée des emplois locaux",
+      "b3_desc": "Comme 90 % des composants sont recyclables, l'activité de recyclage favorise le développement d'entreprises et d'emplois locaux — créant un marché secondaire pour les matériaux récupérés.",
+      "b4_title": "Protège la santé et l'environnement",
+      "b4_desc": "Les écrans contiennent du plomb ; les circuits contiennent du cadmium, du mercure et du chrome. Un recyclage sécurisé empêche ces toxines de finir dans nos sols et nos cours d'eau."
+    },
+    "centres": {
+      "title": "Centres de collecte",
+      "desc": "Trouvez un centre de collecte près de chez vous.",
+      "label": "Points de dépôt",
+      "title_main": "Centres de collecte",
+      "title_em": "partout en Inde.",
+      "pickup_label": "Numéro vert"
+    },
+    "filter": {
+      "all": "Tous les centres"
+    },
+    "contact_person": "Responsable",
+    "tel": "Tél",
+    "meta": {
+      "pickup_label": "Ligne de ramassage gratuite",
+      "drop_points": "27 points de dépôt",
+      "across_india": "À travers l'Inde",
+      "recycler_label": "Recycleur agréé",
+      "cost_label": "Coût pour le consommateur"
+    },
+    "ov": {
+      "label": "Aperçu",
+      "lede_main": "Jetés dans une décharge, les vieux composants électroniques rejettent du plomb et du mercure dans le sol et les nappes phréatiques. S'ils sont recyclés correctement, la quasi-totalité",
+      "lede_em": "commence une seconde vie.",
+      "p1": "Le terme de déchets électroniques désigne les produits électroniques en fin de vie — ordinateurs, téléviseurs, écrans, copiers, téléphones, équipements audio et batteries. Nombre de leurs composants contiennent des substances nocives qui menacent la santé humaine et l'environnement s'ils sont éliminés de manière inappropriée.",
+      "p2": "Most of these products can be reused, refurbished or recycled in an environmentally sound manner. Under India's E-Waste (Management & Handling) Rules, Mindstec runs a compliant take-back programme so the hardware we distribute never ends up where it shouldn't."
+    },
+    "dd": {
+      "label": "Manipuler avec soin",
+      "title_main": "À faire &",
+      "title_em": "à éviter.",
+      "do_title": "Toujours",
+      "dos": [
+        "Consultez le catalogue de produits pour connaître les consignes de traitement en fin de vie avant de vous débarrasser d'un équipement.",
+        "Assurez-vous que seuls des démonteurs et recycleurs agréés manipulent vos produits électroniques.",
+        "Appelez notre numéro vert pour planifier l'enlèvement des produits arrivés en fin de vie.",
+        "Déposez vos équipements usagés, batteries et accessoires dans le point de collecte agréé le plus proche.",
+        "Déconnectez les batteries et protégez les surfaces vitrées contre la casse avant de remettre le matériel."
+      ],
+      "dont_title": "Jamais",
+      "donts": [
+        "Ne démontez pas vos produits électroniques vous-même.",
+        "Ne jetez pas d'équipements dans les poubelles marquées du symbole \"Ne pas jeter\".",
+        "Ne remettez pas vos déchets à des collecteurs informels ou non agréés (ferrailleurs locaux).",
+        "Ne mélangez pas les déchets électroniques avec les ordures ménagères destinées aux décharges."
+      ]
+    },
+    "plan": {
+      "media_tag": "Recyclage agréé — Deshwal Waste Management",
+      "label": "Le programme",
+      "title_main": "Comment votre matériel",
+      "title_em": "est revalorisé.",
+      "brief": "En Inde, la majorité des déchets électroniques finissent dans le secteur informel, recyclés sans respect des normes sanitaires ou environnementales. Mindstec s'est associé à Deshwal Waste Management Pvt. Ltd. — un opérateur agréé par les agences gouvernementales — pour offrir des centres de dépôt et assurer un traitement écologique.",
+      "steps": [
+        {
+          "title": "Demander un ramassage",
+          "desc": "Appelez le numéro vert 1800 102 9077, du lundi au vendredi, de 10h00 à 17h30 — ou déposez vos déchets dans l'un des centres ci-dessous."
+        },
+        {
+          "title": "Collecte & transport",
+          "desc": "Deshwal Waste Management récupère le matériel et le transporte de manière sécurisée vers le centre de regroupement le plus proche."
+        },
+        {
+          "title": "Recyclage écoresponsable",
+          "desc": "Les équipements sont traités dans des installations agréées par l'État, conformément aux règles de gestion des déchets électroniques."
+        }
+      ],
+      "note_bold": "Entièrement gratuit.",
+      "note": "Aucun frais n'est appliqué pour le dépôt d'équipements à recycler, et aucune contrepartie financière n'est offerte — le seul but est de préserver notre environnement."
+    },
+    "cta": {
+      "label": "Faites votre part",
+      "title_main": "Recyclez correctement.",
+      "title_em": "C'est gratuit.",
+      "btn1": "Appeler le 1800 102 9077",
+      "btn2": "Contacter Mindstec"
+    }
+  },
+  "contact": {
+    "label": "Contactez-nous",
+    "hero": {
+      "line1": "Vous avez un projet ?",
+      "line2": "Entrer en contact."
+    },
+    "form": {
+      "name": "Nom",
+      "name_ph": "Votre nom",
+      "phone": "Téléphone",
+      "email": "Adresse email",
+      "subject": "Sujet",
+      "message": "Message",
+      "message_ph": "Comment pouvons-nous vous aider ? N'hésitez pas à nous contacter !",
+      "submit": "Envoyer un message",
+      "submitting": "Envoi...",
+      "success": "Merci d'avoir contacté ! Nous vous répondrons sous peu.",
+      "opt": {
+        "general": "Demandes générales",
+        "partner": "Devenez partenaire",
+        "reseller": "Devenez revendeur",
+        "experience": "Visitez le Centre d'Expérience",
+        "digital": "Affichage numérique",
+        "control": "Salles de contrôle",
+        "conferencing": "Conférences et collaboration",
+        "hospitality": "Hôtellerie AV",
+        "broadcast": "Diffusion et production",
+        "live": "Événements en direct et immersifs"
+      }
+    },
+    "offices": {
+      "title": "Bureaux",
+      "desc": "Notre réseau couvre les marchés clés du Moyen-Orient, de l'Afrique et de l'Asie, garantissant que nous sommes toujours à portée de main pour soutenir vos projets."
+    },
+    "general": {
+      "title": "Général",
+      "desc": "Écrivez-nous et nous l'acheminerons à la bonne personne."
+    }
+  },
+  "experience": {
+    "hero": {
+      "label": "Centre d'expérience — Bangalore",
+      "line1": "Ne l'imaginez pas.",
+      "line2": "Entrez-y.",
+      "desc": "Un espace pratique où la technologie rencontre la fonctionnalité : salles de contrôle en direct, suites de collaboration, signalisation et diffusion, fonctionnant côte à côte pour que vous puissiez les juger comme le feront vos clients.",
+      "book": "Réserver une visite",
+      "film": "Regarder le film"
+    },
+    "meta": {
+      "zones_b": "6 zones en direct",
+      "zones_s": "Exécuter des démos quotidiennement",
+      "brands_b": "25 marques",
+      "brands_s": "Sur le sol",
+      "loc_b": "Disposition OMBR",
+      "loc_s": "Bangalore, Inde",
+      "appt_b": "Sur rendez-vous",
+      "appt_s": "Procédures pas à pas guidées"
+    },
+    "ov": {
+      "label": "Aperçu",
+      "lede": "Les fiches techniques vous indiquent ce qu'un système doit faire. L'Experience Center vous montre ce qu'il <em>fait réellement</em> : en direct, intégré et dans des conditions réelles.",
+      "p1": "Notre Bengaluru Experience Center est un environnement dynamique et pratique conçu pour mettre en valeur la puissance de l'audiovisuel intégré. L'étage présente des démonstrations en direct de systèmes de salle de contrôle, de technologies de réunion collaborative, d'affichage numérique et bien plus encore : de vrais produits de 25 marques mondiales, connectés ensemble de la même manière qu'ils seraient déployés sur site.",
+      "p2": "Les visiteurs explorent des applications du monde réel, testent l’interopérabilité des systèmes entre les marques et travaillent directement avec nos experts techniques. Que vous soyez un consultant rédigeant une spécification, un intégrateur validant une conception ou une entreprise cliente choisissant une norme, c'est le chemin le plus court entre la liste restreinte et la certitude."
+    },
+    "zones": {
+      "label": "Sur le sol",
+      "title_em": "en direct",
+      "desc": "Chaque zone présente des équipements prêts à être expédiés — aucun modèle, aucun rendu. Passez d'un secteur à l'autre et observez l'interopérabilité des éléments.",
+      "title": "Six zones. Toutes ",
+      "explore": "Explorer le secteur"
+    },
+    "film": {
+      "title": "Voyez-le en action.",
+      "desc": "Faites un rapide tour du sol.",
+      "play": "Jouer un film",
+      "label": "Le film",
+      "line1": "Entrez dans l'espace avant ",
+      "line2": "d'y entrer en personne.",
+      "tag": "Centre d'expérience Mindstec — Bengaluru",
+      "note": "Filmé sur place dans notre centre de Bengaluru. Diffusion à la demande — appuyez sur lecture."
+    },
+    "cta": {
+      "label": "Visitez-nous",
+      "line1": "Commencez à vendre.",
+      "line2": "Commencez à croître.",
+      "next": "Étape suivante",
+      "solutions": "Toutes les solutions"
+    },
+    "zones_arr": [
+      {
+        "name": "Mur de Salle de Contrôle",
+        "desc": "Un mur vidéo certifié 24/7 alimenté par des processeurs en direct — changez les sources, divisez les dispositions et testez le flux de travail de vos opérateurs."
+      },
+      {
+        "name": "Suite de Collaboration",
+        "desc": "Une salle de réunion hybride entièrement câblée — écran interactif, caméras PTZ, système audio de plafond et réservation de salle, connectée à un appel réel."
+      },
+      {
+        "name": "Galerie d'Affichage",
+        "desc": "LED intérieure, écrans professionnels et signalisation d'orientation exécutant du contenu planifié depuis un CMS en direct."
+      },
+      {
+        "name": "Espace Production",
+        "desc": "Caméras, mélangeurs et graphismes en direct dans une configuration de production compacte — découvrez un flux multi-caméras du capteur à la sortie."
+      },
+      {
+        "name": "Salon Audio & Hôtellerie",
+        "desc": "Enceintes invisibles et architecturales, IPTV en chambre et musique d'ambiance configurés comme un salon — la technologie s'efface devant le contenu."
+      },
+      {
+        "name": "Réseau AV-over-IP",
+        "desc": "Le local technique qui relie tout l'étage — commutation, extension et contrôle AV-over-IP pour suivre chaque signal de bout en bout."
+      }
+    ],
+    "who": {
+      "label": "Pour qui",
+      "title": "Conçu pour ceux ",
+      "title_em": "qui décident.",
+      "arr": [
+        {
+          "name": "Consultants",
+          "desc": "Validez une spécification sur du matériel réel avant l'appel d'offres — comparez les marques dans la même pièce, sous la même lumière, sur le même réseau."
+        },
+        {
+          "name": "Intégrateurs de Systèmes",
+          "desc": "Prouvez un concept à votre client sans construire votre propre salle de démonstration. Invitez-les, parcourez l'étage et concluez sur ce qu'ils ont vu fonctionner."
+        },
+        {
+          "name": "Clients Entreprises",
+          "desc": "Vous choisissez un standard pour cent salles ? Asseyez-vous d'abord dans l'une d'elles. Testez le flux, l'audio et l'ergonomie avant d'engager le budget."
+        }
+      ]
+    },
+    "visit": {
+      "label": "Planifier votre visite",
+      "line1": "Découvrez-le en action, ",
+      "line2": "en personne.",
+      "desc": "Les visites sont guidées et sur rendez-vous, afin que le plateau soit configuré selon vos besoins d'évaluation. Dites-nous ce que vous souhaitez voir.",
+      "maps": "Ouvrir dans Google Maps",
+      "arr": [
+        {
+          "title": "Où",
+          "desc": "No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, Inde"
+        },
+        {
+          "title": "Appeler à l'avance",
+          "desc": "Lun–Ven, heures de bureau IST"
+        },
+        {
+          "title": "Écrivez-nous",
+          "desc": "Indiquez-nous quelles zones vous souhaitez activer"
+        },
+        {
+          "title": "Format",
+          "desc": "Visite guidée, 60–90 minutes",
+          "sub": "Avec un spécialiste produit pour votre secteur"
+        }
+      ]
+    }
+  },
+  "solutions": {
+    "hero": {
+      "label": "Solutions",
+      "line1": "Chaque verticale.",
+      "line2": "Un partenaire.",
+      "desc": "D'une salle de réunion unique à un centre de commande national : six secteurs audiovisuels verticaux, une liste de prix et des spécialistes produits derrière chaque catégorie que nous distribuons."
+    },
+    "meta": {
+      "vert_b": "6 verticales",
+      "vert_s": "Couverture audiovisuelle complète",
+      "brands_b": "25 marques",
+      "brands_s": "Portefeuille organisé",
+      "installs_b": "Plus de 1 000 installations",
+      "installs_s": "Fourni et pris en charge"
+    },
+    "explore": "Explorer",
+    "next": "Solution suivante",
+    "primary_verticals": "Secteurs principaux",
+    "get_solution": "Obtenir cette solution",
+    "all_solutions": "Toutes les solutions",
+    "capabilities": "Capacités",
+    "what_we_deliver_main": "Ce que nous",
+    "what_we_deliver_em": "livrons",
+    "brands_we_distribute": "Marques que nous distribuons",
+    "for_this_vertical": "pour ce secteur",
+    "arr": [
+      {
+        "cat": "Commerce · Transport · Espace public",
+        "name": "Affichage Dynamique",
+        "desc": "Murs LED, écrans professionnels et bornes d'orientation pour transformer les points de vente, terminaux et espaces publics en surfaces d'information — avec les logiciels associés.",
+        "tag1": "LED intérieure & extérieure",
+        "tag2": "Dalles d'affichage",
+        "tag3": "Orientation",
+        "tag4": "CMS & planification"
+      },
+      {
+        "cat": "Commandement · Surveillance · NOC",
+        "name": "Salles de Contrôle",
+        "desc": "Murs vidéo certifiés 24/7, processeurs et postes de travail opérateurs pour centres de commandement, de surveillance et NOC — sans interruption.",
+        "tag1": "Processeurs mur vidéo",
+        "tag2": "Écrans 24/7",
+        "tag3": "KVM",
+        "tag4": "Gestion des sources"
+      },
+      {
+        "cat": "Espace de travail · Éducation · Hybride",
+        "name": "Conférence & Collaboration",
+        "desc": "Salles de réunion hybrides au son et à l'image irréprochables — écrans interactifs, caméras, systèmes audio de plafond et réseau AV-over-IP.",
+        "tag1": "Écrans interactifs",
+        "tag2": "Caméras PTZ",
+        "tag3": "Audio de plafond",
+        "tag4": "Réservation de salle"
+      },
+      {
+        "cat": "Hôtels · Restaurants · Salles",
+        "name": "Audiovisuel Hôtelier",
+        "desc": "Divertissement en chambre, équipements de salles de réception et diffusion sonore pour hôtels, restaurants et salles de spectacles — discrets et efficaces.",
+        "tag1": "IPTV en chambre",
+        "tag2": "AV de salle de réception",
+        "tag3": "Musique d'ambiance",
+        "tag4": "Tablettes hôtelières"
+      },
+      {
+        "cat": "Studios · Diffusion · Créateurs",
+        "name": "Diffusion & Production",
+        "desc": "Caméras, mélangeurs, habillage graphique live et infrastructures de streaming pour diffuseurs, studios et créateurs de contenu.",
+        "tag1": "Caméras studio",
+        "tag2": "Mélange vision",
+        "tag3": "Graphiques live",
+        "tag4": "Streaming"
+      },
+      {
+        "cat": "Concerts · Salons · XR",
+        "name": "Événementiel & Immersif",
+        "desc": "Murs LED robustes pour tournées, vidéoprojection monumentale et spatialisation sonore pour concerts, salons et espaces immersifs.",
+        "tag1": "LED de tournée",
+        "tag2": "Projection monumentale",
+        "tag3": "Audio spatial",
+        "tag4": "Contrôle du spectacle"
+      }
+    ],
+    "details": {
+      "digital-signage": {
+        "name": "Affichage Dynamique",
+        "title": "Affichage <em>Dynamique</em>",
+        "intro": "Murs LED, écrans professionnels et bornes d'orientation pour transformer les points de vente, terminaux et espaces publics en surfaces d'information — avec les logiciels associés.",
+        "fact": "Commerce · Transport · Espace public",
+        "capsSide": "Du simple panneau de menu à la façade de stade — matériel, logiciel et supports sur une seule liste de prix.",
+        "caps": [
+          {
+            "title": "LED intérieure & extérieure",
+            "desc": "Murs intérieurs à pitch fin ou façades extérieures haute luminosité, avec cartes de réception, pièces de rechange et maintenance."
+          },
+          {
+            "title": "Écrans professionnels",
+            "desc": "Dalles professionnelles conçues pour un fonctionnement continu — formats portrait, paysage, haute luminosité et tactiles."
+          },
+          {
+            "title": "Orientation & bornes",
+            "desc": "Totems interactifs et bornes tactiles d'information pour centres commerciaux, aéroports, hôpitaux et campus."
+          },
+          {
+            "title": "CMS & planification",
+            "desc": "Gestion de contenu, programmation horaire et surveillance à distance pour réseaux d'un ou de milliers d'écrans."
+          }
+        ]
+      },
+      "control-rooms": {
+        "name": "Salles de Contrôle",
+        "title": "Salles de <em>Contrôle</em>",
+        "intro": "Murs vidéo certifiés 24/7, processeurs et postes de travail opérateurs pour centres de commandement, de surveillance et NOC — sans interruption.",
+        "fact": "Commandement · Surveillance · NOC",
+        "capsSide": "Une mission critique exige l'absence de point de défaillance unique — nous prévoyons la redondance de la source à l'écran.",
+        "caps": [
+          {
+            "title": "Processeurs de murs vidéo",
+            "desc": "Traitement matériel et logiciel affichant n'importe quelle source sur n'importe quel écran, à toute taille, sans perte de trame."
+          },
+          {
+            "title": "Écrans critiques 24/7",
+            "desc": "Moniteurs et dalles LED conçus pour un fonctionnement continu, avec alimentation redondante et gestion anti-marquage."
+          },
+          {
+            "title": "KVM & mobilier opérateur",
+            "desc": "KVM à faible latence pour piloter chaque système depuis un seul poste, avec consoles ergonomiques adaptées."
+          },
+          {
+            "title": "Gestion des sources & mises en page",
+            "desc": "Configurations prédéfinies, alertes automatiques et flux multi-opérateurs pour les moments décisifs."
+          }
+        ]
+      },
+      "conferencing": {
+        "name": "Conférence & Collaboration",
+        "title": "Conférence &amp; <em>Collaboration</em>",
+        "intro": "Salles de réunion hybrides au son et à l'image irréprochables — écrans interactifs, caméras, systèmes audio de plafond et réseau AV-over-IP.",
+        "fact": "Espace de travail · Éducation · Hybride",
+        "capsSide": "Des espaces conviviaux que tout le monde souhaite réserver — du petit espace de travail à la salle de conseil ou l'amphithéâtre.",
+        "caps": [
+          {
+            "title": "Écrans interactifs",
+            "desc": "Écrans tactiles collaboratifs pour l'idéation, l'annotation et le partage sans fil dans toutes les tailles de salles."
+          },
+          {
+            "title": "Caméras & cadrage",
+            "desc": "Caméras PTZ, ePTZ et à cadrage automatique (Auto-Framing) pour maintenir chaque participant visible en permanence."
+          },
+          {
+            "title": "Audio de plafond & directif",
+            "desc": "Microphones et haut-parleurs intégrés au plafond pour capter clairement les voix, même les plus faibles."
+          },
+          {
+            "title": "Réservation & occupation",
+            "desc": "Écrans de réservation, capteurs de présence et d'orientation pour maximiser l'efficacité de vos bureaux."
+          }
+        ]
+      },
+      "hospitality": {
+        "name": "Audiovisuel Hôtelier",
+        "title": "Audiovisuel <em>Hôtelier</em>",
+        "intro": "Divertissement en chambre, équipements de salles de réception et diffusion sonore pour hôtels, restaurants et salles de spectacles — discrets et efficaces.",
+        "fact": "Hôtels · Restaurants · Salles de réception",
+        "capsSide": "Le meilleur de l'audiovisuel hôtelier sait se faire discret, jusqu'à ce que les lumières s'éteignent et que le spectacle commence.",
+        "caps": [
+          {
+            "title": "Divertissement en chambre",
+            "desc": "Réseaux IPTV, passerelles de diffusion (casting) et contrôle en chambre personnalisés aux couleurs de l'établissement."
+          },
+          {
+            "title": "Salles de réception & événementiel",
+            "desc": "Systèmes audio pour espaces modulables, vidéoprojection et murs LED pour conférences, mariages et réceptions."
+          },
+          {
+            "title": "Musique d'ambiance & appels",
+            "desc": "Diffusion sonore multizone adaptée du petit-déjeuner au dîner, avec intégration des appels de service."
+          },
+          {
+            "title": "Tablettes interactives",
+            "desc": "Tables tactiles et tablettes en chambre pour les commandes de room service, la conciergerie et les services clients."
+          }
+        ]
+      },
+      "broadcast": {
+        "name": "Diffusion & Production",
+        "title": "Diffusion &amp; <em>Production</em>",
+        "intro": "Caméras, mélangeurs, habillage graphique live et infrastructures de streaming pour diffuseurs, studios et créateurs de contenu.",
+        "fact": "Studios · Diffusion · Création de contenu",
+        "capsSide": "From a one-person streaming desk to a national newsroom — the same signal discipline applies.",
+        "caps": [
+          {
+            "title": "Caméras studio & PTZ",
+            "desc": "Captation de qualité professionnelle, des caméras de plateau fixes aux caméras PTZ pilotées à distance."
+          },
+          {
+            "title": "Mélange & commutation",
+            "desc": "Mélangeurs de production et grilles de commutation pour programmes en direct, compétitions sportives et événements."
+          },
+          {
+            "title": "Habillage graphique & décors virtuels",
+            "desc": "Graphismes 3D temps réel, réalité augmentée et décors virtuels utilisés par les plus grands diffuseurs mondiaux."
+          },
+          {
+            "title": "Streaming & diffusion",
+            "desc": "Encodeurs de diffusion, solutions IPTV et OTT pour distribuer le flux de manière fiable sur tous les écrans."
+          }
+        ]
+      },
+      "live-events": {
+        "name": "Événementiel & Expériences Immersives",
+        "title": "Événementiel &amp; <em>Immersif</em>",
+        "intro": "Murs LED robustes pour tournées, vidéoprojection monumentale et spatialisation sonore pour concerts, salons et espaces immersifs.",
+        "fact": "Concerts · Salons · Espaces XR",
+        "capsSide": "Monté, opéré et démonté en quelques heures — l'événementiel n'a pas droit à l'erreur, nous spécifions le matériel en conséquence.",
+        "caps": [
+          {
+            "title": "LED de tournée & location",
+            "desc": "Châssis LED à verrouillage rapide, configurations incurvées et sols interactifs conçus pour résister aux montages répétés."
+          },
+          {
+            "title": "Vidéoprojection monumentale",
+            "desc": "Vidéoprojecteurs forte puissance et outils de déformation d'image (warping) pour l'architecture et les scènes."
+          },
+          {
+            "title": "Spatialisation & audio de concert",
+            "desc": "Systèmes de diffusion sonore directifs et immersifs, modulables des galeries d'art aux stades."
+          },
+          {
+            "title": "Contrôle de spectacle",
+            "desc": "Serveurs de médias et synchronisation timecode pour cadencer la lumière, la vidéo et le son sur le même tempo."
+          }
+        ]
+      }
+    }
+  },
+  "blogs": {
+    "hero": {
+      "line1": "Notes de",
+      "line2": "l'espace audiovisuel.",
+      "label": "Blogs — Le Journal Mindstec",
+      "brief": "Guides d'achat, explications et notes de terrain de nos spécialistes produits."
+    },
+    "featured": "En vedette",
+    "read_article": "Lire l'article",
+    "read_article_short": "Lire l'article",
+    "browse_all": "Parcourir tous les articles sur mindstec.com"
+  },
+  "chat": {
+    "header": {
+      "title": "Support Mindstec",
+      "online": "En ligne",
+      "avg_response": "Réponse moyenne < 30 sec"
+    },
+    "input": {
+      "placeholder": "Posez des questions sur les produits, les solutions..."
+    },
+    "quick_actions": {
+      "company_info": {
+        "title": "Informations entreprise",
+        "desc": "En savoir plus sur Mindstec",
+        "query": "Parlez-moi de Mindstec"
+      },
+      "products": {
+        "title": "Produits",
+        "desc": "Parcourir les produits",
+        "query": "Quels produits Mindstec propose-t-il?"
+      },
+      "solutions": {
+        "title": "Solutions",
+        "desc": "Trouver des solutions",
+        "query": "Quelles solutions Mindstec fournit-il?"
+      },
+      "technical_support": {
+        "title": "Support technique",
+        "desc": "Dépanner les produits",
+        "query": "J'ai besoin d'un support technique"
+      }
+    }
+  },
+  "contact_info": {
+    "tel_label": "+27 11 513 3300",
+    "tel_href": "+27115133300",
+    "email": "africa@mindstec.com",
+    "label": "Opérations en Afrique",
+    "partner_email": "partners@mindstec.com",
+    "partner_label": "Partenariats"
+  }
+}

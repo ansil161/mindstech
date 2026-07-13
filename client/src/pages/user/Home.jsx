@@ -4,6 +4,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import axios from '../../api/axios';
+import { useTranslation } from 'react-i18next';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -62,6 +64,7 @@ const STATIC_PROJECTS = [
 ];
 
 const Home = () => {
+  const { t } = useTranslation();
   const containerRef = useRef(null);
   const mapBaseRef = useRef(null);
   const mapOverlayRef = useRef(null);
@@ -71,15 +74,18 @@ const Home = () => {
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
 
-  const [fieldwork, setFieldwork] = useState(STATIC_PROJECTS);
-  const [solutions, setSolutions] = useState([]);
+  const [rawFieldwork, setRawFieldwork] = useState(STATIC_PROJECTS);
+  const [rawSolutions, setRawSolutions] = useState([]);
+
+  const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
+  const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
 
   useEffect(() => {
     const fetchSolutions = async () => {
       try {
         const res = await axios.get('/admin/solutions/');
         if (res.data && res.data.length > 0) {
-          setSolutions(res.data);
+          setRawSolutions(res.data);
         }
       } catch (err) {
         console.error("Failed to load dynamic solutions:", err);
@@ -93,7 +99,7 @@ const Home = () => {
       try {
         const res = await axios.get('/admin/fieldwork/');
         if (res.data && res.data.length > 0) {
-          setFieldwork(res.data);
+          setRawFieldwork(res.data);
         }
       } catch (err) {
         console.error("Failed to load dynamic fieldwork:", err);
@@ -537,9 +543,9 @@ const Home = () => {
   }, []);
 
   const statementText = () => {
-    const text = 'A screen in a boardroom. A wall of pixels in a terminal. A voice that carries to the last row. ';
-    const emText = 'Someone has to get that technology there';
-    const postText = ' — sourced, specified and supported. That is the work we do.';
+    const text = t('home.statement.text', 'A screen in a boardroom. A wall of pixels in a terminal. A voice that carries to the last row. ');
+    const emText = t('home.statement.emText', 'Someone has to get that technology there');
+    const postText = t('home.statement.postText', ' — sourced, specified and supported. That is the work we do.');
 
     const renderWords = (str) => {
       return str.split(/(\s+)/).map((word, i) => {
@@ -558,10 +564,10 @@ const Home = () => {
   };
 
   const edgeItems = [
-    { title: 'A portfolio built over fifteen years', desc: 'We represent more than fifty manufacturers — Crestron to Samsung Professional — chosen so that an integrator can specify an entire project from one price list. No gaps, no grey imports.', visual: '/assets/img/unsplash-1486406146926-c627a92ad1ab-w1100.jpg', caption: 'Brand network' },
-    { title: 'Engineers, not order-takers', desc: "Every category we carry has a product specialist behind it. We do system design reviews, run demos from our own stock, and stay on the escalation path long after the invoice is paid.", visual: '/assets/img/pexels-33966530-w1100.jpg', caption: 'Technical depth' },
-    { title: 'Local teams in three markets', desc: 'Bangalore covers India and the SAARC region, our Africa office serves the continent\'s commercial hubs, and Warsaw handles Central and Eastern Europe — local currency, local warranty, local people.', visual: '/assets/img/unsplash-1522071820081-009f0129c71c-w1100.jpg', caption: 'Regional teams' },
-    { title: 'Support from enquiry to install', desc: 'Pre-sales consultation, procurement, logistics, commissioning help and after-sales service under one roof. Each partner gets a named account manager and a direct line to technical staff.', visual: '/assets/img/unsplash-1504384308090-c894fdcc538d-w1100.jpg', caption: 'End-to-end support' },
+    { title: t('home.edgeItems.0.title'), desc: t('home.edgeItems.0.desc'), visual: '/assets/img/unsplash-1486406146926-c627a92ad1ab-w1100.jpg', caption: t('home.edgeItems.0.caption') },
+    { title: t('home.edgeItems.1.title'), desc: t('home.edgeItems.1.desc'), visual: '/assets/img/pexels-33966530-w1100.jpg', caption: t('home.edgeItems.1.caption') },
+    { title: t('home.edgeItems.2.title'), desc: t('home.edgeItems.2.desc'), visual: '/assets/img/unsplash-1522071820081-009f0129c71c-w1100.jpg', caption: t('home.edgeItems.2.caption') },
+    { title: t('home.edgeItems.3.title'), desc: t('home.edgeItems.3.desc'), visual: '/assets/img/unsplash-1504384308090-c894fdcc538d-w1100.jpg', caption: t('home.edgeItems.3.caption') },
   ];
 
   return (
@@ -579,14 +585,14 @@ const Home = () => {
         <div className="hero-inner">
           <div className="hero-top">
             <h1 className="display" id="heroH">
-              <span className="line-mask"><span className="w">The quiet</span></span>
-              <span className="line-mask"><span className="w">infrastructure behind</span></span>
-              <span className="line-mask"><span className="w"><em>every experience.</em></span></span>
+              <span className="line-mask"><span className="w">{t('home.hero.line1')}</span></span>
+              <span className="line-mask"><span className="w">{t('home.hero.line2')}</span></span>
+              <span className="line-mask"><span className="w"><em>{t('home.hero.line3')}</em></span></span>
             </h1>
             <div className="hero-brief reveal" id="heroBrief">
-              <p>Mindstec distributes professional AV technology from fifty-plus global manufacturers to the integrators, consultants and enterprises building the spaces people remember.</p>
+              <p>{t('home.hero.brief')}</p>
               <Button href="#solutions">
-                <span>Explore solutions</span>
+                <span>{t('home.hero.explore_btn')}</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M9 7h8v8" />
                 </svg>
@@ -594,14 +600,14 @@ const Home = () => {
             </div>
           </div>
           <div className="hero-foot reveal" id="heroFoot">
-            <div className="fact"><b>Since 2008</b><span>AV distribution</span></div>
-            <div className="fact"><b>India · Africa · Poland</b><span>Three regional operations</span></div>
-            <div className="fact"><b>50+ brands</b><span>Manufacturer portfolio</span></div>
-            <div className="hero-scrollcue" aria-hidden="true"><i id="cueLine"></i>Scroll</div>
+            <div className="fact"><b>{t('home.hero.fact1_b')}</b><span>{t('home.hero.fact1_s')}</span></div>
+            <div className="fact"><b>{t('home.hero.fact2_b')}</b><span>{t('home.hero.fact2_s')}</span></div>
+            <div className="fact"><b>{t('home.hero.fact3_b')}</b><span>{t('home.hero.fact3_s')}</span></div>
+            <div className="hero-scrollcue" aria-hidden="true"><i id="cueLine"></i>{t('home.hero.scroll')}</div>
           </div>
         </div>
       </section>
-
+ 
       {/* BRAND TICKER STRIP */}
       <div className="strip" aria-label="Represented manufacturers">
         <div className="strip-track">
@@ -609,7 +615,7 @@ const Home = () => {
           <span aria-hidden="true">Samsung Professional</span><span aria-hidden="true">Crestron</span><span aria-hidden="true">Extron</span><span aria-hidden="true">Shure</span><span aria-hidden="true">Barco</span><span aria-hidden="true">LG Electronics</span><span aria-hidden="true">Sony Professional</span><span aria-hidden="true">Biamp</span><span aria-hidden="true">QSC</span><span aria-hidden="true">Christie</span><span aria-hidden="true">Sennheiser</span><span aria-hidden="true">Epson</span>
         </div>
       </div>
-
+ 
       {/* STATEMENT SECTION */}
       <section className="statement" aria-label="About Mindstec">
         {statementText()}
@@ -617,20 +623,20 @@ const Home = () => {
           <div className="thumb reveal-img">
             <img src="/assets/img/pexels-13136106-w900.jpg" alt="A crowd silhouetted in a dark exhibition hall in front of a giant glowing projection" loading="lazy" />
           </div>
-          <small>Distribution is logistics only on paper. In practice it is product knowledge, demo stock, engineering support and someone who answers the phone.</small>
+          <small>{t('home.statement.side_text')}</small>
         </div>
       </section>
-
+ 
       <div className="rule"></div>
-
+ 
       {/* SOLUTIONS SECTION */}
       <section className="solutions" id="solutions">
         <div className="section-head">
           <div>
-            <span className="label label--red">Solutions</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>What we <em>distribute</em></h2>
+            <span className="label label--red">{t('home.solutions.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('home.solutions.title_main')} <em>{t('home.solutions.title_em')}</em></h2>
           </div>
-          <p className="lede side">Six verticals, one supply chain. Hover a category to see it in the field.</p>
+          <p className="lede side">{t('home.solutions.lede')}</p>
         </div>
         <div className="sol-list" id="solList" ref={solListRef}>
           {solutions.map((sol, i) => (
@@ -660,19 +666,19 @@ const Home = () => {
         <div className="stats-grid">
           <div className="stat-cell reveal">
             <div className="value"><span className="count" data-to="15">0</span><sup>+</sup></div>
-            <p className="desc">Years distributing professional AV technology</p>
+            <p className="desc">{t('home.stats.years_desc')}</p>
           </div>
           <div className="stat-cell reveal">
             <div className="value"><span className="count" data-to="50">0</span><sup>+</sup></div>
-            <p className="desc">Manufacturer brands in the portfolio</p>
+            <p className="desc">{t('home.stats.brands_desc')}</p>
           </div>
           <div className="stat-cell reveal">
             <div className="value"><span className="count" data-to="3">0</span></div>
-            <p className="desc">Regional operations — India, Africa, Poland</p>
+            <p className="desc">{t('home.stats.ops_desc')}</p>
           </div>
           <div className="stat-cell reveal">
             <div className="value"><span className="count" data-to="1000">0</span><sup>+</sup></div>
-            <p className="desc">Installations supplied and supported to date</p>
+            <p className="desc">{t('home.stats.installs_desc')}</p>
           </div>
         </div>
       </section>
@@ -683,8 +689,8 @@ const Home = () => {
       <section className="edge" id="edge">
         <div className="section-head">
           <div>
-            <span className="label label--red">Why Mindstec</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>A distributor that acts<br />like a <em>partner</em></h2>
+            <span className="label label--red">{t('home.edge.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('home.edge.title_main')}<br />{t('home.edge.title_em')} <em>{t('home.edge.partner', 'partner')}</em></h2>
           </div>
         </div>
         <div className="edge-layout">
@@ -693,7 +699,7 @@ const Home = () => {
             <img src="/assets/img/pexels-33966530-w1100.jpg" alt="Extreme close-up of an LED panel with rows of glowing pixels fading into darkness" loading="lazy" />
             <img src="/assets/img/unsplash-1522071820081-009f0129c71c-w1100.jpg" alt="A team working together on laptops around a wooden table" loading="lazy" />
             <img src="/assets/img/unsplash-1504384308090-c894fdcc538d-w1100.jpg" alt="A large open-plan office floor with rows of desks" loading="lazy" />
-            <span className="edge-caption" id="edgeCaption">Brand network</span>
+            <span className="edge-caption" id="edgeCaption">{t('home.edgeItems.0.caption')}</span>
           </div>
           <div className="edge-list" id="edgeList" ref={edgeListRef}>
             {edgeItems.map((item, i) => (
@@ -721,8 +727,8 @@ const Home = () => {
       <section className="band" aria-label="Global reach">
         <img id="bandImg" src="/assets/img/unsplash-1451187580459-43490279c0fa-w2000.jpg" alt="Earth photographed from orbit at night, city lights glowing across the surface" loading="lazy" />
         <div className="band-inner">
-          <span className="label">Our reach</span>
-          <h2 className="display" id="bandH">One supply chain, <em>three continents.</em></h2>
+          <span className="label">{t('home.band.label')}</span>
+          <h2 className="display" id="bandH">{t('home.band.title_main')} <em>{t('home.band.title_em')}</em></h2>
         </div>
       </section>
 
@@ -730,10 +736,10 @@ const Home = () => {
       <section className="regions" id="regions">
         <div className="section-head">
           <div>
-            <span className="label label--red">Regions</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>Where we <em>operate</em></h2>
+            <span className="label label--red">{t('home.regions.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('home.regions.title_main')} <em>{t('home.regions.title_em')}</em></h2>
           </div>
-          <p className="lede side">Stock, currency, warranty and people — all handled in-region.</p>
+          <p className="lede side">{t('home.regions.lede')}</p>
         </div>
         <div className="map-wrap reveal">
           <div className="map-base" id="mapBase" ref={mapBaseRef} aria-hidden="true"></div>
@@ -782,13 +788,14 @@ const Home = () => {
             {/* Pins with Pulsating Rings & Hub Chip Labels */}
             {Object.entries(CITIES).filter(([key, city]) => city.chip).map(([key, city], idx) => {
               const p = project(city.lat, city.lng);
-              const w = city.label.length * 6.4 + 18;
+              const translatedLabel = t(`home.cities.${key}`, city.label);
+              const w = translatedLabel.length * 6.4 + 18;
               const above = p.y > 60;
               const ly = above ? p.y - 26 : p.y + 12;
 
               return (
                 <g key={key} className="map-pin">
-                  <title>{city.label}</title>
+                  <title>{translatedLabel}</title>
                   <circle
                     className="pin-core"
                     cx={p.x}
@@ -819,7 +826,7 @@ const Home = () => {
                     <g className="map-label">
                       <rect x={p.x - w / 2} y={ly} width={w} height="19" rx="3" />
                       <text x={p.x} y={ly + 13} textAnchor="middle">
-                        {city.label}
+                        {translatedLabel}
                       </text>
                     </g>
                   )}
@@ -830,16 +837,16 @@ const Home = () => {
         </div>
         <div className="map-contacts reveal">
           <div className="mc">
-            <span>India — SAARC · Bangalore HQ</span>
+            <span>{t('home.regions.contacts.india')}</span>
             <a href="tel:+918045256922">+91 80 4525 6922</a>
             <a href="mailto:india@mindstec.com">india@mindstec.com</a>
           </div>
           <div className="mc">
-            <span>Africa — Commercial hubs · Nairobi</span>
+            <span>{t('home.regions.contacts.africa')}</span>
             <a href="mailto:africa@mindstec.com">africa@mindstec.com</a>
           </div>
           <div className="mc">
-            <span>Poland — Central &amp; Eastern Europe · Warsaw</span>
+            <span>{t('home.regions.contacts.poland')}</span>
             <a href="mailto:poland@mindstec.com">poland@mindstec.com</a>
           </div>
         </div>
@@ -849,10 +856,10 @@ const Home = () => {
       <section className="work" id="work">
         <div className="section-head">
           <div>
-            <span className="label label--red">Installations</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>Recent <em>field work</em></h2>
+            <span className="label label--red">{t('home.work.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('home.work.title_main')} <em>{t('home.work.title_em')}</em></h2>
           </div>
-          <p className="lede side">A sample of projects our partners have delivered with equipment we supplied.</p>
+          <p className="lede side">{t('home.work.lede')}</p>
         </div>
         <div className="work-grid">
           {fieldwork.map((project) => (
@@ -870,7 +877,7 @@ const Home = () => {
         </div>
         <div className="work-more reveal">
           <Button href="#contact" className="text-link">
-            <span>See more installations</span>
+            <span>{t('home.work.btn')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
@@ -884,11 +891,11 @@ const Home = () => {
       <section className="journal" id="journal">
         <div className="section-head">
           <div>
-            <span className="label label--red">Journal</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>Notes from the <em>field</em></h2>
+            <span className="label label--red">{t('home.journal.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('home.journal.title_main')} <em>{t('home.journal.title_em')}</em></h2>
           </div>
           <Button to="/blogs" className="text-link">
-            <span>All articles</span>
+            <span>{t('home.journal.btn')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
@@ -900,9 +907,9 @@ const Home = () => {
               <img src="/assets/img/pexels-18304031-w900.jpg" alt="A dark desk setup with one large monitor and a second vertical display" loading="lazy" />
             </div>
             <div className="post-body">
-              <div className="post-meta"><span className="cat">Displays</span><span>5 min read</span></div>
-              <h3>Why interactive panels are replacing projectors in the meeting room</h3>
-              <div className="post-foot">12 May 2026</div>
+              <div className="post-meta"><span className="cat">{t('home.journal.posts.post1.cat')}</span><span>{t('home.journal.posts.post1.read')}</span></div>
+              <h3>{t('home.journal.posts.post1.title')}</h3>
+              <div className="post-foot">{t('home.journal.posts.post1.date')}</div>
             </div>
           </Link>
           <Link className="post reveal" to="/blogs">
@@ -910,9 +917,9 @@ const Home = () => {
               <img src="/assets/img/unsplash-1518770660439-4636190af475-w900.jpg" alt="Macro photograph of a circuit board with processors and components" loading="lazy" />
             </div>
             <div className="post-body">
-              <div className="post-meta"><span className="cat">Infrastructure</span><span>7 min read</span></div>
-              <h3>AV-over-IP in 2026: what integrators should standardise on</h3>
-              <div className="post-foot">28 Apr 2026</div>
+              <div className="post-meta"><span className="cat">{t('home.journal.posts.post2.cat')}</span><span>{t('home.journal.posts.post2.read')}</span></div>
+              <h3>{t('home.journal.posts.post2.title')}</h3>
+              <div className="post-foot">{t('home.journal.posts.post2.date')}</div>
             </div>
           </Link>
           <Link className="post reveal" to="/blogs">
@@ -920,9 +927,9 @@ const Home = () => {
               <img src="/assets/img/pexels-6476782-w900.jpg" alt="A presenter pointing at a large projected chart in a dim training room" loading="lazy" />
             </div>
             <div className="post-body">
-              <div className="post-meta"><span className="cat">Buying guide</span><span>9 min read</span></div>
-              <h3>Specifying an interactive whiteboard: a checklist for schools and offices</h3>
-              <div className="post-foot">10 Apr 2026</div>
+              <div className="post-meta"><span className="cat">{t('home.journal.posts.post3.cat')}</span><span>{t('home.journal.posts.post3.read')}</span></div>
+              <h3>{t('home.journal.posts.post3.title')}</h3>
+              <div className="post-foot">{t('home.journal.posts.post3.date')}</div>
             </div>
           </Link>
         </div>
@@ -932,27 +939,27 @@ const Home = () => {
 
       {/* CTA SECTION */}
       <section className="cta" id="contact">
-        <span className="label label--red">Contact</span>
+        <span className="label label--red">{t('home.cta.label')}</span>
         <h2 className="display" id="ctaH" style={{ marginTop: '20px' }}>
-          <span className="line-mask"><span className="w">Let's put the right</span></span>
-          <span className="line-mask"><span className="w">technology <em>in the room.</em></span></span>
+          <span className="line-mask"><span className="w">{t('home.cta.title_main1')}</span></span>
+          <span className="line-mask"><span className="w">{t('home.cta.title_main2')} <em>{t('home.cta.title_em')}</em></span></span>
         </h2>
         <div className="cta-row reveal">
           <div className="cta-actions">
             <Button solid to="/contact">
-              <span>Get a quote</span>
+              <span>{t('home.cta.btn1')}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M7 17L17 7M9 7h8v8" />
               </svg>
             </Button>
             <Button to="/contact?s=partner">
-              <span>Become a partner</span>
+              <span>{t('home.cta.btn2')}</span>
             </Button>
           </div>
           <div className="cta-contacts">
-            <div className="c-item"><span>India operations</span><a href="tel:+918045256922">+91 80 4525 6922</a></div>
-            <div className="c-item"><span>Global enquiries</span><a href="mailto:info@mindstec.com">info@mindstec.com</a></div>
-            <div className="c-item"><span>Partnerships</span><a href="mailto:partners@mindstec.com">partners@mindstec.com</a></div>
+            <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
+            <div className="c-item"><span>Email</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
+            <div className="c-item"><span>{t('contact_info.partner_label')}</span><a href={`mailto:${t('contact_info.partner_email')}`}>{t('contact_info.partner_email')}</a></div>
           </div>
         </div>
       </section>

@@ -19,7 +19,10 @@ from .views import (
     EnquirySubmitView, EnquiryAdminListView, EnquiryAdminDetailView,
     FieldworkListCreateView, FieldworkDetailView,
     SolutionListCreateView, SolutionDetailView,
-    BlogListCreateView, BlogDetailView
+    BlogListCreateView, BlogDetailView,
+    KnowledgeBaseListCreateView, KnowledgeBaseDetailView,
+    ChatBotView, ChatHistoryView,
+    DocumentListCreateView, DocumentDetailView, DocumentParseView, DocumentIndexView
 )
 
 urlpatterns = [
@@ -32,5 +35,13 @@ urlpatterns = [
     path('solutions/<int:pk>/', SolutionDetailView.as_view(), name='solution-detail'),
     path('blogs/', BlogListCreateView.as_view(), name='blog-list-create'),
     path('blogs/<int:pk>/', BlogDetailView.as_view(), name='blog-detail'),
+    path('knowledge/', KnowledgeBaseListCreateView.as_view(), name='knowledge-list-create'),
+    path('knowledge/<int:pk>/', KnowledgeBaseDetailView.as_view(), name='knowledge-detail'),
+    path('documents/', DocumentListCreateView.as_view(), name='document-list-create'),
+    path('documents/<int:pk>/', DocumentDetailView.as_view(), name='document-detail'),
+    path('documents/<int:pk>/parse/', DocumentParseView.as_view(), name='document-parse'),
+    path('documents/<int:pk>/index/', DocumentIndexView.as_view(), name='document-index'),
+    path('chatbot/', ChatBotView.as_view(), name='admin-chatbot'),
+    path('chat/history/<str:conversation_id>/', ChatHistoryView.as_view(), name='admin-chat-history'),
 ]
 

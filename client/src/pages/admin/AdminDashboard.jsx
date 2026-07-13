@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axios from '../../api/axios';
+import DocumentManager from '../../components/admin/DocumentManager';
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
@@ -8,6 +9,114 @@ export default function AdminDashboard() {
   const [enquiries, setEnquiries] = useState([]);
   const [loadingEnquiries, setLoadingEnquiries] = useState(false);
   const [enquiriesError, setEnquiriesError] = useState('');
+
+  // Unified RAG Chatbot Knowledge Base States
+  const [selectedCategory, setSelectedCategory] = useState('company');
+  const [knowledgeItems, setKnowledgeItems] = useState([]);
+  const [loadingKnowledge, setLoadingKnowledge] = useState(false);
+  const [knowledgeError, setKnowledgeError] = useState('');
+
+  // Reusable CRUD Form states
+  const [showAddKnowledge, setShowAddKnowledge] = useState(false);
+  const [editingItem, setEditingItem] = useState(null); // null when creating, object when editing
+  const [formCategory, setFormCategory] = useState('company');
+  const [formTitle, setFormTitle] = useState('');
+  const [formContent, setFormContent] = useState('');
+  const [formIsActive, setFormIsActive] = useState(true);
+  const [submittingKnowledge, setSubmittingKnowledge] = useState(false);
+
+  const fetchKnowledgeItems = async (category) => {
+    setLoadingKnowledge(true);
+    setKnowledgeError('');
+    try {
+      const res = await axios.get(`/admin/knowledge/?knowledge_type=${category}`);
+      const items = res.data.results || res.data;
+      setKnowledgeItems(items);
+    } catch (err) {
+      console.error(err);
+      setKnowledgeError('Failed to load knowledge base items.');
+    } finally {
+      setLoadingKnowledge(false);
+    }
+  };
+
+  const handleOpenCreateForm = () => {
+    setEditingItem(null);
+    setFormCategory(selectedCategory);
+    setFormTitle('');
+    setFormContent('');
+    setFormIsActive(true);
+    setShowAddKnowledge(true);
+  };
+
+  const handleOpenEditForm = (item) => {
+    setEditingItem(item);
+    setFormCategory(item.knowledge_type);
+    setFormTitle(item.title);
+    setFormContent(item.content);
+    setFormIsActive(item.is_active);
+    setShowAddKnowledge(true);
+  };
+
+  const handleSaveKnowledge = async (e) => {
+    e.preventDefault();
+    if (!formTitle.trim() || !formContent.trim()) {
+      alert('Please fill out all fields.');
+      return;
+    }
+    setSubmittingKnowledge(true);
+    try {
+      const payload = {
+        knowledge_type: formCategory,
+        title: formTitle.trim(),
+        content: formContent.trim(),
+        is_active: formIsActive
+      };
+
+      if (editingItem) {
+        const res = await axios.patch(`/admin/knowledge/${editingItem.id}/`, payload);
+        if (res.data.knowledge_type === selectedCategory) {
+          setKnowledgeItems(prev => prev.map(item => item.id === editingItem.id ? res.data : item));
+        } else {
+          setKnowledgeItems(prev => prev.filter(item => item.id !== editingItem.id));
+        }
+        alert('Item updated successfully.');
+      } else {
+        const res = await axios.post('/admin/knowledge/', payload);
+        if (res.data.knowledge_type === selectedCategory) {
+          setKnowledgeItems(prev => [res.data, ...prev]);
+        }
+        alert('Item created successfully.');
+      }
+      
+      setShowAddKnowledge(false);
+      setEditingItem(null);
+      setFormTitle('');
+      setFormContent('');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to save knowledge item.');
+    } finally {
+      setSubmittingKnowledge(false);
+    }
+  };
+
+  const handleDeleteKnowledge = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this knowledge item? It will be removed from the chatbot context.')) return;
+    try {
+      await axios.delete(`/admin/knowledge/${id}/`);
+      setKnowledgeItems(prev => prev.filter(item => item.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete knowledge item.');
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'knowledge') {
+      fetchKnowledgeItems(selectedCategory);
+    }
+  }, [activeTab, selectedCategory]);
 
   // Instantly remove preloader on dashboard load
   useEffect(() => {
@@ -903,6 +1012,196 @@ export default function AdminDashboard() {
             )}
           </div>
         );
+      case 'knowledge':
+        return (
+          <div style={{ width: '100%' }}>
+            {/* Header Section */}
+            <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <h2 className="admin-welcome-title" style={{ margin: 0 }}>Chatbot Knowledge Base</h2>
+                  <p className="admin-welcome-desc" style={{ margin: '8px 0 0' }}>
+                    Configure the company information pages and FAQs injected into the RAG chatbot context.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Inner Sub-tab Switcher */}
+            <div style={{ display: 'flex', gap: '8px', borderBottom: '1px solid rgba(255,255,255,0.08)', paddingBottom: '12px', marginBottom: '24px', flexWrap: 'wrap' }}>
+              {[
+                { id: 'company', label: 'Company Pages' },
+                { id: 'faq', label: 'FAQs' },
+                { id: 'product', label: 'Products' },
+                { id: 'policy', label: 'Policies' },
+                { id: 'documentation', label: 'Documentation' },
+              ].map(subTab => (
+                <button
+                  key={subTab.id}
+                  onClick={() => { 
+                    setSelectedCategory(subTab.id); 
+                    setShowAddKnowledge(false);
+                    setEditingItem(null);
+                  }}
+                  className={`admin-btn ${selectedCategory === subTab.id ? '' : 'inactive-tab'}`}
+                  style={{
+                    width: 'auto',
+                    marginTop: 0,
+                    padding: '8px 14px',
+                    background: selectedCategory === subTab.id ? 'var(--red)' : 'rgba(255,255,255,0.05)',
+                    border: '1px solid rgba(255,255,255,0.08)',
+                    color: 'var(--white)',
+                    fontSize: '13px'
+                  }}
+                >
+                  {subTab.label}
+                </button>
+              ))}
+            </div>
+
+            {/* Header and Add Action */}
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+              <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '15px', textTransform: 'capitalize' }}>
+                {selectedCategory === 'faq' ? 'Frequently Asked Questions' : `${selectedCategory} Catalog`}
+              </h3>
+              <button
+                onClick={handleOpenCreateForm}
+                className="admin-btn"
+                style={{ width: 'auto', marginTop: 0, padding: '6px 14px', fontSize: '13px' }}
+              >
+                Create Entry
+              </button>
+            </div>
+
+            {/* Unified CRUD Form */}
+            {showAddKnowledge && (
+              <form onSubmit={handleSaveKnowledge} className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '16px', background: 'var(--ink-2)', border: '1px solid rgba(255,255,255,0.06)' }}>
+                <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '15px' }}>
+                  {editingItem ? 'Edit Knowledge Base Entry' : 'New Knowledge Base Entry'}
+                </h3>
+                
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Category</label>
+                  <select
+                    value={formCategory}
+                    onChange={(e) => setFormCategory(e.target.value)}
+                    style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                    required
+                  >
+                    <option value="company" style={{ background: 'var(--bg)' }}>Company Page</option>
+                    <option value="faq" style={{ background: 'var(--bg)' }}>FAQ</option>
+                    <option value="product" style={{ background: 'var(--bg)' }}>Product</option>
+                    <option value="policy" style={{ background: 'var(--bg)' }}>Policy</option>
+                    <option value="documentation" style={{ background: 'var(--bg)' }}>Documentation</option>
+                  </select>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', color: 'var(--grey)' }}>
+                    {formCategory === 'faq' ? 'Question' : 'Title'}
+                  </label>
+                  <input
+                    type="text"
+                    value={formTitle}
+                    onChange={(e) => setFormTitle(e.target.value)}
+                    placeholder={formCategory === 'faq' ? 'e.g. What is Mindstec return policy?' : 'e.g. About Mindstec, Clevertouch UX Pro Specifications'}
+                    style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', color: 'var(--grey)' }}>
+                    {formCategory === 'faq' ? 'Answer' : 'Content'}
+                  </label>
+                  <textarea
+                    value={formContent}
+                    onChange={(e) => setFormContent(e.target.value)}
+                    placeholder="Enter details here..."
+                    rows={6}
+                    style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px', resize: 'vertical' }}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                  <input
+                    type="checkbox"
+                    id="formIsActive"
+                    checked={formIsActive}
+                    onChange={(e) => setFormIsActive(e.target.checked)}
+                    style={{ width: '16px', height: '16px', cursor: 'pointer' }}
+                  />
+                  <label htmlFor="formIsActive" style={{ fontSize: '13px', color: 'var(--white)', cursor: 'pointer' }}>
+                    Active (Inject into Chatbot Context)
+                  </label>
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px' }}>
+                  <button type="submit" disabled={submittingKnowledge} className="admin-btn" style={{ width: 'auto', marginTop: 0, padding: '8px 20px' }}>
+                    {submittingKnowledge ? 'Saving...' : 'Save Entry'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => { setShowAddKnowledge(false); setEditingItem(null); }}
+                    className="admin-btn"
+                    style={{ width: 'auto', marginTop: 0, padding: '8px 20px', background: 'rgba(255,255,255,0.05)', color: 'var(--white)', border: '1px solid rgba(255,255,255,0.1)' }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* List entries */}
+            {loadingKnowledge ? (
+              <p style={{ color: 'var(--grey)', fontSize: '14px' }}>Loading entries...</p>
+            ) : knowledgeError ? (
+              <p style={{ color: 'var(--red)', fontSize: '14px' }}>{knowledgeError}</p>
+            ) : knowledgeItems.length === 0 ? (
+              <p style={{ color: 'var(--grey)', fontSize: '14px' }}>No items found in this category. Add one above to teach the chatbot.</p>
+            ) : (
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                {knowledgeItems.map(item => (
+                  <div key={item.id} style={{ background: 'var(--panel)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: '12px', padding: '16px', display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                      <h4 style={{ margin: 0, color: 'var(--white)', fontSize: '15px', fontWeight: '600' }}>
+                        {selectedCategory === 'faq' ? `Q: ${item.title}` : item.title}
+                      </h4>
+                      <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                        <span className="admin-welcome-chip" style={{ fontSize: '10px', background: item.is_active ? 'rgba(34,197,94,0.08)' : 'rgba(239,68,68,0.08)', color: item.is_active ? '#4ade80' : '#f87171', border: `1px solid ${item.is_active ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`, textTransform: 'uppercase', padding: '2px 8px', borderRadius: '4px' }}>
+                          {item.is_active ? 'Active' : 'Inactive'}
+                        </span>
+                        <span style={{ fontSize: '11px', color: 'var(--grey)' }}>Version: {item.version}</span>
+                      </div>
+                    </div>
+                    <p style={{ margin: 0, fontSize: '13px', color: 'var(--grey)', lineHeight: '1.5', whiteSpace: 'pre-wrap' }}>
+                      {selectedCategory === 'faq' ? `A: ${item.content}` : item.content}
+                    </p>
+                    <div style={{ display: 'flex', justifyContent: 'flex-end', gap: '12px', marginTop: '8px', borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '8px' }}>
+                      <button
+                        onClick={() => handleOpenEditForm(item)}
+                        className="admin-btn"
+                        style={{ width: 'auto', marginTop: 0, padding: '4px 12px', background: 'rgba(255,255,255,0.05)', color: 'var(--white)', border: '1px solid rgba(255,255,255,0.1)', fontSize: '12px' }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        onClick={() => handleDeleteKnowledge(item.id)}
+                        className="admin-btn"
+                        style={{ width: 'auto', marginTop: 0, padding: '4px 12px', background: 'rgba(239,68,68,0.08)', color: '#f87171', border: '1px solid rgba(239,68,68,0.15)', fontSize: '12px' }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
+      case 'documents':
+        return <DocumentManager />;
       default:
         return (
           <>
@@ -1017,6 +1316,24 @@ export default function AdminDashboard() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               <span>Fieldwork</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('knowledge')}
+              className={`admin-sidebar-link ${activeTab === 'knowledge' ? 'active' : ''}`}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+              </svg>
+              <span>Chatbot Knowledge</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('documents')}
+              className={`admin-sidebar-link ${activeTab === 'documents' ? 'active' : ''}`}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              <span>Document Uploads</span>
             </button>
           </nav>
         </div>
