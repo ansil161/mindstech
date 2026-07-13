@@ -3590,7 +3590,8 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 
 /* Admin Dashboard Layout */
 .admin-dashboard-page {
-  min-height: 100vh;
+  height: 100vh;
+  overflow: hidden;
   background: var(--ink);
   color: var(--white);
   font-family: var(--body);
@@ -3600,6 +3601,10 @@ html.js .reveal{opacity:0;transform:translateY(36px)}
 
 .admin-sidebar {
   width: 260px;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  overflow-y: auto;
   background: var(--panel);
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   display: flex;
