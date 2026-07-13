@@ -69,6 +69,25 @@ class Blog(models.Model):
     def __str__(self):
         return f"{self.title} ({self.cat})"
 
+
+class CollectionCentre(models.Model):
+    """An authorised e-waste drop-off location shown on the public site."""
+
+    operator = models.CharField(max_length=150)
+    city = models.CharField(max_length=150)
+    address = models.TextField()
+    contact_name = models.CharField(max_length=150)
+    phone = models.CharField(max_length=30)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['operator', 'city']
+
+    def __str__(self):
+        return f"{self.city} — {self.operator}"
+
 class BaseModel(models.Model):
     """
     Abstract base model for tracking document synchronization status,

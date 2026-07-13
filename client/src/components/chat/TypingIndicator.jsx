@@ -28,11 +28,11 @@ const dotTransition = (delay) => ({
 
 const TypingIndicator = () => {
   return (
-    <div className="flex items-start space-x-2.5 w-full select-none pl-4">
+    <div className="flex items-start space-x-3 w-full select-none">
       <SupportAvatar size={30} showOnlineBadge={false} className="mt-1" />
       <div className="flex flex-col">
         <motion.div
-          className="flex items-center space-x-2 px-5 py-3.5 rounded-[18px] rounded-tl-[4px] bg-[#1A1A1E] border border-white/5 shadow-[0_4px_15px_rgba(0,0,0,0.2)]"
+          className="flex items-center space-x-2 px-4 py-3 rounded-[18px] rounded-tl-[4px] bg-[#1A1A1E] border border-white/5 shadow-[0_4px_15px_rgba(0,0,0,0.2)]"
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}

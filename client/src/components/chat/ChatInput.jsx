@@ -19,27 +19,8 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="p-3 bg-[#0d0d0f] border-t border-white/5 select-none">
-      <form onSubmit={handleSubmit} className="relative flex items-center h-[52px] bg-[#1A1A1E]/50 border border-white/10 backdrop-blur-md rounded-[26px] pl-4 pr-1 shadow-inner focus-within:border-[#E30613]/50 transition-all duration-200">
-        
-        {/* Attachment Button */}
-        <button
-          type="button"
-          className="flex items-center justify-center w-8 h-8 rounded-full text-white/40 hover:text-white/70 hover:bg-white/5 transition-all duration-200 cursor-pointer flex-shrink-0 mr-1"
-          aria-label="Attach file"
-          title="Attach file"
-        >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            strokeWidth={2} 
-            stroke="currentColor" 
-            className="w-4.5 h-4.5"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M18.375 12.739l-7.693 7.693a4.5 4.5 0 01-6.364-6.364l10.94-10.94A3 3 0 1119.5 7.372L8.552 18.32a1.5 1.5 0 01-2.12-2.121L16.208 7.4" />
-          </svg>
-        </button>
+    <div className="px-4 py-4 bg-[#0d0d0f] border-t border-white/5 select-none">
+      <form onSubmit={handleSubmit} className="relative flex items-center h-[50px] bg-[#1A1A1E]/50 border border-white/10 backdrop-blur-md rounded-[25px] pl-4 pr-1.5 shadow-inner focus-within:border-[#E30613]/50 transition-all duration-200">
 
         {/* Input field */}
         <input
@@ -48,7 +29,7 @@ const ChatInput = () => {
           onChange={(e) => setText(e.target.value.slice(0, CHAR_LIMIT))}
           placeholder={t('chat.input.placeholder', 'Ask about products, solutions or support...')}
           disabled={isLoading}
-          className="flex-grow bg-transparent text-white placeholder-white/30 text-[14px] font-sans focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none outline-none disabled:opacity-50 py-1"
+          className="flex-grow bg-transparent text-white placeholder-white/30 text-[14px] font-sans focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none outline-none disabled:opacity-50 py-1 pr-3"
           style={{ outline: 'none', border: 'none', boxShadow: 'none' }}
         />
 
@@ -91,4 +72,3 @@ const ChatInput = () => {
 };
 
 export default React.memo(ChatInput);
-

@@ -255,6 +255,73 @@ export default function AdminDashboard() {
   const [newBlogIsFeatured, setNewBlogIsFeatured] = useState(false);
   const [submittingBlog, setSubmittingBlog] = useState(false);
 
+  // Collection centre states
+  const [collectionCentres, setCollectionCentres] = useState([]);
+  const [loadingCollectionCentres, setLoadingCollectionCentres] = useState(false);
+  const [collectionCentresError, setCollectionCentresError] = useState('');
+  const [showCollectionCentreForm, setShowCollectionCentreForm] = useState(false);
+  const [newCentre, setNewCentre] = useState({ operator: '', city: '', address: '', contact_name: '', phone: '' });
+  const [submittingCentre, setSubmittingCentre] = useState(false);
+
+  const fetchCollectionCentres = async () => {
+    setLoadingCollectionCentres(true);
+    setCollectionCentresError('');
+    try {
+      const res = await axios.get('/admin/collection-centres/');
+      setCollectionCentres(res.data);
+    } catch (err) {
+      console.error(err);
+      setCollectionCentresError('Failed to load collection centres.');
+    } finally {
+      setLoadingCollectionCentres(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'collection-centres') fetchCollectionCentres();
+  }, [activeTab]);
+
+  const handleAddCollectionCentre = async (e) => {
+    e.preventDefault();
+    if (Object.values(newCentre).some(value => !value.trim())) {
+      alert('Please fill out all collection centre fields.');
+      return;
+    }
+    setSubmittingCentre(true);
+    try {
+      const res = await axios.post('/admin/collection-centres/', newCentre);
+      setCollectionCentres(prev => [...prev, res.data]);
+      setNewCentre({ operator: '', city: '', address: '', contact_name: '', phone: '' });
+      setShowCollectionCentreForm(false);
+    } catch (err) {
+      console.error(err);
+      alert(`Failed to save collection centre: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally {
+      setSubmittingCentre(false);
+    }
+  };
+
+  const handleCentreActiveChange = async (centre) => {
+    try {
+      const res = await axios.patch(`/admin/collection-centres/${centre.id}/`, { is_active: !centre.is_active });
+      setCollectionCentres(prev => prev.map(item => item.id === centre.id ? res.data : item));
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update collection centre.');
+    }
+  };
+
+  const handleDeleteCollectionCentre = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this collection centre?')) return;
+    try {
+      await axios.delete(`/admin/collection-centres/${id}/`);
+      setCollectionCentres(prev => prev.filter(item => item.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete collection centre.');
+    }
+  };
+
   const fetchSolutions = async () => {
     setLoadingSolutions(true);
     setSolutionsError('');
@@ -1200,6 +1267,55 @@ export default function AdminDashboard() {
             )}
           </div>
         );
+      case 'collection-centres':
+        return (
+          <div style={{ width: '100%' }}>
+            <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '16px', flexWrap: 'wrap' }}>
+                <div>
+                  <h2 className="admin-welcome-title" style={{ margin: 0 }}>E-Waste Collection Centres</h2>
+                  <p className="admin-welcome-desc" style={{ margin: '8px 0 0' }}>Manage the centres displayed on the public E-Waste page.</p>
+                </div>
+                <button onClick={() => setShowCollectionCentreForm(value => !value)} className="admin-btn" style={{ width: 'auto', marginTop: 0, padding: '8px 16px' }}>
+                  {showCollectionCentreForm ? 'Cancel' : 'Add Collection Centre'}
+                </button>
+              </div>
+            </div>
+
+            {showCollectionCentreForm && (
+              <form onSubmit={handleAddCollectionCentre} className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '16px', background: 'var(--ink-2)' }}>
+                <h3 style={{ margin: 0, fontSize: '16px' }}>New Collection Centre</h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                  {[
+                    ['operator', 'Operator', 'e.g. Deshwal Waste Management'],
+                    ['city', 'City', 'e.g. New Delhi'],
+                    ['contact_name', 'Contact person', 'e.g. Mr. Kumar'],
+                    ['phone', 'Phone number', 'e.g. 9555999163'],
+                  ].map(([field, label, placeholder]) => (
+                    <label key={field} style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                      {label}
+                      <input value={newCentre[field]} onChange={e => setNewCentre(prev => ({ ...prev, [field]: e.target.value }))} placeholder={placeholder} required style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                    </label>
+                  ))}
+                </div>
+                <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                  Full address
+                  <textarea value={newCentre.address} onChange={e => setNewCentre(prev => ({ ...prev, address: e.target.value }))} placeholder="Full collection-centre address" required rows="3" style={{ background: 'rgba(0,0,0,0.2)', border: '1px solid rgba(255,255,255,0.1)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px', resize: 'vertical' }} />
+                </label>
+                <button type="submit" disabled={submittingCentre} className="admin-btn" style={{ width: 'fit-content', marginTop: 0, padding: '10px 24px' }}>{submittingCentre ? 'Saving...' : 'Save Collection Centre'}</button>
+              </form>
+            )}
+
+            {loadingCollectionCentres ? <p style={{ color: 'var(--grey)' }}>Loading collection centres...</p> : collectionCentresError ? <p style={{ color: 'var(--red)' }}>{collectionCentresError}</p> : (
+              <div style={{ overflowX: 'auto' }} className="admin-welcome-panel">
+                <table style={{ width: '100%', borderCollapse: 'collapse', minWidth: '760px', textAlign: 'left' }}>
+                  <thead><tr style={{ borderBottom: '1px solid rgba(255,255,255,0.08)', color: 'var(--grey)', fontSize: '11px', textTransform: 'uppercase' }}><th style={{ padding: '12px' }}>City</th><th style={{ padding: '12px' }}>Operator</th><th style={{ padding: '12px' }}>Address</th><th style={{ padding: '12px' }}>Contact</th><th style={{ padding: '12px' }}>Status</th><th style={{ padding: '12px' }}>Actions</th></tr></thead>
+                  <tbody>{collectionCentres.map(centre => <tr key={centre.id} style={{ borderBottom: '1px solid rgba(255,255,255,0.05)', fontSize: '13px' }}><td style={{ padding: '12px', fontWeight: '600' }}>{centre.city}</td><td style={{ padding: '12px' }}>{centre.operator}</td><td style={{ padding: '12px', color: 'var(--grey)', maxWidth: '280px' }}>{centre.address}</td><td style={{ padding: '12px' }}>{centre.contact_name}<br /><span style={{ color: 'var(--grey)' }}>{centre.phone}</span></td><td style={{ padding: '12px' }}><button onClick={() => handleCentreActiveChange(centre)} className="admin-btn" style={{ width: 'auto', margin: 0, padding: '5px 10px', fontSize: '11px', background: centre.is_active ? 'rgba(34,197,94,0.12)' : 'rgba(239,68,68,0.12)', color: centre.is_active ? '#4ade80' : '#f87171' }}>{centre.is_active ? 'Active' : 'Inactive'}</button></td><td style={{ padding: '12px' }}><button onClick={() => handleDeleteCollectionCentre(centre.id)} className="admin-btn" style={{ width: 'auto', margin: 0, padding: '5px 10px', fontSize: '11px', background: 'rgba(239,68,68,0.08)', color: '#f87171' }}>Delete</button></td></tr>)}</tbody>
+                </table>
+              </div>
+            )}
+          </div>
+        );
       case 'documents':
         return <DocumentManager />;
       default:
@@ -1316,6 +1432,15 @@ export default function AdminDashboard() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
               </svg>
               <span>Fieldwork</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('collection-centres')}
+              className={`admin-sidebar-link ${activeTab === 'collection-centres' ? 'active' : ''}`}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 21h18M5 21V7l7-4 7 4v14M9 21v-6h6v6M9 10h.01M15 10h.01" />
+              </svg>
+              <span>Collection Centres</span>
             </button>
             <button
               onClick={() => setActiveTab('knowledge')}

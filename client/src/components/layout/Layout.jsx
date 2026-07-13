@@ -29,7 +29,7 @@ const Layout = ({ children }) => {
     const pre = document.getElementById('preloader');
     if (pre) {
       const barTween = gsap.to('.pre-bar i', { scaleX: 0.7, duration: 1.4, ease: 'power1.out' });
-      
+
       const handleExit = () => {
         barTween.kill();
         gsap.timeline()
@@ -100,17 +100,17 @@ const Layout = ({ children }) => {
   return (
     <div className="min-h-screen bg-ink text-white font-body selection:bg-red selection:text-white antialiased">
       {/* Dynamic site layout header nav */}
-      <Navbar 
-        drawerOpen={drawerOpen} 
-        setDrawerOpen={setDrawerOpen} 
-        region={region} 
-        setRegion={setRegion} 
+      <Navbar
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
+        region={region}
+        setRegion={setRegion}
       />
 
       {/* Mobile Drawer */}
-      <Drawer 
-        drawerOpen={drawerOpen} 
-        setDrawerOpen={setDrawerOpen} 
+      <Drawer
+        drawerOpen={drawerOpen}
+        setDrawerOpen={setDrawerOpen}
       />
 
       {/* Main page content area */}

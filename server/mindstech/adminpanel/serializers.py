@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry, Fieldwork, Solution, Blog, KnowledgeBase, Document
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, KnowledgeBase, Document
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
@@ -94,6 +94,27 @@ class BlogSerializer(serializers.ModelSerializer):
 
     def validate_cat(self, value):
         return strip_tags(value).strip()
+
+
+class CollectionCentreSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CollectionCentre
+        fields = ['id', 'operator', 'city', 'address', 'contact_name', 'phone', 'is_active', 'created_at', 'updated_at']
+        read_only_fields = ['id', 'created_at', 'updated_at']
+
+    def _clean(self, value):
+        return strip_tags(value).strip()
+
+    validate_operator = _clean
+    validate_city = _clean
+    validate_address = _clean
+    validate_contact_name = _clean
+
+    def validate_phone(self, value):
+        value = self._clean(value)
+        if not any(char.isdigit() for char in value):
+            raise serializers.ValidationError('Phone number must contain digits.')
+        return value
 
 class KnowledgeBaseSerializer(serializers.ModelSerializer):
     class Meta:

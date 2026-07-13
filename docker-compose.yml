@@ -24,7 +24,7 @@ services:
       dockerfile: Dockerfile
     container_name: mindstec-ai-service
     ports:
-      - "8000:8000"
+      - "8001:8000"
     volumes:
       - ./ai_service/app:/app/app
       - ./ai_service/config:/app/config

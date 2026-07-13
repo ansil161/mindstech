@@ -8,10 +8,10 @@ const ChatHeader = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex items-center justify-between h-[76px] px-5 bg-[#0D0D0F] border-b border-white/5 text-white select-none">
+    <div className="flex items-center justify-between h-[68px] px-5 bg-[#0D0D0F] border-b border-white/5 text-white select-none">
       <div className="flex items-center space-x-3">
         {/* Customer Support Avatar */}
-        <SupportAvatar size={42} showOnlineBadge={true} />
+        <SupportAvatar size={36} showOnlineBadge={true} />
         
         <div className="flex flex-col justify-center">
           <h3 className="font-bold text-[16px] tracking-tight text-white font-sans leading-tight">
@@ -27,31 +27,10 @@ const ChatHeader = () => {
         </div>
       </div>
 
-      {/* Header Actions: Minimize and Close Buttons */}
-      <div className="flex items-center space-x-2">
-        {/* Minimize Button */}
+      <div className="flex items-center">
         <button
           onClick={toggleChat}
-          className="w-7 h-7 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer"
-          title="Minimize chat"
-          aria-label="Minimize chat"
-        >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            strokeWidth={2.5} 
-            stroke="currentColor" 
-            className="w-3.5 h-3.5"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
-          </svg>
-        </button>
-
-        {/* Close Button - Subtle and brighter on hover */}
-        <button
-          onClick={toggleChat}
-          className="w-7 h-7 rounded-full bg-white/0 hover:bg-white/5 text-white/30 hover:text-white/90 transition-all duration-200 flex items-center justify-center cursor-pointer"
+          className="w-8 h-8 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 text-white/50 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer"
           title="Close chat"
           aria-label="Close chat"
         >
@@ -72,4 +51,3 @@ const ChatHeader = () => {
 };
 
 export default React.memo(ChatHeader);
-

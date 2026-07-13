@@ -20,6 +20,7 @@ from .views import (
     FieldworkListCreateView, FieldworkDetailView,
     SolutionListCreateView, SolutionDetailView,
     BlogListCreateView, BlogDetailView,
+    CollectionCentreListCreateView, CollectionCentreDetailView,
     KnowledgeBaseListCreateView, KnowledgeBaseDetailView,
     ChatBotView, ChatHistoryView,
     DocumentListCreateView, DocumentDetailView, DocumentParseView, DocumentIndexView
@@ -35,6 +36,8 @@ urlpatterns = [
     path('solutions/<int:pk>/', SolutionDetailView.as_view(), name='solution-detail'),
     path('blogs/', BlogListCreateView.as_view(), name='blog-list-create'),
     path('blogs/<int:pk>/', BlogDetailView.as_view(), name='blog-detail'),
+    path('collection-centres/', CollectionCentreListCreateView.as_view(), name='collection-centre-list-create'),
+    path('collection-centres/<int:pk>/', CollectionCentreDetailView.as_view(), name='collection-centre-detail'),
     path('knowledge/', KnowledgeBaseListCreateView.as_view(), name='knowledge-list-create'),
     path('knowledge/<int:pk>/', KnowledgeBaseDetailView.as_view(), name='knowledge-detail'),
     path('documents/', DocumentListCreateView.as_view(), name='document-list-create'),

@@ -3,46 +3,34 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
+import axios from '../../api/axios';
 
 
 gsap.registerPlugin(ScrollTrigger);
 
-const CENTRES = [
-  { g: 'deshwal', city: 'New Delhi', addr: 'B1/14 Basement, EROS Apartment, 56, Nehru Place, New Delhi 110019', name: 'Mr. Ashwani', tel: '9555999163' },
-  { g: 'deshwal', city: 'Manesar', addr: 'Plot No. 292, Sector-7, IMT Manesar, Haryana 122050', name: 'Mr. Kishore', tel: '9873592319' },
-  { g: 'deshwal', city: 'Ahmedabad', addr: 'G/D No. 1051, Vishal Estate, Opp. Bharat Petrol Pump, Sarkhej Bavla Road, Taluka Sanand, Santhal, Ahmedabad 382210', name: 'Mr. Mukesh Parikh', tel: '9727355189' },
-  { g: 'deshwal', city: 'Pune', addr: 'Survey No. 119, Deokar Building, Pune Alandi Road, Kalas, Vishrantwadi, Pune 411015, Maharashtra', name: 'Mr. Samar Pan', tel: '9834480443' },
-  { g: 'deshwal', city: 'Mumbai (Thane)', addr: '105, Sewanti Chhaya Building, Dombivali East, Ayre Road, Kalyan-Dombivali, Thane, Mumbai 421201', name: 'Mr. Anjani Tripathi', tel: '9643013881' },
-  { g: 'deshwal', city: 'Chennai', addr: 'Survey No. 91 & 92/2, No. 1/33, Kumaran Rice Mill Compound, Tirupati Road, Vellavedu, Chennai 602107, Tamil Nadu', name: 'Mr. Gyaniram Choudhary', tel: '9080113177' },
-  { g: 'deshwal', city: 'Jaipur', addr: 'Plot No. 1, Sita Nagar 2, Heerapur Rajni Pura, Heerawala, Ajmer Road, Jaipur 302024, Rajasthan', name: 'Mr. Shravan Swami', tel: '9261118000' },
-  { g: 'deshwal', city: 'Kolkata', addr: '3/7, Jadavgarh, P.S. Garfa, Kolkata 700078', name: 'Mr. Indresh', tel: '7415191708' },
-  { g: 'deshwal', city: 'Bengaluru', addr: 'B-39, 3rd Cross Road, Near Bharat Sevashram Sangha, Jakkur, Bengaluru 560064, Karnataka', name: 'Mr. Lokesh', tel: '9873592320' },
-  { g: 'rtl', city: 'New Delhi', addr: 'B-13, Okhla Phase-2, New Delhi', name: 'Mr. Ibrahim', tel: '9555493838' },
-  { g: 'rtl', city: 'Chennai', addr: 'No. 389, Sembium Road, Kathevedu, Puzhal, Chennai 600066', name: 'Mr. Dwevdi', tel: '9884309370' },
-  { g: 'rtl', city: 'Jammu', addr: 'Panamma Chowk, Jammu 180001', name: 'Mr. Narender Kumar', tel: '9419622202' },
-  { g: 'rtl', city: 'Patna', addr: 'South Gandhi Maidan, behind IMA Hall, Slimpur Ohra, Patna 800001', name: 'Mr. Satendra Prasad', tel: '9431079451' },
-  { g: 'rtl', city: 'Ranchi', addr: 'Mahadeo Munda, Near Kali Mandir, Chutia, Ranchi 834001', name: 'Mr. Briju Kumar', tel: '9113728020' },
-  { g: 'rtl', city: 'Ahmedabad', addr: '23 Manorath Complex, Sarapur, Ahmedabad 380052', name: 'Mr. Rajesh Patel', tel: '9374887483' },
-  { g: 'rtl', city: 'Mumbai (Bhiwandi)', addr: 'Kolher Village, Near Kolher Vajan Kanta, Bhiwandi, Mumbai', name: 'Mr. Sanjay Kumar', tel: '9999434721' },
-  { g: 'rtl', city: 'Kolkata', addr: '161/1 M G Road, Bangur Building, Kolkata 700007', name: 'Mr. M Tiwari', tel: '9831744758' },
-  { g: 'rtl', city: 'Bhubaneshwar', addr: '24/711, Bhimpur, New Airport Road, Bhubaneshwar 751020', name: 'Mr. Basant', tel: '9338933801' },
-  { g: 'rtl', city: 'Guwahati', addr: 'A K Azad Road, Rehabari Tinali, Near Namghar, Guwahati', name: 'Mr. Raju', tel: '7002649709' },
-  { g: 'rtl', city: 'Nagpur', addr: 'J P Complex, MIDC T-Point, Amravati Road, Wadi, Nagpur 440024', name: 'Mr. Kailash', tel: '9823361807' },
-  { g: 'rtl', city: 'Bengaluru (Nelamangala)', addr: 'No. 63 A, Dasanapur, NH-4 Tumkur Road, Behind Hanuman Temple, Nelamangala, Bangalore 562123', name: 'Mr. Singh', tel: '9379757223' },
-  { g: 'rtl', city: 'Pune', addr: 'Lane No. 14, Opp. Municipal Garden, Tiger Nagar, Pune 411015', name: 'Mr. Deepak', tel: '9730007723' },
-  { g: 'rtl', city: 'Jaipur', addr: 'Plant No. 20, Dyanand Nagar, Jodla Power House, Bhandarana Road, Jaipur', name: 'Mr. Nawrang', tel: '9351755333' },
-  { g: 'rtl', city: 'Ludhiana', addr: 'Plot No. 17, Transport Nagar, Ludhiana', name: 'Mr. Birbal', tel: '9316055333' },
-  { g: 'rtl', city: 'Chandigarh', addr: 'SCO 1086-87, Cabin No. 7, Sector 22B, Chandigarh', name: 'Mr. Jaiver', tel: '9312255333' },
-  { g: 'rtl', city: 'Hyderabad', addr: '1-A 600/12, Prakash Nagar, Hyderabad', name: 'Mr. Jammal', tel: '9346086996' },
-  { g: 'rtl', city: 'Raipur', addr: 'Near Gurudwara, Station Road, Raipur', name: 'Mr. R. L. Sahu', tel: '9302228182' }
-];
-
-const OPS = { deshwal: 'Deshwal WM', rtl: 'Reliable Trans' };
-
 const EWaste = () => {
   const containerRef = useRef(null);
   const [filter, setFilter] = useState('all');
+  const [centres, setCentres] = useState([]);
+  const [centresLoading, setCentresLoading] = useState(true);
+  const [centresError, setCentresError] = useState('');
   const { t } = useTranslation();
+
+  useEffect(() => {
+    const loadCentres = async () => {
+      try {
+        const response = await axios.get('/admin/collection-centres/');
+        setCentres(response.data);
+      } catch (error) {
+        console.error('Unable to load collection centres:', error);
+        setCentresError('Collection centres are currently unavailable. Please try again shortly.');
+      } finally {
+        setCentresLoading(false);
+      }
+    };
+
+    loadCentres();
+  }, []);
 
   useEffect(() => {
     document.title = 'E-Waste Management — Mindstec Distribution';
@@ -153,7 +141,8 @@ const EWaste = () => {
     );
   }, [filter]);
 
-  const filteredCentres = CENTRES.filter(c => filter === 'all' || c.g === filter);
+  const operators = [...new Set(centres.map(centre => centre.operator))];
+  const filteredCentres = centres.filter(centre => filter === 'all' || centre.operator === filter);
 
   return (
     <main id="top" ref={containerRef}>
@@ -334,21 +323,25 @@ const EWaste = () => {
 
         <div className="cc-filters reveal" role="group" aria-label="Filter collection centres">
           <button className={filter === 'all' ? 'on' : ''} onClick={() => setFilter('all')}>{t('ewaste.filter.all', 'All centres')}</button>
-          <button className={filter === 'deshwal' ? 'on' : ''} onClick={() => setFilter('deshwal')}>Deshwal Waste Management</button>
-          <button className={filter === 'rtl' ? 'on' : ''} onClick={() => setFilter('rtl')}>Reliable Trans Logistics</button>
+          {operators.map(operator => (
+            <button key={operator} className={filter === operator ? 'on' : ''} onClick={() => setFilter(operator)}>{operator}</button>
+          ))}
         </div>
 
         <div className="cc-grid" id="ccGrid">
-          {filteredCentres.map((c, i) => (
-            <div className="cc-card" key={i}>
+          {centresLoading && <p>Loading collection centres...</p>}
+          {centresError && <p>{centresError}</p>}
+          {!centresLoading && !centresError && filteredCentres.length === 0 && <p>No collection centres are available for this operator.</p>}
+          {filteredCentres.map(c => (
+            <div className="cc-card" key={c.id}>
               <div className="cc-top">
                 <h3>{c.city}</h3>
-                <span className="cc-op">{OPS[c.g]}</span>
+                <span className="cc-op">{c.operator}</span>
               </div>
-              <address>{c.addr}</address>
+              <address>{c.address}</address>
               <div className="cc-contact">
-                <span>{t('ewaste.contact_person', 'Contact Person')}: {c.name}</span>
-                <a href={`tel:+91${c.tel}`}>{t('ewaste.tel', 'Tel')}: {c.tel}</a>
+                <span>{t('ewaste.contact_person', 'Contact Person')}: {c.contact_name}</span>
+                <a href={`tel:${c.phone}`}>{t('ewaste.tel', 'Tel')}: {c.phone}</a>
               </div>
             </div>
           ))}
