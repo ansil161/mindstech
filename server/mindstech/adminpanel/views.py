@@ -5,10 +5,10 @@ from rest_framework.permissions import AllowAny, IsAuthenticated, IsAdminUser
 from rest_framework.throttling import AnonRateThrottle
 from rest_framework.parsers import MultiPartParser, FormParser
 from django.shortcuts import get_object_or_404
-from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, KnowledgeBase, Document
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document
 from .serializers import (
     EnquirySerializer, EnquiryStatusUpdateSerializer, FieldworkSerializer, 
-    SolutionSerializer, BlogSerializer, CollectionCentreSerializer, KnowledgeBaseSerializer, DocumentSerializer
+    SolutionSerializer, BlogSerializer, CollectionCentreSerializer, DocumentSerializer
 )
 
 class EnquirySubmitView(APIView):
@@ -241,72 +241,6 @@ class CollectionCentreDetailView(APIView):
     def delete(self, request, pk):
         self.get_object(pk).delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-class KnowledgeBaseListCreateView(APIView):
-    permission_classes = [IsAuthenticated, IsAdminUser]
-
-    def get(self, request):
-        queryset = KnowledgeBase.objects.all()
-        
-        # Filtering by knowledge_type
-        knowledge_type = request.query_params.get('knowledge_type')
-        if knowledge_type:
-            queryset = queryset.filter(knowledge_type=knowledge_type)
-            
-        # Searching by title
-        search_query = request.query_params.get('search')
-        if search_query:
-            queryset = queryset.filter(title__icontains=search_query)
-
-        # Standard Pagination using PageNumberPagination
-        from rest_framework.pagination import PageNumberPagination
-        paginator = PageNumberPagination()
-        paginator.page_size = 15
-        paginated_queryset = paginator.paginate_queryset(queryset, request, view=self)
-        
-        serializer = KnowledgeBaseSerializer(paginated_queryset, many=True)
-        return paginator.get_paginated_response(serializer.data)
-
-    def post(self, request):
-        serializer = KnowledgeBaseSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-
-class KnowledgeBaseDetailView(APIView):
-    permission_classes = [IsAuthenticated, IsAdminUser]
-
-    def get_object(self, pk):
-        return get_object_or_404(KnowledgeBase, pk=pk)
-
-    def get(self, request, pk):
-        instance = self.get_object(pk)
-        serializer = KnowledgeBaseSerializer(instance)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def put(self, request, pk):
-        instance = self.get_object(pk)
-        serializer = KnowledgeBaseSerializer(instance, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def patch(self, request, pk):
-        instance = self.get_object(pk)
-        serializer = KnowledgeBaseSerializer(instance, data=request.data, partial=True)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    def delete(self, request, pk):
-        instance = self.get_object(pk)
-        instance.delete()
-        return Response({"message": "KnowledgeBase entry deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
 from .services.ai_client import AIClient, AIClientError

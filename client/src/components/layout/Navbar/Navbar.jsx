@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
-import { LanguageContext } from '../../../contexts/LanguageContext';
+import { LanguageContext } from '../../../context/LanguageContext.jsx';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../common/Button/Button.jsx';

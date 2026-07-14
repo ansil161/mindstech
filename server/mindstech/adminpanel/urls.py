@@ -21,7 +21,6 @@ from .views import (
     SolutionListCreateView, SolutionDetailView,
     BlogListCreateView, BlogDetailView,
     CollectionCentreListCreateView, CollectionCentreDetailView,
-    KnowledgeBaseListCreateView, KnowledgeBaseDetailView,
     ChatBotView, ChatHistoryView,
     DocumentListCreateView, DocumentDetailView, DocumentParseView, DocumentIndexView
 )
@@ -38,8 +37,6 @@ urlpatterns = [
     path('blogs/<int:pk>/', BlogDetailView.as_view(), name='blog-detail'),
     path('collection-centres/', CollectionCentreListCreateView.as_view(), name='collection-centre-list-create'),
     path('collection-centres/<int:pk>/', CollectionCentreDetailView.as_view(), name='collection-centre-detail'),
-    path('knowledge/', KnowledgeBaseListCreateView.as_view(), name='knowledge-list-create'),
-    path('knowledge/<int:pk>/', KnowledgeBaseDetailView.as_view(), name='knowledge-detail'),
     path('documents/', DocumentListCreateView.as_view(), name='document-list-create'),
     path('documents/<int:pk>/', DocumentDetailView.as_view(), name='document-detail'),
     path('documents/<int:pk>/parse/', DocumentParseView.as_view(), name='document-parse'),

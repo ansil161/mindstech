@@ -7,11 +7,18 @@ class Enquiry(models.Model):
         ('Resolved', 'Resolved'),
     )
 
+    SOURCE_CHOICES = (
+        ('website', 'Website Form'),
+        ('chatbot', 'Chatbot'),
+    )
+
     name = models.CharField(max_length=100)
     email = models.EmailField()
     phone = models.CharField(max_length=20)
+    company = models.CharField(max_length=150, blank=True, default='')
     subject = models.CharField(max_length=150)
     message = models.TextField()
+    source = models.CharField(max_length=10, choices=SOURCE_CHOICES, default='website')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -109,30 +116,6 @@ class BaseModel(models.Model):
             self.version += 1
         super().save(*args, **kwargs)
 
-
-class KnowledgeBase(BaseModel):
-    KNOWLEDGE_TYPES = [
-        ("company", "Company Page"),
-        ("faq", "FAQ"),
-        ("product", "Product"),
-        ("policy", "Policy"),
-        ("documentation", "Documentation"),
-    ]
-
-    knowledge_type = models.CharField(
-        max_length=30,
-        choices=KNOWLEDGE_TYPES
-    )
-    title = models.CharField(max_length=255)
-    content = models.TextField()
-    is_active = models.BooleanField(default=True)
-
-    class Meta:
-        db_table = "knowledge_base"
-        ordering = ["-updated_at"]
-
-    def __str__(self):
-        return f"{self.get_knowledge_type_display()} - {self.title}"
 
 
 class Document(BaseModel):

@@ -1,21 +1,32 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, KnowledgeBase, Document
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
         model = Enquiry
-        fields = ['id', 'name', 'email', 'phone', 'subject', 'message', 'status', 'created_at']
+        fields = [
+            'id', 'name', 'email', 'phone', 'company',
+            'subject', 'message', 'source', 'status', 'created_at',
+        ]
         read_only_fields = ['id', 'status', 'created_at']
 
-
     def validate_name(self, value):
-        return strip_tags(value).strip()
+        value = strip_tags(value).strip()
+        if len(value) < 2:
+            raise serializers.ValidationError("Name must be at least 2 characters.")
+        return value
 
     def validate_subject(self, value):
         return strip_tags(value).strip()
 
     def validate_message(self, value):
+        value = strip_tags(value).strip()
+        if len(value) < 10:
+            raise serializers.ValidationError("Message must be at least 10 characters.")
+        return value
+
+    def validate_company(self, value):
         return strip_tags(value).strip()
 
     def validate_phone(self, value):
@@ -23,6 +34,11 @@ class EnquirySerializer(serializers.ModelSerializer):
         if not any(char.isdigit() for char in cleaned):
             raise serializers.ValidationError("Phone number must contain digits.")
         return cleaned
+
+    def validate_source(self, value):
+        if value not in dict(Enquiry.SOURCE_CHOICES):
+            raise serializers.ValidationError("Invalid source value.")
+        return value
 
 
 class EnquiryStatusUpdateSerializer(serializers.ModelSerializer):
@@ -115,18 +131,6 @@ class CollectionCentreSerializer(serializers.ModelSerializer):
         if not any(char.isdigit() for char in value):
             raise serializers.ValidationError('Phone number must contain digits.')
         return value
-
-class KnowledgeBaseSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = KnowledgeBase
-        fields = ['id', 'knowledge_type', 'title', 'content', 'is_active', 'version', 'created_at', 'updated_at']
-        read_only_fields = ['id', 'version', 'created_at', 'updated_at']
-
-    def validate_title(self, value):
-        return strip_tags(value).strip()
-
-    def validate_content(self, value):
-        return strip_tags(value).strip()
 
 
 class DocumentSerializer(serializers.ModelSerializer):

@@ -13,24 +13,15 @@ const welcomeTopics = [
   'Warranty',
   'Technical Support',
   'E-waste Collection',
-  'Company Information'
-];
-
-const welcomeChips = [
-  'Products',
-  'Solutions',
-  'Support',
-  'Contact Us',
-  'Find Collection Centre',
-  'Warranty'
+  'Company Information',
 ];
 
 const ChatMessages = () => {
-  const { messages, isTyping, sendMessage } = useChat();
+  const { messages, isTyping } = useChat();
   const scrollContainerRef = useRef(null);
 
-  // Exclude system/mock welcome messages if they exist to trigger the welcome screen layout correctly
-  const chatMessages = messages.filter((message) => message.id !== 'msg-welcome');
+  // Exclude the synthetic welcome seed message so the welcome screen shows
+  const chatMessages = messages.filter((m) => m.id !== 'msg-welcome');
 
   useEffect(() => {
     if (chatMessages.length > 0 || isTyping) {
@@ -47,28 +38,20 @@ const ChatMessages = () => {
       <style>{`
         .custom-chatbot-scroll::-webkit-scrollbar { width: 4px; }
         .custom-chatbot-scroll::-webkit-scrollbar-track { background: transparent; }
-        .custom-chatbot-scroll::-webkit-scrollbar-thumb { background: rgba(0, 0, 0, 0.1); border-radius: 9999px; }
-        .custom-chatbot-scroll::-webkit-scrollbar-thumb:hover { background: rgba(0, 0, 0, 0.15); }
+        .custom-chatbot-scroll::-webkit-scrollbar-thumb { background: rgba(0,0,0,0.1); border-radius: 9999px; }
+        .custom-chatbot-scroll::-webkit-scrollbar-thumb:hover { background: rgba(0,0,0,0.15); }
       `}</style>
 
       {chatMessages.length === 0 ? (
-        /* Premium Enterprise Welcome Screen (Compact and Scroll-free) */
-        <motion.div 
+        /* Welcome screen */
+        <motion.div
           className="flex flex-col items-center py-4 select-none w-full"
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.3 }}
         >
-          {/* Hide horizontal scrollbar style */}
-          <style>{`
-            .no-scrollbar::-webkit-scrollbar { display: none; }
-            .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-          `}</style>
-
-          {/* Compact AI Avatar */}
           <SupportAvatar size={56} showOnlineBadge={false} className="mb-2 shadow-md border border-white" />
 
-          {/* Greeting Header */}
           <h2 className="text-[16px] font-sans font-extrabold text-[#111827] tracking-tight text-center leading-tight">
             Hello 👋
           </h2>
@@ -76,17 +59,15 @@ const ChatMessages = () => {
             I'm Mindstec AI Assistant
           </h1>
 
-          {/* Subtitle List */}
           <div className="mt-3.5 text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
             Ask me anything about
           </div>
           <p className="mt-1.5 text-center text-[11.5px] font-medium text-neutral-500 max-w-[280px] leading-relaxed">
             {welcomeTopics.join('  •  ')}
           </p>
-
         </motion.div>
       ) : (
-        /* Chat Messages List (pr-1 adds scrollbar separation) */
+        /* Chat message list */
         <div className="space-y-5 pr-1">
           {chatMessages.map((message) => (
             <MessageBubble key={message.id} message={message} />

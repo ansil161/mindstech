@@ -36,8 +36,6 @@ export default function AdminDashboard() {
 
   useEffect(() => {
     fetchEnquiries();
-    fetchSolutions();
-    fetchBlogs();
   }, []);
 
   // Fieldwork states

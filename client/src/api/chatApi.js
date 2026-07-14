@@ -85,7 +85,28 @@ export const chatApi = {
       conversation_id: conversationId,
     });
     return response.data;
-  }
+  },
+
+  /**
+   * Submit a chatbot enquiry to the Django REST API.
+   * Maps to POST /api/v1/admin/enquiries/submit/ (AllowAny, rate-limited).
+   *
+   * @param {Object} enquiry - { name, email, phone, company, message }
+   * @returns {Promise<Object>} - { message, data } on success
+   */
+  submitEnquiry: async ({ name, email, phone }) => {
+    const payload = {
+      name:    name.trim(),
+      email:   email.trim(),
+      phone:   phone.trim(),
+      subject: 'General Enquiry',
+      message: `Chatbot enquiry submitted by ${name.trim()}.`,
+      source:  'chatbot',
+    };
+
+    const response = await apiClient.post('/admin/enquiries/submit/', payload);
+    return response.data;
+  },
 };
 
 export default chatApi;

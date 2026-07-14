@@ -27,46 +27,24 @@ const ChatHeader = () => {
         </div>
       </div>
 
-      {/* Minimize and Close Controls */}
-      <div className="flex items-center gap-2">
-        {/* Minimize Button */}
-        <button
-          onClick={toggleChat}
-          className="w-8 h-8 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-          title="Minimize chat"
-          aria-label="Minimize chat"
+      {/* Close Button */}
+      <button
+        onClick={toggleChat}
+        className="w-8 h-8 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+        title="Close chat"
+        aria-label="Close chat"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+          strokeWidth={2.5}
+          stroke="currentColor"
+          className="w-3.5 h-3.5"
         >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            strokeWidth={2.5} 
-            stroke="currentColor" 
-            className="w-3.5 h-3.5"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 12h-15" />
-          </svg>
-        </button>
-
-        {/* Close Button */}
-        <button
-          onClick={toggleChat}
-          className="w-8 h-8 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/50"
-          title="Close chat"
-          aria-label="Close chat"
-        >
-          <svg 
-            xmlns="http://www.w3.org/2000/svg" 
-            fill="none" 
-            viewBox="0 0 24 24" 
-            strokeWidth={2.5} 
-            stroke="currentColor" 
-            className="w-3.5 h-3.5"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
     </div>
   );
 };

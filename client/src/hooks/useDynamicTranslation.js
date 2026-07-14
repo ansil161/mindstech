@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext, useRef } from 'react';
-import { LanguageContext } from '../contexts/LanguageContext';
+import { LanguageContext } from '../context/LanguageContext';
 import { translateDynamicContent } from '../services/translationService';
 
 // Basic in-memory cache to prevent duplicate fetches during the same session for the same data
