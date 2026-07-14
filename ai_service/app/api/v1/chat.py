@@ -103,7 +103,7 @@ async def chat_interaction(payload: InternalChatPayload):
         logger.exception("Chat execution failed: %s", str(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"An error occurred executing chat generation: {str(e)}"
+            detail="An error occurred while processing your request. Please try again later."
         )
 
 
@@ -128,5 +128,5 @@ async def fetch_chat_history(conversation_id: str):
         logger.exception("History retrieval failed: %s", str(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to fetch conversation history: {str(e)}"
+            detail="Failed to retrieve conversation history. Please try again later."
         )

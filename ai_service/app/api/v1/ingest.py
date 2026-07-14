@@ -45,7 +45,7 @@ async def parse_document_file(file: UploadFile = File(...)):
         logger.exception("Parsing failed: %s", str(e))
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail=f"Failed to parse document: {str(e)}"
+            detail="Failed to parse the uploaded document. Ensure the file is a valid PDF, DOCX, TXT, or MD file."
         )
     finally:
         if os.path.exists(temp_path):
@@ -90,7 +90,7 @@ async def ingest_document(payload: InternalIngestionPayload):
             if not success:
                 raise HTTPException(
                     status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                    detail=f"Qdrant vector database upsert failed for chunk {i}."
+                    detail="Document ingestion failed due to an internal storage error. Please try again."
                 )
             
         document_store.save_document(payload.document_id, {
@@ -107,7 +107,7 @@ async def ingest_document(payload: InternalIngestionPayload):
         logger.exception("Ingestion failed: %s", str(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to ingest document: {str(e)}"
+            detail="Failed to ingest document. Please try again."
         )
 
 @router.post("/update-document", status_code=status.HTTP_200_OK)
@@ -137,5 +137,5 @@ async def delete_document(document_id: str, category: str, tenant_id: str = "def
         logger.exception("Deletion failed: %s", str(e))
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail=f"Failed to delete document: {str(e)}"
+            detail="Failed to delete document. Please try again."
         )

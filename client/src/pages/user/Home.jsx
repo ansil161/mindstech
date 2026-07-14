@@ -32,36 +32,7 @@ const project = (lat, lng) => ({
   y: (90 - lat) * (400 / 180),
 });
 
-const STATIC_PROJECTS = [
-  {
-    id: 'static-1',
-    title: "Government command centre",
-    location_meta: "New Delhi, India — 48-screen video wall",
-    category: "Control room",
-    image: "/assets/img/pexels-11783119-w1400.jpg"
-  },
-  {
-    id: 'static-2',
-    title: "Luxury hotel, full property AV",
-    location_meta: "Bangalore, India — 280 rooms and ballroom",
-    category: "Hospitality",
-    image: "/assets/img/unsplash-1551882547-ff40c63fe5fa-w1100.jpg"
-  },
-  {
-    id: 'static-3',
-    title: "Broadcast studio fit-out",
-    location_meta: "Nairobi, Kenya — production and streaming",
-    category: "Broadcast",
-    image: "/assets/img/pexels-7865064-w1100.jpg"
-  },
-  {
-    id: 'static-4',
-    title: "Enterprise meeting rooms",
-    location_meta: "Warsaw, Poland — 32 conference spaces",
-    category: "Corporate",
-    image: "/assets/img/pexels-13141583-w1400.jpg"
-  }
-];
+
 
 const Home = () => {
   const { t } = useTranslation();
@@ -74,7 +45,8 @@ const Home = () => {
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
 
-  const [rawFieldwork, setRawFieldwork] = useState(STATIC_PROJECTS);
+  const [rawFieldwork, setRawFieldwork] = useState([]);
+  const [fieldworkLoading, setFieldworkLoading] = useState(true);
   const [rawSolutions, setRawSolutions] = useState([]);
 
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
@@ -103,6 +75,8 @@ const Home = () => {
         }
       } catch (err) {
         console.error("Failed to load dynamic fieldwork:", err);
+      } finally {
+        setFieldworkLoading(false);
       }
     };
     fetchFieldwork();
@@ -865,28 +839,44 @@ const Home = () => {
           <p className="lede side">{t('home.work.lede')}</p>
         </div>
         <div className="work-grid-premium">
-          {fieldwork.map((project, index) => (
-            <div key={project.id} className="work-card" data-reveal style={{ '--delay': `${index * 0.1}s` }}>
-              <div className="work-card-image">
-                <img src={project.image} alt={project.title} loading="lazy" />
-                <div className="work-card-overlay"></div>
+          {fieldworkLoading ? (
+            // Skeleton placeholders while fetching
+            Array.from({ length: 4 }).map((_, i) => (
+              <div key={i} className="work-card work-card--skeleton">
+                <div className="work-card-image work-card-image--skeleton"></div>
+                <div className="work-card-content">
+                  <span className="work-card-category--skeleton"></span>
+                  <div className="work-card-title--skeleton"></div>
+                  <div className="work-card-meta--skeleton"></div>
+                </div>
               </div>
-              <div className="work-card-content">
-                <span className="work-card-category">{project.category}</span>
-                <h3 className="work-card-title">{project.title}</h3>
-                <p className="work-card-meta">{project.location_meta}</p>
+            ))
+          ) : fieldwork.length === 0 ? (
+            <p className="work-empty">{t('home.work.empty', 'No field work projects available yet.')}</p>
+          ) : (
+            fieldwork.map((project, index) => (
+              <div key={project.id} className="work-card" data-reveal style={{ '--delay': `${index * 0.1}s` }}>
+                <div className="work-card-image">
+                  <img src={project.image} alt={project.title} loading="lazy" />
+                  <div className="work-card-overlay"></div>
+                </div>
+                <div className="work-card-content">
+                  <span className="work-card-category">{project.category}</span>
+                  <h3 className="work-card-title">{project.title}</h3>
+                  <p className="work-card-meta">{project.location_meta}</p>
+                </div>
               </div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
-        <div className="work-more reveal">
+        {/* <div className="work-more reveal">
           <Button href="#contact" className="text-link">
             <span>{t('home.work.btn')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </Button>
-        </div>
+        </div> */}
       </section>
 
       <div className="rule"></div>

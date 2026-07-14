@@ -44,13 +44,26 @@ app.include_router(ingest_router, prefix="/api/v1/internal")
 
 # Configure CORS Middleware
 if settings.BACKEND_CORS_ORIGINS:
+    # Sanity-check: the CORS spec forbids combining allow_credentials=True with a
+    # wildcard origin. If the operator has configured "*" explicitly, we apply the
+    # middleware without credentials so browsers don't silently reject responses.
+    origins = [str(o) for o in settings.BACKEND_CORS_ORIGINS]
+    has_wildcard = "*" in origins
+
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=[str(origin) for origin in settings.BACKEND_CORS_ORIGINS],
-        allow_credentials=True,
+        allow_origins=origins,
+        allow_credentials=not has_wildcard,  # credentials require explicit origins
         allow_methods=["*"],
         allow_headers=["*"],
     )
+
+    if has_wildcard:
+        logger.warning(
+            "CORS is configured with a wildcard origin ('*'). "
+            "allow_credentials has been disabled automatically to comply with the CORS specification. "
+            "Set BACKEND_CORS_ORIGINS to explicit origin URLs to enable credentialed requests."
+        )
 
 
 @app.exception_handler(Exception)

@@ -723,6 +723,64 @@ img { display: block; max-width: 100%; }
 .project .p-title { font-family: var(--display); font-size: 15px; font-weight: 600; letter-spacing: -.01em; }
 .project .p-meta { font-size: 11px; color: #C9C9C9; margin-top: 4px; letter-spacing: .05em; }
 .project .p-tag { font-size: 10px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; color: #fff; background: rgba(204,0,1,.95); border: 1px solid rgba(255,255,255,0.15); padding: 5px 10px; border-radius: 4px; white-space: nowrap; }
+/* Skeleton loading state */
+.work-card--skeleton {
+  opacity: 1;
+  transform: none;
+  pointer-events: none;
+  animation: none;
+}
+
+.work-card-image--skeleton {
+  aspect-ratio: 16/10;
+  background: linear-gradient(90deg, var(--ink-2) 25%, rgba(255,255,255,.04) 50%, var(--ink-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}
+
+.work-card-category--skeleton {
+  display: block;
+  width: 72px;
+  height: 18px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--ink-2) 25%, rgba(255,255,255,.04) 50%, var(--ink-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.work-card-title--skeleton {
+  height: 20px;
+  width: 75%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--ink-2) 25%, rgba(255,255,255,.04) 50%, var(--ink-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.work-card-meta--skeleton {
+  height: 14px;
+  width: 50%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--ink-2) 25%, rgba(255,255,255,.04) 50%, var(--ink-2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Empty state */
+.work-empty {
+  grid-column: 1 / -1;
+  text-align: center;
+  color: var(--grey);
+  font-size: 15px;
+  padding: clamp(32px, 5vw, 64px) 0;
+  opacity: 0.6;
+}
+
 .work-more { padding: clamp(32px, 4vw, 52px) var(--pad); text-align: center; }
 
 /* ── JOURNAL ── */

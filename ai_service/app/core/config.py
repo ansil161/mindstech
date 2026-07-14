@@ -22,7 +22,12 @@ class Settings(BaseSettings):
     ENVIRONMENT: str = "development"
 
     # CORS origins setup
-    BACKEND_CORS_ORIGINS: List[str] = ["*"]
+    # Provide an explicit comma-separated list of allowed origins in the environment,
+    # e.g. BACKEND_CORS_ORIGINS="https://app.example.com,https://admin.example.com"
+    # An empty list disables CORS (safe default for a backend-only microservice).
+    # Wildcard "*" is intentionally NOT the default because it cannot be combined
+    # with allow_credentials=True per the CORS specification.
+    BACKEND_CORS_ORIGINS: List[str] = []
 
     @field_validator("BACKEND_CORS_ORIGINS", mode="before")
     @classmethod
