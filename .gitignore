@@ -28,4 +28,4 @@ client/dist-ssr
 *.sw?
 
 
-ai_service/.env
+**/.env
