@@ -643,6 +643,9 @@ const Home = () => {
             <Link key={i} className="sol-row" to={`/solutions/${sol.slug}`} data-img={i}>
               <span className="num">{(i + 1).toString().padStart(2, '0')}</span>
               <span className="sol-title">{sol.title}</span>
+              <span className="sol-img" aria-hidden="true">
+                <img src={sol.image} alt="" loading="lazy" />
+              </span>
               <span className="sol-desc">{sol.desc}</span>
               <span className="sol-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -861,18 +864,19 @@ const Home = () => {
           </div>
           <p className="lede side">{t('home.work.lede')}</p>
         </div>
-        <div className="work-grid">
-          {fieldwork.map((project) => (
-            <figure key={project.id} className="project reveal-img">
-              <img src={project.image} alt={project.title} loading="lazy" />
-              <figcaption>
-                <div>
-                  <div className="p-title">{project.title}</div>
-                  <div className="p-meta">{project.location_meta}</div>
-                </div>
-                <span className="p-tag">{project.category}</span>
-              </figcaption>
-            </figure>
+        <div className="work-grid-premium">
+          {fieldwork.map((project, index) => (
+            <div key={project.id} className="work-card" data-reveal style={{ '--delay': `${index * 0.1}s` }}>
+              <div className="work-card-image">
+                <img src={project.image} alt={project.title} loading="lazy" />
+                <div className="work-card-overlay"></div>
+              </div>
+              <div className="work-card-content">
+                <span className="work-card-category">{project.category}</span>
+                <h3 className="work-card-title">{project.title}</h3>
+                <p className="work-card-meta">{project.location_meta}</p>
+              </div>
+            </div>
           ))}
         </div>
         <div className="work-more reveal">

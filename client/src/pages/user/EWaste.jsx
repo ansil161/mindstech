@@ -5,7 +5,6 @@ import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
 
-
 gsap.registerPlugin(ScrollTrigger);
 
 const EWaste = () => {
@@ -39,8 +38,6 @@ const EWaste = () => {
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
-        gsap.set('.reveal', { opacity: 1, y: 0 });
-        gsap.set('.reveal-img', { clipPath: 'inset(0 0 0% 0)' });
         return;
       }
 
@@ -58,8 +55,8 @@ const EWaste = () => {
           { opacity: 1, y: 0, duration: 0.8 }, 
           '-=.6');
 
-      // Generic reveals
-      gsap.utils.toArray('.reveal').forEach(el => {
+      // Generic reveals - use data-reveal attribute
+      gsap.utils.toArray('[data-reveal]').forEach(el => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
@@ -73,7 +70,8 @@ const EWaste = () => {
         });
       });
 
-      gsap.utils.toArray('.reveal-img').forEach(el => {
+      gsap.utils.toArray('[data-reveal-img]').forEach(el => {
+        gsap.set(el, { clipPath: 'inset(0 100% 0 0)' });
         gsap.to(el, {
           clipPath: 'inset(0 0 0% 0)',
           duration: 1.2,
@@ -152,12 +150,12 @@ const EWaste = () => {
           <span className="line-mask"><span className="w">{t('ewaste.hero.line1', 'End of life.')}</span></span>
           <span className="line-mask"><span className="w"><em>{t('ewaste.hero.line2', 'Not end of story.')}</em></span></span>
         </h1>
-        <div className="shero-side reveal" id="sheroSide">
+        <div className="shero-side" id="sheroSide">
           <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>{t('ewaste.hero.title')}</span>
           <p>{t('ewaste.hero.brief', 'Around 90% of electronic equipment is recyclable. Our authorized programme with Deshwal Waste Management takes back end-of-life electronics anywhere in India — at zero cost to you.')}</p>
         </div>
       </section>
-      <div className="shero-meta reveal">
+      <div className="shero-meta">
         <div className="fact"><b>1800 102 9077</b><span>{t('ewaste.meta.pickup_label', 'Toll-free pickup line')}</span></div>
         <div className="fact"><b>{t('ewaste.meta.drop_points', '27 drop points')}</b><span>{t('ewaste.meta.across_india', 'Across India')}</span></div>
         <div className="fact"><b>Deshwal WM</b><span>{t('ewaste.meta.recycler_label', 'Authorized recycler')}</span></div>
@@ -166,10 +164,10 @@ const EWaste = () => {
 
       {/* OVERVIEW */}
       <section className="ov" aria-label="Overview">
-        <div className="ov-label reveal"><span className="label label--red">{t('ewaste.ov.label', 'Overview')}</span></div>
+        <div className="ov-label" data-reveal><span className="label label--red">{t('ewaste.ov.label', 'Overview')}</span></div>
         <div>
-          <p className="ov-state reveal">{t('ewaste.ov.lede_main', 'Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of it')} <em>{t('ewaste.ov.lede_em', 'gets a second life.')}</em></p>
-          <div className="ov-copy reveal">
+          <p className="ov-state" data-reveal>{t('ewaste.ov.lede_main', 'Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of it')} <em>{t('ewaste.ov.lede_em', 'gets a second life.')}</em></p>
+          <div className="ov-copy" data-reveal>
             <p>{t('ewaste.ov.p1', 'E-waste is the informal name for electronic products nearing the end of their useful life — computers, televisions, displays, copiers, phones, audio equipment and batteries. Many of their components contain hazardous materials that pose a real threat to human health and the environment when disposed of improperly.')}</p>
             <p>{t('ewaste.ov.p2', 'Most of these products can be reused, refurbished or recycled in an environmentally sound manner. Under India\'s E-Waste (Management & Handling) Rules, Mindstec runs a compliant take-back programme so the hardware we distribute never ends up where it shouldn\'t.')}</p>
           </div>
@@ -180,11 +178,11 @@ const EWaste = () => {
 
       {/* BENEFITS */}
       <section className="ben" aria-label="Benefits of e-waste recycling">
-        <div className="ben-head reveal">
+        <div className="ben-head" data-reveal>
           <span className="label label--red">{t('ewaste.recyclers.why_recycle', 'Why recycle')}</span>
           <h2 className="display">{t('ewaste.recyclers.gives_back_main', 'What responsible recycling')} <em>{t('ewaste.recyclers.gives_back_em', 'gives back.')}</em></h2>
         </div>
-        <div className="ben-grid reveal">
+        <div className="ben-grid" data-reveal>
           <div className="ben-cell">
             <span className="num">01</span>
             <h3>{t('ewaste.recyclers.b1_title', 'Conserves natural resources')}</h3>
@@ -212,12 +210,12 @@ const EWaste = () => {
 
       {/* DO'S & DON'TS */}
       <section className="dd" aria-label="Do's and don'ts">
-        <div className="dd-head reveal">
+        <div className="dd-head" data-reveal>
           <span className="label label--red">{t('ewaste.dd.label', 'Handle with care')}</span>
           <h2 className="display">{t('ewaste.dd.title_main', "Do's &")} <em>{t('ewaste.dd.title_em', 'don\'ts.')}</em></h2>
         </div>
         <div className="dd-grid">
-          <div className="dd-col dd-do reveal">
+          <div className="dd-col dd-do" data-reveal>
             <h3>{t('ewaste.dd.do_title', 'Always')}</h3>
             <ul>
               <li>
@@ -242,7 +240,7 @@ const EWaste = () => {
               </li>
             </ul>
           </div>
-          <div className="dd-col dd-dont reveal">
+          <div className="dd-col dd-dont" data-reveal>
             <h3>{t('ewaste.dd.dont_title', 'Never')}</h3>
             <ul>
               <li>
@@ -270,38 +268,40 @@ const EWaste = () => {
 
       {/* PLAN */}
       <section className="plan" aria-label="Our e-waste management plan">
-        <div className="plan-media reveal-img">
+        <div className="plan-media" data-reveal-img>
           <img src="/assets/img/unsplash-1518770660439-4636190af475-w1400.jpg" alt="A close-up of an electronic circuit board with gold and green traces" loading="lazy" />
           <span className="plan-tag">{t('ewaste.plan.media_tag', 'Authorized recycling — Deshwal Waste Management')}</span>
         </div>
         <div className="plan-body">
-          <span className="label label--red reveal">{t('ewaste.plan.label', 'The programme')}</span>
-          <h2 className="display reveal">{t('ewaste.plan.title_main', 'How your hardware')} <em>{t('ewaste.plan.title_em', 'comes back around.')}</em></h2>
-          <p className="reveal">{t('ewaste.plan.brief', 'In India, most e-waste ends up in the informal sector, recycled with no consideration for health or the environment. Abiding by all pertinent e-waste laws, Mindstec has partnered with Deshwal Waste Management Pvt. Ltd. — a recycler authorized by the appropriate government agencies — to provide drop-off centres and environmentally sound processing of end-of-life electronics.')}</p>
+          <span className="label label--red" data-reveal>{t('ewaste.plan.label', 'The programme')}</span>
+          <h2 className="display" data-reveal>{t('ewaste.plan.title_main', 'How your hardware')} <em>{t('ewaste.plan.title_em', 'comes back around.')}</em></h2>
+          <p className="reveal" data-reveal>{t('ewaste.plan.brief', 'In India, most e-waste ends up in the informal sector, recycled with no consideration for health or the environment. Abiding by all pertinent e-waste laws, Mindstec has partnered with Deshwal Waste Management Pvt. Ltd. — a recycler authorized by the appropriate government agencies — to provide drop-off centres and environmentally sound processing of end-of-life electronics.')}</p>
           <div className="steps">
-            <div className="step reveal">
-              <span className="num">01</span>
-              <div>
-                <h4>{t('ewaste.plan.steps.0.title', 'Raise a pickup request')}</h4>
-                <p>{t('ewaste.plan.steps.0.desc', 'Call the toll-free line 1800 102 9077, Monday to Friday, 10:00 AM – 5:30 PM — or drop your e-waste at any collection centre below.')}</p>
-              </div>
-            </div>
-            <div className="step reveal">
-              <span className="num">02</span>
-              <div>
-                <h4>{t('ewaste.plan.steps.1.title', 'Collection & transport')}</h4>
-                <p>{t('ewaste.plan.steps.1.desc', 'Deshwal Waste Management, our authorized recycler, collects the equipment and transports it to the nearest collection centre.')}</p>
-              </div>
-            </div>
-            <div className="step reveal">
-              <span className="num">03</span>
-              <div>
-                <h4>{t('ewaste.plan.steps.2.title', 'Environmentally sound recycling')}</h4>
-                <p>{t('ewaste.plan.steps.2.desc', 'Equipment is processed at government-authorized facilities in compliance with India\'s E-Waste Management & Handling Rules.')}</p>
-              </div>
-            </div>
-          </div>
-          <p className="plan-note reveal"><b>{t('ewaste.plan.note_bold', 'Free of charge.')}</b> {t('ewaste.plan.note', 'No fee is charged for giving goods for recycling, and no monetary benefit is offered in return — the sole aim of the programme is to keep the environment clean.')}</p>
+  <div className="step" data-reveal>
+    <span className="num">01</span>
+    <div>
+      <h4>{t('ewaste.plan.steps.0.title', 'Raise a pickup request')}</h4>
+      <p>{t('ewaste.plan.steps.0.desc', 'Call the toll-free line 1800 102 9077, Monday to Friday, 10:00 AM – 5:30 PM — or drop your e-waste at any collection centre below.')}</p>
+    </div>
+  </div>
+  
+  <div className="step" data-reveal>
+    <span className="num">02</span>
+    <div>
+      <h4>{t('ewaste.plan.steps.1.title', 'Collection & transport')}</h4>
+      <p>{t('ewaste.plan.steps.1.desc', 'Deshwal Waste Management, our authorized recycler, collects the equipment and transports it to the nearest collection centre.')}</p>
+    </div>
+  </div>
+  
+  <div className="step" data-reveal>
+    <span className="num">03</span>
+    <div>
+      <h4>{t('ewaste.plan.steps.2.title', 'Environmentally sound recycling')}</h4>
+      <p>{t('ewaste.plan.steps.2.desc', 'Equipment is processed at government-authorized facilities in compliance with India\'s E-Waste Management & Handling Rules.')}</p>
+    </div>
+  </div>
+</div>
+          <p className="plan-note" data-reveal><b>{t('ewaste.plan.note_bold', 'Free of charge.')}</b> {t('ewaste.plan.note', 'No fee is charged for giving goods for recycling, and no monetary benefit is offered in return — the sole aim of the programme is to keep the environment clean.')}</p>
         </div>
       </section>
 
@@ -359,7 +359,7 @@ const EWaste = () => {
             <span className="line-mask"><span className="w">{t('ewaste.cta.title_main', 'Recycle it right.')}</span></span>
             <span className="line-mask"><span className="w"><em>{t('ewaste.cta.title_em', 'It costs nothing.')}</em></span></span>
           </h2>
-          <div className="cta-row reveal">
+          <div className="cta-row" data-reveal>
             <div className="cta-actions">
               <a href="tel:18001029077" className="btn btn--solid">
                 <span>{t('ewaste.cta.btn1', 'Call 1800 102 9077')}</span>

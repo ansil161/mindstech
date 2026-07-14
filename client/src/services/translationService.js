@@ -16,9 +16,14 @@ export const translateDynamicContent = async (data, fields, targetLang) => {
       fields,
       target_lang: targetLang,
     });
+    console.log('[i18n] translate response:', response.data);
+    if (!response.data?.translated_data) {
+      console.warn('[i18n] No translated_data in response, using original');
+      return data;
+    }
     return response.data.translated_data;
   } catch (error) {
-    console.error('Dynamic translation failed:', error);
+    console.error('[i18n] Dynamic translation failed — full error:', error);
     // Graceful fallback: return original data on failure
     return data;
   }

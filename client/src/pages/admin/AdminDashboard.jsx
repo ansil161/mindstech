@@ -220,6 +220,7 @@ export default function AdminDashboard() {
     try {
       const res = await axios.get('/admin/solutions/');
       setSolutions(res.data);
+      console.log('cnjjndc',res.data)
     } catch (err) {
       console.error(err);
       setSolutionsError('Failed to load solutions.');
@@ -227,6 +228,10 @@ export default function AdminDashboard() {
       setLoadingSolutions(false);
     }
   };
+
+  useEffect(() => {
+    if (activeTab === 'solutions') fetchSolutions();
+  }, [activeTab]);
 
   const handleAddSolution = async (e) => {
     e.preventDefault();

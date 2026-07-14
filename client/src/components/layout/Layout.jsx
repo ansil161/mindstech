@@ -114,7 +114,7 @@ const Layout = ({ children }) => {
       />
 
       {/* Main page content area */}
-      <main id="top">
+      <main id="top" style={{ maxWidth: '1440px', margin: '0 auto', overflowX: 'hidden' }}>
         {children}
       </main>
 
