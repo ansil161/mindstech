@@ -155,6 +155,77 @@ export default function AdminDashboard() {
   const [newCentre, setNewCentre] = useState({ operator: '', city: '', address: '', contact_name: '', phone: '' });
   const [submittingCentre, setSubmittingCentre] = useState(false);
 
+  // Gallery states
+  const [galleryItems, setGalleryItems] = useState([]);
+  const [loadingGallery, setLoadingGallery] = useState(false);
+  const [galleryError, setGalleryError] = useState('');
+  const [showAddGalleryForm, setShowAddGalleryForm] = useState(false);
+  const [galTitle, setGalTitle] = useState('');
+  const [galCategory, setGalCategory] = useState('');
+  const [galImage, setGalImage] = useState(null);
+  const [submittingGallery, setSubmittingGallery] = useState(false);
+
+  const fetchGalleryItems = async () => {
+    setLoadingGallery(true);
+    setGalleryError('');
+    try {
+      const res = await axios.get('/admin/gallery/');
+      setGalleryItems(res.data);
+    } catch (err) {
+      console.error(err);
+      setGalleryError('Failed to load gallery items.');
+    } finally {
+      setLoadingGallery(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'gallery') fetchGalleryItems();
+  }, [activeTab]);
+
+  const handleAddGalleryItem = async (e) => {
+    e.preventDefault();
+    if (!galTitle.trim() || !galCategory.trim() || !galImage) {
+      alert('Please fill out all fields and select an image.');
+      return;
+    }
+    setSubmittingGallery(true);
+    const formData = new FormData();
+    formData.append('title', galTitle.trim());
+    formData.append('category', galCategory.trim());
+    formData.append('image', galImage);
+
+    try {
+      const res = await axios.post('/admin/gallery/', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setGalleryItems(prev => [res.data, ...prev]);
+      setGalTitle('');
+      setGalCategory('');
+      setGalImage(null);
+      setShowAddGalleryForm(false);
+    } catch (err) {
+      console.error(err);
+      const serverMsg = err.response?.data
+        ? JSON.stringify(err.response.data)
+        : err.message;
+      alert(`Failed to save gallery item. Server error details: ${serverMsg}`);
+    } finally {
+      setSubmittingGallery(false);
+    }
+  };
+
+  const handleDeleteGalleryItem = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this gallery item?')) return;
+    try {
+      await axios.delete(`/admin/gallery/${id}/`);
+      setGalleryItems(prev => prev.filter(item => item.id !== id));
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete gallery item.');
+    }
+  };
+
   const fetchCollectionCentres = async () => {
     setLoadingCollectionCentres(true);
     setCollectionCentresError('');
@@ -1027,6 +1098,136 @@ export default function AdminDashboard() {
         );
       case 'documents':
         return <DocumentManager />;
+      case 'gallery':
+        return (
+          <div style={{ width: '100%' }}>
+            {/* Header Section */}
+            <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <h2 className="admin-welcome-title" style={{ margin: 0 }}>Gallery Manager</h2>
+                  <p className="admin-welcome-desc" style={{ margin: '8px 0 0' }}>
+                    Upload and manage photos displayed on the public Gallery page.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowAddGalleryForm(!showAddGalleryForm)}
+                  className="admin-btn"
+                  style={{ width: 'auto', marginTop: 0, padding: '8px 16px' }}
+                >
+                  {showAddGalleryForm ? 'Cancel' : 'Add Photo'}
+                </button>
+              </div>
+            </div>
+
+            {/* Add Gallery Item Form Drawer */}
+            {showAddGalleryForm && (
+              <form onSubmit={handleAddGalleryItem} className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '16px', background: 'var(--ink-2)', border: '1px solid var(--line)' }}>
+                <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>New Gallery Photo</h3>
+                
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Photo Title</label>
+                    <input
+                      type="text"
+                      value={galTitle}
+                      onChange={(e) => setGalTitle(e.target.value)}
+                      placeholder="e.g. Annual Tech Summit 2024"
+                      style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                      required
+                    />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Category</label>
+                    <input
+                      type="text"
+                      value={galCategory}
+                      onChange={(e) => setGalCategory(e.target.value)}
+                      placeholder="e.g. Annual Meet, Tech Workshop, Team Outing"
+                      style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Photo Image File</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setGalImage(e.target.files[0])}
+                    style={{ color: 'var(--grey)', fontSize: '14px', padding: '4px 0' }}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                  <button
+                    type="submit"
+                    className="admin-btn"
+                    disabled={submittingGallery}
+                    style={{ width: 'auto', marginTop: 0, padding: '10px 24px' }}
+                  >
+                    {submittingGallery ? 'Uploading...' : 'Upload Photo'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddGalleryForm(false)}
+                    className="admin-btn"
+                    style={{ width: 'auto', marginTop: 0, padding: '10px 24px', background: 'var(--line-soft)', color: 'var(--white)', border: '1px solid var(--line)' }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* Gallery summary stat */}
+            <div className="admin-stats-grid" style={{ marginBottom: '24px' }}>
+              <div className="admin-stat-card">
+                <p className="admin-stat-label">Total Photos</p>
+                <p className="admin-stat-value">{galleryItems.length}</p>
+                <p className="admin-stat-subtext">Uploaded to gallery</p>
+              </div>
+            </div>
+
+            {/* Gallery Items Grid */}
+            {loadingGallery ? (
+              <p style={{ color: 'var(--grey)', fontSize: '14px' }}>Loading gallery items...</p>
+            ) : galleryError ? (
+              <p style={{ color: 'var(--red)', fontSize: '14px' }}>{galleryError}</p>
+            ) : galleryItems.length === 0 ? (
+              <p style={{ color: 'var(--grey)', fontSize: '14px' }}>No gallery items found. Click "Add Photo" to upload your first image.</p>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
+                {galleryItems.map((item) => (
+                  <div key={item.id} className="admin-stat-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: '12px' }}>
+                    <img
+                      src={item.image}
+                      alt={item.title}
+                      style={{ width: '100%', height: '180px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--line)' }}
+                    />
+                    <div>
+                      <span className="admin-welcome-chip" style={{ color: 'var(--red)', background: 'rgba(204,0,1,0.08)', border: '1px solid rgba(204,0,1,0.2)', fontSize: '10px', textTransform: 'uppercase', fontWeight: '700' }}>
+                        {item.category}
+                      </span>
+                      <h4 style={{ margin: '8px 0 4px', fontSize: '15px', color: 'var(--white)', fontWeight: '600' }}>{item.title}</h4>
+                    </div>
+                    <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', paddingTop: '8px', borderTop: '1px solid var(--line-soft)' }}>
+                      <button
+                        onClick={() => handleDeleteGalleryItem(item.id)}
+                        className="admin-btn"
+                        style={{ width: 'auto', marginTop: 0, padding: '6px 16px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2', fontSize: '12px' }}
+                      >
+                        Delete Photo
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
       default:
         return (
           <>
@@ -1153,6 +1354,15 @@ export default function AdminDashboard() {
             </button>
 
             <button
+              onClick={() => setActiveTab('gallery')}
+              className={`admin-sidebar-link ${activeTab === 'gallery' ? 'active' : ''}`}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Gallery</span>
+            </button>
+            <button
               onClick={() => setActiveTab('documents')}
               className={`admin-sidebar-link ${activeTab === 'documents' ? 'active' : ''}`}
             >
@@ -1197,7 +1407,9 @@ export default function AdminDashboard() {
                 ? 'Client Inquiries' 
                 : activeTab === 'fieldwork'
                   ? 'Recent Fieldwork'
-                  : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                  : activeTab === 'gallery'
+                    ? 'Gallery Manager'
+                    : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
           </h1>
           <div className="admin-status-indicator">
             <span className="admin-pulse-dot"></span>

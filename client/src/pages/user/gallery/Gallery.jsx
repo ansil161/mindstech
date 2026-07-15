@@ -6,20 +6,20 @@ import GalleryHero from './components/GalleryHero';
 import GalleryGrid from './components/GalleryGrid';
 import GalleryModal from './components/GalleryModal';
 import { usePageEntrance } from './hooks/useGalleryAnimations';
-import { fetchGalleryItems } from '../../../services/galleryService';
+import apiClient from '../../../api/axios';
 
 export default function Gallery() {
   const { laserRef } = usePageEntrance();
 
   // ── Data ─────────────────────────────────────────────────────────────────
-  const [items,   setItems]   = useState([]);
+  const [items, setItems] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error,   setError]   = useState(null);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     let cancelled = false;
-    fetchGalleryItems()
-      .then((data) => { if (!cancelled) { setItems(data); setLoading(false); } })
+    apiClient.get('/admin/gallery/')
+      .then(({ data }) => { if (!cancelled) { setItems(data); setLoading(false); } })
       .catch(() => { if (!cancelled) { setError('Failed to load gallery.'); setLoading(false); } });
     return () => { cancelled = true; };
   }, []);
@@ -27,13 +27,13 @@ export default function Gallery() {
   // ── Modal state ──────────────────────────────────────────────────────────
   const [activeItem, setActiveItem] = useState(null);
 
-  const openModal  = useCallback((item) => setActiveItem(item), []);
+  const openModal = useCallback((item) => setActiveItem(item), []);
   const closeModal = useCallback(() => setActiveItem(null), []);
 
   const navigate = useCallback(
     (dir) => {
       if (!activeItem || items.length === 0) return;
-      const idx  = items.findIndex((i) => i.id === activeItem.id);
+      const idx = items.findIndex((i) => i.id === activeItem.id);
       const next =
         dir === 'next'
           ? items[(idx + 1) % items.length]
@@ -76,7 +76,7 @@ export default function Gallery() {
 
         <AnimatePresence>
           {loading && <GalleryLoadingState />}
-          {error   && <GalleryErrorState message={error} />}
+          {error && <GalleryErrorState message={error} />}
           {!loading && !error && (
             <GalleryGrid items={items} onCardClick={openModal} />
           )}
