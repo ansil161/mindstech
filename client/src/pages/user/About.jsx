@@ -1,178 +1,75 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
-
+import { useRegion } from '../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../api/regionApi.js';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 gsap.registerPlugin(ScrollTrigger);
 
+const renderWords = (str) => {
+  return str.split(/(\s+)/).map((word, i) => {
+    if (/^\s+$/.test(word)) return word;
+    return <span key={i} className="st-w">{word}</span>;
+  });
+};
+
+const FALLBACK_CONTACT = {
+  phone: '+918045256922',
+  phone_display: '+91 80 4525 6922',
+  email: 'india@mindstec.com',
+};
+
 const About = () => {
   const { t } = useTranslation();
+  const { regionSlug } = useRegion();
   const containerRef = useRef(null);
 
+  const [team, setTeam] = useState([]);
+  const [contactInfo, setContactInfo] = useState(null);
+  const [loadingRegion, setLoadingRegion] = useState(false);
+
+  const { translatedData: translatedTeam } = useDynamicTranslation(
+    team,
+    ['name', 'role'],
+    `about_team_${regionSlug}`
+  );
+  const { translatedData: translatedContact } = useDynamicTranslation(
+    contactInfo,
+    ['office_name', 'address'],
+    `about_contact_${regionSlug}`
+  );
+
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduceMotion) {
-        gsap.set('.reveal', { opacity: 1, y: 0 });
-        gsap.set('.reveal-img', { clipPath: 'inset(0 0 0% 0)' });
-        return;
+    let cancelled = false;
+    const fetchRegionData = async () => {
+      setLoadingRegion(true);
+      try {
+        const res = await getPublicRegionData(regionSlug);
+        if (!cancelled) {
+          setTeam(res.data.team_members || []);
+          setContactInfo(res.data.contact_info || null);
+        }
+      } catch (err) {
+        console.error('Failed to load region data:', err);
+        if (!cancelled) {
+          setTeam([]);
+          setContactInfo(null);
+        }
+      } finally {
+        if (!cancelled) setLoadingRegion(false);
       }
+    };
+    fetchRegionData();
+    return () => { cancelled = true; };
+  }, [regionSlug]);
 
-      // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      intro.fromTo('#aheroH .w', 
-          { yPercent: 115, rotate: 2 }, 
-          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
-        .fromTo('#aheroSide', 
-          { opacity: 0, y: 30 }, 
-          { opacity: 1, y: 0, duration: 1.0 }, 
-          '-=.8')
-        .fromTo('.ahero-meta', 
-          { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 0.8 }, 
-          '-=.6');
-
-      // Hero image parallax
-      gsap.fromTo('#aheroImg', { yPercent: -8 }, {
-        yPercent: 8,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.ahero-visual',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        }
-      });
-
-      // Story word ink-in
-      gsap.fromTo('.story-text .st-w', 
-        { opacity: 0.18 },
-        {
-          opacity: 1,
-          color: '#FAFAFA',
-          stagger: 0.35,
-          ease: 'none',
-          scrollTrigger: {
-            trigger: '.story',
-            start: 'top 75%',
-            end: 'top 15%',
-            scrub: true,
-          }
-        }
-      );
-
-      // Generic reveals
-      gsap.utils.toArray('.reveal').forEach(el => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 86%',
-            once: true,
-          }
-        });
-      });
-
-      gsap.utils.toArray('.reveal-img').forEach(el => {
-        gsap.to(el, {
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 1.2,
-          ease: 'power4.inOut',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 82%',
-            once: true,
-          }
-        });
-      });
-
-      gsap.utils.toArray('.section-head').forEach(head => {
-        gsap.fromTo(head.querySelectorAll('h2, .label, .side'),
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 0.9,
-            stagger: 0.08,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: head,
-              start: 'top 84%',
-              once: true,
-            }
-          }
-        );
-      });
-
-      // Team grid stagger
-      gsap.fromTo('.member', { opacity: 0, y: 44 }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        stagger: 0.09,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '#teamGrid',
-          start: 'top 82%',
-          once: true,
-        }
-      });
-
-      // CTA masked headline
-      gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
-        yPercent: 0,
-        duration: 1.1,
-        stagger: 0.1,
-        ease: 'power4.out',
-        scrollTrigger: {
-          trigger: '#contact',
-          start: 'top 72%',
-          once: true,
-        }
-      });
-
-      gsap.fromTo('.cta-bg img', { yPercent: -6 }, {
-        yPercent: 6,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.cta',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        }
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, []);
-
-  const renderWords = (str) => {
-    return str.split(/(\s+)/).map((word, i) => {
-      if (/^\s+$/.test(word)) return word;
-      if (!word) return null;
-      return (
-        <span key={i} className="st-w inline-block">
-          {word}
-        </span>
-      );
-    });
-  };
-
-  const team = [
-    { name: t('about.team.names.founder'), role: t('about.team.roles.founder'), img: '/assets/uploads/2026/04/WhatsApp-Image-2026-04-09-at-11.41.55-AM.jpeg' },
-    { name: t('about.team.names.md'), role: t('about.team.roles.md'), img: '/assets/uploads/2026/05/Sab-White-Bankground-1.jpg' },
-    { name: t('about.team.names.finance_dir'), role: t('about.team.roles.finance_dir'), img: '/assets/uploads/2026/04/WhatsApp-Image-2026-04-02-at-3.44.53-PM.jpeg' },
-    { name: t('about.team.names.sales_south'), role: t('about.team.roles.sales_south'), img: '/assets/uploads/2026/04/Karthikeyan-Sekar-Profile-Pic.jpg-5.jpeg' },
-    { name: t('about.team.names.hr'), role: t('about.team.roles.hr'), img: '/assets/uploads/2026/03/image2.png' },
-    { name: t('about.team.names.country_head'), role: t('about.team.roles.country_head'), img: '/assets/uploads/2026/03/image3.png' },
-    { name: t('about.team.names.finance_mgr'), role: t('about.team.roles.finance_mgr'), img: '/assets/uploads/2026/03/image4.png' },
-    { name: t('about.team.names.sales_mgr'), role: t('about.team.roles.sales_mgr'), img: '/assets/uploads/2026/03/image6.png' }
-  ];
+  const contact = translatedContact || contactInfo;
+  const telHref = contact?.phone || FALLBACK_CONTACT.phone;
+  const telLabel = contact?.phone_display || contact?.phone || FALLBACK_CONTACT.phone_display;
+  const email = contact?.email || FALLBACK_CONTACT.email;
 
   return (
     <main id="top" ref={containerRef}>
@@ -211,12 +108,8 @@ const About = () => {
       <section className="story" aria-label="Our story">
         <div>
           <div className="story-text" id="storyText">
-            <p>
-              {renderWords(t('about.story.p1'))}
-            </p>
-            <p>
-              {renderWords(t('about.story.p2'))}
-            </p>
+            <p>{renderWords(t('about.story.p1'))}</p>
+            <p>{renderWords(t('about.story.p2'))}</p>
           </div>
           <div className="story-more reveal">
             <p>{t('about.story.more_p1')}</p>
@@ -290,17 +183,23 @@ const About = () => {
           <p className="lede side">{t('about.team.lede')}</p>
         </div>
         <div className="team-grid" id="teamGrid">
-          {team.map((member, i) => (
-            <div className="member" key={i}>
-              <div className="photo">
-                <span className="m-index">{String(i + 1).padStart(2, '0')}</span>
-                <img src={member.img} alt={`Portrait of ${member.name}`} loading="lazy" />
+          {loadingRegion ? (
+            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>Loading team...</p>
+          ) : translatedTeam.length === 0 ? (
+            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>No team members listed for this region yet.</p>
+          ) : (
+            translatedTeam.map((member, i) => (
+              <div className="member" key={member.id || i}>
+                <div className="photo">
+                  <span className="m-index">{String(i + 1).padStart(2, '0')}</span>
+                  <img src={member.photo} alt={`Portrait of ${member.name}`} loading="lazy" />
+                </div>
+                <div className="m-line"></div>
+                <h3>{member.name}</h3>
+                <div className="m-role">{member.role}</div>
               </div>
-              <div className="m-line"></div>
-              <h3>{member.name}</h3>
-              <div className="m-role">{member.role}</div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </section>
 
@@ -326,8 +225,14 @@ const About = () => {
               <Button to="/contact" className="btn"><span>{t('about.cta.btn2')}</span></Button>
             </div>
             <div className="cta-contacts">
-              <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
-              <div className="c-item"><span>Email</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
+              <div className="c-item">
+                <span>{t('contact_info.label')}</span>
+                <a href={`tel:${telHref}`}>{telLabel}</a>
+              </div>
+              <div className="c-item">
+                <span>Email</span>
+                <a href={`mailto:${email}`}>{email}</a>
+              </div>
             </div>
           </div>
         </div>

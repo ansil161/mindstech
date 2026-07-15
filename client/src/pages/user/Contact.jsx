@@ -4,6 +4,9 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
+import { useRegion } from '../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../api/regionApi.js';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,8 +22,27 @@ const slugSubject = {
   'visit': 'Visit the Experience Centre'
 };
 
+const ALL_REGION_SLUGS = [
+  { slug: 'india', label: 'India' },
+  { slug: 'middle-east', label: 'Middle East' },
+  { slug: 'africa', label: 'Africa' },
+  { slug: 'south-asia', label: 'South Asia' },
+  { slug: 'hong-kong-china', label: 'Hong Kong / China' },
+];
+
+const FALLBACK_CONTACT = {
+  phone: '+918045256922',
+  phone_display: '+91 80 4525 6922',
+  email: 'india@mindstec.com',
+  address: 'No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India',
+  office_name: 'Mindstec Distribution — Bangalore HQ',
+  map_embed_url: 'https://maps.google.com/maps?q=MINDSTEC%20DISTRIBUTION%20PRIVATE%20LIMITED%2C%20OMBR%20Layout%2C%20Bangalore&z=15&output=embed',
+  map_link: 'https://www.google.com/maps/place/MINDSTEC+DISTRIBUTION+PRIVATE+LIMITED/@13.0108201,77.6558671,849m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bae171505942e5f:0x89ccc127b403eb0e!8m2!3d13.0108201!4d77.658442!16s%2Fg%2F11ckqsxnqv',
+};
+
 const Contact = () => {
   const { t } = useTranslation();
+  const { region, regionSlug } = useRegion();
   const [searchParams] = useSearchParams();
   const containerRef = useRef(null);
 
@@ -34,13 +56,61 @@ const Contact = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  // Handle auto subject pre-select on parameter load
+  const [contactInfo, setContactInfo] = useState(null);
+  const [allRegionContacts, setAllRegionContacts] = useState([]);
+
+  const { translatedData: translatedContact } = useDynamicTranslation(
+    contactInfo,
+    ['office_name', 'address'],
+    `contact_info_${regionSlug}`
+  );
+
   useEffect(() => {
     const s = searchParams.get('s');
     if (s && slugSubject[s]) {
       setSubject(slugSubject[s]);
     }
   }, [searchParams]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchRegionContact = async () => {
+      try {
+        const res = await getPublicRegionData(regionSlug);
+        if (!cancelled) setContactInfo(res.data.contact_info || null);
+      } catch (err) {
+        console.error('Failed to load region contact:', err);
+        if (!cancelled) setContactInfo(null);
+      }
+    };
+    fetchRegionContact();
+    return () => { cancelled = true; };
+  }, [regionSlug]);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchAllContacts = async () => {
+      try {
+        const results = await Promise.all(
+          ALL_REGION_SLUGS.map(async ({ slug, label }) => {
+            try {
+              const res = await getPublicRegionData(slug);
+              const info = res.data.contact_info;
+              if (info?.email) return { label, email: info.email };
+            } catch { /* skip unavailable regions */ }
+            return null;
+          })
+        );
+        if (!cancelled) {
+          setAllRegionContacts(results.filter(Boolean));
+        }
+      } catch (err) {
+        console.error('Failed to load regional desks:', err);
+      }
+    };
+    fetchAllContacts();
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     document.title = 'Contact us — Mindstec Distribution';
@@ -53,23 +123,21 @@ const Contact = () => {
         return;
       }
 
-      // Entrance sequence
       const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
       intro.fromTo('.chero .label', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 })
-        .fromTo('#cheroH .w', 
-          { yPercent: 115, rotate: 2 }, 
-          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' }, 
+        .fromTo('#cheroH .w',
+          { yPercent: 115, rotate: 2 },
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' },
           '-=.4')
-        .fromTo('.cform .field, .cform .fsubmit', 
-          { opacity: 0, y: 30 }, 
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.07 }, 
+        .fromTo('.cform .field, .cform .fsubmit',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.07 },
           '-=.8')
-        .fromTo('.cinfo', 
-          { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 0.9 }, 
+        .fromTo('.cinfo',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.9 },
           '-=.9');
 
-      // Map reveal
       gsap.to('.map-band', {
         opacity: 1,
         y: 0,
@@ -112,7 +180,6 @@ const Contact = () => {
       let errorMsg = 'Something went wrong. Please try again.';
       if (errorData) {
         if (typeof errorData === 'object') {
-          // Flatten field validation errors (e.g. {email: ["Enter a valid email"]})
           const firstKey = Object.keys(errorData)[0];
           const firstVal = errorData[firstKey];
           errorMsg = Array.isArray(firstVal) ? `${firstKey}: ${firstVal[0]}` : `${firstKey}: ${firstVal}`;
@@ -126,10 +193,27 @@ const Contact = () => {
     }
   };
 
+  // Use contactInfo as the authoritative source (updates when region changes).
+  // translatedContact only adds translated office_name/address on top — never replaces the base data.
+  const baseContact = contactInfo || FALLBACK_CONTACT;
+  const telHref = baseContact.phone || FALLBACK_CONTACT.phone;
+  const telLabel = baseContact.phone_display || baseContact.phone || FALLBACK_CONTACT.phone_display;
+  const contactEmail = baseContact.email || FALLBACK_CONTACT.email;
+  const contactAddress = (translatedContact?.address && translatedContact.email === baseContact.email ? translatedContact.address : null) || baseContact.address || FALLBACK_CONTACT.address;
+  const officeName = (translatedContact?.office_name && translatedContact.email === baseContact.email ? translatedContact.office_name : null) || baseContact.office_name || FALLBACK_CONTACT.office_name;
+  const mapEmbed = baseContact.map_embed_url || FALLBACK_CONTACT.map_embed_url;
+  const mapLink = baseContact.map_link || FALLBACK_CONTACT.map_link;
+
+  const regionalDesks = allRegionContacts.length > 0
+    ? allRegionContacts
+    : [
+        { label: 'India', email: 'india@mindstec.com' },
+        { label: 'Africa', email: 'africa@mindstec.com' },
+        { label: 'Partnerships', email: 'partners@mindstec.com' },
+      ];
 
   return (
     <main id="top" ref={containerRef}>
-      {/* HERO */}
       <section className="chero" aria-label="Contact Mindstec">
         <span className="label label--red">{t('contact.label')}</span>
         <h1 className="display" id="cheroH">
@@ -138,9 +222,7 @@ const Contact = () => {
         </h1>
       </section>
 
-      {/* CONTACT LAYOUT */}
       <div className="contact-layout">
-        {/* FORM SIDE */}
         <form className="cform reveal" id="cform" onSubmit={handleSubmit} aria-label="Contact form">
           <div className="frow">
             <div className="field">
@@ -207,16 +289,9 @@ const Contact = () => {
 
           {submitSuccess && (
             <div style={{
-              margin: '20px 0',
-              padding: '16px',
-              borderRadius: '4px',
-              background: 'rgba(34, 197, 94, 0.1)',
-              border: '1px solid rgba(34, 197, 94, 0.25)',
-              color: '#4ade80',
-              fontSize: '14px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px'
+              margin: '20px 0', padding: '16px', borderRadius: '4px',
+              background: 'rgba(34, 197, 94, 0.1)', border: '1px solid rgba(34, 197, 94, 0.25)',
+              color: '#4ade80', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '12px'
             }}>
               <svg style={{ width: '20px', height: '20px', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -227,16 +302,9 @@ const Contact = () => {
 
           {submitError && (
             <div style={{
-              margin: '20px 0',
-              padding: '16px',
-              borderRadius: '4px',
-              background: 'rgba(239, 68, 68, 0.1)',
-              border: '1px solid rgba(239, 68, 68, 0.25)',
-              color: '#f87171',
-              fontSize: '14px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px'
+              margin: '20px 0', padding: '16px', borderRadius: '4px',
+              background: 'rgba(239, 68, 68, 0.1)', border: '1px solid rgba(239, 68, 68, 0.25)',
+              color: '#f87171', fontSize: '14px', display: 'flex', alignItems: 'center', gap: '12px'
             }}>
               <svg style={{ width: '20px', height: '20px', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
@@ -252,39 +320,46 @@ const Contact = () => {
                 <path d="M7 17L17 7M9 7h8v8" />
               </svg>
             </button>
-            <p className="fnote">Your inquiry is transmitted securely to our India office in Bangalore.</p>
+            <p className="fnote">
+              Your inquiry is transmitted securely to our {region} office{officeName ? ` — ${officeName}` : ''}.
+            </p>
           </div>
         </form>
 
-        {/* INFO SIDE */}
         <aside className="cinfo reveal" aria-label="Contact details">
           <div className="ci">
             <span className="num">01</span>
             <div>
               <b>Call us</b>
-              <a href="tel:+918045256922">+91 80 4525 6922</a>
+              <a href={`tel:${telHref}`}>{telLabel}</a>
             </div>
           </div>
           <div className="ci">
             <span className="num">02</span>
             <div>
               <b>Visit us</b>
-              <address>No. 5M-645, Banaswadi Village,<br />OMBR Layout, Bangalore 560043, India</address>
+              <address style={{ whiteSpace: 'pre-line' }}>{contactAddress}</address>
             </div>
           </div>
           <div className="ci">
             <span className="num">03</span>
             <div>
               <b>Write to us</b>
-              <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
             </div>
           </div>
           <div className="regions-mini">
             <b>Regional desks</b>
-            <div className="rm"><span>India — SAARC</span><a href="mailto:india@mindstec.com">india@mindstec.com</a></div>
-            <div className="rm"><span>Africa</span><a href="mailto:africa@mindstec.com">africa@mindstec.com</a></div>
-            <div className="rm"><span>Poland — CEE</span><a href="mailto:poland@mindstec.com">poland@mindstec.com</a></div>
-            <div className="rm"><span>Partnerships</span><a href="mailto:partners@mindstec.com">partners@mindstec.com</a></div>
+            {regionalDesks.map((desk) => (
+              <div className="rm" key={desk.label}>
+                <span>{desk.label}</span>
+                <a href={`mailto:${desk.email}`}>{desk.email}</a>
+              </div>
+            ))}
+            <div className="rm">
+              <span>Partnerships</span>
+              <a href="mailto:partners@mindstec.com">partners@mindstec.com</a>
+            </div>
           </div>
           <div className="socials">
             <a href="https://www.linkedin.com/company/mindstec/" aria-label="Mindstec on LinkedIn" target="_blank" rel="noopener noreferrer">
@@ -309,28 +384,27 @@ const Contact = () => {
         </aside>
       </div>
 
-      {/* MAP */}
       <div className="map-band reveal" style={{ opacity: 0, transform: 'translateY(36px)' }}>
         <div className="map-frame">
-          <iframe
-            title="Map showing the Mindstec Distribution office in Bangalore"
-            loading="lazy"
-            referrerPolicy="no-referrer-when-downgrade"
-            src="https://maps.google.com/maps?q=MINDSTEC%20DISTRIBUTION%20PRIVATE%20LIMITED%2C%20OMBR%20Layout%2C%20Bangalore&z=15&output=embed"
-          ></iframe>
+          {mapEmbed && (
+            <iframe
+              title={`Map showing ${officeName}`}
+              loading="lazy"
+              referrerPolicy="no-referrer-when-downgrade"
+              src={mapEmbed}
+            ></iframe>
+          )}
           <div className="map-tag">
-            <b>Mindstec Distribution — Bangalore HQ</b>
-            <span>No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043</span>
-            <a
-              href="https://www.google.com/maps/place/MINDSTEC+DISTRIBUTION+PRIVATE+LIMITED/@13.0108201,77.6558671,849m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bae171505942e5f:0x89ccc127b403eb0e!8m2!3d13.0108201!4d77.658442!16s%2Fg%2F11ckqsxnqv"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Open in Google Maps
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                <path d="M7 17L17 7M9 7h8v8" />
-              </svg>
-            </a>
+            <b>{officeName}</b>
+            <span>{contactAddress}</span>
+            {mapLink && (
+              <a href={mapLink} target="_blank" rel="noopener noreferrer">
+                Open in Google Maps
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </a>
+            )}
           </div>
         </div>
       </div>

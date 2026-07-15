@@ -3,15 +3,17 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
 import { LanguageContext } from '../../../context/LanguageContext.jsx';
+import { useRegion } from '../../../context/RegionContext.jsx';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../common/Button/Button.jsx';
 
-const Navbar = ({ drawerOpen, setDrawerOpen, region, setRegion }) => {
+const Navbar = ({ drawerOpen, setDrawerOpen }) => {
   const navRef = useRef(null);
   const location = useLocation();
   const { t } = useTranslation();
   const { changeLanguage } = useContext(LanguageContext);
+  const { region, setRegion } = useRegion();
 
   const regionLanguageMap = {
     'India': 'en',

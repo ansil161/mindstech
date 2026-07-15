@@ -7,12 +7,13 @@ import Navbar from './Navbar/Navbar.jsx';
 import Drawer from './Drawer/Drawer.jsx';
 import Footer from './Footer/Footer.jsx';
 import ChatWidget from '../chat/ChatWidget.jsx';
+import { useRegion } from '../../context/RegionContext.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Layout = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [region, setRegion] = useState('India');
+  const { region, setRegion } = useRegion();
   const location = useLocation();
 
   // Scroll to top on route change
@@ -103,8 +104,6 @@ const Layout = ({ children }) => {
       <Navbar
         drawerOpen={drawerOpen}
         setDrawerOpen={setDrawerOpen}
-        region={region}
-        setRegion={setRegion}
       />
 
       {/* Mobile Drawer */}

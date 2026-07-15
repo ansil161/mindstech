@@ -2,6 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../context/AuthContext';
 import axios from '../../api/axios';
 import DocumentManager from '../../components/admin/DocumentManager';
+import {
+  getRegions, createRegion, deleteRegion, updateRegion,
+  getTeamMembers, addTeamMember, updateTeamMember, deleteTeamMember,
+  getRegionContact, updateRegionContact,
+  getBrands, addBrand, deleteBrand,
+} from '../../api/regionApi';
+
+const slugifyRegion = (name) =>
+  name.toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-').replace(/[^a-z0-9-]/g, '');
 
 export default function AdminDashboard() {
   const { user, logout } = useAuth();
@@ -141,11 +150,18 @@ export default function AdminDashboard() {
   const [showAddBlogForm, setShowAddBlogForm] = useState(false);
   const [newBlogTitle, setNewBlogTitle] = useState('');
   const [newBlogDesc, setNewBlogDesc] = useState('');
-  const [newBlogHref, setNewBlogHref] = useState('');
+  const [newBlogContent, setNewBlogContent] = useState('');
   const [newBlogCat, setNewBlogCat] = useState('');
   const [newBlogPublishDate, setNewBlogPublishDate] = useState('');
+  const [newBlogHref, setNewBlogHref] = useState('');
   const [newBlogIsFeatured, setNewBlogIsFeatured] = useState(false);
   const [submittingBlog, setSubmittingBlog] = useState(false);
+
+  // Expand / edit states
+  const [expandedBlogId, setExpandedBlogId] = useState(null);
+  const [editingBlogId, setEditingBlogId] = useState(null);
+  const [editFields, setEditFields] = useState({});
+  const [submittingEdit, setSubmittingEdit] = useState(false);
 
   // Collection centre states
   const [collectionCentres, setCollectionCentres] = useState([]);
@@ -164,6 +180,45 @@ export default function AdminDashboard() {
   const [galCategory, setGalCategory] = useState('');
   const [galImage, setGalImage] = useState(null);
   const [submittingGallery, setSubmittingGallery] = useState(false);
+
+  // Region states
+  const [regions, setRegions] = useState([]);
+  const [loadingRegions, setLoadingRegions] = useState(false);
+  const [regionsError, setRegionsError] = useState('');
+  const [selectedRegion, setSelectedRegion] = useState(null);
+  const [showAddRegionForm, setShowAddRegionForm] = useState(false);
+  const [newRegionName, setNewRegionName] = useState('');
+  const [newRegionSlug, setNewRegionSlug] = useState('');
+  const [submittingRegion, setSubmittingRegion] = useState(false);
+  const [teamMembers, setTeamMembers] = useState([]);
+  const [loadingTeam, setLoadingTeam] = useState(false);
+  const [showAddTeamForm, setShowAddTeamForm] = useState(false);
+  const [newMemberName, setNewMemberName] = useState('');
+  const [newMemberRole, setNewMemberRole] = useState('');
+  const [newMemberPhoto, setNewMemberPhoto] = useState(null);
+  const [submittingTeam, setSubmittingTeam] = useState(false);
+  const [contactForm, setContactForm] = useState({
+    phone: '', phone_display: '', email: '', address: '',
+    office_name: '', map_embed_url: '', map_link: '',
+  });
+  const [loadingContact, setLoadingContact] = useState(false);
+  const [submittingContact, setSubmittingContact] = useState(false);
+
+  // Team member edit states
+  const [editingMemberId, setEditingMemberId] = useState(null);
+  const [editMemberName, setEditMemberName] = useState('');
+  const [editMemberRole, setEditMemberRole] = useState('');
+  const [editMemberPhoto, setEditMemberPhoto] = useState(null);
+  const [submittingMemberEdit, setSubmittingMemberEdit] = useState(false);
+
+  // Brand states
+  const [brands, setBrands] = useState([]);
+  const [loadingBrands, setLoadingBrands] = useState(false);
+  const [showAddBrandForm, setShowAddBrandForm] = useState(false);
+  const [newBrandName, setNewBrandName] = useState('');
+  const [newBrandWebsite, setNewBrandWebsite] = useState('');
+  const [newBrandLogo, setNewBrandLogo] = useState(null);
+  const [submittingBrand, setSubmittingBrand] = useState(false);
 
   const fetchGalleryItems = async () => {
     setLoadingGallery(true);
@@ -223,6 +278,200 @@ export default function AdminDashboard() {
     } catch (err) {
       console.error(err);
       alert('Failed to delete gallery item.');
+    }
+  };
+
+  const fetchRegions = async () => {
+    setLoadingRegions(true);
+    setRegionsError('');
+    try {
+      const res = await getRegions();
+      setRegions(res.data);
+    } catch (err) {
+      console.error(err);
+      setRegionsError('Failed to load regions.');
+    } finally {
+      setLoadingRegions(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'regions') fetchRegions();
+  }, [activeTab]);
+
+  const loadRegionDetail = async (region) => {
+    setSelectedRegion(region);
+    setLoadingTeam(true);
+    setLoadingContact(true);
+    try {
+      const [teamRes, contactRes] = await Promise.all([
+        getTeamMembers(region.id),
+        getRegionContact(region.id),
+      ]);
+      setTeamMembers(teamRes.data);
+      if (contactRes.status === 204 || !contactRes.data) {
+        setContactForm({ phone: '', phone_display: '', email: '', address: '', office_name: '', map_embed_url: '', map_link: '' });
+      } else {
+        setContactForm({
+          phone: contactRes.data.phone || '',
+          phone_display: contactRes.data.phone_display || '',
+          email: contactRes.data.email || '',
+          address: contactRes.data.address || '',
+          office_name: contactRes.data.office_name || '',
+          map_embed_url: contactRes.data.map_embed_url || '',
+          map_link: contactRes.data.map_link || '',
+        });
+      }
+    } catch (err) {
+      console.error(err);
+      alert('Failed to load region details.');
+    } finally {
+      setLoadingTeam(false);
+      setLoadingContact(false);
+    }
+  };
+
+  const handleAddRegion = async (e) => {
+    e.preventDefault();
+    if (!newRegionName.trim()) {
+      alert('Please enter a region name.');
+      return;
+    }
+    const slug = newRegionSlug.trim() || slugifyRegion(newRegionName);
+    setSubmittingRegion(true);
+    try {
+      const res = await createRegion({ name: newRegionName.trim(), slug, display_order: regions.length });
+      setRegions(prev => [...prev, res.data]);
+      setNewRegionName('');
+      setNewRegionSlug('');
+      setShowAddRegionForm(false);
+    } catch (err) {
+      console.error(err);
+      alert(`Failed to create region: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally {
+      setSubmittingRegion(false);
+    }
+  };
+
+  const handleDeleteRegion = async (id) => {
+    if (!window.confirm('Delete this region and all its team members and contact info?')) return;
+    try {
+      await deleteRegion(id);
+      setRegions(prev => prev.filter(r => r.id !== id));
+      if (selectedRegion?.id === id) setSelectedRegion(null);
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete region.');
+    }
+  };
+
+  const handleAddTeamMember = async (e) => {
+    e.preventDefault();
+    if (!newMemberName.trim() || !newMemberRole.trim() || !newMemberPhoto) {
+      alert('Please fill out name, role, and upload a photo.');
+      return;
+    }
+    setSubmittingTeam(true);
+    const formData = new FormData();
+    formData.append('name', newMemberName.trim());
+    formData.append('role', newMemberRole.trim());
+    formData.append('photo', newMemberPhoto);
+    formData.append('display_order', teamMembers.length);
+    try {
+      const res = await addTeamMember(selectedRegion.id, formData);
+      setTeamMembers(prev => [...prev, res.data]);
+      setNewMemberName('');
+      setNewMemberRole('');
+      setNewMemberPhoto(null);
+      setShowAddTeamForm(false);
+      setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, team_count: (r.team_count || 0) + 1 } : r));
+    } catch (err) {
+      console.error(err);
+      alert(`Failed to add team member: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally {
+      setSubmittingTeam(false);
+    }
+  };
+
+  const handleDeleteTeamMember = async (id) => {
+    if (!window.confirm('Delete this team member?')) return;
+    try {
+      await deleteTeamMember(id);
+      setTeamMembers(prev => prev.filter(m => m.id !== id));
+      setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, team_count: Math.max(0, (r.team_count || 1) - 1) } : r));
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete team member.');
+    }
+  };
+
+  const handleEditTeamMember = async (e, memberId) => {
+    e.preventDefault();
+    if (!editMemberName.trim() || !editMemberRole.trim()) { alert('Name and role are required.'); return; }
+    setSubmittingMemberEdit(true);
+    const fd = new FormData();
+    fd.append('name', editMemberName.trim());
+    fd.append('role', editMemberRole.trim());
+    if (editMemberPhoto) fd.append('photo', editMemberPhoto);
+    try {
+      const res = await updateTeamMember(memberId, fd);
+      setTeamMembers(prev => prev.map(m => m.id === memberId ? res.data : m));
+      setEditingMemberId(null);
+    } catch (err) {
+      alert(`Failed to update: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally { setSubmittingMemberEdit(false); }
+  };
+
+  const handleToggleRegionActive = async (region) => {
+    try {
+      const res = await updateRegion(region.id, { is_active: !region.is_active });
+      setRegions(prev => prev.map(r => r.id === region.id ? { ...r, is_active: res.data.is_active } : r));
+      if (selectedRegion?.id === region.id) setSelectedRegion(p => ({ ...p, is_active: res.data.is_active }));
+    } catch (err) { alert('Failed to toggle region status.'); }
+  };
+
+  const handleAddBrand = async (e) => {
+    e.preventDefault();
+    if (!newBrandName.trim()) { alert('Brand name is required.'); return; }
+    setSubmittingBrand(true);
+    const fd = new FormData();
+    fd.append('name', newBrandName.trim());
+    fd.append('website_url', newBrandWebsite.trim());
+    fd.append('display_order', brands.length);
+    if (newBrandLogo) fd.append('logo', newBrandLogo);
+    try {
+      const res = await addBrand(selectedRegion.id, fd);
+      setBrands(prev => [...prev, res.data]);
+      setNewBrandName(''); setNewBrandWebsite(''); setNewBrandLogo(null); setShowAddBrandForm(false);
+    } catch (err) {
+      alert(`Failed to add brand: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally { setSubmittingBrand(false); }
+  };
+
+  const handleDeleteBrand = async (id) => {
+    if (!window.confirm('Delete this brand?')) return;
+    try {
+      await deleteBrand(id);
+      setBrands(prev => prev.filter(b => b.id !== id));
+    } catch (err) { alert('Failed to delete brand.'); }
+  };
+
+  const handleSaveContact = async (e) => {
+    e.preventDefault();
+    if (!contactForm.phone.trim() || !contactForm.email.trim() || !contactForm.address.trim()) {
+      alert('Phone, email, and address are required.');
+      return;
+    }
+    setSubmittingContact(true);
+    try {
+      await updateRegionContact(selectedRegion.id, contactForm);
+      setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, has_contact: true } : r));
+      alert('Contact info saved.');
+    } catch (err) {
+      console.error(err);
+      alert(`Failed to save contact info: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally {
+      setSubmittingContact(false);
     }
   };
 
@@ -375,7 +624,7 @@ export default function AdminDashboard() {
 
   const handleAddBlog = async (e) => {
     e.preventDefault();
-    if (!newBlogTitle.trim() || !newBlogDesc.trim() || !newBlogHref.trim() || !newBlogCat.trim() || !newBlogPublishDate) {
+    if (!newBlogTitle.trim() || !newBlogDesc.trim() || !newBlogCat.trim() || !newBlogPublishDate) {
       alert('Please fill out all required fields.');
       return;
     }
@@ -384,7 +633,7 @@ export default function AdminDashboard() {
     const payload = {
       title: newBlogTitle.trim(),
       desc: newBlogDesc.trim(),
-      href: newBlogHref.trim(),
+      content: newBlogContent.trim(),
       cat: newBlogCat.trim(),
       publish_date: newBlogPublishDate,
       is_featured: newBlogIsFeatured,
@@ -396,7 +645,7 @@ export default function AdminDashboard() {
       // Reset fields
       setNewBlogTitle('');
       setNewBlogDesc('');
-      setNewBlogHref('');
+      setNewBlogContent('');
       setNewBlogCat('');
       setNewBlogPublishDate('');
       setNewBlogIsFeatured(false);
@@ -420,6 +669,30 @@ export default function AdminDashboard() {
     } catch (err) {
       console.error(err);
       alert('Failed to delete blog post.');
+    }
+  };
+
+  const handleEditBlog = async (e, id) => {
+    e.preventDefault();
+    setSubmittingEdit(true);
+    try {
+      const res = await axios.patch(`/admin/blogs/${id}/`, {
+        title: editFields.title?.trim(),
+        desc: editFields.desc?.trim(),
+        content: editFields.content?.trim(),
+        cat: editFields.cat?.trim(),
+        href: editFields.href?.trim(),
+        publish_date: editFields.publish_date,
+        is_featured: editFields.is_featured,
+      });
+      setBlogs(prev => prev.map(b => b.id === id ? res.data : b));
+      setEditingBlogId(null);
+      setEditFields({});
+    } catch (err) {
+      console.error(err);
+      alert('Failed to update blog post.');
+    } finally {
+      setSubmittingEdit(false);
     }
   };
 
@@ -720,38 +993,106 @@ export default function AdminDashboard() {
             ) : blogs.length === 0 ? (
               <p style={{ color: 'var(--grey)', fontSize: '14px' }}>No blog posts found in database.</p>
             ) : (
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '20px' }}>
-                {blogs.map((item) => (
-                  <div key={item.id} className="admin-stat-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: '12px' }}>
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span className="admin-welcome-chip" style={{ color: 'var(--red)', background: 'rgba(204,0,1,0.08)', border: '1px solid rgba(204,0,1,0.2)', fontSize: '10px', textTransform: 'uppercase', fontWeight: '700' }}>
-                        {item.cat}
-                      </span>
-                      {item.is_featured && (
-                        <span className="admin-welcome-chip" style={{ color: '#16a34a', background: 'rgba(34,197,94,0.08)', border: '1px solid rgba(34,197,94,0.2)', fontSize: '10px', textTransform: 'uppercase', fontWeight: '700' }}>
-                          Featured
+              <div className="admin-welcome-panel" style={{ padding: 0, overflow: 'hidden' }}>
+                {blogs.map((item, idx) => {
+                  const isExpanded = expandedBlogId === item.id;
+                  const isEditing = editingBlogId === item.id;
+                  return (
+                    <div key={item.id} style={{ borderBottom: idx < blogs.length - 1 ? '1px solid var(--line-soft)' : 'none' }}>
+                      {/* Row header - click to expand */}
+                      <div
+                        onClick={() => { setExpandedBlogId(isExpanded ? null : item.id); if (isEditing) setEditingBlogId(null); }}
+                        style={{ display: 'flex', alignItems: 'center', gap: '12px', padding: '14px 20px', cursor: 'pointer' }}
+                        onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.03)'}
+                        onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"
+                          style={{ width: '14px', height: '14px', color: 'var(--grey)', flexShrink: 0, transform: isExpanded ? 'rotate(180deg)' : 'rotate(0deg)', transition: 'transform 0.2s' }}>
+                          <path d="M6 9l6 6 6-6" />
+                        </svg>
+                        <span style={{ fontSize: '9px', fontWeight: '700', letterSpacing: '.12em', textTransform: 'uppercase', color: 'var(--red)', border: '1px solid rgba(204,0,1,0.25)', padding: '3px 8px', borderRadius: '999px', background: 'rgba(204,0,1,0.05)', flexShrink: 0 }}>
+                          {item.cat}
                         </span>
+                        <span style={{ fontSize: '14px', fontWeight: '600', color: 'var(--white)', flex: 1, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {item.title}
+                        </span>
+                        <span style={{ fontSize: '11px', color: 'var(--grey-dark)', flexShrink: 0 }}>{item.date || item.publish_date}</span>
+                        {item.is_featured && (
+                          <span style={{ fontSize: '9px', fontWeight: '700', letterSpacing: '.1em', textTransform: 'uppercase', color: '#16a34a', border: '1px solid rgba(34,197,94,0.25)', padding: '3px 8px', borderRadius: '999px', background: 'rgba(34,197,94,0.05)', flexShrink: 0 }}>
+                            Featured
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Expanded panel */}
+                      {isExpanded && (
+                        <div style={{ padding: '0 20px 20px 46px', borderTop: '1px solid var(--line-soft)' }}>
+                          {!isEditing ? (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '10px', paddingTop: '16px' }}>
+                              <p style={{ fontSize: '13px', color: 'var(--grey)', lineHeight: '1.7' }}>{item.desc}</p>
+                              {item.content && <p style={{ fontSize: '13px', color: 'var(--grey-dark)', lineHeight: '1.7', borderTop: '1px solid var(--line-soft)', paddingTop: '10px' }}>{item.content}</p>}
+                              {item.href && <a href={item.href} target="_blank" rel="noopener noreferrer" style={{ fontSize: '12px', color: 'var(--red)', textDecoration: 'underline', width: 'fit-content' }}>{item.href}</a>}
+                              <div style={{ display: 'flex', gap: '10px', paddingTop: '4px' }}>
+                                <button
+                                  onClick={e => { e.stopPropagation(); setEditingBlogId(item.id); setEditFields({ title: item.title, desc: item.desc, content: item.content || '', cat: item.cat, href: item.href || '', publish_date: item.publish_date, is_featured: item.is_featured }); }}
+                                  className="admin-btn"
+                                  style={{ width: 'auto', marginTop: 0, padding: '6px 16px', fontSize: '12px' }}
+                                >Edit</button>
+                                <button
+                                  onClick={e => { e.stopPropagation(); handleDeleteBlog(item.id); }}
+                                  className="admin-btn"
+                                  style={{ width: 'auto', marginTop: 0, padding: '6px 16px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2', fontSize: '12px' }}
+                                >Delete</button>
+                              </div>
+                            </div>
+                          ) : (
+                            <form onSubmit={e => handleEditBlog(e, item.id)} onClick={e => e.stopPropagation()}
+                              style={{ display: 'flex', flexDirection: 'column', gap: '12px', paddingTop: '16px' }}>
+                              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                  <label style={{ fontSize: '11px', color: 'var(--grey)' }}>Title</label>
+                                  <input value={editFields.title} onChange={e => setEditFields(p => ({ ...p, title: e.target.value }))} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                  <label style={{ fontSize: '11px', color: 'var(--grey)' }}>Category</label>
+                                  <input value={editFields.cat} onChange={e => setEditFields(p => ({ ...p, cat: e.target.value }))} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                  <label style={{ fontSize: '11px', color: 'var(--grey)' }}>Publication Date</label>
+                                  <input type="date" value={editFields.publish_date} onChange={e => setEditFields(p => ({ ...p, publish_date: e.target.value }))} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </div>
+                                <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                  <label style={{ fontSize: '11px', color: 'var(--grey)' }}>External Link (URL)</label>
+                                  <input type="url" value={editFields.href} onChange={e => setEditFields(p => ({ ...p, href: e.target.value }))} style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </div>
+                              </div>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                <label style={{ fontSize: '11px', color: 'var(--grey)' }}>Short Description</label>
+                                <textarea value={editFields.desc} onChange={e => setEditFields(p => ({ ...p, desc: e.target.value }))} rows={3} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px', resize: 'vertical' }} />
+                              </div>
+                              <div style={{ display: 'flex', flexDirection: 'column', gap: '5px' }}>
+                                <label style={{ fontSize: '11px', color: 'var(--grey)' }}>Full Content (optional)</label>
+                                <textarea value={editFields.content} onChange={e => setEditFields(p => ({ ...p, content: e.target.value }))} rows={5} style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px', resize: 'vertical' }} />
+                              </div>
+                              <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <input type="checkbox" id={`feat-${item.id}`} checked={editFields.is_featured} onChange={e => setEditFields(p => ({ ...p, is_featured: e.target.checked }))} style={{ cursor: 'pointer', width: '15px', height: '15px' }} />
+                                <label htmlFor={`feat-${item.id}`} style={{ fontSize: '13px', color: 'var(--white)', cursor: 'pointer' }}>Feature this post</label>
+                              </div>
+                              <div style={{ display: 'flex', gap: '10px' }}>
+                                <button type="submit" disabled={submittingEdit} className="admin-btn" style={{ width: 'auto', marginTop: 0, padding: '7px 20px', fontSize: '12px' }}>
+                                  {submittingEdit ? 'Saving...' : 'Save Changes'}
+                                </button>
+                                <button type="button" onClick={() => setEditingBlogId(null)} className="admin-btn" style={{ width: 'auto', marginTop: 0, padding: '7px 20px', fontSize: '12px', background: 'var(--ink)', border: '1px solid var(--line)', color: 'var(--grey)' }}>
+                                  Cancel
+                                </button>
+                              </div>
+                            </form>
+                          )}
+                        </div>
                       )}
                     </div>
-                    <div>
-                      <h4 style={{ margin: '4px 0', fontSize: '15px', color: 'var(--white)', fontWeight: '600' }}>{item.title}</h4>
-                      <p style={{ margin: '4px 0', fontSize: '11px', color: 'var(--grey)' }}>Published: {item.date}</p>
-                      <p style={{ margin: '8px 0 0', fontSize: '12px', color: 'var(--grey)', lineHeight: '1.4' }}>{item.desc}</p>
-                      <a href={item.href} target="_blank" rel="noopener noreferrer" style={{ display: 'inline-block', marginTop: '8px', fontSize: '11px', color: 'var(--red)', textDecoration: 'underline' }}>
-                        Visit Link
-                      </a>
-                    </div>
-                    <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', paddingTop: '8px', borderTop: '1px solid var(--line-soft)' }}>
-                      <button
-                        onClick={() => handleDeleteBlog(item.id)}
-                        className="admin-btn"
-                        style={{ width: 'auto', marginTop: 0, padding: '6px 16px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2', fontSize: '12px' }}
-                      >
-                        Delete Post
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                  );
+                })}
               </div>
             )}
           </div>
@@ -1096,6 +1437,249 @@ export default function AdminDashboard() {
             )}
           </div>
         );
+      case 'regions':
+        return (
+          <div style={{ width: '100%' }}>
+            {!selectedRegion ? (
+              <>
+                <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div>
+                      <h2 className="admin-welcome-title" style={{ margin: 0 }}>Manage Regions</h2>
+                      <p className="admin-welcome-desc" style={{ margin: '8px 0 0' }}>
+                        Configure team members and contact information for each geographic region.
+                      </p>
+                    </div>
+                    <button
+                      onClick={() => setShowAddRegionForm(!showAddRegionForm)}
+                      className="admin-btn"
+                      style={{ width: 'auto', marginTop: 0, padding: '8px 16px' }}
+                    >
+                      {showAddRegionForm ? 'Cancel' : 'Add Region'}
+                    </button>
+                  </div>
+                </div>
+
+                {showAddRegionForm && (
+                  <form onSubmit={handleAddRegion} className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '16px', background: 'var(--ink-2)', border: '1px solid var(--line)' }}>
+                    <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>New Region</h3>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Region Name</label>
+                        <input
+                          type="text"
+                          value={newRegionName}
+                          onChange={(e) => {
+                            setNewRegionName(e.target.value);
+                            if (!newRegionSlug) setNewRegionSlug(slugifyRegion(e.target.value));
+                          }}
+                          placeholder="e.g. India"
+                          style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                          required
+                        />
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Slug (URL key)</label>
+                        <input
+                          type="text"
+                          value={newRegionSlug}
+                          onChange={(e) => setNewRegionSlug(e.target.value)}
+                          placeholder="e.g. india"
+                          style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                          required
+                        />
+                      </div>
+                    </div>
+                    <button type="submit" disabled={submittingRegion} className="admin-btn" style={{ width: 'fit-content', marginTop: 0, padding: '10px 24px' }}>
+                      {submittingRegion ? 'Creating...' : 'Create Region'}
+                    </button>
+                  </form>
+                )}
+
+                {loadingRegions ? (
+                  <p style={{ color: 'var(--grey)' }}>Loading regions...</p>
+                ) : regionsError ? (
+                  <p style={{ color: 'var(--red)' }}>{regionsError}</p>
+                ) : regions.length === 0 ? (
+                  <p style={{ color: 'var(--grey)' }}>No regions yet. Click "Add Region" to create one.</p>
+                ) : (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '20px' }}>
+                    {regions.map((region) => (
+                      <div key={region.id} className="admin-stat-card" style={{ padding: '20px', display: 'flex', flexDirection: 'column', gap: '12px', cursor: 'pointer', opacity: region.is_active ? 1 : 0.6 }} onClick={() => loadRegionDetail(region)}>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                          <h4 style={{ margin: 0, fontSize: '18px', color: 'var(--white)', fontWeight: '600' }}>{region.name}</h4>
+                          <div style={{ display: 'flex', gap: '6px', alignItems: 'center' }}>
+                            <span style={{ fontSize: '9px', fontWeight: '700', padding: '3px 8px', borderRadius: '999px', background: region.is_active ? 'rgba(34,197,94,0.1)' : 'rgba(239,68,68,0.1)', color: region.is_active ? '#4ade80' : '#f87171', border: `1px solid ${region.is_active ? 'rgba(34,197,94,0.25)' : 'rgba(239,68,68,0.25)'}` }}>
+                              {region.is_active ? 'Active' : 'Inactive'}
+                            </span>
+                            <span className="admin-welcome-chip" style={{ fontSize: '10px' }}>{region.slug}</span>
+                          </div>
+                        </div>
+                        <div style={{ display: 'flex', gap: '16px', fontSize: '13px', color: 'var(--grey)' }}>
+                          <span>{region.team_count || 0} team member{(region.team_count || 0) !== 1 ? 's' : ''}</span>
+                          <span>{region.has_contact ? 'Contact set' : 'No contact'}</span>
+                        </div>
+                        <div style={{ marginTop: 'auto', display: 'flex', gap: '8px', paddingTop: '8px', borderTop: '1px solid var(--line-soft)', flexWrap: 'wrap' }}>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); loadRegionDetail(region); }}
+                            className="admin-btn"
+                            style={{ width: 'auto', margin: 0, padding: '6px 16px', fontSize: '12px' }}
+                          >
+                            Manage
+                          </button>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleToggleRegionActive(region); }}
+                            className="admin-btn"
+                            style={{ width: 'auto', margin: 0, padding: '6px 16px', fontSize: '12px', background: region.is_active ? 'rgba(239,68,68,0.08)' : 'rgba(34,197,94,0.08)', color: region.is_active ? '#f87171' : '#4ade80', border: `1px solid ${region.is_active ? 'rgba(239,68,68,0.25)' : 'rgba(34,197,94,0.25)'}` }}
+                          >
+                            {region.is_active ? 'Deactivate' : 'Activate'}
+                          </button>
+                          <button
+                            onClick={(e) => { e.stopPropagation(); handleDeleteRegion(region.id); }}
+                            className="admin-btn"
+                            style={{ width: 'auto', margin: 0, padding: '6px 16px', fontSize: '12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2' }}
+                          >
+                            Delete
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+                  <button
+                    onClick={() => { setSelectedRegion(null); setTeamMembers([]); setShowAddTeamForm(false); }}
+                    className="admin-btn"
+                    style={{ width: 'auto', margin: '0 0 12px', padding: '6px 14px', fontSize: '12px', background: 'var(--line-soft)' }}
+                  >
+                    ← Back to Regions
+                  </button>
+                  <h2 className="admin-welcome-title" style={{ margin: 0 }}>{selectedRegion.name}</h2>
+                  <p className="admin-welcome-desc" style={{ margin: '8px 0 0' }}>
+                    Slug: <code style={{ color: 'var(--red)' }}>{selectedRegion.slug}</code> — Manage contact info and team members for this region.
+                  </p>
+                </div>
+
+                {/* Contact Info */}
+                <form onSubmit={handleSaveContact} className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                  <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>Contact Information</h3>
+                  {loadingContact ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>Loading contact info...</p>
+                  ) : (
+                    <>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Phone (tel: link)
+                          <input type="text" value={contactForm.phone} onChange={e => setContactForm(p => ({ ...p, phone: e.target.value }))} placeholder="+918045256922" required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Phone Display
+                          <input type="text" value={contactForm.phone_display} onChange={e => setContactForm(p => ({ ...p, phone_display: e.target.value }))} placeholder="+91 80 4525 6922" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Email
+                          <input type="email" value={contactForm.email} onChange={e => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="india@mindstec.com" required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Office Name
+                          <input type="text" value={contactForm.office_name} onChange={e => setContactForm(p => ({ ...p, office_name: e.target.value }))} placeholder="Mindstec Distribution — Bangalore HQ" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                        </label>
+                      </div>
+                      <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                        Address
+                        <textarea value={contactForm.address} onChange={e => setContactForm(p => ({ ...p, address: e.target.value }))} placeholder="Full office address" required rows="3" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px', resize: 'vertical' }} />
+                      </label>
+                      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Map Embed URL
+                          <input type="url" value={contactForm.map_embed_url} onChange={e => setContactForm(p => ({ ...p, map_embed_url: e.target.value }))} placeholder="Google Maps embed URL" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Map Link (external)
+                          <input type="url" value={contactForm.map_link} onChange={e => setContactForm(p => ({ ...p, map_link: e.target.value }))} placeholder="Google Maps link" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                        </label>
+                      </div>
+                      <button type="submit" disabled={submittingContact} className="admin-btn" style={{ width: 'fit-content', marginTop: 0, padding: '10px 24px' }}>
+                        {submittingContact ? 'Saving...' : 'Save Contact Info'}
+                      </button>
+                    </>
+                  )}
+                </form>
+
+                {/* Team Members */}
+                <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>Team Members</h3>
+                    <button onClick={() => setShowAddTeamForm(!showAddTeamForm)} className="admin-btn" style={{ width: 'auto', margin: 0, padding: '6px 16px', fontSize: '12px' }}>
+                      {showAddTeamForm ? 'Cancel' : 'Add Member'}
+                    </button>
+                  </div>
+
+                  {showAddTeamForm && (
+                    <form onSubmit={handleAddTeamMember} style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '20px', padding: '16px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Name
+                          <input type="text" value={newMemberName} onChange={e => setNewMemberName(e.target.value)} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Role
+                          <input type="text" value={newMemberRole} onChange={e => setNewMemberRole(e.target.value)} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Photo
+                          <input type="file" accept="image/*" onChange={e => setNewMemberPhoto(e.target.files[0])} required style={{ color: 'var(--grey)', fontSize: '14px', padding: '4px 0' }} />
+                        </label>
+                      </div>
+                      <button type="submit" disabled={submittingTeam} className="admin-btn" style={{ width: 'fit-content', padding: '10px 24px' }}>
+                        {submittingTeam ? 'Uploading...' : 'Add Team Member'}
+                      </button>
+                    </form>
+                  )}
+
+                  {loadingTeam ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>Loading team members...</p>
+                  ) : teamMembers.length === 0 ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>No team members yet. Click "Add Member" to upload one.</p>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
+                      {teamMembers.map((member) => (
+                        <div key={member.id} style={{ padding: '14px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                          {editingMemberId === member.id ? (
+                            <form onSubmit={e => handleEditTeamMember(e, member.id)} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                              <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>Name<input type="text" value={editMemberName} onChange={e => setEditMemberName(e.target.value)} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '8px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} /></label>
+                              <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>Role<input type="text" value={editMemberRole} onChange={e => setEditMemberRole(e.target.value)} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '8px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} /></label>
+                              <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>New photo (optional)<input type="file" accept="image/*" onChange={e => setEditMemberPhoto(e.target.files[0])} style={{ color: 'var(--grey)', fontSize: '12px' }} /></label>
+                              <div style={{ display: 'flex', gap: '8px' }}>
+                                <button type="submit" disabled={submittingMemberEdit} className="admin-btn" style={{ flex: 1, margin: 0, padding: '6px', fontSize: '11px' }}>{submittingMemberEdit ? 'Saving...' : 'Save'}</button>
+                                <button type="button" onClick={() => setEditingMemberId(null)} className="admin-btn" style={{ flex: 1, margin: 0, padding: '6px', fontSize: '11px', background: 'var(--ink)', border: '1px solid var(--line)', color: 'var(--grey)' }}>Cancel</button>
+                              </div>
+                            </form>
+                          ) : (
+                            <>
+                              {member.photo && <img src={member.photo} alt={member.name} style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '6px' }} />}
+                              <div>
+                                <h4 style={{ margin: '0 0 4px', fontSize: '14px', color: 'var(--white)' }}>{member.name}</h4>
+                                <p style={{ margin: 0, fontSize: '12px', color: 'var(--grey)' }}>{member.role}</p>
+                              </div>
+                              <div style={{ display: 'flex', gap: '6px' }}>
+                                <button onClick={() => { setEditingMemberId(member.id); setEditMemberName(member.name); setEditMemberRole(member.role); setEditMemberPhoto(null); }} className="admin-btn" style={{ flex: 1, margin: 0, padding: '5px', fontSize: '11px' }}>Edit</button>
+                                <button onClick={() => handleDeleteTeamMember(member.id)} className="admin-btn" style={{ flex: 1, margin: 0, padding: '5px', fontSize: '11px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2' }}>Remove</button>
+                              </div>
+                            </>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </>
+            )}
+          </div>
+        );
       case 'documents':
         return <DocumentManager />;
       case 'gallery':
@@ -1363,6 +1947,15 @@ export default function AdminDashboard() {
               <span>Gallery</span>
             </button>
             <button
+              onClick={() => { setActiveTab('regions'); setSelectedRegion(null); }}
+              className={`admin-sidebar-link ${activeTab === 'regions' ? 'active' : ''}`}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>Regions</span>
+            </button>
+            <button
               onClick={() => setActiveTab('documents')}
               className={`admin-sidebar-link ${activeTab === 'documents' ? 'active' : ''}`}
             >
@@ -1409,7 +2002,9 @@ export default function AdminDashboard() {
                   ? 'Recent Fieldwork'
                   : activeTab === 'gallery'
                     ? 'Gallery Manager'
-                    : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+                    : activeTab === 'regions'
+                      ? 'Region Management'
+                      : activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
           </h1>
           <div className="admin-status-indicator">
             <span className="admin-pulse-dot"></span>

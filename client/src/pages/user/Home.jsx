@@ -6,6 +6,8 @@ import Button from '../../components/common/Button/Button.jsx';
 import axios from '../../api/axios';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
+import { useRegion } from '../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../api/regionApi.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -36,6 +38,7 @@ const project = (lat, lng) => ({
 
 const Home = () => {
   const { t } = useTranslation();
+  const { region, regionSlug } = useRegion();
   const containerRef = useRef(null);
   const mapBaseRef = useRef(null);
   const mapOverlayRef = useRef(null);
@@ -48,6 +51,7 @@ const Home = () => {
   const [rawFieldwork, setRawFieldwork] = useState([]);
   const [fieldworkLoading, setFieldworkLoading] = useState(true);
   const [rawSolutions, setRawSolutions] = useState([]);
+  const [regionContact, setRegionContact] = useState(null);
 
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
@@ -65,6 +69,20 @@ const Home = () => {
     };
     fetchSolutions();
   }, []);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchRegionContact = async () => {
+      try {
+        const res = await getPublicRegionData(regionSlug);
+        if (!cancelled) setRegionContact(res.data.contact_info || null);
+      } catch {
+        if (!cancelled) setRegionContact(null);
+      }
+    };
+    fetchRegionContact();
+    return () => { cancelled = true; };
+  }, [regionSlug]);
 
   useEffect(() => {
     const fetchFieldwork = async () => {
@@ -814,9 +832,15 @@ const Home = () => {
         </div>
         <div className="map-contacts reveal">
           <div className="mc">
-            <span>{t('home.regions.contacts.india')}</span>
-            <a href="tel:+918045256922">+91 80 4525 6922</a>
-            <a href="mailto:india@mindstec.com">india@mindstec.com</a>
+            <span>{region}</span>
+            {regionContact?.phone && (
+              <a href={`tel:${regionContact.phone}`}>
+                {regionContact.phone_display || regionContact.phone}
+              </a>
+            )}
+            {regionContact?.email && (
+              <a href={`mailto:${regionContact.email}`}>{regionContact.email}</a>
+            )}
           </div>
           <div className="mc">
             <span>{t('home.regions.contacts.africa')}</span>

@@ -9,6 +9,10 @@ from .views import (
     DocumentListCreateView, DocumentDetailView, DocumentParseView, DocumentIndexView,
     ChatBotView, ChatHistoryView,
     GalleryListCreateView, GalleryDetailView,
+    RegionListCreateView, RegionDetailView,
+    TeamMemberListCreateView, TeamMemberDetailView,
+    RegionContactView, PublicRegionDataView,
+    RegionBrandListCreateView, RegionBrandDetailView,
 )
 
 urlpatterns = [
@@ -49,4 +53,18 @@ urlpatterns = [
     # Gallery
     path('gallery/', GalleryListCreateView.as_view(), name='gallery-list-create'),
     path('gallery/<int:pk>/', GalleryDetailView.as_view(), name='gallery-detail'),
+
+    # Regions
+    path('regions/', RegionListCreateView.as_view(), name='region-list-create'),
+    path('regions/<int:pk>/', RegionDetailView.as_view(), name='region-detail'),
+    path('regions/<int:region_id>/team/', TeamMemberListCreateView.as_view(), name='region-team-list-create'),
+    path('team-members/<int:pk>/', TeamMemberDetailView.as_view(), name='team-member-detail'),
+    path('regions/<int:region_id>/contact/', RegionContactView.as_view(), name='region-contact'),
+
+    # Public region data (no auth)
+    path('public/region/<slug:slug>/', PublicRegionDataView.as_view(), name='public-region-data'),
+
+    # Brands
+    path('regions/<int:region_id>/brands/', RegionBrandListCreateView.as_view(), name='region-brand-list-create'),
+    path('brands/<int:pk>/', RegionBrandDetailView.as_view(), name='brand-detail'),
 ]

@@ -64,7 +64,8 @@ class Solution(models.Model):
 class Blog(models.Model):
     title = models.CharField(max_length=200)
     desc = models.TextField()
-    href = models.CharField(max_length=250)
+    content = models.TextField(blank=True, default='')
+    href = models.CharField(max_length=250, blank=True, default='')
     cat = models.CharField(max_length=100)
     publish_date = models.DateField()
     is_featured = models.BooleanField(default=False)
@@ -105,6 +106,74 @@ class GalleryItem(models.Model):
 
     def __str__(self):
         return f"{self.title} ({self.category})"
+
+
+class Region(models.Model):
+    """A geographic region the company operates in (e.g. India, Middle East)."""
+    name = models.CharField(max_length=100, unique=True)
+    slug = models.SlugField(max_length=100, unique=True)
+    is_active = models.BooleanField(default=True)
+    display_order = models.IntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['display_order', 'name']
+
+    def __str__(self):
+        return self.name
+
+
+class TeamMember(models.Model):
+    """A team member associated with a specific region."""
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='team_members')
+    name = models.CharField(max_length=150)
+    role = models.CharField(max_length=200)
+    photo = models.ImageField(upload_to='team/')
+    display_order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['display_order', 'created_at']
+
+    def __str__(self):
+        return f"{self.name} — {self.role} ({self.region.name})"
+
+
+class RegionContact(models.Model):
+    """Contact information for a specific region."""
+    region = models.OneToOneField(Region, on_delete=models.CASCADE, related_name='contact_info')
+    phone = models.CharField(max_length=30)
+    phone_display = models.CharField(max_length=50, blank=True, default='')
+    email = models.EmailField()
+    address = models.TextField()
+    office_name = models.CharField(max_length=200, blank=True, default='')
+    map_embed_url = models.URLField(max_length=500, blank=True, default='')
+    map_link = models.URLField(max_length=500, blank=True, default='')
+
+
+class RegionBrand(models.Model):
+    """A brand/partner associated with a specific region."""
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='brands')
+    name = models.CharField(max_length=150)
+    logo = models.ImageField(upload_to='brands/', blank=True, null=True)
+    website_url = models.URLField(max_length=300, blank=True, default='')
+    display_order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['display_order', 'created_at']
+
+    def __str__(self):
+        return f"{self.name} ({self.region.name})"
+
+    class Meta:
+        verbose_name = 'Region Contact'
+        verbose_name_plural = 'Region Contacts'
+
+    def __str__(self):
+        return f"Contact — {self.region.name}"
 
 
 class BaseModel(models.Model):

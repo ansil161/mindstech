@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem, Region, TeamMember, RegionContact, RegionBrand
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
@@ -90,7 +90,11 @@ class BlogSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Blog
-        fields = ['id', 'title', 'desc', 'href', 'cat', 'publish_date', 'date', 'dateStr', 'is_featured', 'created_at']
+        fields = [
+            'id', 'title', 'desc', 'content',
+            'cat', 'publish_date', 'date', 'dateStr',
+            'is_featured', 'created_at',
+        ]
         read_only_fields = ['id', 'created_at', 'date', 'dateStr']
 
     def get_date(self, obj):
@@ -105,8 +109,9 @@ class BlogSerializer(serializers.ModelSerializer):
     def validate_desc(self, value):
         return strip_tags(value).strip()
 
-    def validate_href(self, value):
-        return strip_tags(value).strip()
+    def validate_content(self, value):
+        # Allow rich text — only strip dangerous tags, keep structure
+        return value.strip()
 
     def validate_cat(self, value):
         return strip_tags(value).strip()
@@ -159,3 +164,91 @@ class GalleryItemSerializer(serializers.ModelSerializer):
 
     def validate_category(self, value):
         return strip_tags(value).strip()
+
+
+class RegionSerializer(serializers.ModelSerializer):
+    team_count = serializers.SerializerMethodField()
+    has_contact = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Region
+        fields = ['id', 'name', 'slug', 'is_active', 'display_order', 'created_at', 'team_count', 'has_contact']
+        read_only_fields = ['id', 'created_at', 'team_count', 'has_contact']
+
+    def get_team_count(self, obj):
+        return obj.team_members.filter(is_active=True).count()
+
+    def get_has_contact(self, obj):
+        return hasattr(obj, 'contact_info')
+
+    def validate_name(self, value):
+        return strip_tags(value).strip()
+
+    def validate_slug(self, value):
+        return strip_tags(value).strip().lower()
+
+
+class TeamMemberSerializer(serializers.ModelSerializer):
+    photo = serializers.ImageField(use_url=True)
+
+    class Meta:
+        model = TeamMember
+        fields = ['id', 'region', 'name', 'role', 'photo', 'display_order', 'is_active', 'created_at']
+        read_only_fields = ['id', 'region', 'created_at']
+
+    def validate_name(self, value):
+        return strip_tags(value).strip()
+
+    def validate_role(self, value):
+        return strip_tags(value).strip()
+
+
+class RegionContactSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RegionContact
+        fields = ['id', 'region', 'phone', 'phone_display', 'email', 'address', 'office_name', 'map_embed_url', 'map_link']
+        read_only_fields = ['id']
+
+    def validate_address(self, value):
+        return strip_tags(value).strip()
+
+    def validate_office_name(self, value):
+        return strip_tags(value).strip()
+
+
+class RegionDetailSerializer(serializers.ModelSerializer):
+    """Nested serializer for the public API — returns region + team + contact + brands in one response."""
+    team_members = serializers.SerializerMethodField()
+    contact_info = serializers.SerializerMethodField()
+    brands = serializers.SerializerMethodField()
+
+    class Meta:
+        model = Region
+        fields = ['id', 'name', 'slug', 'team_members', 'contact_info', 'brands']
+
+    def get_team_members(self, obj):
+        members = obj.team_members.filter(is_active=True).order_by('display_order', 'created_at')
+        return TeamMemberSerializer(members, many=True, context=self.context).data
+
+    def get_contact_info(self, obj):
+        try:
+            return RegionContactSerializer(obj.contact_info, context=self.context).data
+        except RegionContact.DoesNotExist:
+            return None
+
+    def get_brands(self, obj):
+        brands = obj.brands.filter(is_active=True).order_by('display_order', 'created_at')
+        return RegionBrandSerializer(brands, many=True, context=self.context).data
+
+
+class RegionBrandSerializer(serializers.ModelSerializer):
+    logo = serializers.ImageField(use_url=True, required=False, allow_null=True)
+
+    class Meta:
+        model = RegionBrand
+        fields = ['id', 'region', 'name', 'logo', 'website_url', 'display_order', 'is_active', 'created_at']
+        read_only_fields = ['id', 'created_at']
+
+    def validate_name(self, value):
+        return strip_tags(value).strip()
+
