@@ -95,6 +95,18 @@ class CollectionCentre(models.Model):
     def __str__(self):
         return f"{self.city} — {self.operator}"
 
+class GalleryItem(models.Model):
+    title    = models.CharField(max_length=200)
+    category = models.CharField(max_length=100)
+    image    = models.ImageField(upload_to='gallery/')
+
+    class Meta:
+        ordering = ['id']
+
+    def __str__(self):
+        return f"{self.title} ({self.category})"
+
+
 class BaseModel(models.Model):
     """
     Abstract base model for tracking document synchronization status,

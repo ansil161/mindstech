@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
@@ -138,6 +138,21 @@ class DocumentSerializer(serializers.ModelSerializer):
         model = Document
         fields = ['id', 'title', 'file', 'category', 'status', 'extracted_text', 'metadata', 'version', 'created_at', 'updated_at']
         read_only_fields = ['id', 'status', 'extracted_text', 'version', 'created_at', 'updated_at']
+
+    def validate_title(self, value):
+        return strip_tags(value).strip()
+
+    def validate_category(self, value):
+        return strip_tags(value).strip()
+
+
+class GalleryItemSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True)
+
+    class Meta:
+        model = GalleryItem
+        fields = ['id', 'title', 'category', 'image']
+        read_only_fields = ['id']
 
     def validate_title(self, value):
         return strip_tags(value).strip()

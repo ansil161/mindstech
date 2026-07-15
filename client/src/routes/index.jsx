@@ -9,6 +9,7 @@ import Blogs from '../pages/user/Blogs';
 import Experience from '../pages/user/Experience';
 import Contact from '../pages/user/Contact';
 import EWaste from '../pages/user/EWaste';
+import Gallery from '../pages/user/gallery/Gallery';
 import NotFound from '../pages/user/NotFound';
 
 // Admin Imports
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path: '/ewaste',
         element: <EWaste />,
+      },
+      {
+        path: '/gallery',
+        element: <Gallery />,
       },
     ],
   },
