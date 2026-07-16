@@ -56,6 +56,7 @@ const Home = () => {
 
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
+  const { translatedData: translatedTestimonials } = useDynamicTranslation(testimonials, ['name', 'designation', 'company', 'message'], `home_testimonials_${regionSlug}`);
 
   useEffect(() => {
     const fetchSolutions = async () => {
@@ -913,7 +914,7 @@ const Home = () => {
       <div className="rule"></div>
 
       {/* TESTIMONIALS */}
-      {testimonials.length > 0 && (
+      {translatedTestimonials.length > 0 && (
         <section id="testimonials" aria-label="Client testimonials" className="py-20 px-[var(--pad)]">
           {/* Section head */}
           <div className="flex justify-between items-end gap-6 mb-14">
@@ -927,7 +928,7 @@ const Home = () => {
 
           {/* Cards grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {testimonials.map((item, i) => (
+            {translatedTestimonials.map((item, i) => (
               <article
                 key={item.id || i}
                 className="reveal group relative flex flex-col gap-5 rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-red-600/30 hover:shadow-[0_20px_60px_rgba(0,0,0,.4),0_0_0_1px_rgba(204,0,1,.1)]"

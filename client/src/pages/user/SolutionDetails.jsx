@@ -1,9 +1,11 @@
 import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 
@@ -140,6 +142,8 @@ const SolutionDetails = () => {
   const containerRef = useRef(null);
 
   const [regionBrands, setRegionBrands] = useState([]);
+
+  const { translatedData: translatedBrands } = useDynamicTranslation(regionBrands, ['name'], `solution_brands_${regionSlug}`);
 
   // Fetch region brands whenever region changes
   useEffect(() => {
@@ -355,8 +359,8 @@ const SolutionDetails = () => {
       <section className="dbrands" aria-label="Brands for this vertical">
         <h2 className="display">{t('solutions.brands_we_distribute', 'Brands we distribute')} <em>{t('solutions.for_this_vertical', 'for this vertical')}</em></h2>
         <div className="dbrands-row" id="dBrandsRow">
-          {regionBrands.length > 0
-            ? regionBrands.map((brand, i) => (
+          {translatedBrands.length > 0
+            ? translatedBrands.map((brand, i) => (
                 <a
                   key={i}
                   href={brand.website_url || '/partners'}

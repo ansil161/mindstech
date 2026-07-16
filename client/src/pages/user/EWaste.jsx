@@ -3,6 +3,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import axios from '../../api/axios';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -14,6 +15,8 @@ const EWaste = () => {
   const [centresLoading, setCentresLoading] = useState(true);
   const [centresError, setCentresError] = useState('');
   const { t } = useTranslation();
+
+  const { translatedData: translatedCentres } = useDynamicTranslation(centres, ['city', 'operator', 'address', 'contact_name'], 'ewaste_centres');
 
   useEffect(() => {
     const loadCentres = async () => {
@@ -139,8 +142,8 @@ const EWaste = () => {
     );
   }, [filter]);
 
-  const operators = [...new Set(centres.map(centre => centre.operator))];
-  const filteredCentres = centres.filter(centre => filter === 'all' || centre.operator === filter);
+  const operators = [...new Set(translatedCentres.map(centre => centre.operator))];
+  const filteredCentres = translatedCentres.filter(centre => filter === 'all' || centre.operator === filter);
 
   return (
     <main id="top" ref={containerRef}>

@@ -1,7 +1,10 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 
 const NotFound = () => {
+  const { t } = useTranslation();
+
   useEffect(() => {
     document.title = 'Page not found — Mindstec Distribution';
   }, []);
@@ -128,12 +131,12 @@ const NotFound = () => {
           <img src="/mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today" />
         </Link>
         <div className="code" aria-hidden="true">4<em>0</em>4</div>
-        <h1>This page isn't on the floor.</h1>
-        <p>The address may have changed, or it never existed. Everything we distribute is one click away.</p>
+        <h1>{t('not_found.title', "This page isn't on the floor.")}</h1>
+        <p>{t('not_found.desc', 'The address may have changed, or it never existed. Everything we distribute is one click away.')}</p>
         <div className="actions">
-          <Link className="btn btn--solid" to="/"><span>Back to home</span></Link>
-          <Link className="btn" to="/solutions"><span>Browse solutions</span></Link>
-          <Link className="btn" to="/contact"><span>Contact us</span></Link>
+          <Link className="btn btn--solid" to="/"><span>{t('not_found.home', 'Back to home')}</span></Link>
+          <Link className="btn" to="/solutions"><span>{t('not_found.solutions', 'Browse solutions')}</span></Link>
+          <Link className="btn" to="/contact"><span>{t('not_found.contact', 'Contact us')}</span></Link>
         </div>
       </div>
     </>

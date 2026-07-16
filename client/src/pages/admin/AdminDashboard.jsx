@@ -323,13 +323,15 @@ export default function AdminDashboard() {
     setLoadingContact(true);
     setLoadingBrands(true);
     try {
-      const [teamRes, contactRes, brandsRes] = await Promise.all([
+      const [teamRes, contactRes, brandsRes, testiRes] = await Promise.all([
         getTeamMembers(region.id),
         getRegionContact(region.id),
         getBrands(region.id),
+        getTestimonials(region.id),
       ]);
       setTeamMembers(teamRes.data);
       setBrands(brandsRes.data || []);
+      setTestimonials(testiRes.data || []);
       if (contactRes.status === 204 || !contactRes.data) {
         setContactForm({ phone: '', phone_display: '', email: '', address: '', office_name: '', map_embed_url: '', map_link: '' });
       } else {
@@ -1776,6 +1778,77 @@ export default function AdminDashboard() {
                           <span style={{ fontSize: '12px', color: 'var(--white)', fontWeight: '600' }}>{brand.name}</span>
                           {brand.website_url && <a href={brand.website_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '10px', color: 'var(--grey)', wordBreak: 'break-all' }}>website</a>}
                           <button onClick={() => handleDeleteBrand(brand.id)} className="admin-btn" style={{ width: '100%', margin: 0, padding: '4px', fontSize: '11px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2' }}>Remove</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Testimonials */}
+                <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <div>
+                      <h3 style={{ margin: '0 0 4px', color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>Client Testimonials</h3>
+                      <p style={{ margin: 0, fontSize: '12px', color: 'var(--grey)' }}>Shown in the "What our clients say" section on the home page for this region.</p>
+                    </div>
+                    <button onClick={() => setShowAddTestimonialForm(!showAddTestimonialForm)} className="admin-btn" style={{ width: 'auto', margin: 0, padding: '6px 16px', fontSize: '12px' }}>
+                      {showAddTestimonialForm ? 'Cancel' : 'Add Testimonial'}
+                    </button>
+                  </div>
+
+                  {showAddTestimonialForm && (
+                    <form onSubmit={handleAddTestimonial} style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px', padding: '16px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Client Name
+                          <input type="text" value={newTestiName} onChange={e => setNewTestiName(e.target.value)} placeholder="e.g. Rajesh Kumar" required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Designation
+                          <input type="text" value={newTestiDesignation} onChange={e => setNewTestiDesignation(e.target.value)} placeholder="e.g. Head of AV" required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Company
+                          <input type="text" value={newTestiCompany} onChange={e => setNewTestiCompany(e.target.value)} placeholder="e.g. Infosys Ltd." required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Photo (optional)
+                          <input type="file" accept="image/*" onChange={e => setNewTestiPhoto(e.target.files[0])} style={{ color: 'var(--grey)', fontSize: '12px', padding: '4px 0' }} />
+                        </label>
+                      </div>
+                      <label style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: 'var(--grey)' }}>
+                        Message / Review
+                        <textarea value={newTestiMessage} onChange={e => setNewTestiMessage(e.target.value)} placeholder="What did the client say about Mindstec?" rows={3} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px', resize: 'vertical' }} />
+                      </label>
+                      <button type="submit" disabled={submittingTestimonial} className="admin-btn" style={{ width: 'fit-content', margin: 0, padding: '8px 20px', fontSize: '12px' }}>
+                        {submittingTestimonial ? 'Saving...' : 'Save Testimonial'}
+                      </button>
+                    </form>
+                  )}
+
+                  {loadingTestimonials ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>Loading testimonials...</p>
+                  ) : testimonials.length === 0 ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>No testimonials yet. Click "Add Testimonial" to add one.</p>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                      {testimonials.map(item => (
+                        <div key={item.id} style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', padding: '14px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)' }}>
+                          <div style={{ width: '44px', height: '44px', borderRadius: '50%', overflow: 'hidden', flexShrink: 0, background: 'var(--ink)', border: '1px solid var(--line)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            {item.photo
+                              ? <img src={item.photo} alt={item.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                              : <span style={{ fontSize: '13px', fontWeight: '700', color: 'var(--red)' }}>{item.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}</span>
+                            }
+                          </div>
+                          <div style={{ flex: 1, minWidth: 0 }}>
+                            <div style={{ display: 'flex', gap: '8px', alignItems: 'center', marginBottom: '4px', flexWrap: 'wrap' }}>
+                              <strong style={{ fontSize: '13px', color: 'var(--white)' }}>{item.name}</strong>
+                              <span style={{ fontSize: '11px', color: 'var(--grey)' }}>{item.designation}</span>
+                              <span style={{ fontSize: '11px', color: 'var(--red)', fontWeight: '500' }}>{item.company}</span>
+                            </div>
+                            <p style={{ margin: 0, fontSize: '12px', color: 'var(--grey)', lineHeight: '1.6', fontStyle: 'italic' }}>"{item.message}"</p>
+                          </div>
+                          <button onClick={() => handleDeleteTestimonial(item.id)} className="admin-btn" style={{ flexShrink: 0, width: 'auto', margin: 0, padding: '5px 10px', fontSize: '11px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2' }}>Remove</button>
                         </div>
                       ))}
                     </div>
