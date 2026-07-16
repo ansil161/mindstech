@@ -11,6 +11,7 @@ import Contact from '../pages/user/Contact';
 import EWaste from '../pages/user/EWaste';
 import Gallery from '../pages/user/gallery/Gallery';
 import NotFound from '../pages/user/NotFound';
+import RegionGuard from '../components/common/RegionGuard.jsx';
 
 // Admin Imports
 import AdminLogin from '../pages/admin/AdminLogin';
@@ -50,16 +51,23 @@ export const router = createBrowserRouter([
         element: <Blogs />,
       },
       {
-        path: '/experience',
-        element: <Experience />,
-      },
-      {
         path: '/contact',
         element: <Contact />,
       },
+
+      // ── Region-gated pages ──────────────────────────────────────────────
+      // Only E-Waste is region-controlled. Gallery and Experience are visible
+      // in all regions. To gate additional pages in future, add a RegionGuard
+      // here with the matching pageKey.
       {
-        path: '/ewaste',
-        element: <EWaste />,
+        element: <RegionGuard pageKey="ewaste" />,
+        children: [{ path: '/ewaste', element: <EWaste /> }],
+      },
+      // ────────────────────────────────────────────────────────────────────
+
+      {
+        path: '/experience',
+        element: <Experience />,
       },
       {
         path: '/gallery',

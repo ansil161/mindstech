@@ -172,7 +172,10 @@ class RegionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Region
-        fields = ['id', 'name', 'slug', 'is_active', 'display_order', 'created_at', 'team_count', 'has_contact']
+        fields = [
+            'id', 'name', 'slug', 'is_active', 'display_order',
+            'enabled_pages', 'created_at', 'team_count', 'has_contact',
+        ]
         read_only_fields = ['id', 'created_at', 'team_count', 'has_contact']
 
     def get_team_count(self, obj):
@@ -186,6 +189,17 @@ class RegionSerializer(serializers.ModelSerializer):
 
     def validate_slug(self, value):
         return strip_tags(value).strip().lower()
+
+    def validate_enabled_pages(self, value):
+        """Ensure every entry is a non-empty lowercase string."""
+        if not isinstance(value, list):
+            raise serializers.ValidationError('enabled_pages must be a list.')
+        cleaned = []
+        for item in value:
+            if not isinstance(item, str) or not item.strip():
+                raise serializers.ValidationError('Each page key must be a non-empty string.')
+            cleaned.append(item.strip().lower())
+        return cleaned
 
 
 class TeamMemberSerializer(serializers.ModelSerializer):
@@ -239,7 +253,11 @@ class RegionDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Region
-        fields = ['id', 'name', 'slug', 'team_members', 'contact_info', 'brands', 'testimonials']
+        fields = [
+            'id', 'name', 'slug',
+            'enabled_pages',
+            'team_members', 'contact_info', 'brands', 'testimonials',
+        ]
 
     def get_team_members(self, obj):
         members = obj.team_members.filter(is_active=True).order_by('display_order', 'created_at')

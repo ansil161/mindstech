@@ -13,7 +13,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
   const location = useLocation();
   const { t } = useTranslation();
   const { changeLanguage } = useContext(LanguageContext);
-  const { region, setRegion } = useRegion();
+  const { region, setRegion, isPageEnabled } = useRegion();
 
   const regionLanguageMap = {
     'India': 'en',
@@ -58,7 +58,15 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
 
   const isSolutionsActive = location.pathname.startsWith('/solutions');
   const isAboutActive = location.pathname === '/about' || location.pathname === '/partners';
-  const isResourcesActive = location.pathname === '/blogs' || location.pathname === '/ewaste' || location.pathname === '/experience';
+
+  // Resources dropdown is active if the current path is any resource page
+  const isResourcesActive =
+    location.pathname === '/blogs' ||
+    location.pathname === '/experience' ||
+    (isPageEnabled('ewaste') && location.pathname === '/ewaste');
+
+  // Only E-Waste is region-gated — null while loading (hidden until confirmed)
+  const showEwaste = isPageEnabled('ewaste') === true;
 
   return (
     <header ref={navRef} className="nav" id="nav">
@@ -107,8 +115,14 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
             </Link>
             <div className="sub">
               <NavLink to="/blogs" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('navbar.blogs')}</NavLink>
-              <NavLink to="/ewaste" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('navbar.ewaste', 'E-Waste Management')}</NavLink>
-              <NavLink to="/experience" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('navbar.experience', 'Experience Centre')}</NavLink>
+              {showEwaste && (
+                <NavLink to="/ewaste" className={({ isActive }) => isActive ? 'sub-active' : ''}>
+                  {t('navbar.ewaste', 'E-Waste Management')}
+                </NavLink>
+              )}
+              <NavLink to="/experience" className={({ isActive }) => isActive ? 'sub-active' : ''}>
+                {t('navbar.experience', 'Experience Centre')}
+              </NavLink>
             </div>
           </li>
           <li>
@@ -132,11 +146,11 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
             {['India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => {
               const regKey = `navbar.regions.${r.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`;
               return (
-                <a 
-                  key={r} 
+                <a
+                  key={r}
                   href="#"
-                  onClick={(e) => { 
-                    e.preventDefault(); 
+                  onClick={(e) => {
+                    e.preventDefault();
                     setRegion(r);
                     changeLanguage(regionLanguageMap[r] || 'en');
                   }}
@@ -151,12 +165,12 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
         <Button solid to="/contact">
           <span>{t('navbar.talk_to_us')}</span>
         </Button>
-        <button 
-          className="burger" 
-          id="burger" 
+        <button
+          className="burger"
+          id="burger"
           onClick={() => setDrawerOpen((prev) => !prev)}
-          aria-label={drawerOpen ? 'Close menu' : 'Open menu'} 
-          aria-expanded={drawerOpen ? 'true' : 'false'} 
+          aria-label={drawerOpen ? 'Close menu' : 'Open menu'}
+          aria-expanded={drawerOpen ? 'true' : 'false'}
           aria-controls="drawer"
         >
           <span></span><span></span><span></span>

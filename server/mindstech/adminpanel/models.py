@@ -114,13 +114,11 @@ class Region(models.Model):
     slug = models.SlugField(max_length=100, unique=True)
     is_active = models.BooleanField(default=True)
     display_order = models.IntegerField(default=0)
+    # List of page keys visible for this region.
+    # e.g. ["ewaste", "gallery", "experience", "blogs"]
+    # An empty list means no optional pages are enabled.
+    enabled_pages = models.JSONField(default=list, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['display_order', 'name']
-
-    def __str__(self):
-        return self.name
 
     class Meta:
         ordering = ['display_order', 'name']

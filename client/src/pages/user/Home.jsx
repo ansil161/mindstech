@@ -24,9 +24,8 @@ const CITIES = {
 };
 
 const ROUTES = [
-  ['bangalore', 'delhi'], ['bangalore', 'dhaka'], ['bangalore', 'colombo'],
-  ['bangalore', 'nairobi'], ['nairobi', 'lagos'], ['nairobi', 'joburg'],
-  ['bangalore', 'warsaw'], ['warsaw', 'prague']
+  ['bangalore', 'nairobi'],
+  ['bangalore', 'warsaw']
 ];
 
 const project = (lat, lng) => ({

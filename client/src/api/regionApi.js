@@ -50,8 +50,10 @@ export const updateBrand = (id, formData) =>
 export const deleteBrand = (id) => axios.delete(`/admin/brands/${id}/`);
 
 // ── Public API (no auth) ──
-
-export const getPublicRegionData = (slug) => axios.get(`/admin/public/region/${slug}/`);
+// Uses a plain fetch without credentials so DRF authentication
+// middleware never interferes with this AllowAny endpoint.
+export const getPublicRegionData = (slug) =>
+  axios.get(`/admin/public/region/${slug}/`, { withCredentials: false });
 
 // ── Admin: Testimonials ──
 

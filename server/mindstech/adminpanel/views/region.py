@@ -1,4 +1,6 @@
-from rest_framework import generics, status
+import os
+
+from rest_framework import status
 from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -15,53 +17,134 @@ from ..serializers import (
 # Admin: Region CRUD
 # ──────────────────────────────────────────────
 
-class RegionListCreateView(generics.ListCreateAPIView):
+class RegionListCreateView(APIView):
     """List all regions or create a new one (admin only)."""
-    queryset = Region.objects.all()
-    serializer_class = RegionSerializer
     permission_classes = [IsAdminUser]
 
+    def get(self, request):
+        regions = Region.objects.all()
+        serializer = RegionSerializer(regions, many=True, context={'request': request})
+        return Response(serializer.data)
 
-class RegionDetailView(generics.RetrieveUpdateDestroyAPIView):
+    def post(self, request):
+        serializer = RegionSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class RegionDetailView(APIView):
     """Retrieve, update, or delete a specific region (admin only)."""
-    queryset = Region.objects.all()
-    serializer_class = RegionSerializer
     permission_classes = [IsAdminUser]
+
+    def get_object(self, pk):
+        try:
+            return Region.objects.get(pk=pk)
+        except Region.DoesNotExist:
+            return None
+
+    def get(self, request, pk):
+        region = self.get_object(pk)
+        if region is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = RegionSerializer(region, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        region = self.get_object(pk)
+        if region is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = RegionSerializer(region, data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        region = self.get_object(pk)
+        if region is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = RegionSerializer(region, data=request.data, partial=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        region = self.get_object(pk)
+        if region is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        region.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # ──────────────────────────────────────────────
 # Admin: Team Member CRUD
 # ──────────────────────────────────────────────
 
-class TeamMemberListCreateView(generics.ListCreateAPIView):
+class TeamMemberListCreateView(APIView):
     """List team members for a region or add a new one (admin only)."""
-    serializer_class = TeamMemberSerializer
     permission_classes = [IsAdminUser]
 
-    def get_queryset(self):
-        return TeamMember.objects.filter(region_id=self.kwargs['region_id'])
+    def get(self, request, region_id):
+        members = TeamMember.objects.filter(region_id=region_id)
+        serializer = TeamMemberSerializer(members, many=True, context={'request': request})
+        return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        region = Region.objects.get(pk=self.kwargs['region_id'])
+    def post(self, request, region_id):
+        region = Region.objects.get(pk=region_id)
+        serializer = TeamMemberSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
         serializer.save(region=region)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class TeamMemberDetailView(generics.RetrieveUpdateDestroyAPIView):
+class TeamMemberDetailView(APIView):
     """Update or delete a specific team member (admin only)."""
-    queryset = TeamMember.objects.all()
-    serializer_class = TeamMemberSerializer
     permission_classes = [IsAdminUser]
 
-    def perform_destroy(self, instance):
+    def get_object(self, pk):
+        try:
+            return TeamMember.objects.get(pk=pk)
+        except TeamMember.DoesNotExist:
+            return None
+
+    def get(self, request, pk):
+        member = self.get_object(pk)
+        if member is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = TeamMemberSerializer(member, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        member = self.get_object(pk)
+        if member is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = TeamMemberSerializer(member, data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        member = self.get_object(pk)
+        if member is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = TeamMemberSerializer(member, data=request.data, partial=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        member = self.get_object(pk)
+        if member is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
         # Delete the photo file from disk
-        if instance.photo:
-            import os
-            if os.path.isfile(instance.photo.path):
+        if member.photo:
+            if os.path.isfile(member.photo.path):
                 try:
-                    os.remove(instance.photo.path)
+                    os.remove(member.photo.path)
                 except OSError:
                     pass
-        instance.delete()
+        member.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # ──────────────────────────────────────────────
@@ -83,7 +166,7 @@ class RegionContactView(APIView):
     def put(self, request, region_id):
         region = Region.objects.get(pk=region_id)
         contact, created = RegionContact.objects.get_or_create(region=region)
-        serializer = RegionContactSerializer(contact, data=request.data)
+        serializer = RegionContactSerializer(contact, data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data, status=status.HTTP_200_OK if not created else status.HTTP_201_CREATED)
@@ -93,83 +176,158 @@ class RegionContactView(APIView):
 # Admin: Region Brand CRUD
 # ──────────────────────────────────────────────
 
-class RegionBrandListCreateView(generics.ListCreateAPIView):
+class RegionBrandListCreateView(APIView):
     """List brands for a region or add a new one (admin only)."""
-    serializer_class = RegionBrandSerializer
     permission_classes = [IsAdminUser]
 
-    def get_queryset(self):
-        return RegionBrand.objects.filter(region_id=self.kwargs['region_id'])
+    def get(self, request, region_id):
+        brands = RegionBrand.objects.filter(region_id=region_id)
+        serializer = RegionBrandSerializer(brands, many=True, context={'request': request})
+        return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        region = Region.objects.get(pk=self.kwargs['region_id'])
+    def post(self, request, region_id):
+        region = Region.objects.get(pk=region_id)
+        serializer = RegionBrandSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
         serializer.save(region=region)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class RegionBrandDetailView(generics.RetrieveUpdateDestroyAPIView):
+class RegionBrandDetailView(APIView):
     """Update or delete a specific brand (admin only)."""
-    queryset = RegionBrand.objects.all()
-    serializer_class = RegionBrandSerializer
     permission_classes = [IsAdminUser]
 
-    def perform_destroy(self, instance):
+    def get_object(self, pk):
+        try:
+            return RegionBrand.objects.get(pk=pk)
+        except RegionBrand.DoesNotExist:
+            return None
+
+    def get(self, request, pk):
+        brand = self.get_object(pk)
+        if brand is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = RegionBrandSerializer(brand, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        brand = self.get_object(pk)
+        if brand is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = RegionBrandSerializer(brand, data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        brand = self.get_object(pk)
+        if brand is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = RegionBrandSerializer(brand, data=request.data, partial=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        brand = self.get_object(pk)
+        if brand is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
         # Delete the logo file from disk if it exists
-        if instance.logo:
-            import os
-            if os.path.isfile(instance.logo.path):
+        if brand.logo:
+            if os.path.isfile(brand.logo.path):
                 try:
-                    os.remove(instance.logo.path)
+                    os.remove(brand.logo.path)
                 except OSError:
                     pass
-        instance.delete()
+        brand.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # ──────────────────────────────────────────────
 # Admin: Testimonial CRUD
 # ──────────────────────────────────────────────
 
-class TestimonialListCreateView(generics.ListCreateAPIView):
+class TestimonialListCreateView(APIView):
     """List testimonials for a region or add a new one (admin only)."""
-    serializer_class = TestimonialSerializer
     permission_classes = [IsAdminUser]
 
-    def get_queryset(self):
-        return ClientTestimonial.objects.filter(region_id=self.kwargs['region_id'])
+    def get(self, request, region_id):
+        testimonials = ClientTestimonial.objects.filter(region_id=region_id)
+        serializer = TestimonialSerializer(testimonials, many=True, context={'request': request})
+        return Response(serializer.data)
 
-    def perform_create(self, serializer):
-        region = Region.objects.get(pk=self.kwargs['region_id'])
+    def post(self, request, region_id):
+        region = Region.objects.get(pk=region_id)
+        serializer = TestimonialSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
         serializer.save(region=region)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
-class TestimonialDetailView(generics.RetrieveUpdateDestroyAPIView):
+class TestimonialDetailView(APIView):
     """Update or delete a specific testimonial (admin only)."""
-    queryset = ClientTestimonial.objects.all()
-    serializer_class = TestimonialSerializer
     permission_classes = [IsAdminUser]
 
-    def perform_destroy(self, instance):
-        if instance.photo:
-            import os
-            if os.path.isfile(instance.photo.path):
+    def get_object(self, pk):
+        try:
+            return ClientTestimonial.objects.get(pk=pk)
+        except ClientTestimonial.DoesNotExist:
+            return None
+
+    def get(self, request, pk):
+        testimonial = self.get_object(pk)
+        if testimonial is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = TestimonialSerializer(testimonial, context={'request': request})
+        return Response(serializer.data)
+
+    def put(self, request, pk):
+        testimonial = self.get_object(pk)
+        if testimonial is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = TestimonialSerializer(testimonial, data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def patch(self, request, pk):
+        testimonial = self.get_object(pk)
+        if testimonial is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = TestimonialSerializer(testimonial, data=request.data, partial=True, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        testimonial = self.get_object(pk)
+        if testimonial is None:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        if testimonial.photo:
+            if os.path.isfile(testimonial.photo.path):
                 try:
-                    os.remove(instance.photo.path)
+                    os.remove(testimonial.photo.path)
                 except OSError:
                     pass
-        instance.delete()
+        testimonial.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
 
 
 # ──────────────────────────────────────────────
 # Public: Region data (no auth required)
 # ──────────────────────────────────────────────
 
-class PublicRegionDataView(generics.RetrieveAPIView):
+class PublicRegionDataView(APIView):
     """
     Public endpoint that returns a region's team members, contact info, and brands.
     Used by the About and Contact pages when the user switches region.
     """
-    serializer_class = RegionDetailSerializer
     permission_classes = [AllowAny]
-    lookup_field = 'slug'
 
-    def get_queryset(self):
-        return Region.objects.filter(is_active=True)
+    def get(self, request, slug):
+        try:
+            region = Region.objects.get(slug=slug, is_active=True)
+        except Region.DoesNotExist:
+            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        serializer = RegionDetailSerializer(region, context={'request': request})
+        return Response(serializer.data)
