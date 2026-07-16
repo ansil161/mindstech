@@ -3,10 +3,11 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Region, TeamMember, RegionContact, RegionBrand
+from ..models import Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial
 from ..serializers import (
     RegionSerializer, TeamMemberSerializer,
     RegionContactSerializer, RegionDetailSerializer, RegionBrandSerializer,
+    TestimonialSerializer,
 )
 
 
@@ -118,6 +119,40 @@ class RegionBrandDetailView(generics.RetrieveUpdateDestroyAPIView):
             if os.path.isfile(instance.logo.path):
                 try:
                     os.remove(instance.logo.path)
+                except OSError:
+                    pass
+        instance.delete()
+
+
+# ──────────────────────────────────────────────
+# Admin: Testimonial CRUD
+# ──────────────────────────────────────────────
+
+class TestimonialListCreateView(generics.ListCreateAPIView):
+    """List testimonials for a region or add a new one (admin only)."""
+    serializer_class = TestimonialSerializer
+    permission_classes = [IsAdminUser]
+
+    def get_queryset(self):
+        return ClientTestimonial.objects.filter(region_id=self.kwargs['region_id'])
+
+    def perform_create(self, serializer):
+        region = Region.objects.get(pk=self.kwargs['region_id'])
+        serializer.save(region=region)
+
+
+class TestimonialDetailView(generics.RetrieveUpdateDestroyAPIView):
+    """Update or delete a specific testimonial (admin only)."""
+    queryset = ClientTestimonial.objects.all()
+    serializer_class = TestimonialSerializer
+    permission_classes = [IsAdminUser]
+
+    def perform_destroy(self, instance):
+        if instance.photo:
+            import os
+            if os.path.isfile(instance.photo.path):
+                try:
+                    os.remove(instance.photo.path)
                 except OSError:
                     pass
         instance.delete()

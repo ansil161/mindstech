@@ -93,9 +93,12 @@ const About = () => {
       </section>
 
       <div className="ahero-meta reveal">
-        <div className="fact"><b>{t('about.hero.fact1_b')}</b><span>{t('about.hero.fact1_s')}</span></div>
-        <div className="fact"><b>{t('about.hero.fact2_b')}</b><span>{t('about.hero.fact2_s')}</span></div>
-        <div className="fact"><b>{t('about.hero.fact3_b')}</b><span>{t('about.hero.fact3_s')}</span></div>
+        {(t(`about.hero_facts.${regionSlug}`, { returnObjects: true, defaultValue: t('about.hero_facts.default', { returnObjects: true }) }) || []).map((fact, i) => (
+          <div className="fact" key={i}>
+            <b>{fact.bold}</b>
+            <span>{fact.sub}</span>
+          </div>
+        ))}
       </div>
 
       {/* HERO VISUAL */}

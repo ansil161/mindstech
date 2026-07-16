@@ -13,6 +13,7 @@ from .views import (
     TeamMemberListCreateView, TeamMemberDetailView,
     RegionContactView, PublicRegionDataView,
     RegionBrandListCreateView, RegionBrandDetailView,
+    TestimonialListCreateView, TestimonialDetailView,
 )
 
 urlpatterns = [
@@ -67,4 +68,8 @@ urlpatterns = [
     # Brands
     path('regions/<int:region_id>/brands/', RegionBrandListCreateView.as_view(), name='region-brand-list-create'),
     path('brands/<int:pk>/', RegionBrandDetailView.as_view(), name='brand-detail'),
+
+    # Testimonials
+    path('regions/<int:region_id>/testimonials/', TestimonialListCreateView.as_view(), name='region-testimonial-list-create'),
+    path('testimonials/<int:pk>/', TestimonialDetailView.as_view(), name='testimonial-detail'),
 ]

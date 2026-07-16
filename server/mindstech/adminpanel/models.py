@@ -122,6 +122,12 @@ class Region(models.Model):
     def __str__(self):
         return self.name
 
+    class Meta:
+        ordering = ['display_order', 'name']
+
+    def __str__(self):
+        return self.name
+
 
 class TeamMember(models.Model):
     """A team member associated with a specific region."""
@@ -174,6 +180,25 @@ class RegionBrand(models.Model):
 
     def __str__(self):
         return f"Contact — {self.region.name}"
+
+
+class ClientTestimonial(models.Model):
+    """A client testimonial associated with a specific region."""
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='testimonials')
+    name = models.CharField(max_length=150)
+    designation = models.CharField(max_length=200)
+    company = models.CharField(max_length=200)
+    message = models.TextField()
+    photo = models.ImageField(upload_to='testimonials/', blank=True, null=True)
+    display_order = models.IntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['display_order', 'created_at']
+
+    def __str__(self):
+        return f"{self.name} — {self.company} ({self.region.name})"
 
 
 class BaseModel(models.Model):

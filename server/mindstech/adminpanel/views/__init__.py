@@ -15,6 +15,7 @@ from .region import (
     TeamMemberListCreateView, TeamMemberDetailView,
     RegionContactView, PublicRegionDataView,
     RegionBrandListCreateView, RegionBrandDetailView,
+    TestimonialListCreateView, TestimonialDetailView,
 )
 
 __all__ = [

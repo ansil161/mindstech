@@ -52,3 +52,14 @@ export const deleteBrand = (id) => axios.delete(`/admin/brands/${id}/`);
 // ── Public API (no auth) ──
 
 export const getPublicRegionData = (slug) => axios.get(`/admin/public/region/${slug}/`);
+
+// ── Admin: Testimonials ──
+
+export const getTestimonials = (regionId) => axios.get(`/admin/regions/${regionId}/testimonials/`);
+
+export const addTestimonial = (regionId, formData) =>
+  axios.post(`/admin/regions/${regionId}/testimonials/`, formData, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+
+export const deleteTestimonial = (id) => axios.delete(`/admin/testimonials/${id}/`);

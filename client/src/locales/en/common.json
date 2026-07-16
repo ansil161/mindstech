@@ -40,12 +40,6 @@
       "label": "About Us",
       "brief": "Mindstec Distribution is a leading procurement and distribution specialist for high-end audio-visual solutions across the Middle East, Africa and Asia â€” bringing cutting-edge AV technology to these regions at accessible prices.",
       "meet_team_btn": "Meet the team",
-      "fact1_b": "Middle East Â· Africa Â· Asia",
-      "fact1_s": "Regions served",
-      "fact2_b": "Global partner network",
-      "fact2_s": "Manufacturers to dealers",
-      "fact3_b": "Bangalore HQ",
-      "fact3_s": "India â€” SAARC operations",
       "caption": "High-end AV, delivered"
     },
     "story": {
@@ -111,6 +105,92 @@
         "india": "India operations",
         "email": "+91 80 4525 6922"
       }
+    },
+    "hero_facts": {
+      "india": [
+        {
+          "bold": "India · SAARC",
+          "sub": "Regions served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Bangalore HQ",
+          "sub": "India — SAARC operations"
+        }
+      ],
+      "middle-east": [
+        {
+          "bold": "Middle East",
+          "sub": "Region served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Dubai hub",
+          "sub": "Middle East operations"
+        }
+      ],
+      "africa": [
+        {
+          "bold": "Africa",
+          "sub": "Region served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Nairobi hub",
+          "sub": "Africa operations"
+        }
+      ],
+      "south-asia": [
+        {
+          "bold": "South Asia",
+          "sub": "Region served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Bangalore HQ",
+          "sub": "SAARC operations"
+        }
+      ],
+      "hong-kong-china": [
+        {
+          "bold": "Hong Kong · China",
+          "sub": "Region served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Hong Kong hub",
+          "sub": "Asia-Pacific operations"
+        }
+      ],
+      "default": [
+        {
+          "bold": "Middle East · Africa · Asia",
+          "sub": "Regions served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Bangalore HQ",
+          "sub": "India — SAARC operations"
+        }
+      ]
     }
   },
   "home": {
@@ -323,21 +403,98 @@
   "ewaste": {
     "hero": {
       "title": "E-Waste Management",
-      "subtitle": "Responsible recycling for a sustainable future."
+      "line1": "End of life.",
+      "line2": "Not end of story.",
+      "brief": "Around 90% of electronic equipment is recyclable. Our authorized programme with Deshwal Waste Management takes back end-of-life electronics anywhere in India — at zero cost to you."
+    },
+    "meta": {
+      "pickup_label": "Toll-free pickup line",
+      "drop_points": "27 drop points",
+      "across_india": "Across India",
+      "recycler_label": "Authorized recycler",
+      "cost_label": "Cost to the consumer"
+    },
+    "ov": {
+      "label": "Overview",
+      "lede_main": "Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of it",
+      "lede_em": "gets a second life.",
+      "p1": "E-waste is the informal name for electronic products nearing the end of their useful life — computers, televisions, displays, copiers, phones, audio equipment and batteries. Many of their components contain hazardous materials that pose a real threat to human health and the environment when disposed of improperly.",
+      "p2": "Most of these products can be reused, refurbished or recycled in an environmentally sound manner. Under India's E-Waste (Management & Handling) Rules, Mindstec runs a compliant take-back programme so the hardware we distribute never ends up where it shouldn't."
     },
     "recyclers": {
-      "title": "Our Authorised Recyclers",
-      "desc": "We have partnered with leading E-Waste management companies to ensure safe and compliant disposal of electronic waste across India."
+      "why_recycle": "Why recycle",
+      "gives_back_main": "What responsible recycling",
+      "gives_back_em": "gives back.",
+      "b1_title": "Conserves natural resources",
+      "b1_desc": "Metals recovered from circuit boards, and the plastics and glass in monitors and televisions, go into new products — reducing the need to mine new raw materials.",
+      "b2_title": "Supports the community",
+      "b2_desc": "Donated electronics become refurbished computers and phones for low-income families, schools and non-profits — access to technology they couldn't otherwise afford.",
+      "b3_title": "Creates local employment",
+      "b3_desc": "With around 90% of electronic equipment recyclable, demand for recycling builds new firms and new jobs — and a second market for the recovered materials.",
+      "b4_title": "Protects health & environment",
+      "b4_desc": "CRTs and monitors contain lead; circuit boards carry cadmium, mercury and chromium. Safe recycling keeps these toxins out of trashcans, landfills and groundwater."
+    },
+    "dd": {
+      "label": "Handle with care",
+      "title_main": "Do's &",
+      "title_em": "don'ts.",
+      "do_title": "Always",
+      "dos": [
+        "Check the product catalogue for end-of-life handling information before you dispose of anything.",
+        "Make sure only authorized recyclers and dismantlers handle your electronic products.",
+        "Call the toll-free line to dispose of products that have reached end of life.",
+        "Drop used electronics, batteries and accessories at your nearest authorized e-waste collection point.",
+        "Disconnect batteries and protect any glass surfaces against breakage before handing equipment over."
+      ],
+      "dont_title": "Never",
+      "donts": [
+        "Dismantle electronic products on your own.",
+        "Throw electronics into bins marked with the \"Do not dispose\" sign.",
+        "Hand e-waste to informal, unorganized collectors like local scrap dealers or rag pickers.",
+        "Mix electronics with municipal garbage that ultimately reaches landfills."
+      ]
+    },
+    "plan": {
+      "media_tag": "Authorized recycling — Deshwal Waste Management",
+      "label": "The programme",
+      "title_main": "How your hardware",
+      "title_em": "comes back around.",
+      "brief": "In India, most e-waste ends up in the informal sector, recycled with no consideration for health or the environment. Abiding by all pertinent e-waste laws, Mindstec has partnered with Deshwal Waste Management Pvt. Ltd. — a recycler authorized by the appropriate government agencies — to provide drop-off centres and environmentally sound processing of end-of-life electronics.",
+      "steps": [
+        {
+          "title": "Raise a pickup request",
+          "desc": "Call the toll-free line 1800 102 9077, Monday to Friday, 10:00 AM – 5:30 PM — or drop your e-waste at any collection centre below."
+        },
+        {
+          "title": "Collection & transport",
+          "desc": "Deshwal Waste Management, our authorized recycler, collects the equipment and transports it to the nearest collection centre."
+        },
+        {
+          "title": "Environmentally sound recycling",
+          "desc": "Equipment is processed at government-authorized facilities in compliance with India's E-Waste Management & Handling Rules."
+        }
+      ],
+      "note_bold": "Free of charge.",
+      "note": "No fee is charged for giving goods for recycling, and no monetary benefit is offered in return — the sole aim of the programme is to keep the environment clean."
     },
     "centres": {
-      "title": "Collection Centres",
-      "desc": "Find a collection centre near you."
+      "label": "Drop points",
+      "title_main": "Collection centres",
+      "title_em": "across India.",
+      "pickup_label": "Toll-free pickup"
     },
     "filter": {
-      "all": "All Centres"
+      "all": "All centres"
     },
     "contact_person": "Contact Person",
-    "tel": "Tel"
+    "tel": "Tel",
+    "cta": {
+      "label": "Do your part",
+      "title_main": "Recycle it right.",
+      "title_em": "It costs nothing.",
+      "btn1": "Call 1800 102 9077",
+      "btn2": "Talk to Mindstec"
+    }
   },
   "contact": {
     "label": "Contact us",
@@ -512,10 +669,22 @@
         "fact": "Retail · Transport · Public space",
         "capsSide": "From a single menu board to a stadium facade — hardware, software and mounting from one price list.",
         "caps": [
-          { "title": "Indoor & outdoor LED", "desc": "Fine-pitch indoor walls to high-brightness outdoor facades, with the receiving cards, spares and service to keep them lit." },
-          { "title": "Professional display panels", "desc": "Commercial-grade panels rated for continuous operation — portrait, landscape, high-brightness and touch." },
-          { "title": "Wayfinding & kiosks", "desc": "Interactive totems and self-service kiosks for malls, airports, hospitals and campuses." },
-          { "title": "CMS & scheduling", "desc": "Content management, day-parting and remote monitoring for networks of one screen or one thousand." }
+          {
+            "title": "Indoor & outdoor LED",
+            "desc": "Fine-pitch indoor walls to high-brightness outdoor facades, with the receiving cards, spares and service to keep them lit."
+          },
+          {
+            "title": "Professional display panels",
+            "desc": "Commercial-grade panels rated for continuous operation — portrait, landscape, high-brightness and touch."
+          },
+          {
+            "title": "Wayfinding & kiosks",
+            "desc": "Interactive totems and self-service kiosks for malls, airports, hospitals and campuses."
+          },
+          {
+            "title": "CMS & scheduling",
+            "desc": "Content management, day-parting and remote monitoring for networks of one screen or one thousand."
+          }
         ]
       },
       "control-rooms": {
@@ -525,10 +694,22 @@
         "fact": "Command · Surveillance · NOC",
         "capsSide": "Mission-critical means no single point of failure — we spec redundancy from source to screen.",
         "caps": [
-          { "title": "Video wall processors", "desc": "Hardware and software processing that puts any source on any display, at any size, without dropped frames." },
-          { "title": "24/7 mission-critical displays", "desc": "Panels and LED rated for round-the-clock duty cycles, with redundant power and burn-in management." },
-          { "title": "KVM & operator desks", "desc": "Low-latency KVM so operators control every system from one seat, plus console furniture and ergonomics." },
-          { "title": "Source & layout management", "desc": "Preset layouts, alarm-triggered views and multi-operator workflows for the moments that matter." }
+          {
+            "title": "Video wall processors",
+            "desc": "Hardware and software processing that puts any source on any display, at any size, without dropped frames."
+          },
+          {
+            "title": "24/7 mission-critical displays",
+            "desc": "Panels and LED rated for round-the-clock duty cycles, with redundant power and burn-in management."
+          },
+          {
+            "title": "KVM & operator desks",
+            "desc": "Low-latency KVM so operators control every system from one seat, plus console furniture and ergonomics."
+          },
+          {
+            "title": "Source & layout management",
+            "desc": "Preset layouts, alarm-triggered views and multi-operator workflows for the moments that matter."
+          }
         ]
       },
       "conferencing": {
@@ -538,10 +719,22 @@
         "fact": "Workplace · Education · Hybrid",
         "capsSide": "Rooms people actually want to book — from huddle spaces to boardrooms and lecture theatres.",
         "caps": [
-          { "title": "Interactive displays", "desc": "Touch collaboration displays for ideation, annotation and wireless presentation in any room size." },
-          { "title": "Cameras & tracking", "desc": "PTZ, ePTZ and auto-framing cameras that keep every participant in the shot, in any layout." },
-          { "title": "Ceiling & beamforming audio", "desc": "Microphones and speakers that disappear into the ceiling and still pick up the quietest voice." },
-          { "title": "Booking & room intelligence", "desc": "Scheduling panels, occupancy analytics and wayfinding that make the whole floor work harder." }
+          {
+            "title": "Interactive displays",
+            "desc": "Touch collaboration displays for ideation, annotation and wireless presentation in any room size."
+          },
+          {
+            "title": "Cameras & tracking",
+            "desc": "PTZ, ePTZ and auto-framing cameras that keep every participant in the shot, in any layout."
+          },
+          {
+            "title": "Ceiling & beamforming audio",
+            "desc": "Microphones and speakers that disappear into the ceiling and still pick up the quietest voice."
+          },
+          {
+            "title": "Booking & room intelligence",
+            "desc": "Scheduling panels, occupancy analytics and wayfinding that make the whole floor work harder."
+          }
         ]
       },
       "hospitality": {
@@ -551,10 +744,22 @@
         "fact": "Hotels · Restaurants · Venues",
         "capsSide": "The best hospitality AV is the kind guests never notice — until the lights dim and the show starts.",
         "caps": [
-          { "title": "Guest-room entertainment", "desc": "IPTV headends, casting and in-room control that feel like home — branded for the property." },
-          { "title": "Ballroom & event spaces", "desc": "Divisible-room audio, projection and LED for conferences, weddings and everything between." },
-          { "title": "Background music & paging", "desc": "Zoned audio that follows the mood from breakfast to last orders, with paging built in." },
-          { "title": "Interactive hospitality tablets", "desc": "Smart tables and in-room tablets for ordering, concierge and guest services." }
+          {
+            "title": "Guest-room entertainment",
+            "desc": "IPTV headends, casting and in-room control that feel like home — branded for the property."
+          },
+          {
+            "title": "Ballroom & event spaces",
+            "desc": "Divisible-room audio, projection and LED for conferences, weddings and everything between."
+          },
+          {
+            "title": "Background music & paging",
+            "desc": "Zoned audio that follows the mood from breakfast to last orders, with paging built in."
+          },
+          {
+            "title": "Interactive hospitality tablets",
+            "desc": "Smart tables and in-room tablets for ordering, concierge and guest services."
+          }
         ]
       },
       "broadcast": {
@@ -564,10 +769,22 @@
         "fact": "Studios · Streaming · Creators",
         "capsSide": "From a one-person streaming desk to a national newsroom — the same signal discipline applies.",
         "caps": [
-          { "title": "Studio & PTZ cameras", "desc": "Broadcast-grade imaging from fixed studio chains to remotely operated PTZ fleets." },
-          { "title": "Vision mixing & switching", "desc": "Production switchers and routing for live programmes, sport and events." },
-          { "title": "Live graphics & virtual sets", "desc": "Real-time graphics, augmented reality and virtual studio tools used by the world’s broadcasters." },
-          { "title": "Streaming & delivery", "desc": "Encoders, IPTV and OTT delivery that get the programme to every screen, reliably." }
+          {
+            "title": "Studio & PTZ cameras",
+            "desc": "Broadcast-grade imaging from fixed studio chains to remotely operated PTZ fleets."
+          },
+          {
+            "title": "Vision mixing & switching",
+            "desc": "Production switchers and routing for live programmes, sport and events."
+          },
+          {
+            "title": "Live graphics & virtual sets",
+            "desc": "Real-time graphics, augmented reality and virtual studio tools used by the world’s broadcasters."
+          },
+          {
+            "title": "Streaming & delivery",
+            "desc": "Encoders, IPTV and OTT delivery that get the programme to every screen, reliably."
+          }
         ]
       },
       "live-events": {
@@ -577,10 +794,22 @@
         "fact": "Concerts · Exhibitions · XR",
         "capsSide": "Rigged, run and struck in hours — event technology has no second chances, so we spec accordingly.",
         "caps": [
-          { "title": "Touring & rental LED", "desc": "Fast-lock touring frames, curved arrays and floor systems built for load-in after load-in." },
-          { "title": "Projection mapping", "desc": "High-output projection and warping tools for architecture, stages and art installations." },
-          { "title": "Spatial & concert audio", "desc": "Point-source and immersive audio systems that scale from galleries to arenas." },
-          { "title": "Show control", "desc": "Timecode, triggering and media servers keeping lights, video and sound on the same beat." }
+          {
+            "title": "Touring & rental LED",
+            "desc": "Fast-lock touring frames, curved arrays and floor systems built for load-in after load-in."
+          },
+          {
+            "title": "Projection mapping",
+            "desc": "High-output projection and warping tools for architecture, stages and art installations."
+          },
+          {
+            "title": "Spatial & concert audio",
+            "desc": "Point-source and immersive audio systems that scale from galleries to arenas."
+          },
+          {
+            "title": "Show control",
+            "desc": "Timecode, triggering and media servers keeping lights, video and sound on the same beat."
+          }
         ]
       }
     },
@@ -699,102 +928,6 @@
         "desc": "Troubleshoot products",
         "query": "I need technical support for products"
       }
-    }
-  },
-  "ewaste": {
-    "hero": {
-      "title": "E-Waste Management",
-      "line1": "End of life.",
-      "line2": "Not end of story.",
-      "brief": "Around 90% of electronic equipment is recyclable. Our authorized programme with Deshwal Waste Management takes back end-of-life electronics anywhere in India — at zero cost to you."
-    },
-    "meta": {
-      "pickup_label": "Toll-free pickup line",
-      "drop_points": "27 drop points",
-      "across_india": "Across India",
-      "recycler_label": "Authorized recycler",
-      "cost_label": "Cost to the consumer"
-    },
-    "ov": {
-      "label": "Overview",
-      "lede_main": "Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of it",
-      "lede_em": "gets a second life.",
-      "p1": "E-waste is the informal name for electronic products nearing the end of their useful life — computers, televisions, displays, copiers, phones, audio equipment and batteries. Many of their components contain hazardous materials that pose a real threat to human health and the environment when disposed of improperly.",
-      "p2": "Most of these products can be reused, refurbished or recycled in an environmentally sound manner. Under India's E-Waste (Management & Handling) Rules, Mindstec runs a compliant take-back programme so the hardware we distribute never ends up where it shouldn't."
-    },
-    "recyclers": {
-      "why_recycle": "Why recycle",
-      "gives_back_main": "What responsible recycling",
-      "gives_back_em": "gives back.",
-      "b1_title": "Conserves natural resources",
-      "b1_desc": "Metals recovered from circuit boards, and the plastics and glass in monitors and televisions, go into new products — reducing the need to mine new raw materials.",
-      "b2_title": "Supports the community",
-      "b2_desc": "Donated electronics become refurbished computers and phones for low-income families, schools and non-profits — access to technology they couldn't otherwise afford.",
-      "b3_title": "Creates local employment",
-      "b3_desc": "With around 90% of electronic equipment recyclable, demand for recycling builds new firms and new jobs — and a second market for the recovered materials.",
-      "b4_title": "Protects health & environment",
-      "b4_desc": "CRTs and monitors contain lead; circuit boards carry cadmium, mercury and chromium. Safe recycling keeps these toxins out of trashcans, landfills and groundwater."
-    },
-    "dd": {
-      "label": "Handle with care",
-      "title_main": "Do's &",
-      "title_em": "don'ts.",
-      "do_title": "Always",
-      "dos": [
-        "Check the product catalogue for end-of-life handling information before you dispose of anything.",
-        "Make sure only authorized recyclers and dismantlers handle your electronic products.",
-        "Call the toll-free line to dispose of products that have reached end of life.",
-        "Drop used electronics, batteries and accessories at your nearest authorized e-waste collection point.",
-        "Disconnect batteries and protect any glass surfaces against breakage before handing equipment over."
-      ],
-      "dont_title": "Never",
-      "donts": [
-        "Dismantle electronic products on your own.",
-        "Throw electronics into bins marked with the \"Do not dispose\" sign.",
-        "Hand e-waste to informal, unorganized collectors like local scrap dealers or rag pickers.",
-        "Mix electronics with municipal garbage that ultimately reaches landfills."
-      ]
-    },
-    "plan": {
-      "media_tag": "Authorized recycling — Deshwal Waste Management",
-      "label": "The programme",
-      "title_main": "How your hardware",
-      "title_em": "comes back around.",
-      "brief": "In India, most e-waste ends up in the informal sector, recycled with no consideration for health or the environment. Abiding by all pertinent e-waste laws, Mindstec has partnered with Deshwal Waste Management Pvt. Ltd. — a recycler authorized by the appropriate government agencies — to provide drop-off centres and environmentally sound processing of end-of-life electronics.",
-      "steps": [
-        {
-          "title": "Raise a pickup request",
-          "desc": "Call the toll-free line 1800 102 9077, Monday to Friday, 10:00 AM – 5:30 PM — or drop your e-waste at any collection centre below."
-        },
-        {
-          "title": "Collection & transport",
-          "desc": "Deshwal Waste Management, our authorized recycler, collects the equipment and transports it to the nearest collection centre."
-        },
-        {
-          "title": "Environmentally sound recycling",
-          "desc": "Equipment is processed at government-authorized facilities in compliance with India's E-Waste Management & Handling Rules."
-        }
-      ],
-      "note_bold": "Free of charge.",
-      "note": "No fee is charged for giving goods for recycling, and no monetary benefit is offered in return — the sole aim of the programme is to keep the environment clean."
-    },
-    "centres": {
-      "label": "Drop points",
-      "title_main": "Collection centres",
-      "title_em": "across India.",
-      "pickup_label": "Toll-free pickup"
-    },
-    "filter": {
-      "all": "All centres"
-    },
-    "contact_person": "Contact Person",
-    "tel": "Tel",
-    "cta": {
-      "label": "Do your part",
-      "title_main": "Recycle it right.",
-      "title_em": "It costs nothing.",
-      "btn1": "Call 1800 102 9077",
-      "btn2": "Talk to Mindstec"
     }
   },
   "contact_info": {

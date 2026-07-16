@@ -7,6 +7,7 @@ import {
   getTeamMembers, addTeamMember, updateTeamMember, deleteTeamMember,
   getRegionContact, updateRegionContact,
   getBrands, addBrand, deleteBrand,
+  getTestimonials, addTestimonial, deleteTestimonial,
 } from '../../api/regionApi';
 
 const slugifyRegion = (name) =>
@@ -220,6 +221,23 @@ export default function AdminDashboard() {
   const [newBrandLogo, setNewBrandLogo] = useState(null);
   const [submittingBrand, setSubmittingBrand] = useState(false);
 
+  // Testimonial states
+  const [testimonials, setTestimonials] = useState([]);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(false);
+  const [showAddTestimonialForm, setShowAddTestimonialForm] = useState(false);
+  const [newTestiName, setNewTestiName] = useState('');
+  const [newTestiDesignation, setNewTestiDesignation] = useState('');
+  const [newTestiCompany, setNewTestiCompany] = useState('');
+  const [newTestiMessage, setNewTestiMessage] = useState('');
+  const [newTestiPhoto, setNewTestiPhoto] = useState(null);
+  const [submittingTestimonial, setSubmittingTestimonial] = useState(false);
+  const [heroFactsForm, setHeroFactsForm] = useState([
+    { bold: '', sub: '' },
+    { bold: '', sub: '' },
+    { bold: '', sub: '' },
+  ]);
+  const [submittingHeroFacts, setSubmittingHeroFacts] = useState(false);
+
   const fetchGalleryItems = async () => {
     setLoadingGallery(true);
     setGalleryError('');
@@ -303,12 +321,15 @@ export default function AdminDashboard() {
     setSelectedRegion(region);
     setLoadingTeam(true);
     setLoadingContact(true);
+    setLoadingBrands(true);
     try {
-      const [teamRes, contactRes] = await Promise.all([
+      const [teamRes, contactRes, brandsRes] = await Promise.all([
         getTeamMembers(region.id),
         getRegionContact(region.id),
+        getBrands(region.id),
       ]);
       setTeamMembers(teamRes.data);
+      setBrands(brandsRes.data || []);
       if (contactRes.status === 204 || !contactRes.data) {
         setContactForm({ phone: '', phone_display: '', email: '', address: '', office_name: '', map_embed_url: '', map_link: '' });
       } else {
@@ -328,6 +349,7 @@ export default function AdminDashboard() {
     } finally {
       setLoadingTeam(false);
       setLoadingContact(false);
+      setLoadingBrands(false);
     }
   };
 
@@ -473,6 +495,37 @@ export default function AdminDashboard() {
     } finally {
       setSubmittingContact(false);
     }
+  };
+
+  const handleAddTestimonial = async (e) => {
+    e.preventDefault();
+    if (!newTestiName.trim() || !newTestiDesignation.trim() || !newTestiCompany.trim() || !newTestiMessage.trim()) {
+      alert('Name, designation, company and message are required.'); return;
+    }
+    setSubmittingTestimonial(true);
+    const fd = new FormData();
+    fd.append('name', newTestiName.trim());
+    fd.append('designation', newTestiDesignation.trim());
+    fd.append('company', newTestiCompany.trim());
+    fd.append('message', newTestiMessage.trim());
+    fd.append('display_order', testimonials.length);
+    if (newTestiPhoto) fd.append('photo', newTestiPhoto);
+    try {
+      const res = await addTestimonial(selectedRegion.id, fd);
+      setTestimonials(prev => [...prev, res.data]);
+      setNewTestiName(''); setNewTestiDesignation(''); setNewTestiCompany('');
+      setNewTestiMessage(''); setNewTestiPhoto(null); setShowAddTestimonialForm(false);
+    } catch (err) {
+      alert(`Failed to add testimonial: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally { setSubmittingTestimonial(false); }
+  };
+
+  const handleDeleteTestimonial = async (id) => {
+    if (!window.confirm('Delete this testimonial?')) return;
+    try {
+      await deleteTestimonial(id);
+      setTestimonials(prev => prev.filter(t => t.id !== id));
+    } catch (err) { alert('Failed to delete testimonial.'); }
   };
 
   const fetchCollectionCentres = async () => {
@@ -1676,6 +1729,59 @@ export default function AdminDashboard() {
                     </div>
                   )}
                 </div>
+
+                {/* Brands */}
+                <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <div>
+                      <h3 style={{ margin: '0 0 4px', color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>Brands</h3>
+                      <p style={{ margin: 0, fontSize: '12px', color: 'var(--grey)' }}>Brands shown in the "Brands we distribute" section on every solution page for this region.</p>
+                    </div>
+                    <button onClick={() => setShowAddBrandForm(!showAddBrandForm)} className="admin-btn" style={{ width: 'auto', margin: 0, padding: '6px 16px', fontSize: '12px' }}>
+                      {showAddBrandForm ? 'Cancel' : 'Add Brand'}
+                    </button>
+                  </div>
+
+                  {showAddBrandForm && (
+                    <form onSubmit={handleAddBrand} style={{ display: 'flex', flexDirection: 'column', gap: '14px', marginBottom: '20px', padding: '16px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)' }}>
+                      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', gap: '14px' }}>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Brand Name
+                          <input type="text" value={newBrandName} onChange={e => setNewBrandName(e.target.value)} placeholder="e.g. Christie" required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Website URL (optional)
+                          <input type="url" value={newBrandWebsite} onChange={e => setNewBrandWebsite(e.target.value)} placeholder="https://www.brand.com" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '9px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                        </label>
+                        <label style={{ display: 'flex', flexDirection: 'column', gap: '5px', fontSize: '12px', color: 'var(--grey)' }}>
+                          Logo Image
+                          <input type="file" accept="image/*" onChange={e => setNewBrandLogo(e.target.files[0])} style={{ color: 'var(--grey)', fontSize: '12px', padding: '4px 0' }} />
+                        </label>
+                      </div>
+                      <button type="submit" disabled={submittingBrand} className="admin-btn" style={{ width: 'fit-content', margin: 0, padding: '8px 20px', fontSize: '12px' }}>
+                        {submittingBrand ? 'Adding...' : 'Add Brand'}
+                      </button>
+                    </form>
+                  )}
+
+                  {loadingBrands ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>Loading brands...</p>
+                  ) : brands.length === 0 ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>No brands yet. Click "Add Brand" to add one.</p>
+                  ) : (
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(160px, 1fr))', gap: '12px' }}>
+                      {brands.map(brand => (
+                        <div key={brand.id} style={{ padding: '12px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)', display: 'flex', flexDirection: 'column', gap: '8px', alignItems: 'center', textAlign: 'center' }}>
+                          {brand.logo && <img src={brand.logo} alt={brand.name} style={{ width: '80px', height: '48px', objectFit: 'contain' }} />}
+                          <span style={{ fontSize: '12px', color: 'var(--white)', fontWeight: '600' }}>{brand.name}</span>
+                          {brand.website_url && <a href={brand.website_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '10px', color: 'var(--grey)', wordBreak: 'break-all' }}>website</a>}
+                          <button onClick={() => handleDeleteBrand(brand.id)} className="admin-btn" style={{ width: '100%', margin: 0, padding: '4px', fontSize: '11px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2' }}>Remove</button>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+
               </>
             )}
           </div>

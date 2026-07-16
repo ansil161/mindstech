@@ -52,6 +52,7 @@ const Home = () => {
   const [fieldworkLoading, setFieldworkLoading] = useState(true);
   const [rawSolutions, setRawSolutions] = useState([]);
   const [regionContact, setRegionContact] = useState(null);
+  const [testimonials, setTestimonials] = useState([]);
 
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
@@ -75,9 +76,15 @@ const Home = () => {
     const fetchRegionContact = async () => {
       try {
         const res = await getPublicRegionData(regionSlug);
-        if (!cancelled) setRegionContact(res.data.contact_info || null);
+        if (!cancelled) {
+          setRegionContact(res.data.contact_info || null);
+          setTestimonials(res.data.testimonials || []);
+        }
       } catch {
-        if (!cancelled) setRegionContact(null);
+        if (!cancelled) {
+          setRegionContact(null);
+          setTestimonials([]);
+        }
       }
     };
     fetchRegionContact();
@@ -902,6 +909,63 @@ const Home = () => {
           </Button>
         </div> */}
       </section>
+
+      <div className="rule"></div>
+
+      {/* TESTIMONIALS */}
+      {testimonials.length > 0 && (
+        <section id="testimonials" aria-label="Client testimonials" className="py-20 px-[var(--pad)]">
+          {/* Section head */}
+          <div className="flex justify-between items-end gap-6 mb-14">
+            <div>
+              <span className="label label--red">Client voices</span>
+              <h2 className="display text-[clamp(26px,3.2vw,44px)] mt-4">
+                What our <em>clients say</em>
+              </h2>
+            </div>
+          </div>
+
+          {/* Cards grid */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {testimonials.map((item, i) => (
+              <article
+                key={item.id || i}
+                className="reveal group relative flex flex-col gap-5 rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-red-600/30 hover:shadow-[0_20px_60px_rgba(0,0,0,.4),0_0_0_1px_rgba(204,0,1,.1)]"
+              >
+                {/* Red glow on hover */}
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-red-600/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+
+                {/* Quote icon */}
+                <svg className="w-7 h-auto text-red-600 opacity-30 relative z-10" viewBox="0 0 40 30" fill="currentColor">
+                  <path d="M0 30V18C0 8.059 6.716 2.118 20.147 0l1.912 3.294C15.324 4.647 11.5 8.118 10.735 13.5H18V30H0zm22 0V18C22 8.059 28.716 2.118 42.147 0l1.912 3.294C37.324 4.647 33.5 8.118 32.735 13.5H40V30H22z"/>
+                </svg>
+
+                {/* Message */}
+                <blockquote className="relative z-10 flex-1 text-[15px] leading-[1.75] text-[var(--white)] not-italic">
+                  {item.message}
+                </blockquote>
+
+                {/* Author */}
+                <footer className="relative z-10 flex items-center gap-4 pt-5 border-t border-white/[0.06]">
+                  <div className="w-11 h-11 rounded-full overflow-hidden border border-white/10 bg-[var(--ink-2)] flex-shrink-0 flex items-center justify-center">
+                    {item.photo
+                      ? <img src={item.photo} alt={`Portrait of ${item.name}`} loading="lazy" className="w-full h-full object-cover" />
+                      : <span className="text-sm font-bold text-red-500 font-[var(--display)] tracking-wide">
+                          {item.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
+                        </span>
+                    }
+                  </div>
+                  <div className="flex flex-col gap-0.5 min-w-0">
+                    <strong className="text-[13.5px] font-semibold text-[var(--white)] tracking-tight truncate">{item.name}</strong>
+                    <span className="text-[11.5px] text-[var(--grey)] truncate">{item.designation}</span>
+                    <span className="text-[11.5px] text-red-500 font-medium truncate">{item.company}</span>
+                  </div>
+                </footer>
+              </article>
+            ))}
+          </div>
+        </section>
+      )}
 
       <div className="rule"></div>
 

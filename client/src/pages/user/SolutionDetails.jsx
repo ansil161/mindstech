@@ -1,9 +1,11 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
+import { useRegion } from '../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../api/regionApi.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -130,40 +132,27 @@ const SOLUTIONS_RAW = {
   }
 };
 
-const BRAND_LOGOS = {
-  'Avocor': '2019/03/1.png',
-  'Christie': '2025/04/christie_250x250.png',
-  'Datapath': '2025/04/datapath-1.png',
-  'Polywall': '2025/04/polywall_250x250.png',
-  'Magnum': '2025/04/magnum-2-1.png',
-  'Sonance': '2026/03/Screenshot-2026-03-24-124551.png',
-  'RDL': '2025/04/RDL-1.png',
-  'Amino': '2026/04/Untitled-design-27.png',
-  'SalrayWorks': '2026/04/a1966c_b6188e7c73814b5fa62a8a2fdb076fe5mv2.jpeg',
-  'Telycam': '2025/04/telycam_250x250.png',
-  'Humelab': '2026/04/Untitled-design-19.png',
-  'Vizrt': '2025/06/7-1.png',
-  'Lemco': '2026/04/Untitled-design-26-1.png',
-  'T1V': '2025/04/T1V-Orange-Standard-Logo-1.png',
-  'GoGet': '2025/04/GoGet_Filled_RGB_Black-1.png',
-  'iPort': '2025/04/iPort_Logo_250x250.png',
-  'RTI': '2025/04/logo-300x300-1.png',
-  'SCT': '2025/04/SCT_250W.png',
-  'Blustream': '2025/04/Blustream_Logo-3-1.png',
-  'NETGEAR AV': '2025/04/netgearav_250x250.png',
-  'Kordz': '2025/04/kordz_250x250.png',
-  'B-Tech': '2025/04/btech_250x250.png',
-  'MTC': '2025/04/MTC_new-1.png',
-  'Sapling': '2025/04/sapling-1.png',
-  'Wavex': '2025/04/Wavex-Transparent-Logo-Source_1024-1.png'
-};
-
-const BRAND_BASE = '/assets/uploads/';
 
 const SolutionDetails = () => {
   const { slug } = useParams();
   const { t } = useTranslation();
+  const { regionSlug } = useRegion();
   const containerRef = useRef(null);
+
+  const [regionBrands, setRegionBrands] = useState([]);
+
+  // Fetch region brands whenever region changes
+  useEffect(() => {
+    let cancelled = false;
+    getPublicRegionData(regionSlug)
+      .then(res => {
+        if (!cancelled) setRegionBrands(res.data.brands || []);
+      })
+      .catch(() => {
+        if (!cancelled) setRegionBrands([]);
+      });
+    return () => { cancelled = true; };
+  }, [regionSlug]);
   
   const slugs = ['digital-signage', 'control-rooms', 'conferencing', 'hospitality', 'broadcast', 'live-events'];
   const solIndex = slugs.indexOf(slug) !== -1 ? slugs.indexOf(slug) : 0;
@@ -366,17 +355,22 @@ const SolutionDetails = () => {
       <section className="dbrands" aria-label="Brands for this vertical">
         <h2 className="display">{t('solutions.brands_we_distribute', 'Brands we distribute')} <em>{t('solutions.for_this_vertical', 'for this vertical')}</em></h2>
         <div className="dbrands-row" id="dBrandsRow">
-          {data.brands.map((brandName, i) => {
-            const logoSubPath = BRAND_LOGOS[brandName];
-            return (
-              <Link to="/partners" key={i}>
-                <div className="bl-logo">
-                  <img src={`${BRAND_BASE}${logoSubPath}`} alt={`${brandName} logo`} loading="lazy" />
-                </div>
-                <div className="bl-name">{brandName}</div>
-              </Link>
-            );
-          })}
+          {regionBrands.length > 0
+            ? regionBrands.map((brand, i) => (
+                <a
+                  key={i}
+                  href={brand.website_url || '/partners'}
+                  target={brand.website_url ? '_blank' : '_self'}
+                  rel="noopener noreferrer"
+                >
+                  <div className="bl-logo">
+                    <img src={brand.logo} alt={`${brand.name} logo`} loading="lazy" />
+                  </div>
+                  <div className="bl-name">{brand.name}</div>
+                </a>
+              ))
+            : <p style={{ color: 'var(--grey)', fontSize: '14px' }}>No brands listed for this region yet.</p>
+          }
         </div>
       </section>
 

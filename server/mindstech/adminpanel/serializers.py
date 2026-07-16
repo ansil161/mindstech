@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem, Region, TeamMember, RegionContact, RegionBrand
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem, Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
@@ -216,15 +216,30 @@ class RegionContactSerializer(serializers.ModelSerializer):
         return strip_tags(value).strip()
 
 
+class TestimonialSerializer(serializers.ModelSerializer):
+    photo = serializers.ImageField(use_url=True, required=False, allow_null=True)
+
+    class Meta:
+        model = ClientTestimonial
+        fields = ['id', 'region', 'name', 'designation', 'company', 'message', 'photo', 'display_order', 'is_active', 'created_at']
+        read_only_fields = ['id', 'region', 'created_at']
+
+    def validate_name(self, value):        return strip_tags(value).strip()
+    def validate_designation(self, value): return strip_tags(value).strip()
+    def validate_company(self, value):     return strip_tags(value).strip()
+    def validate_message(self, value):     return strip_tags(value).strip()
+
+
 class RegionDetailSerializer(serializers.ModelSerializer):
-    """Nested serializer for the public API — returns region + team + contact + brands in one response."""
-    team_members = serializers.SerializerMethodField()
-    contact_info = serializers.SerializerMethodField()
-    brands = serializers.SerializerMethodField()
+    """Nested serializer for the public API — returns region + team + contact + brands + testimonials."""
+    team_members  = serializers.SerializerMethodField()
+    contact_info  = serializers.SerializerMethodField()
+    brands        = serializers.SerializerMethodField()
+    testimonials  = serializers.SerializerMethodField()
 
     class Meta:
         model = Region
-        fields = ['id', 'name', 'slug', 'team_members', 'contact_info', 'brands']
+        fields = ['id', 'name', 'slug', 'team_members', 'contact_info', 'brands', 'testimonials']
 
     def get_team_members(self, obj):
         members = obj.team_members.filter(is_active=True).order_by('display_order', 'created_at')
@@ -239,6 +254,10 @@ class RegionDetailSerializer(serializers.ModelSerializer):
     def get_brands(self, obj):
         brands = obj.brands.filter(is_active=True).order_by('display_order', 'created_at')
         return RegionBrandSerializer(brands, many=True, context=self.context).data
+
+    def get_testimonials(self, obj):
+        items = obj.testimonials.filter(is_active=True).order_by('display_order', 'created_at')
+        return TestimonialSerializer(items, many=True, context=self.context).data
 
 
 class RegionBrandSerializer(serializers.ModelSerializer):
