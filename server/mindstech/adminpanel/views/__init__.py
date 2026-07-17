@@ -13,9 +13,10 @@ from .gallery import GalleryListCreateView, GalleryDetailView
 from .region import (
     RegionListCreateView, RegionDetailView,
     TeamMemberListCreateView, TeamMemberDetailView,
-    RegionContactView, PublicRegionDataView,
+    RegionContactView, PublicRegionDataView, PublicRegionSolutionBrandsView,
     RegionBrandListCreateView, RegionBrandDetailView,
     TestimonialListCreateView, TestimonialDetailView,
+    RegionContactListCreateView, RegionContactDetailView,
 )
 
 __all__ = [
@@ -45,4 +46,7 @@ __all__ = [
     "TeamMemberDetailView",
     "RegionContactView",
     "PublicRegionDataView",
+    "PublicRegionSolutionBrandsView",
+    "RegionContactListCreateView",
+    "RegionContactDetailView",
 ]

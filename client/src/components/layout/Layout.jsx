@@ -29,30 +29,55 @@ const Layout = ({ children }) => {
   useEffect(() => {
     const pre = document.getElementById('preloader');
     if (pre) {
-      const barTween = gsap.to('.pre-bar i', { scaleX: 0.7, duration: 1.4, ease: 'power1.out' });
+      const startTime = performance.now();
+      
+      // Animate progress bar to 80% initially to show progress is happening
+      const barTween = gsap.to('.pre-bar i', { scaleX: 0.8, duration: 1.2, ease: 'power1.out' });
+
+      const animateExit = () => {
+        barTween.kill();
+        const tl = gsap.timeline();
+        // Snappily fill the bar to 100%
+        tl.to('.pre-bar i', { scaleX: 1, duration: 0.2, ease: 'power2.inOut' });
+        // Smoothly fade out the loader overlay while launching home page entrance animations
+        tl.to(pre, { 
+          opacity: 0, 
+          duration: 0.4, 
+          ease: 'power2.out',
+          onStart: () => {
+            window.__preloaderExited = true;
+            window.dispatchEvent(new Event('preloaderExited'));
+          },
+          onComplete: () => {
+            pre.remove();
+          }
+        }, '+=0.05');
+      };
 
       const handleExit = () => {
-        barTween.kill();
-        gsap.timeline()
-          .to('.pre-bar i', { scaleX: 1, duration: 0.4, ease: 'power2.inOut' })
-          .to(pre, { yPercent: -100, duration: 0.7, ease: 'power4.inOut' }, '+=0.15')
-          .add(() => {
-            pre.remove();
-            window.dispatchEvent(new Event('preloaderExited'));
-          });
+        const elapsedTime = performance.now() - startTime;
+        const minDuration = 800; // 800ms minimum display threshold to avoid quick flashing
+
+        if (elapsedTime < minDuration) {
+          const remainingTime = minDuration - elapsedTime;
+          setTimeout(animateExit, remainingTime);
+        } else {
+          animateExit();
+        }
       };
 
       if (document.readyState === 'complete') {
         handleExit();
       } else {
         window.addEventListener('load', handleExit);
-        const timeoutId = setTimeout(handleExit, 3500);
+        const timeoutId = setTimeout(handleExit, 3000); // 3-second fallback
         return () => {
           window.removeEventListener('load', handleExit);
           clearTimeout(timeoutId);
         };
       }
     } else {
+      window.__preloaderExited = true;
       window.dispatchEvent(new Event('preloaderExited'));
     }
   }, []);

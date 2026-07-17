@@ -30,3 +30,6 @@ client/dist-ssr
 
 **/.env
 .env
+*.env
+__pycache__/
+*.pyc

@@ -221,7 +221,7 @@ class RegionContactSerializer(serializers.ModelSerializer):
     class Meta:
         model = RegionContact
         fields = ['id', 'region', 'phone', 'phone_display', 'email', 'address', 'office_name', 'map_embed_url', 'map_link']
-        read_only_fields = ['id']
+        read_only_fields = ['id', 'region']
 
     def validate_address(self, value):
         return strip_tags(value).strip()
@@ -264,10 +264,8 @@ class RegionDetailSerializer(serializers.ModelSerializer):
         return TeamMemberSerializer(members, many=True, context=self.context).data
 
     def get_contact_info(self, obj):
-        try:
-            return RegionContactSerializer(obj.contact_info, context=self.context).data
-        except RegionContact.DoesNotExist:
-            return None
+        contacts = obj.contacts.all()
+        return RegionContactSerializer(contacts, many=True, context=self.context).data
 
     def get_brands(self, obj):
         brands = obj.brands.filter(is_active=True).order_by('display_order', 'created_at')
@@ -280,11 +278,16 @@ class RegionDetailSerializer(serializers.ModelSerializer):
 
 class RegionBrandSerializer(serializers.ModelSerializer):
     logo = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    solutions = serializers.PrimaryKeyRelatedField(
+        many=True,
+        queryset=Solution.objects.all(),
+        required=False
+    )
 
     class Meta:
         model = RegionBrand
-        fields = ['id', 'region', 'name', 'logo', 'website_url', 'display_order', 'is_active', 'created_at']
-        read_only_fields = ['id', 'created_at']
+        fields = ['id', 'region', 'name', 'logo', 'website_url', 'display_order', 'is_active', 'created_at', 'solutions']
+        read_only_fields = ['id', 'region', 'created_at']
 
     def validate_name(self, value):
         return strip_tags(value).strip()

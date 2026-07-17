@@ -50,7 +50,7 @@ const About = () => {
         const res = await getPublicRegionData(regionSlug);
         if (!cancelled) {
           setTeam(res.data.team_members || []);
-          setContactInfo(res.data.contact_info || null);
+          setContactInfo(Array.isArray(res.data.contact_info) ? res.data.contact_info[0] : (res.data.contact_info || null));
         }
       } catch (err) {
         console.error('Failed to load region data:', err);
@@ -67,9 +67,53 @@ const About = () => {
   }, [regionSlug]);
 
   const contact = translatedContact || contactInfo;
-  const telHref = contact?.phone || FALLBACK_CONTACT.phone;
+  const telHref = (contact?.phone_display || contact?.phone || FALLBACK_CONTACT.phone || '').replace(/[^+\d]/g, '');
   const telLabel = contact?.phone_display || contact?.phone || FALLBACK_CONTACT.phone_display;
   const email = contact?.email || FALLBACK_CONTACT.email;
+
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) return;
+
+      // Parallax on the Hero visual background image
+      gsap.to('#aheroImg', {
+        yPercent: 12,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.about-hero-frame',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+
+      // Layered scroll parallax for the two story cards
+      gsap.to('.about-card-back', {
+        yPercent: -8,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.story',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+
+      gsap.to('.about-card-front', {
+        yPercent: 8,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.story',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
     <main id="top" ref={containerRef}>
@@ -102,9 +146,20 @@ const About = () => {
       </div>
 
       {/* HERO VISUAL */}
-      <div className="ahero-visual reveal-img">
-        <img id="aheroImg" src="/assets/uploads/2025/03/about-img-1.jpg" alt="A curved wall of bright video displays inside a dark showroom" fetchpriority="high" />
-        <span className="caption">{t('about.hero.caption')}</span>
+      <div className="about-hero-frame relative mx-[var(--pad)] mt-12 overflow-hidden rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-3 shadow-[0_24px_50px_rgba(0,0,0,0.55)] reveal-img">
+        <div className="relative aspect-[16/7] min-h-[260px] overflow-hidden rounded-xl">
+          <img 
+            id="aheroImg" 
+            src="/assets/img/technology_hub.png" 
+            alt="A curved wall of bright video displays inside a dark showroom" 
+            fetchPriority="high" 
+            className="absolute inset-0 w-full h-[120%] object-cover brightness-[0.75] saturate-[0.95]"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+          <span className="absolute left-6 bottom-5 z-10 text-[10.5px] font-semibold tracking-[0.14em] uppercase text-white/90 bg-black/60 backdrop-blur-md py-1.5 px-4 rounded-full border border-white/10">
+            {t('about.hero.caption')}
+          </span>
+        </div>
       </div>
 
       {/* STORY */}
@@ -119,14 +174,34 @@ const About = () => {
             <p>{t('about.story.more_p2')}</p>
           </div>
         </div>
-        <div className="story-visual">
-          <figure className="sv1 reveal-img">
-            <img src="/assets/uploads/2025/03/about-img-2.jpg" alt="Extreme close-up of an LED display panel glowing magenta and red" loading="lazy" />
-            <figcaption>{t('about.story.cap1')}</figcaption>
+        <div className="about-story-visuals sticky top-24 flex flex-col gap-10">
+          <figure className="about-card-back group relative w-[90%] overflow-hidden rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-3 shadow-[0_24px_48px_rgba(0,0,0,0.45)] reveal-img transition-all duration-500 hover:border-red-500/20 hover:shadow-[0_32px_64px_rgba(0,0,0,0.6)]">
+            <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
+              <img 
+                src="/assets/uploads/2025/03/about-img-2.jpg" 
+                alt="Extreme close-up of an LED display panel glowing magenta and red" 
+                loading="lazy" 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+              <figcaption className="absolute left-5 bottom-4 z-10 text-[10px] font-semibold tracking-[0.12em] uppercase text-white/95 bg-black/70 backdrop-blur-md py-1.5 px-3.5 rounded-md border border-white/10">
+                {t('about.story.cap1')}
+              </figcaption>
+            </div>
           </figure>
-          <figure className="sv2 reveal-img">
-            <img src="/assets/uploads/2025/03/cta-bg.jpg" alt="Macro view of an LED video wall surface in blue and pink light" loading="lazy" />
-            <figcaption>{t('about.story.cap2')}</figcaption>
+          <figure className="about-card-front group relative w-[80%] self-end -mt-24 z-10 overflow-hidden rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-3 shadow-[0_30px_60px_rgba(0,0,0,0.65)] reveal-img transition-all duration-500 hover:border-red-500/25 hover:shadow-[0_40px_80px_rgba(0,0,0,0.8)]">
+            <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
+              <img 
+                src="/assets/uploads/2025/03/cta-bg.jpg" 
+                alt="Macro view of an LED video wall surface in blue and pink light" 
+                loading="lazy" 
+                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
+              <figcaption className="absolute left-5 bottom-4 z-10 text-[10px] font-semibold tracking-[0.12em] uppercase text-white/95 bg-black/70 backdrop-blur-md py-1.5 px-3.5 rounded-md border border-white/10">
+                {t('about.story.cap2')}
+              </figcaption>
+            </div>
           </figure>
         </div>
       </section>

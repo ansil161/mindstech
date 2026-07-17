@@ -6,6 +6,7 @@ import {
   getRegions, createRegion, deleteRegion, updateRegion,
   getTeamMembers, addTeamMember, updateTeamMember, deleteTeamMember,
   getRegionContact, updateRegionContact,
+  getRegionContacts, createRegionContact, updateRegionContactDetail, deleteRegionContactDetail,
   getBrands, addBrand, deleteBrand,
   getTestimonials, addTestimonial, deleteTestimonial,
 } from '../../api/regionApi';
@@ -198,12 +199,25 @@ export default function AdminDashboard() {
   const [newMemberRole, setNewMemberRole] = useState('');
   const [newMemberPhoto, setNewMemberPhoto] = useState(null);
   const [submittingTeam, setSubmittingTeam] = useState(false);
-  const [contactForm, setContactForm] = useState({
-    phone: '', phone_display: '', email: '', address: '',
-    office_name: '', map_embed_url: '', map_link: '',
-  });
-  const [loadingContact, setLoadingContact] = useState(false);
+  const [contacts, setContacts] = useState([]);
+  const [loadingContacts, setLoadingContacts] = useState(false);
   const [submittingContact, setSubmittingContact] = useState(false);
+  const [showAddContactForm, setShowAddContactForm] = useState(false);
+  const [newOfficeName, setNewOfficeName] = useState('');
+  const [newContactPhone, setNewContactPhone] = useState('');
+  const [newContactEmail, setNewContactEmail] = useState('');
+  const [newContactAddress, setNewContactAddress] = useState('');
+  const [newContactMapEmbed, setNewContactMapEmbed] = useState('');
+  const [newContactMapLink, setNewContactMapLink] = useState('');
+
+  // Contact edit states
+  const [editingContactId, setEditingContactId] = useState(null);
+  const [editOfficeName, setEditOfficeName] = useState('');
+  const [editContactPhone, setEditContactPhone] = useState('');
+  const [editContactEmail, setEditContactEmail] = useState('');
+  const [editContactAddress, setEditContactAddress] = useState('');
+  const [editContactMapEmbed, setEditContactMapEmbed] = useState('');
+  const [editContactMapLink, setEditContactMapLink] = useState('');
 
   // Team member edit states
   const [editingMemberId, setEditingMemberId] = useState(null);
@@ -211,6 +225,24 @@ export default function AdminDashboard() {
   const [editMemberRole, setEditMemberRole] = useState('');
   const [editMemberPhoto, setEditMemberPhoto] = useState(null);
   const [submittingMemberEdit, setSubmittingMemberEdit] = useState(false);
+
+  // Toast notifications state
+  const [toast, setToast] = useState(null);
+
+  const triggerToast = (type, title, msg) => {
+    setToast({ type, title, message: msg });
+  };
+
+  const alert = (msg) => {
+    const isSuccess = msg.toLowerCase().includes('success') || msg.toLowerCase().includes('saved') || msg.toLowerCase().includes('uploaded') || msg.toLowerCase().includes('updated') || msg.toLowerCase().includes('added') || msg.toLowerCase().includes('deleted');
+    triggerToast(isSuccess ? 'success' : 'error', isSuccess ? 'Success' : 'Notification', msg);
+  };
+
+  useEffect(() => {
+    if (!toast) return;
+    const t = setTimeout(() => setToast(null), 5000);
+    return () => clearTimeout(t);
+  }, [toast]);
 
   // Brand states
   const [brands, setBrands] = useState([]);
@@ -220,6 +252,7 @@ export default function AdminDashboard() {
   const [newBrandWebsite, setNewBrandWebsite] = useState('');
   const [newBrandLogo, setNewBrandLogo] = useState(null);
   const [submittingBrand, setSubmittingBrand] = useState(false);
+  const [selectedSolutions, setSelectedSolutions] = useState([]);
 
   // Testimonial states
   const [testimonials, setTestimonials] = useState([]);
@@ -320,37 +353,25 @@ export default function AdminDashboard() {
   const loadRegionDetail = async (region) => {
     setSelectedRegion(region);
     setLoadingTeam(true);
-    setLoadingContact(true);
+    setLoadingContacts(true);
     setLoadingBrands(true);
     try {
-      const [teamRes, contactRes, brandsRes, testiRes] = await Promise.all([
+      const [teamRes, contactsRes, brandsRes, testiRes] = await Promise.all([
         getTeamMembers(region.id),
-        getRegionContact(region.id),
+        getRegionContacts(region.id),
         getBrands(region.id),
         getTestimonials(region.id),
       ]);
       setTeamMembers(teamRes.data);
       setBrands(brandsRes.data || []);
       setTestimonials(testiRes.data || []);
-      if (contactRes.status === 204 || !contactRes.data) {
-        setContactForm({ phone: '', phone_display: '', email: '', address: '', office_name: '', map_embed_url: '', map_link: '' });
-      } else {
-        setContactForm({
-          phone: contactRes.data.phone || '',
-          phone_display: contactRes.data.phone_display || '',
-          email: contactRes.data.email || '',
-          address: contactRes.data.address || '',
-          office_name: contactRes.data.office_name || '',
-          map_embed_url: contactRes.data.map_embed_url || '',
-          map_link: contactRes.data.map_link || '',
-        });
-      }
+      setContacts(contactsRes.data || []);
     } catch (err) {
       console.error(err);
       alert('Failed to load region details.');
     } finally {
       setLoadingTeam(false);
-      setLoadingContact(false);
+      setLoadingContacts(false);
       setLoadingBrands(false);
     }
   };
@@ -369,6 +390,7 @@ export default function AdminDashboard() {
       setNewRegionName('');
       setNewRegionSlug('');
       setShowAddRegionForm(false);
+      alert('Region created successfully.');
     } catch (err) {
       console.error(err);
       alert(`Failed to create region: ${JSON.stringify(err.response?.data || err.message)}`);
@@ -383,6 +405,7 @@ export default function AdminDashboard() {
       await deleteRegion(id);
       setRegions(prev => prev.filter(r => r.id !== id));
       if (selectedRegion?.id === id) setSelectedRegion(null);
+      alert('Region deleted successfully.');
     } catch (err) {
       console.error(err);
       alert('Failed to delete region.');
@@ -409,6 +432,7 @@ export default function AdminDashboard() {
       setNewMemberPhoto(null);
       setShowAddTeamForm(false);
       setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, team_count: (r.team_count || 0) + 1 } : r));
+      alert('Team member added successfully.');
     } catch (err) {
       console.error(err);
       alert(`Failed to add team member: ${JSON.stringify(err.response?.data || err.message)}`);
@@ -423,6 +447,7 @@ export default function AdminDashboard() {
       await deleteTeamMember(id);
       setTeamMembers(prev => prev.filter(m => m.id !== id));
       setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, team_count: Math.max(0, (r.team_count || 1) - 1) } : r));
+      alert('Team member deleted successfully.');
     } catch (err) {
       console.error(err);
       alert('Failed to delete team member.');
@@ -441,6 +466,7 @@ export default function AdminDashboard() {
       const res = await updateTeamMember(memberId, fd);
       setTeamMembers(prev => prev.map(m => m.id === memberId ? res.data : m));
       setEditingMemberId(null);
+      alert('Team member updated successfully.');
     } catch (err) {
       alert(`Failed to update: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally { setSubmittingMemberEdit(false); }
@@ -463,10 +489,17 @@ export default function AdminDashboard() {
     fd.append('website_url', newBrandWebsite.trim());
     fd.append('display_order', brands.length);
     if (newBrandLogo) fd.append('logo', newBrandLogo);
+    selectedSolutions.forEach(id => {
+      fd.append('solutions', id);
+    });
     try {
       const res = await addBrand(selectedRegion.id, fd);
       setBrands(prev => [...prev, res.data]);
-      setNewBrandName(''); setNewBrandWebsite(''); setNewBrandLogo(null); setShowAddBrandForm(false);
+      setNewBrandName(''); 
+      setNewBrandWebsite(''); 
+      setNewBrandLogo(null); 
+      setSelectedSolutions([]);
+      setShowAddBrandForm(false);
     } catch (err) {
       alert(`Failed to add brand: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally { setSubmittingBrand(false); }
@@ -477,23 +510,87 @@ export default function AdminDashboard() {
     try {
       await deleteBrand(id);
       setBrands(prev => prev.filter(b => b.id !== id));
+      alert('Brand deleted successfully.');
     } catch (err) { alert('Failed to delete brand.'); }
   };
 
-  const handleSaveContact = async (e) => {
+  const handleAddContact = async (e) => {
     e.preventDefault();
-    if (!contactForm.phone.trim() || !contactForm.email.trim() || !contactForm.address.trim()) {
-      alert('Phone, email, and address are required.');
+    if (!newOfficeName.trim() || !newContactAddress.trim() || !newContactEmail.trim() || !newContactPhone.trim()) {
+      alert('Please fill out office name, address, email, and phone.');
       return;
     }
     setSubmittingContact(true);
+    const data = {
+      office_name: newOfficeName.trim(),
+      phone: newContactPhone.trim(),
+      phone_display: newContactPhone.trim(),
+      email: newContactEmail.trim(),
+      address: newContactAddress.trim(),
+      map_embed_url: newContactMapEmbed.trim(),
+      map_link: newContactMapLink.trim(),
+    };
     try {
-      await updateRegionContact(selectedRegion.id, contactForm);
+      const res = await createRegionContact(selectedRegion.id, data);
+      setContacts(prev => [...prev, res.data]);
+      setNewOfficeName('');
+      setNewContactPhone('');
+      setNewContactEmail('');
+      setNewContactAddress('');
+      setNewContactMapEmbed('');
+      setNewContactMapLink('');
+      setShowAddContactForm(false);
       setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, has_contact: true } : r));
-      alert('Contact info saved.');
+      alert('Contact office added successfully.');
     } catch (err) {
       console.error(err);
-      alert(`Failed to save contact info: ${JSON.stringify(err.response?.data || err.message)}`);
+      alert(`Failed to add contact office: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally {
+      setSubmittingContact(false);
+    }
+  };
+
+  const handleDeleteContact = async (id) => {
+    if (!window.confirm('Delete this contact office?')) return;
+    try {
+      await deleteRegionContactDetail(id);
+      setContacts(prev => {
+        const next = prev.filter(c => c.id !== id);
+        if (next.length === 0) {
+          setRegions(rPrev => rPrev.map(r => r.id === selectedRegion.id ? { ...r, has_contact: false } : r));
+        }
+        return next;
+      });
+      alert('Contact office deleted successfully.');
+    } catch (err) {
+      console.error(err);
+      alert('Failed to delete contact office.');
+    }
+  };
+
+  const handleEditContact = async (e, id) => {
+    e.preventDefault();
+    if (!editOfficeName.trim() || !editContactAddress.trim() || !editContactEmail.trim() || !editContactPhone.trim()) {
+      alert('Office name, address, email, and phone are required.');
+      return;
+    }
+    setSubmittingContact(true);
+    const data = {
+      office_name: editOfficeName.trim(),
+      phone: editContactPhone.trim(),
+      phone_display: editContactPhone.trim(),
+      email: editContactEmail.trim(),
+      address: editContactAddress.trim(),
+      map_embed_url: editContactMapEmbed.trim(),
+      map_link: editContactMapLink.trim(),
+    };
+    try {
+      const res = await updateRegionContactDetail(id, data);
+      setContacts(prev => prev.map(c => c.id === id ? res.data : c));
+      setEditingContactId(null);
+      alert('Contact office updated successfully.');
+    } catch (err) {
+      alert(`Failed to update contact office: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally {
       setSubmittingContact(false);
     }
@@ -605,7 +702,7 @@ export default function AdminDashboard() {
   };
 
   useEffect(() => {
-    if (activeTab === 'solutions') fetchSolutions();
+    if (activeTab === 'solutions' || activeTab === 'regions') fetchSolutions();
   }, [activeTab]);
 
   const handleAddSolution = async (e) => {
@@ -1617,52 +1714,131 @@ export default function AdminDashboard() {
                     Slug: <code style={{ color: 'var(--red)' }}>{selectedRegion.slug}</code> — Manage contact info and team members for this region.
                   </p>
                 </div>
+                <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '16px' }}>
+                    <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>Contact Offices</h3>
+                    <button onClick={() => setShowAddContactForm(!showAddContactForm)} className="admin-btn" style={{ width: 'auto', margin: 0, padding: '6px 16px', fontSize: '12px' }}>
+                      {showAddContactForm ? 'Cancel' : 'Add Office'}
+                    </button>
+                  </div>
 
-                {/* Contact Info */}
-                <form onSubmit={handleSaveContact} className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
-                  <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>Contact Information</h3>
-                  {loadingContact ? (
-                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>Loading contact info...</p>
-                  ) : (
-                    <>
+                  {showAddContactForm && (
+                    <form onSubmit={handleAddContact} style={{ display: 'flex', flexDirection: 'column', gap: '16px', marginBottom: '20px', padding: '16px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)' }}>
                       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
                         <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
-                          Phone (tel: link)
-                          <input type="text" value={contactForm.phone} onChange={e => setContactForm(p => ({ ...p, phone: e.target.value }))} placeholder="+918045256922" required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                          Office Name
+                          <input type="text" value={newOfficeName} onChange={e => setNewOfficeName(e.target.value)} required placeholder="Dubai HQ" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
                         </label>
                         <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
-                          Phone Display
-                          <input type="text" value={contactForm.phone_display} onChange={e => setContactForm(p => ({ ...p, phone_display: e.target.value }))} placeholder="+91 80 4525 6922" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                          Phone
+                          <input type="text" value={newContactPhone} onChange={e => setNewContactPhone(e.target.value)} required placeholder="+971 4 346 6111" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
                         </label>
                         <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
                           Email
-                          <input type="email" value={contactForm.email} onChange={e => setContactForm(p => ({ ...p, email: e.target.value }))} placeholder="india@mindstec.com" required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
-                        </label>
-                        <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
-                          Office Name
-                          <input type="text" value={contactForm.office_name} onChange={e => setContactForm(p => ({ ...p, office_name: e.target.value }))} placeholder="Mindstec Distribution — Bangalore HQ" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                          <input type="email" value={newContactEmail} onChange={e => setNewContactEmail(e.target.value)} required placeholder="middleeast@mindstec.com" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
                         </label>
                       </div>
                       <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
                         Address
-                        <textarea value={contactForm.address} onChange={e => setContactForm(p => ({ ...p, address: e.target.value }))} placeholder="Full office address" required rows="3" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px', resize: 'vertical' }} />
+                        <textarea value={newContactAddress} onChange={e => setNewContactAddress(e.target.value)} required placeholder="Full office address details..." rows="3" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px', resize: 'vertical' }} />
                       </label>
                       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
                         <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
                           Map Embed URL
-                          <input type="url" value={contactForm.map_embed_url} onChange={e => setContactForm(p => ({ ...p, map_embed_url: e.target.value }))} placeholder="Google Maps embed URL" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                          <input type="url" value={newContactMapEmbed} onChange={e => setNewContactMapEmbed(e.target.value)} placeholder="https://maps.google.com/..." style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
                         </label>
                         <label style={{ display: 'flex', flexDirection: 'column', gap: '6px', fontSize: '12px', color: 'var(--grey)' }}>
                           Map Link (external)
-                          <input type="url" value={contactForm.map_link} onChange={e => setContactForm(p => ({ ...p, map_link: e.target.value }))} placeholder="Google Maps link" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
+                          <input type="url" value={newContactMapLink} onChange={e => setNewContactMapLink(e.target.value)} placeholder="https://www.google.com/maps/..." style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }} />
                         </label>
                       </div>
-                      <button type="submit" disabled={submittingContact} className="admin-btn" style={{ width: 'fit-content', marginTop: 0, padding: '10px 24px' }}>
-                        {submittingContact ? 'Saving...' : 'Save Contact Info'}
+                      <button type="submit" disabled={submittingContact} className="admin-btn" style={{ width: 'fit-content', padding: '10px 24px' }}>
+                        {submittingContact ? 'Adding...' : 'Add Contact Office'}
                       </button>
-                    </>
+                    </form>
                   )}
-                </form>
+
+                  {loadingContacts ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>Loading office contacts...</p>
+                  ) : contacts.length === 0 ? (
+                    <p style={{ color: 'var(--grey)', fontSize: '13px' }}>No office contacts configured yet. Click "Add Office" to create one.</p>
+                  ) : (
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                      {contacts.map((contact) => (
+                        <div key={contact.id} style={{ padding: '16px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)' }}>
+                          {editingContactId === contact.id ? (
+                            <form onSubmit={e => handleEditContact(e, contact.id)} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                                <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                  Office Name
+                                  <input type="text" value={editOfficeName} onChange={e => setEditOfficeName(e.target.value)} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </label>
+                                <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                  Phone
+                                  <input type="text" value={editContactPhone} onChange={e => setEditContactPhone(e.target.value)} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </label>
+                                <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                  Email
+                                  <input type="email" value={editContactEmail} onChange={e => setEditContactEmail(e.target.value)} required style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </label>
+                              </div>
+                              <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                Address
+                                <textarea value={editContactAddress} onChange={e => setEditContactAddress(e.target.value)} required rows="3" style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px', resize: 'vertical' }} />
+                              </label>
+                              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '16px' }}>
+                                <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                  Map Embed URL
+                                  <input type="url" value={editContactMapEmbed} onChange={e => setEditContactMapEmbed(e.target.value)} style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </label>
+                                <label style={{ fontSize: '11px', color: 'var(--grey)', display: 'flex', flexDirection: 'column', gap: '4px' }}>
+                                  Map Link (external)
+                                  <input type="url" value={editContactMapLink} onChange={e => setEditContactMapLink(e.target.value)} style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '13px' }} />
+                                </label>
+                              </div>
+                              <div style={{ display: 'flex', gap: '12px' }}>
+                                <button type="submit" disabled={submittingContact} className="admin-btn" style={{ width: 'fit-content', margin: 0, padding: '10px 24px' }}>
+                                  {submittingContact ? 'Saving...' : 'Save Office Details'}
+                                </button>
+                                <button type="button" onClick={() => setEditingContactId(null)} className="admin-btn" style={{ width: 'fit-content', margin: 0, padding: '10px 24px', background: 'var(--ink)', border: '1px solid var(--line)', color: 'var(--grey)' }}>
+                                  Cancel
+                                </button>
+                              </div>
+                            </form>
+                          ) : (
+                            <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                                <div>
+                                  <h4 style={{ margin: 0, fontSize: '15px', fontWeight: '600', color: 'var(--white)' }}>{contact.office_name || 'Unnamed Office'}</h4>
+                                  <p style={{ margin: '4px 0 0', fontSize: '12px', color: 'var(--grey)' }}>Email: {contact.email} | Phone: {contact.phone}</p>
+                                </div>
+                                <div style={{ display: 'flex', gap: '8px' }}>
+                                  <button onClick={() => {
+                                    setEditingContactId(contact.id);
+                                    setEditOfficeName(contact.office_name || '');
+                                    setEditContactPhone(contact.phone || '');
+                                    setEditContactEmail(contact.email || '');
+                                    setEditContactAddress(contact.address || '');
+                                    setEditContactMapEmbed(contact.map_embed_url || '');
+                                    setEditContactMapLink(contact.map_link || '');
+                                  }} className="admin-btn" style={{ width: 'auto', margin: 0, padding: '6px 12px', fontSize: '11px' }}>
+                                    Edit
+                                  </button>
+                                  <button onClick={() => handleDeleteContact(contact.id)} className="admin-btn" style={{ width: 'auto', margin: 0, padding: '6px 12px', fontSize: '11px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2' }}>
+                                    Remove
+                                  </button>
+                                </div>
+                              </div>
+                              <div style={{ fontSize: '13px', color: 'var(--grey)', borderTop: '1px solid rgba(255,255,255,0.04)', paddingTop: '10px', whiteSpace: 'pre-line' }}>
+                                {contact.address}
+                              </div>
+                            </div>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
 
                 {/* Team Members */}
                 <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
@@ -1760,6 +1936,35 @@ export default function AdminDashboard() {
                           <input type="file" accept="image/*" onChange={e => setNewBrandLogo(e.target.files[0])} style={{ color: 'var(--grey)', fontSize: '12px', padding: '4px 0' }} />
                         </label>
                       </div>
+                      
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <span style={{ fontSize: '12px', color: 'var(--grey)', fontWeight: '600' }}>Associated Solutions</span>
+                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '16px', marginTop: '4px' }}>
+                          {solutions.length > 0 ? (
+                            solutions.map(sol => (
+                              <label key={sol.id} style={{ display: 'flex', alignItems: 'center', gap: '6px', fontSize: '12px', color: 'var(--white)', cursor: 'pointer' }}>
+                                <input
+                                  type="checkbox"
+                                  checked={selectedSolutions.includes(sol.id)}
+                                  onChange={e => {
+                                    if (e.target.checked) {
+                                      setSelectedSolutions(prev => [...prev, sol.id]);
+                                    } else {
+                                      setSelectedSolutions(prev => prev.filter(id => id !== sol.id));
+                                    }
+                                  }}
+                                />
+                                {sol.title}
+                              </label>
+                            ))
+                          ) : (
+                            <span style={{ fontSize: '11px', color: 'var(--grey)' }}>
+                              Loading solutions...
+                            </span>
+                          )}
+                        </div>
+                      </div>
+
                       <button type="submit" disabled={submittingBrand} className="admin-btn" style={{ width: 'fit-content', margin: 0, padding: '8px 20px', fontSize: '12px' }}>
                         {submittingBrand ? 'Adding...' : 'Add Brand'}
                       </button>
@@ -1777,6 +1982,18 @@ export default function AdminDashboard() {
                           {brand.logo && <img src={brand.logo} alt={brand.name} style={{ width: '80px', height: '48px', objectFit: 'contain' }} />}
                           <span style={{ fontSize: '12px', color: 'var(--white)', fontWeight: '600' }}>{brand.name}</span>
                           {brand.website_url && <a href={brand.website_url} target="_blank" rel="noopener noreferrer" style={{ fontSize: '10px', color: 'var(--grey)', wordBreak: 'break-all' }}>website</a>}
+                          {brand.solutions && brand.solutions.length > 0 && (
+                            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', justifyContent: 'center', marginTop: '2px', marginBottom: '2px' }}>
+                              {brand.solutions.map(solId => {
+                                const sol = solutions.find(s => s.id === solId);
+                                return (
+                                  <span key={solId} style={{ fontSize: '9px', background: 'var(--line)', padding: '2px 6px', borderRadius: '4px', color: 'var(--grey)' }}>
+                                    {sol ? sol.title : `Sol #${solId}`}
+                                  </span>
+                                );
+                              })}
+                            </div>
+                          )}
                           <button onClick={() => handleDeleteBrand(brand.id)} className="admin-btn" style={{ width: '100%', margin: 0, padding: '4px', fontSize: '11px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2' }}>Remove</button>
                         </div>
                       ))}
@@ -2196,6 +2413,52 @@ export default function AdminDashboard() {
           {renderContent()}
         </div>
       </main>
+
+      {/* Toast Notification */}
+      {toast && (
+        <div style={{
+          position: 'fixed',
+          bottom: '24px',
+          right: '24px',
+          zIndex: 99999,
+          background: toast.type === 'success' ? 'rgba(6, 78, 59, 0.95)' : 'rgba(127, 29, 29, 0.95)',
+          border: `1px solid ${toast.type === 'success' ? '#10b981' : '#ef4444'}`,
+          backdropFilter: 'blur(12px)',
+          WebkitBackdropFilter: 'blur(12px)',
+          padding: '16px 20px',
+          borderRadius: '12px',
+          boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '12px',
+          maxWidth: '380px',
+          animation: 'adminSlideIn 0.3s ease-out',
+          color: '#ffffff'
+        }}>
+          <style>{`
+            @keyframes adminSlideIn {
+              from { transform: translateY(100px); opacity: 0; }
+              to { transform: translateY(0); opacity: 1; }
+            }
+          `}</style>
+          {toast.type === 'success' ? (
+            <svg style={{ width: '22px', height: '22px', color: '#10b981', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          ) : (
+            <svg style={{ width: '22px', height: '22px', color: '#ef4444', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          )}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            <span style={{ fontWeight: '700', fontSize: '13.5px' }}>{toast.title}</span>
+            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)' }}>{toast.message}</span>
+          </div>
+          <button onClick={() => setToast(null)} style={{ background: 'none', border: 'none', color: '#ffffff', opacity: 0.5, cursor: 'pointer', padding: '4px', fontSize: '14px', marginLeft: 'auto', outline: 'none' }}>
+            ×
+          </button>
+        </div>
+      )}
     </div>
   );
 }

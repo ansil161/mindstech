@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial
+from ..models import Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial, Solution
 from ..serializers import (
     RegionSerializer, TeamMemberSerializer,
     RegionContactSerializer, RegionDetailSerializer, RegionBrandSerializer,
@@ -156,16 +156,22 @@ class RegionContactView(APIView):
     permission_classes = [IsAdminUser]
 
     def get(self, request, region_id):
-        try:
-            contact = RegionContact.objects.get(region_id=region_id)
-            serializer = RegionContactSerializer(contact, context={'request': request})
+        contacts = RegionContact.objects.filter(region_id=region_id)
+        if contacts.exists():
+            serializer = RegionContactSerializer(contacts.first(), context={'request': request})
             return Response(serializer.data)
-        except RegionContact.DoesNotExist:
+        else:
             return Response(None, status=status.HTTP_204_NO_CONTENT)
 
     def put(self, request, region_id):
         region = Region.objects.get(pk=region_id)
-        contact, created = RegionContact.objects.get_or_create(region=region)
+        contacts = RegionContact.objects.filter(region=region)
+        if contacts.exists():
+            contact = contacts.first()
+            created = False
+        else:
+            contact = RegionContact(region=region)
+            created = True
         serializer = RegionContactSerializer(contact, data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
         serializer.save()
@@ -331,3 +337,65 @@ class PublicRegionDataView(APIView):
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
         serializer = RegionDetailSerializer(region, context={'request': request})
         return Response(serializer.data)
+
+
+class PublicRegionSolutionBrandsView(APIView):
+    """
+    Public endpoint that returns only the active brands associated with a specific region and solution vertical.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request, region_slug, solution_slug):
+        try:
+            region = Region.objects.get(slug=region_slug, is_active=True)
+        except Region.DoesNotExist:
+            return Response({'detail': 'Region not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        try:
+            solution = Solution.objects.get(slug=solution_slug)
+        except Solution.DoesNotExist:
+            return Response({'detail': 'Solution not found.'}, status=status.HTTP_404_NOT_FOUND)
+
+        # Filter active brands for the region that are linked to this solution
+        brands = RegionBrand.objects.filter(
+            region=region,
+            solutions=solution,
+            is_active=True
+        ).order_by('display_order', 'created_at')
+
+        serializer = RegionBrandSerializer(brands, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
+class RegionContactListCreateView(APIView):
+    """List contacts for a region or add a new one (admin only)."""
+    permission_classes = [IsAdminUser]
+
+    def get(self, request, region_id):
+        contacts = RegionContact.objects.filter(region_id=region_id)
+        serializer = RegionContactSerializer(contacts, many=True, context={'request': request})
+        return Response(serializer.data)
+
+    def post(self, request, region_id):
+        region = Region.objects.get(pk=region_id)
+        serializer = RegionContactSerializer(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save(region=region)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+class RegionContactDetailView(APIView):
+    """Update or delete a region contact (admin only)."""
+    permission_classes = [IsAdminUser]
+
+    def put(self, request, pk):
+        contact = RegionContact.objects.get(pk=pk)
+        serializer = RegionContactSerializer(contact, data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data)
+
+    def delete(self, request, pk):
+        contact = RegionContact.objects.get(pk=pk)
+        contact.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

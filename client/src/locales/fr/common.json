@@ -207,11 +207,17 @@
       "title_em": "dans la chambre.",
       "btn1": "Obtenez un devis",
       "btn2": "Devenez partenaire",
+      "email_label": "E-mail",
       "contacts": {
         "india": "Opérations en Inde",
         "global": "+91 80 4525 6922",
         "partnerships": "Demandes mondiales"
       }
+    },
+    "testimonials": {
+      "label": "Témoignages clients",
+      "title_main": "Ce que disent",
+      "title_em": "nos clients"
     },
     "cities": {
       "bangalore": "Bangalore QG",

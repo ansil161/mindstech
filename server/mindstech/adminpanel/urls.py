@@ -11,9 +11,10 @@ from .views import (
     GalleryListCreateView, GalleryDetailView,
     RegionListCreateView, RegionDetailView,
     TeamMemberListCreateView, TeamMemberDetailView,
-    RegionContactView, PublicRegionDataView,
+    RegionContactView, PublicRegionDataView, PublicRegionSolutionBrandsView,
     RegionBrandListCreateView, RegionBrandDetailView,
     TestimonialListCreateView, TestimonialDetailView,
+    RegionContactListCreateView, RegionContactDetailView,
 )
 
 urlpatterns = [
@@ -61,9 +62,12 @@ urlpatterns = [
     path('regions/<int:region_id>/team/', TeamMemberListCreateView.as_view(), name='region-team-list-create'),
     path('team-members/<int:pk>/', TeamMemberDetailView.as_view(), name='team-member-detail'),
     path('regions/<int:region_id>/contact/', RegionContactView.as_view(), name='region-contact'),
+    path('regions/<int:region_id>/contacts/', RegionContactListCreateView.as_view(), name='region-contact-list-create'),
+    path('contacts/<int:pk>/', RegionContactDetailView.as_view(), name='region-contact-detail'),
 
     # Public region data (no auth)
     path('public/region/<slug:slug>/', PublicRegionDataView.as_view(), name='public-region-data'),
+    path('public/region/<slug:region_slug>/solution/<slug:solution_slug>/brands/', PublicRegionSolutionBrandsView.as_view(), name='public-region-solution-brands'),
 
     # Brands
     path('regions/<int:region_id>/brands/', RegionBrandListCreateView.as_view(), name='region-brand-list-create'),

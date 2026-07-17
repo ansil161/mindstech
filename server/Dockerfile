@@ -13,6 +13,20 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
+# Create a non-privileged user to run the server
+RUN groupadd -g 10002 django-group && \
+    useradd -u 10002 -g django-group -m -s /sbin/nologin django-user
+
 COPY . /app/
 
+# Set ownership of the app directory to the non-root user
+RUN chown -R django-user:django-group /app
+
 WORKDIR /app/mindstech
+
+USER django-user
+
+EXPOSE 8000
+
+# Run with Gunicorn in production by default
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "mindstech.wsgi:application"]

@@ -207,11 +207,17 @@
       "title_em": "im Zimmer.",
       "btn1": "Holen Sie sich ein Angebot",
       "btn2": "Werden Sie Partner",
+      "email_label": "E-Mail",
       "contacts": {
         "india": "Indien-Operationen",
         "global": "+91 80 4525 6922",
         "partnerships": "Globale Anfragen"
       }
+    },
+    "testimonials": {
+      "label": "Kundenstimmen",
+      "title_main": "Was unsere",
+      "title_em": "Kunden sagen"
     },
     "cities": {
       "bangalore": "Bangalore Hauptsitz",

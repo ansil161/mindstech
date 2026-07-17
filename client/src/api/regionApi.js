@@ -33,6 +33,11 @@ export const getRegionContact = (regionId) => axios.get(`/admin/regions/${region
 export const updateRegionContact = (regionId, data) =>
   axios.put(`/admin/regions/${regionId}/contact/`, data);
 
+export const getRegionContacts = (regionId) => axios.get(`/admin/regions/${regionId}/contacts/`);
+export const createRegionContact = (regionId, data) => axios.post(`/admin/regions/${regionId}/contacts/`, data);
+export const updateRegionContactDetail = (id, data) => axios.put(`/admin/contacts/${id}/`, data);
+export const deleteRegionContactDetail = (id) => axios.delete(`/admin/contacts/${id}/`);
+
 // ── Admin: Brands ──
 
 export const getBrands = (regionId) => axios.get(`/admin/regions/${regionId}/brands/`);
@@ -54,6 +59,9 @@ export const deleteBrand = (id) => axios.delete(`/admin/brands/${id}/`);
 // middleware never interferes with this AllowAny endpoint.
 export const getPublicRegionData = (slug) =>
   axios.get(`/admin/public/region/${slug}/`, { withCredentials: false });
+
+export const getPublicRegionSolutionBrands = (regionSlug, solutionSlug) =>
+  axios.get(`/admin/public/region/${regionSlug}/solution/${solutionSlug}/brands/`, { withCredentials: false });
 
 // ── Admin: Testimonials ──
 

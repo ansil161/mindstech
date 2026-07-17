@@ -6,7 +6,7 @@ import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
-import { getPublicRegionData } from '../../api/regionApi.js';
+import { getPublicRegionSolutionBrands } from '../../api/regionApi.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -144,18 +144,18 @@ const SolutionDetails = () => {
 
   const { translatedData: translatedBrands } = useDynamicTranslation(regionBrands, ['name'], `solution_brands_${regionSlug}`);
 
-  // Fetch region brands whenever region changes
+  // Fetch region brands whenever region or solution changes
   useEffect(() => {
     let cancelled = false;
-    getPublicRegionData(regionSlug)
+    getPublicRegionSolutionBrands(regionSlug, slug)
       .then(res => {
-        if (!cancelled) setRegionBrands(res.data.brands || []);
+        if (!cancelled) setRegionBrands(res.data || []);
       })
       .catch(() => {
         if (!cancelled) setRegionBrands([]);
       });
     return () => { cancelled = true; };
-  }, [regionSlug]);
+  }, [regionSlug, slug]);
   
   const slugs = ['digital-signage', 'control-rooms', 'conferencing', 'hospitality', 'broadcast', 'live-events'];
   const solIndex = slugs.indexOf(slug) !== -1 ? slugs.indexOf(slug) : 0;
@@ -321,7 +321,7 @@ const SolutionDetails = () => {
 
       {/* HERO VISUAL */}
       <div className="dhero-visual reveal-img">
-        <img id="dHeroImg" src={data.hero.src} alt={data.hero.alt} fetchpriority="high" />
+        <img id="dHeroImg" src={data.hero.src} alt={data.hero.alt} fetchPriority="high" />
       </div>
 
       {/* CAPABILITIES */}

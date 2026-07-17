@@ -146,7 +146,7 @@ class TeamMember(models.Model):
 
 class RegionContact(models.Model):
     """Contact information for a specific region."""
-    region = models.OneToOneField(Region, on_delete=models.CASCADE, related_name='contact_info')
+    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='contacts')
     phone = models.CharField(max_length=30)
     phone_display = models.CharField(max_length=50, blank=True, default='')
     email = models.EmailField()
@@ -159,6 +159,7 @@ class RegionContact(models.Model):
 class RegionBrand(models.Model):
     """A brand/partner associated with a specific region."""
     region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='brands')
+    solutions = models.ManyToManyField(Solution, related_name='brands', blank=True)
     name = models.CharField(max_length=150)
     logo = models.ImageField(upload_to='brands/', blank=True, null=True)
     website_url = models.URLField(max_length=300, blank=True, default='')

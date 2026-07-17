@@ -56,7 +56,8 @@ const Contact = () => {
   const [submitSuccess, setSubmitSuccess] = useState(false);
   const [submitError, setSubmitError] = useState('');
 
-  const [contactInfo, setContactInfo] = useState(null);
+  const [contacts, setContacts] = useState([]);
+  const contactInfo = contacts[0] || null;
   const [allRegionContacts, setAllRegionContacts] = useState([]);
 
   const { translatedData: translatedContact } = useDynamicTranslation(
@@ -77,10 +78,10 @@ const Contact = () => {
     const fetchRegionContact = async () => {
       try {
         const res = await getPublicRegionData(regionSlug);
-        if (!cancelled) setContactInfo(res.data.contact_info || null);
+        if (!cancelled) setContacts(res.data.contact_info || []);
       } catch (err) {
         console.error('Failed to load region contact:', err);
-        if (!cancelled) setContactInfo(null);
+        if (!cancelled) setContacts([]);
       }
     };
     fetchRegionContact();
@@ -95,7 +96,8 @@ const Contact = () => {
           ALL_REGION_SLUGS.map(async ({ slug, label }) => {
             try {
               const res = await getPublicRegionData(slug);
-              const info = res.data.contact_info;
+              const infoList = res.data.contact_info;
+              const info = Array.isArray(infoList) ? infoList[0] : infoList;
               if (info?.email) return { label, email: info.email };
             } catch { /* skip unavailable regions */ }
             return null;
@@ -138,21 +140,37 @@ const Contact = () => {
           { opacity: 1, y: 0, duration: 0.9 },
           '-=.9');
 
-      gsap.to('.map-band', {
-        opacity: 1,
-        y: 0,
-        duration: 1,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: '.map-band',
-          start: 'top 86%',
-          once: true,
-        }
-      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
+
+  useEffect(() => {
+    const activeContacts = contacts.length > 0 ? contacts : [FALLBACK_CONTACT];
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set('.map-band', { opacity: 1, y: 0 });
+        return;
+      }
+      const bands = gsap.utils.toArray('.map-band');
+      bands.forEach((band) => {
+        gsap.to(band, {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: band,
+            start: 'top 86%',
+            once: true,
+          }
+        });
+      });
+      ScrollTrigger.refresh();
+    }, containerRef);
+    return () => ctx.revert();
+  }, [contacts]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -196,13 +214,15 @@ const Contact = () => {
   // Use contactInfo as the authoritative source (updates when region changes).
   // translatedContact only adds translated office_name/address on top — never replaces the base data.
   const baseContact = contactInfo || FALLBACK_CONTACT;
-  const telHref = baseContact.phone || FALLBACK_CONTACT.phone;
+  const telHref = (baseContact.phone_display || baseContact.phone || FALLBACK_CONTACT.phone || '').replace(/[^+\d]/g, '');
   const telLabel = baseContact.phone_display || baseContact.phone || FALLBACK_CONTACT.phone_display;
   const contactEmail = baseContact.email || FALLBACK_CONTACT.email;
   const contactAddress = (translatedContact?.address && translatedContact.email === baseContact.email ? translatedContact.address : null) || baseContact.address || FALLBACK_CONTACT.address;
   const officeName = (translatedContact?.office_name && translatedContact.email === baseContact.email ? translatedContact.office_name : null) || baseContact.office_name || FALLBACK_CONTACT.office_name;
   const mapEmbed = baseContact.map_embed_url || FALLBACK_CONTACT.map_embed_url;
   const mapLink = baseContact.map_link || FALLBACK_CONTACT.map_link;
+
+  const displayContacts = contacts.length > 0 ? contacts : [FALLBACK_CONTACT];
 
   const regionalDesks = allRegionContacts.length > 0
     ? allRegionContacts
@@ -331,21 +351,50 @@ const Contact = () => {
             <span className="num">01</span>
             <div>
               <b>Call us</b>
-              <a href={`tel:${telHref}`}>{telLabel}</a>
+              {displayContacts.map((contact, idx) => {
+                const phoneVal = contact.phone_display || contact.phone;
+                const phoneHref = (phoneVal || '').replace(/[^+\d]/g, '');
+                if (!phoneVal) return null;
+                return (
+                  <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '6px' : '0' }}>
+                    {displayContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contact.office_name}:</span>}
+                    <a href={`tel:${phoneHref}`}>{phoneVal}</a>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="ci">
             <span className="num">02</span>
             <div>
               <b>Visit us</b>
-              <address style={{ whiteSpace: 'pre-line' }}>{contactAddress}</address>
+              {displayContacts.map((contact, idx) => {
+                const addr = (idx === 0 && translatedContact?.address && translatedContact.email === contact.email ? translatedContact.address : null) || contact.address;
+                const office = (idx === 0 && translatedContact?.office_name && translatedContact.email === contact.email ? translatedContact.office_name : null) || contact.office_name;
+                if (!addr) return null;
+                return (
+                  <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '12px' : '0', borderTop: idx > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none', paddingTop: idx > 0 ? '8px' : '0' }}>
+                    {office && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', fontWeight: 'bold', marginBottom: '2px' }}>{office}</span>}
+                    <address style={{ whiteSpace: 'pre-line' }}>{addr}</address>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="ci">
             <span className="num">03</span>
             <div>
               <b>Write to us</b>
-              <a href={`mailto:${contactEmail}`}>{contactEmail}</a>
+              {displayContacts.map((contact, idx) => {
+                const emailVal = contact.email;
+                if (!emailVal) return null;
+                return (
+                  <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '6px' : '0' }}>
+                    {displayContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contact.office_name}:</span>}
+                    <a href={`mailto:${emailVal}`}>{emailVal}</a>
+                  </div>
+                );
+              })}
             </div>
           </div>
           <div className="regions-mini">
@@ -384,30 +433,66 @@ const Contact = () => {
         </aside>
       </div>
 
-      <div className="map-band reveal" style={{ opacity: 0, transform: 'translateY(36px)' }}>
-        <div className="map-frame">
-          {mapEmbed && (
-            <iframe
-              title={`Map showing ${officeName}`}
-              loading="lazy"
-              referrerPolicy="no-referrer-when-downgrade"
-              src={mapEmbed}
-            ></iframe>
-          )}
-          <div className="map-tag">
-            <b>{officeName}</b>
-            <span>{contactAddress}</span>
-            {mapLink && (
-              <a href={mapLink} target="_blank" rel="noopener noreferrer">
-                Open in Google Maps
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M7 17L17 7M9 7h8v8" />
-                </svg>
-              </a>
-            )}
+      {displayContacts.map((contact, index) => {
+        const address = contact.address;
+        const name = contact.office_name || `Office ${index + 1}`;
+        const embedUrl = contact.map_embed_url;
+        const mapsLink = contact.map_link;
+        const phoneVal = contact.phone_display || contact.phone;
+        const phoneHref = (phoneVal || '').replace(/[^+\d]/g, '');
+        const emailVal = contact.email;
+
+        return (
+          <div 
+            key={contact.id || index} 
+            className="map-band reveal" 
+            style={{ 
+              opacity: 0, 
+              transform: 'translateY(36px)',
+              paddingBottom: index === displayContacts.length - 1 ? 'clamp(60px, 8vw, 100px)' : '32px'
+            }}
+          >
+            <div className="map-frame">
+              {embedUrl && (
+                <iframe
+                  title={`Map showing ${name}`}
+                  loading="lazy"
+                  referrerPolicy="no-referrer-when-downgrade"
+                  src={embedUrl}
+                ></iframe>
+              )}
+              <div className="map-tag" style={{ minWidth: '280px' }}>
+                <b>{name}</b>
+                <span style={{ whiteSpace: 'pre-line' }}>{address}</span>
+                {(phoneVal || emailVal) && (
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '8px', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '8px' }}>
+                    {phoneVal && (
+                      <div style={{ fontSize: '11px', display: 'flex', gap: '4px' }}>
+                        <span style={{ color: 'var(--grey-dark)' }}>Phone:</span>
+                        <a href={`tel:${phoneHref}`} style={{ color: 'var(--grey)', textDecoration: 'none' }} className="hover-red-text">{phoneVal}</a>
+                      </div>
+                    )}
+                    {emailVal && (
+                      <div style={{ fontSize: '11px', display: 'flex', gap: '4px' }}>
+                        <span style={{ color: 'var(--grey-dark)' }}>Email:</span>
+                        <a href={`mailto:${emailVal}`} style={{ color: 'var(--grey)', textDecoration: 'none' }} className="hover-red-text">{emailVal}</a>
+                      </div>
+                    )}
+                  </div>
+                )}
+                {mapsLink && (
+                  <a href={mapsLink} target="_blank" rel="noopener noreferrer" style={{ marginTop: '12px' }}>
+                    Open in Google Maps
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                      <path d="M7 17L17 7M9 7h8v8" />
+                    </svg>
+                  </a>
+                )}
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
+        );
+      })}
     </main>
   );
 };

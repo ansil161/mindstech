@@ -214,11 +214,17 @@
       "title_em": "在房间里。",
       "btn1": "获取报价",
       "btn2": "成为合作伙伴",
+      "email_label": "电子邮件",
       "contacts": {
         "india": "印度业务",
         "global": "+91 80 4525 6922",
         "partnerships": "全球查询"
       }
+    },
+    "testimonials": {
+      "label": "客户心声",
+      "title_main": "客户",
+      "title_em": "如是说"
     },
     "cities": {
       "bangalore": "班加罗尔总部",

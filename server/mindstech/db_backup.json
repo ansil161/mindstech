@@ -1,0 +1,4027 @@
+[
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 1,
+    "fields": {
+        "user": 1,
+        "jti": "5f2f10b67a66482292880cc4812e697c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIyODEyOSwiaWF0IjoxNzgzNjIzMzI5LCJqdGkiOiI1ZjJmMTBiNjdhNjY0ODIyOTI4ODBjYzQ4MTJlNjk3YyIsInVzZXJfaWQiOiIxIn0.f_JjTI-E-fXmTybN_r7prmL1__J22nt5xEWotgE_xYw",
+        "created_at": "2026-07-09T18:55:29.751Z",
+        "expires_at": "2026-07-16T18:55:29Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 2,
+    "fields": {
+        "user": 1,
+        "jti": "13edf2affd104f1396fd1cffc5c804be",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIyODI0NiwiaWF0IjoxNzgzNjIzNDQ2LCJqdGkiOiIxM2VkZjJhZmZkMTA0ZjEzOTZmZDFjZmZjNWM4MDRiZSIsInVzZXJfaWQiOiIxIn0.FicbKu6_hAc3mE1pSQyw906ww7FvGHxwP-_ekcSlx8g",
+        "created_at": "2026-07-09T18:57:26.320Z",
+        "expires_at": "2026-07-16T18:57:26Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 3,
+    "fields": {
+        "user": 1,
+        "jti": "f07fa1c7bf954020ad5899b68dc27936",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIyOTA1MywiaWF0IjoxNzgzNjI0MjUzLCJqdGkiOiJmMDdmYTFjN2JmOTU0MDIwYWQ1ODk5YjY4ZGMyNzkzNiIsInVzZXJfaWQiOiIxIn0.NE1ixCqf3P_WyEqZhyVjIKeR79f057zkMj8PyZwXyjk",
+        "created_at": "2026-07-09T19:10:53.790Z",
+        "expires_at": "2026-07-16T19:10:53Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 4,
+    "fields": {
+        "user": 1,
+        "jti": "1e981f7087354e988865068b12a91d55",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIzMDY4OSwiaWF0IjoxNzgzNjI1ODg5LCJqdGkiOiIxZTk4MWY3MDg3MzU0ZTk4ODg2NTA2OGIxMmE5MWQ1NSIsInVzZXJfaWQiOiIxIn0.Xukn0es8o1bDV9cHfOwRT8AUZW4tEIYtVzLfjBtLXjU",
+        "created_at": "2026-07-09T19:38:09.169Z",
+        "expires_at": "2026-07-16T19:38:09Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 5,
+    "fields": {
+        "user": 2,
+        "jti": "37a4dcc8cb234be0ac625476f02430bb",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIzMDk5MCwiaWF0IjoxNzgzNjI2MTkwLCJqdGkiOiIzN2E0ZGNjOGNiMjM0YmUwYWM2MjU0NzZmMDI0MzBiYiIsInVzZXJfaWQiOiIyIn0.9IwrqEiTiuzgHiBYtHt20tsy0JzyNAjTyaaXs4vUFKs",
+        "created_at": "2026-07-09T19:43:10.682Z",
+        "expires_at": "2026-07-16T19:43:10Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 6,
+    "fields": {
+        "user": 1,
+        "jti": "16f824973fd1421893550cc19487a778",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIzMTkzNiwiaWF0IjoxNzgzNjI3MTM2LCJqdGkiOiIxNmY4MjQ5NzNmZDE0MjE4OTM1NTBjYzE5NDg3YTc3OCIsInVzZXJfaWQiOiIxIn0.DVwM3njDVFOIMzN1JtPIqpAbl7LWfKqGJ86NcdLUyDo",
+        "created_at": "2026-07-09T19:58:56.545Z",
+        "expires_at": "2026-07-16T19:58:56Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 7,
+    "fields": {
+        "user": 2,
+        "jti": "8631f90aecb74111956c6cb643d01c91",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIzMjQwOCwiaWF0IjoxNzgzNjI3NjA4LCJqdGkiOiI4NjMxZjkwYWVjYjc0MTExOTU2YzZjYjY0M2QwMWM5MSIsInVzZXJfaWQiOiIyIn0.ISkRvL7jt03n9jm46aJC975-v-rH6TwzEGuY31LG3Jk",
+        "created_at": "2026-07-09T20:06:48.776Z",
+        "expires_at": "2026-07-16T20:06:48Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 8,
+    "fields": {
+        "user": 2,
+        "jti": "7f6ccdf3fed44507b58e78daab969cf1",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIzMzg4NCwiaWF0IjoxNzgzNjI5MDg0LCJqdGkiOiI3ZjZjY2RmM2ZlZDQ0NTA3YjU4ZTc4ZGFhYjk2OWNmMSIsInVzZXJfaWQiOiIyIn0.P-skEXMaU5UkM8p16EnKHPkuj3eGMXrBqzBl1rif3Hc",
+        "created_at": "2026-07-09T20:31:24.541Z",
+        "expires_at": "2026-07-16T20:31:24Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 9,
+    "fields": {
+        "user": 2,
+        "jti": "0abb2a06e48c49a8b3cc827bb9ef1326",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIzNDc5MCwiaWF0IjoxNzgzNjI5OTkwLCJqdGkiOiIwYWJiMmEwNmU0OGM0OWE4YjNjYzgyN2JiOWVmMTMyNiIsInVzZXJfaWQiOiIyIn0.MJoaNHTwSMSeKSrx7EXyVaHkkxy7g3HSWsqaYb2_148",
+        "created_at": "2026-07-09T20:46:30.689Z",
+        "expires_at": "2026-07-16T20:46:30Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 10,
+    "fields": {
+        "user": 2,
+        "jti": "65cf8ce39a5648e29a8ebb0f0c4ade4e",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIzNTMzNywiaWF0IjoxNzgzNjMwNTM3LCJqdGkiOiI2NWNmOGNlMzlhNTY0OGUyOWE4ZWJiMGYwYzRhZGU0ZSIsInVzZXJfaWQiOiIyIn0.Qowtrbub35Hz_9-WNsl-SSMqarvO9QHu7IVmrmMiPG8",
+        "created_at": "2026-07-09T20:55:37.694Z",
+        "expires_at": "2026-07-16T20:55:37Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 11,
+    "fields": {
+        "user": 2,
+        "jti": "f723f058cbdf452180178f8bac9773c2",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDIzNjI0OSwiaWF0IjoxNzgzNjMxNDQ5LCJqdGkiOiJmNzIzZjA1OGNiZGY0NTIxODAxNzhmOGJhYzk3NzNjMiIsInVzZXJfaWQiOiIyIn0.Xl6IqGEqtjueXMC0eFnh-GDvf9iWwygb9hcOFeYgUfM",
+        "created_at": "2026-07-09T21:10:49.446Z",
+        "expires_at": "2026-07-16T21:10:49Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 12,
+    "fields": {
+        "user": 1,
+        "jti": "a2eb2e2517f346c395157eb5bc3ee4cc",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI0MDU5NiwiaWF0IjoxNzgzNjM1Nzk2LCJqdGkiOiJhMmViMmUyNTE3ZjM0NmMzOTUxNTdlYjViYzNlZTRjYyIsInVzZXJfaWQiOiIxIn0.eXn2_Lt_mr7Q6SYtGcqeIRmK0EvSe_jGdCPi2oXBLCo",
+        "created_at": "2026-07-09T22:23:16.802Z",
+        "expires_at": "2026-07-16T22:23:16Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 13,
+    "fields": {
+        "user": 2,
+        "jti": "c68f03b7c0f94b55890c48c6fe2ac1f9",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI0MDYxMSwiaWF0IjoxNzgzNjM1ODExLCJqdGkiOiJjNjhmMDNiN2MwZjk0YjU1ODkwYzQ4YzZmZTJhYzFmOSIsInVzZXJfaWQiOiIyIn0.k-Tb-PfLx9maQ74cNRy0MTHthpyOTnN9JzHfOANkSyI",
+        "created_at": "2026-07-09T22:23:31.813Z",
+        "expires_at": "2026-07-16T22:23:31Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 14,
+    "fields": {
+        "user": 2,
+        "jti": "2877b76e418c4a408867a4195620db9c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI0MDg4MywiaWF0IjoxNzgzNjM2MDgzLCJqdGkiOiIyODc3Yjc2ZTQxOGM0YTQwODg2N2E0MTk1NjIwZGI5YyIsInVzZXJfaWQiOiIyIn0.eddgTugQNg8525-thBZW_uy2jtUMMd23o6Ak9o4C09o",
+        "created_at": "2026-07-09T22:28:03.803Z",
+        "expires_at": "2026-07-16T22:28:03Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 15,
+    "fields": {
+        "user": 2,
+        "jti": "7bb7f41ffad24fb3b42ec756e19d7b5a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI0MjAwNiwiaWF0IjoxNzgzNjM3MjA2LCJqdGkiOiI3YmI3ZjQxZmZhZDI0ZmIzYjQyZWM3NTZlMTlkN2I1YSIsInVzZXJfaWQiOiIyIn0.jOYxVQ0w_sMHfGdzFbU4nbGpj16vgyzST4q6pZqBIZ4",
+        "created_at": "2026-07-09T22:46:46.807Z",
+        "expires_at": "2026-07-16T22:46:46Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 16,
+    "fields": {
+        "user": 2,
+        "jti": "a293ebe2440a48448e6a0c3f8069d4ac",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI0MjMzMywiaWF0IjoxNzgzNjM3NTMzLCJqdGkiOiJhMjkzZWJlMjQ0MGE0ODQ0OGU2YTBjM2Y4MDY5ZDRhYyIsInVzZXJfaWQiOiIyIn0.uSHQneqlKd0BYjelVFGDv16e1XZelE9H9JhMsPfS6RE",
+        "created_at": "2026-07-09T22:52:13.713Z",
+        "expires_at": "2026-07-16T22:52:13Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 17,
+    "fields": {
+        "user": 1,
+        "jti": "d4bbaf90e2614d718d7bbb8fd1f70a76",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI0MjM4MSwiaWF0IjoxNzgzNjM3NTgxLCJqdGkiOiJkNGJiYWY5MGUyNjE0ZDcxOGQ3YmJiOGZkMWY3MGE3NiIsInVzZXJfaWQiOiIxIn0.OyKzxdT_JBYnk9s8OGPbL4tWNREps5T-MNp7y1guu9k",
+        "created_at": "2026-07-09T22:53:01.024Z",
+        "expires_at": "2026-07-16T22:53:01Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 18,
+    "fields": {
+        "user": 2,
+        "jti": "bd16e0ecb8614710b7ea5a20cd89fae6",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI1ODAwMSwiaWF0IjoxNzgzNjUzMjAxLCJqdGkiOiJiZDE2ZTBlY2I4NjE0NzEwYjdlYTVhMjBjZDg5ZmFlNiIsInVzZXJfaWQiOiIyIn0.KJ0DT8OJ4FvB2YySj-IDhmWcOhAwjdRwCFhjFMN7e9A",
+        "created_at": "2026-07-10T03:13:21.184Z",
+        "expires_at": "2026-07-17T03:13:21Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 19,
+    "fields": {
+        "user": 1,
+        "jti": "c7c5234627064bf5b5f0c760ce3648ce",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI1ODQ0MiwiaWF0IjoxNzgzNjUzNjQyLCJqdGkiOiJjN2M1MjM0NjI3MDY0YmY1YjVmMGM3NjBjZTM2NDhjZSIsInVzZXJfaWQiOiIxIn0.xOCmE6aNjpKfqXejpNQT-ibYlSRMnbxPk5HYsL7S1bk",
+        "created_at": "2026-07-10T03:20:42.256Z",
+        "expires_at": "2026-07-17T03:20:42Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 20,
+    "fields": {
+        "user": 1,
+        "jti": "6c4ec609b37a42ef942c156ecbc60147",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI1OTQxNCwiaWF0IjoxNzgzNjU0NjE0LCJqdGkiOiI2YzRlYzYwOWIzN2E0MmVmOTQyYzE1NmVjYmM2MDE0NyIsInVzZXJfaWQiOiIxIn0.JgdLJmxGRim5H-zEWdTvJfnCNm98GbKPYGkcFSwHOz4",
+        "created_at": "2026-07-10T03:36:54.329Z",
+        "expires_at": "2026-07-17T03:36:54Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 21,
+    "fields": {
+        "user": 2,
+        "jti": "bba906008c9c4571859901a14cc43d4c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2MDMyNywiaWF0IjoxNzgzNjU1NTI3LCJqdGkiOiJiYmE5MDYwMDhjOWM0NTcxODU5OTAxYTE0Y2M0M2Q0YyIsInVzZXJfaWQiOiIyIn0.Qwuno10RB5yoPp2MbSVQmHYpBfJqIVU387SbcakErP4",
+        "created_at": "2026-07-10T03:52:07.517Z",
+        "expires_at": "2026-07-17T03:52:07Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 22,
+    "fields": {
+        "user": 2,
+        "jti": "8b794bd267574fb0a1c4839be5bd347c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2MjE3OCwiaWF0IjoxNzgzNjU3Mzc4LCJqdGkiOiI4Yjc5NGJkMjY3NTc0ZmIwYTFjNDgzOWJlNWJkMzQ3YyIsInVzZXJfaWQiOiIyIn0.VCVvQjcedn1K4SCQCybMNhESBQIAFux6pQvdocC4xXI",
+        "created_at": "2026-07-10T04:22:58.787Z",
+        "expires_at": "2026-07-17T04:22:58Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 23,
+    "fields": {
+        "user": 2,
+        "jti": "07b514d57b2c4a4fb068e13755a7b678",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2MjU5NCwiaWF0IjoxNzgzNjU3Nzk0LCJqdGkiOiIwN2I1MTRkNTdiMmM0YTRmYjA2OGUxMzc1NWE3YjY3OCIsInVzZXJfaWQiOiIyIn0.Kt1vOMs5lLgqQVnjC5QrH4_ChKoRqGrd6r2rOKyZ6Ug",
+        "created_at": "2026-07-10T04:29:54.776Z",
+        "expires_at": "2026-07-17T04:29:54Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 24,
+    "fields": {
+        "user": 2,
+        "jti": "223aff92f20340218958771a6152f2d8",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2MjYyMSwiaWF0IjoxNzgzNjU3ODIxLCJqdGkiOiIyMjNhZmY5MmYyMDM0MDIxODk1ODc3MWE2MTUyZjJkOCIsInVzZXJfaWQiOiIyIn0.VL0ZrnfW3npaBKWh-9MEPX24WIkT4_Y0aPRGKyt86SA",
+        "created_at": "2026-07-10T04:30:21.499Z",
+        "expires_at": "2026-07-17T04:30:21Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 25,
+    "fields": {
+        "user": 2,
+        "jti": "5f1b9c282abf4f689f78f5466e691af2",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2MzIxMywiaWF0IjoxNzgzNjU4NDEzLCJqdGkiOiI1ZjFiOWMyODJhYmY0ZjY4OWY3OGY1NDY2ZTY5MWFmMiIsInVzZXJfaWQiOiIyIn0.FRLVSaiFnk26KsxvWQ-EoYEdBEsBLmJJua8Iif6ptYI",
+        "created_at": "2026-07-10T04:40:13.527Z",
+        "expires_at": "2026-07-17T04:40:13Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 26,
+    "fields": {
+        "user": 2,
+        "jti": "1680a11a94ea42ca9f4493a7126726ee",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2MzU2OSwiaWF0IjoxNzgzNjU4NzY5LCJqdGkiOiIxNjgwYTExYTk0ZWE0MmNhOWY0NDkzYTcxMjY3MjZlZSIsInVzZXJfaWQiOiIyIn0.NFk59NQXakwFKc4cRsvXqkY6faEdKLHp6n-yG081KBE",
+        "created_at": "2026-07-10T04:46:09.561Z",
+        "expires_at": "2026-07-17T04:46:09Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 27,
+    "fields": {
+        "user": 2,
+        "jti": "1d51f11731764b7bb7c613d3e6f18338",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2NDg1MiwiaWF0IjoxNzgzNjYwMDUyLCJqdGkiOiIxZDUxZjExNzMxNzY0YjdiYjdjNjEzZDNlNmYxODMzOCIsInVzZXJfaWQiOiIyIn0.uvx_FzLy2aSqlR-kOq1ZkX1TlacXCvoSOGSDydBrr44",
+        "created_at": "2026-07-10T05:07:32.990Z",
+        "expires_at": "2026-07-17T05:07:32Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 28,
+    "fields": {
+        "user": 2,
+        "jti": "c54d9796b0e84eeb8b47e5f68826025e",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2NTgwMiwiaWF0IjoxNzgzNjYxMDAyLCJqdGkiOiJjNTRkOTc5NmIwZTg0ZWViOGI0N2U1ZjY4ODI2MDI1ZSIsInVzZXJfaWQiOiIyIn0._b0-iKPOBjYJyfHbITy7242unJ8B4qYoxFmN78LStag",
+        "created_at": "2026-07-10T05:23:22.259Z",
+        "expires_at": "2026-07-17T05:23:22Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 29,
+    "fields": {
+        "user": 2,
+        "jti": "0bf516ddf4384ac7a4fc54a33c5d36e8",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2NzgxOSwiaWF0IjoxNzgzNjYzMDE5LCJqdGkiOiIwYmY1MTZkZGY0Mzg0YWM3YTRmYzU0YTMzYzVkMzZlOCIsInVzZXJfaWQiOiIyIn0.t5Hvxm1XIUOQ2Cl5wWk8ILkk3sW3kc-eyFb1Oeacojs",
+        "created_at": "2026-07-10T05:56:59.594Z",
+        "expires_at": "2026-07-17T05:56:59Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 30,
+    "fields": {
+        "user": 2,
+        "jti": "6cf3b449388b45cc8d353bbb290049c3",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2ODc2NiwiaWF0IjoxNzgzNjYzOTY2LCJqdGkiOiI2Y2YzYjQ0OTM4OGI0NWNjOGQzNTNiYmIyOTAwNDljMyIsInVzZXJfaWQiOiIyIn0.hx9JBQjZurRG0npCsD0JZtjDhbi9AFWZoCgL3Wndiqw",
+        "created_at": "2026-07-10T06:12:46.928Z",
+        "expires_at": "2026-07-17T06:12:46Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 31,
+    "fields": {
+        "user": 1,
+        "jti": "1737db7695a14cfc869f16f30c7d1989",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI2OTc5MSwiaWF0IjoxNzgzNjY0OTkxLCJqdGkiOiIxNzM3ZGI3Njk1YTE0Y2ZjODY5ZjE2ZjMwYzdkMTk4OSIsInVzZXJfaWQiOiIxIn0.U3mc3zM4jm_PC9hINOk-xs-Zse2nSQeGb-RrgiDtOio",
+        "created_at": "2026-07-10T06:29:51.923Z",
+        "expires_at": "2026-07-17T06:29:51Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 32,
+    "fields": {
+        "user": 2,
+        "jti": "2ab93f420657441d8fe096d781ab578a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI3MDYwMiwiaWF0IjoxNzgzNjY1ODAyLCJqdGkiOiIyYWI5M2Y0MjA2NTc0NDFkOGZlMDk2ZDc4MWFiNTc4YSIsInVzZXJfaWQiOiIyIn0.jq-YEcBAJUN1I5IYJ3Ufq9oQr7yWixycIZnewPWqyGc",
+        "created_at": "2026-07-10T06:43:22.580Z",
+        "expires_at": "2026-07-17T06:43:22Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 33,
+    "fields": {
+        "user": 2,
+        "jti": "d2d6d12449fa4668974a56b92ce9e73b",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI3NjY5NCwiaWF0IjoxNzgzNjcxODk0LCJqdGkiOiJkMmQ2ZDEyNDQ5ZmE0NjY4OTc0YTU2YjkyY2U5ZTczYiIsInVzZXJfaWQiOiIyIn0.QoPWW0cjQixHy8PuQdMiJsjZrRB7Fdtjt2bjizKD0sw",
+        "created_at": "2026-07-10T08:24:54.844Z",
+        "expires_at": "2026-07-17T08:24:54Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 34,
+    "fields": {
+        "user": 1,
+        "jti": "07f7421b96a04c74929ed2d4f0b0417a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDI3Njg2NywiaWF0IjoxNzgzNjcyMDY3LCJqdGkiOiIwN2Y3NDIxYjk2YTA0Yzc0OTI5ZWQyZDRmMGIwNDE3YSIsInVzZXJfaWQiOiIxIn0.c7C1v7-hCalaovZemu0evJjvV1yfqyZPe9JfPAisBpw",
+        "created_at": "2026-07-10T08:27:47.249Z",
+        "expires_at": "2026-07-17T08:27:47Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 35,
+    "fields": {
+        "user": 2,
+        "jti": "76510b7fbd2b4615aabae47f441c1f34",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM1NjgzNCwiaWF0IjoxNzgzNzUyMDM0LCJqdGkiOiI3NjUxMGI3ZmJkMmI0NjE1YWFiYWU0N2Y0NDFjMWYzNCIsInVzZXJfaWQiOiIyIn0.YOVZMXqXInSwRODLIlBqXJCbOfBCqFvBTdsHKe-hhZM",
+        "created_at": "2026-07-11T06:40:34.615Z",
+        "expires_at": "2026-07-18T06:40:34Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 36,
+    "fields": {
+        "user": 2,
+        "jti": "496edb10f70b40ee908a7a5ac07eb3ef",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM1OTEwNSwiaWF0IjoxNzgzNzU0MzA1LCJqdGkiOiI0OTZlZGIxMGY3MGI0MGVlOTA4YTdhNWFjMDdlYjNlZiIsInVzZXJfaWQiOiIyIn0.PKtlMrvFV2a4f-gS4NEuOCXuar0U9Xr0ANYPU-LxR4E",
+        "created_at": "2026-07-11T07:18:25.171Z",
+        "expires_at": "2026-07-18T07:18:25Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 37,
+    "fields": {
+        "user": 2,
+        "jti": "c06ef3cee94e4bcda22e9cef88c54029",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM2MDE3MSwiaWF0IjoxNzgzNzU1MzcxLCJqdGkiOiJjMDZlZjNjZWU5NGU0YmNkYTIyZTljZWY4OGM1NDAyOSIsInVzZXJfaWQiOiIyIn0.U1RVKxJ6GxVa9zVsEXyoh6Bbd_klV6Zg4H4IXRceAzY",
+        "created_at": "2026-07-11T07:36:11.841Z",
+        "expires_at": "2026-07-18T07:36:11Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 38,
+    "fields": {
+        "user": 2,
+        "jti": "36effc2a94634134a673c3f698a5342d",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM2MTc0MywiaWF0IjoxNzgzNzU2OTQzLCJqdGkiOiIzNmVmZmMyYTk0NjM0MTM0YTY3M2MzZjY5OGE1MzQyZCIsInVzZXJfaWQiOiIyIn0.yvxJF0-JjtOfWTa4hA3eJj0BlYSaMkcKBLG3XBIRdtk",
+        "created_at": "2026-07-11T08:02:23.141Z",
+        "expires_at": "2026-07-18T08:02:23Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 39,
+    "fields": {
+        "user": 2,
+        "jti": "7d2ac1d4f67a4a4e80c1fa46a50eee5a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM2MTc1OSwiaWF0IjoxNzgzNzU2OTU5LCJqdGkiOiI3ZDJhYzFkNGY2N2E0YTRlODBjMWZhNDZhNTBlZWU1YSIsInVzZXJfaWQiOiIyIn0.GAl-9a32qZ8yITXzPtS-6dGZCxkS65bdO5QFfhqC-NA",
+        "created_at": "2026-07-11T08:02:39.843Z",
+        "expires_at": "2026-07-18T08:02:39Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 40,
+    "fields": {
+        "user": 2,
+        "jti": "b3365864af1b4373954540afd7a42071",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM2Mjc0NSwiaWF0IjoxNzgzNzU3OTQ1LCJqdGkiOiJiMzM2NTg2NGFmMWI0MzczOTU0NTQwYWZkN2E0MjA3MSIsInVzZXJfaWQiOiIyIn0.Lt1efc-ehptbWa_nPKSbMdJCJhmQOz_Bn8sTncrwd0Y",
+        "created_at": "2026-07-11T08:19:05.602Z",
+        "expires_at": "2026-07-18T08:19:05Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 41,
+    "fields": {
+        "user": 2,
+        "jti": "30a11f876d6a4cbda58e7114b504ed7d",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM2Mzc2NiwiaWF0IjoxNzgzNzU4OTY2LCJqdGkiOiIzMGExMWY4NzZkNmE0Y2JkYTU4ZTcxMTRiNTA0ZWQ3ZCIsInVzZXJfaWQiOiIyIn0.lThrWKHve9WV3FmKCzN_eLzLJOVPEqPQ1Vp24xhxSzM",
+        "created_at": "2026-07-11T08:36:06.242Z",
+        "expires_at": "2026-07-18T08:36:06Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 42,
+    "fields": {
+        "user": 1,
+        "jti": "85a77a4ccd424956b18801c395586df4",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM3MjQxMSwiaWF0IjoxNzgzNzY3NjExLCJqdGkiOiI4NWE3N2E0Y2NkNDI0OTU2YjE4ODAxYzM5NTU4NmRmNCIsInVzZXJfaWQiOiIxIn0.fXOmXOQB97E9VmUdzy-RG0FGDhSS9c_Hbinuoq3MNgU",
+        "created_at": "2026-07-11T11:00:11.133Z",
+        "expires_at": "2026-07-18T11:00:11Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 43,
+    "fields": {
+        "user": 2,
+        "jti": "0c2a0f7230b74e539f4c6f3b79615818",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM3MjUxNywiaWF0IjoxNzgzNzY3NzE3LCJqdGkiOiIwYzJhMGY3MjMwYjc0ZTUzOWY0YzZmM2I3OTYxNTgxOCIsInVzZXJfaWQiOiIyIn0.tbaIfoUMYJd021cHLujob4Ko_GAJH8mLRL0CTysF0k0",
+        "created_at": "2026-07-11T11:01:57.019Z",
+        "expires_at": "2026-07-18T11:01:57Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 44,
+    "fields": {
+        "user": 1,
+        "jti": "9179c3d71fd8419dbc349cb120fa1508",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM3ODM0MSwiaWF0IjoxNzgzNzczNTQxLCJqdGkiOiI5MTc5YzNkNzFmZDg0MTlkYmMzNDljYjEyMGZhMTUwOCIsInVzZXJfaWQiOiIxIn0.vr6M3ygofDWFukjwTHN21iQ_TqLgXlIqzi1p4xRz1yY",
+        "created_at": "2026-07-11T12:39:01.841Z",
+        "expires_at": "2026-07-18T12:39:01Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 45,
+    "fields": {
+        "user": 1,
+        "jti": "aebaba5be027456aa06b27f01ed38ca0",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDM4MDA5NiwiaWF0IjoxNzgzNzc1Mjk2LCJqdGkiOiJhZWJhYmE1YmUwMjc0NTZhYTA2YjI3ZjAxZWQzOGNhMCIsInVzZXJfaWQiOiIxIn0.Jq7D0duYHnU6vGfKFRTkbrEmftgkzOkHxskfMgJoZT4",
+        "created_at": "2026-07-11T13:08:16.598Z",
+        "expires_at": "2026-07-18T13:08:16Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 46,
+    "fields": {
+        "user": 2,
+        "jti": "2d5666d65829435bb0c57a4fb3d22a57",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDQ5MTc0MSwiaWF0IjoxNzgzODg2OTQxLCJqdGkiOiIyZDU2NjZkNjU4Mjk0MzViYjBjNTdhNGZiM2QyMmE1NyIsInVzZXJfaWQiOiIyIn0.ptTCXuCT2PdpcNC2CHyzxu4bzxlB0N2nmBtsn5fV6js",
+        "created_at": "2026-07-12T20:09:01.163Z",
+        "expires_at": "2026-07-19T20:09:01Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 47,
+    "fields": {
+        "user": 2,
+        "jti": "44d41f0f10944a69a7a65fc6246e2af5",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDQ5MTg5MSwiaWF0IjoxNzgzODg3MDkxLCJqdGkiOiI0NGQ0MWYwZjEwOTQ0YTY5YTdhNjVmYzYyNDZlMmFmNSIsInVzZXJfaWQiOiIyIn0.fqtDBdStEcJO2CvAVzapLRMzL7guV3i5D4FC26VkRjM",
+        "created_at": "2026-07-12T20:11:31.784Z",
+        "expires_at": "2026-07-19T20:11:31Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 48,
+    "fields": {
+        "user": 2,
+        "jti": "296c594e94a64c78890280b50127e7c4",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDQ5MjcwMSwiaWF0IjoxNzgzODg3OTAxLCJqdGkiOiIyOTZjNTk0ZTk0YTY0Yzc4ODkwMjgwYjUwMTI3ZTdjNCIsInVzZXJfaWQiOiIyIn0._FFYQvzczRNn3LESincLM6fmVcHMKVi3PBHBaWd6fnc",
+        "created_at": "2026-07-12T20:25:01.570Z",
+        "expires_at": "2026-07-19T20:25:01Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 49,
+    "fields": {
+        "user": 2,
+        "jti": "a668b67305e4499788036d581daecbe1",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyMTkzMCwiaWF0IjoxNzgzOTE3MTMwLCJqdGkiOiJhNjY4YjY3MzA1ZTQ0OTk3ODgwMzZkNTgxZGFlY2JlMSIsInVzZXJfaWQiOiIyIn0.GLIddV9ucL9qW6n8VOBKbFFBCUXAGSahl66L1p7Z8Zg",
+        "created_at": "2026-07-13T04:32:10.514Z",
+        "expires_at": "2026-07-20T04:32:10Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 50,
+    "fields": {
+        "user": 2,
+        "jti": "fb89ef5569cb49f58b410ee102e8ada9",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyMjUwMCwiaWF0IjoxNzgzOTE3NzAwLCJqdGkiOiJmYjg5ZWY1NTY5Y2I0OWY1OGI0MTBlZTEwMmU4YWRhOSIsInVzZXJfaWQiOiIyIn0.h7kinOGzvF9bnT9YAv2hfA9yP4SF1HAkwmcB-67mSm0",
+        "created_at": "2026-07-13T04:41:40.126Z",
+        "expires_at": "2026-07-20T04:41:40Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 51,
+    "fields": {
+        "user": 2,
+        "jti": "2b65e3286ac44fb58a84634dd873001a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyMjUzMSwiaWF0IjoxNzgzOTE3NzMxLCJqdGkiOiIyYjY1ZTMyODZhYzQ0ZmI1OGE4NDYzNGRkODczMDAxYSIsInVzZXJfaWQiOiIyIn0.vt2q4QBNJJ9P5XZGy2VDRshtMb_LX8AikxTZj_mOVF8",
+        "created_at": "2026-07-13T04:42:11.231Z",
+        "expires_at": "2026-07-20T04:42:11Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 52,
+    "fields": {
+        "user": 1,
+        "jti": "65ba831e302a4827b19bb958256fa33a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyMzM4NywiaWF0IjoxNzgzOTE4NTg3LCJqdGkiOiI2NWJhODMxZTMwMmE0ODI3YjE5YmI5NTgyNTZmYTMzYSIsInVzZXJfaWQiOiIxIn0.S5Rfv5tCh0Lw40MN6JwGioDxgTQSyU4wkd5gqoHmMUk",
+        "created_at": "2026-07-13T04:56:27.004Z",
+        "expires_at": "2026-07-20T04:56:27Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 53,
+    "fields": {
+        "user": 2,
+        "jti": "dfb3015af18f46eb9fa50dac9f487302",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyMzQwOSwiaWF0IjoxNzgzOTE4NjA5LCJqdGkiOiJkZmIzMDE1YWYxOGY0NmViOWZhNTBkYWM5ZjQ4NzMwMiIsInVzZXJfaWQiOiIyIn0.QeoVdZT1wLJPETMPpvsYaDklKzFCO1jI7LeNLoR8OfY",
+        "created_at": "2026-07-13T04:56:49.217Z",
+        "expires_at": "2026-07-20T04:56:49Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 54,
+    "fields": {
+        "user": 2,
+        "jti": "e8ff1aa8e0b14fcd9bb16f1d1b471996",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyMzkwNSwiaWF0IjoxNzgzOTE5MTA1LCJqdGkiOiJlOGZmMWFhOGUwYjE0ZmNkOWJiMTZmMWQxYjQ3MTk5NiIsInVzZXJfaWQiOiIyIn0.-P2ZP75A9kqSTs4GhoHqkwo3AHtWckBbb_RofyxFoi8",
+        "created_at": "2026-07-13T05:05:05.776Z",
+        "expires_at": "2026-07-20T05:05:05Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 55,
+    "fields": {
+        "user": 2,
+        "jti": "6a10fc889f2b4a739fcdc2541730eb26",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyNDE3MiwiaWF0IjoxNzgzOTE5MzcyLCJqdGkiOiI2YTEwZmM4ODlmMmI0YTczOWZjZGMyNTQxNzMwZWIyNiIsInVzZXJfaWQiOiIyIn0.Z3XkJB19XXA6wYokx_0pE_U-OHSnP60HtyjjFNl4fNc",
+        "created_at": "2026-07-13T05:09:32.546Z",
+        "expires_at": "2026-07-20T05:09:32Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 56,
+    "fields": {
+        "user": 2,
+        "jti": "4d794baf7056438fa04a63cce9f6c212",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyNDUwOCwiaWF0IjoxNzgzOTE5NzA4LCJqdGkiOiI0ZDc5NGJhZjcwNTY0MzhmYTA0YTYzY2NlOWY2YzIxMiIsInVzZXJfaWQiOiIyIn0.v6NrjHCLVs3DzorsYQmLNoyGpvTYaTGj5R84wF58vrg",
+        "created_at": "2026-07-13T05:15:08.540Z",
+        "expires_at": "2026-07-20T05:15:08Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 57,
+    "fields": {
+        "user": 2,
+        "jti": "32ea9bb40b60476689696e9c4998271d",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyNDUyMCwiaWF0IjoxNzgzOTE5NzIwLCJqdGkiOiIzMmVhOWJiNDBiNjA0NzY2ODk2OTZlOWM0OTk4MjcxZCIsInVzZXJfaWQiOiIyIn0.MbcfM6U7Ae1NBofXV00P9GrSjmb2VN20y5zAjMsOVaI",
+        "created_at": "2026-07-13T05:15:20.144Z",
+        "expires_at": "2026-07-20T05:15:20Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 58,
+    "fields": {
+        "user": 2,
+        "jti": "3ca83e472ac04df0a4a2c1a2b1db03c9",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyNTA3NiwiaWF0IjoxNzgzOTIwMjc2LCJqdGkiOiIzY2E4M2U0NzJhYzA0ZGYwYTRhMmMxYTJiMWRiMDNjOSIsInVzZXJfaWQiOiIyIn0.LP_xay6Tn9JpnFzS_LAJJWA0myOb_smDbi4jkxh51Z8",
+        "created_at": "2026-07-13T05:24:36.890Z",
+        "expires_at": "2026-07-20T05:24:36Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 59,
+    "fields": {
+        "user": 2,
+        "jti": "0d8eb082a91d4021b8c1e2a773caf049",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyNTQxNSwiaWF0IjoxNzgzOTIwNjE1LCJqdGkiOiIwZDhlYjA4MmE5MWQ0MDIxYjhjMWUyYTc3M2NhZjA0OSIsInVzZXJfaWQiOiIyIn0.cyZR6az1KUg6-w7QiYC_e5MGm-BmsABS7t5WZ-qv4Uo",
+        "created_at": "2026-07-13T05:30:15.782Z",
+        "expires_at": "2026-07-20T05:30:15Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 60,
+    "fields": {
+        "user": 2,
+        "jti": "9b7d5de8219e48a18e0358af719eedb3",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyNjM1NCwiaWF0IjoxNzgzOTIxNTU0LCJqdGkiOiI5YjdkNWRlODIxOWU0OGExOGUwMzU4YWY3MTllZWRiMyIsInVzZXJfaWQiOiIyIn0.Eh9rvPoQSeBReCPA6faqYZ1qdaSlB1h_EUH0DGu8oPU",
+        "created_at": "2026-07-13T05:45:54.537Z",
+        "expires_at": "2026-07-20T05:45:54Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 61,
+    "fields": {
+        "user": 2,
+        "jti": "1c1cef2548a24177b6dabf0185fc89b4",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUyODU5OSwiaWF0IjoxNzgzOTIzNzk5LCJqdGkiOiIxYzFjZWYyNTQ4YTI0MTc3YjZkYWJmMDE4NWZjODliNCIsInVzZXJfaWQiOiIyIn0.DqM8HOWw6Guh-1ZQwvEwvEDE8_ShTYxH68cEIB8FrFk",
+        "created_at": "2026-07-13T06:23:19.137Z",
+        "expires_at": "2026-07-20T06:23:19Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 62,
+    "fields": {
+        "user": 2,
+        "jti": "a56bbc3cea5f4bb68dddbf89bde7d018",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzMTAwMCwiaWF0IjoxNzgzOTI2MjAwLCJqdGkiOiJhNTZiYmMzY2VhNWY0YmI2OGRkZGJmODliZGU3ZDAxOCIsInVzZXJfaWQiOiIyIn0.xfx-4B_jYDRo-UMWbP2SgRUWXIJQH-ps5MgTMA9exSc",
+        "created_at": "2026-07-13T07:03:20.740Z",
+        "expires_at": "2026-07-20T07:03:20Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 63,
+    "fields": {
+        "user": 2,
+        "jti": "d9cb2488a6444f92b1f68c0d9af087fd",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzMTE1OSwiaWF0IjoxNzgzOTI2MzU5LCJqdGkiOiJkOWNiMjQ4OGE2NDQ0ZjkyYjFmNjhjMGQ5YWYwODdmZCIsInVzZXJfaWQiOiIyIn0.Hnz8XWfqxn8K-n5Dowd2GeAcFHLlrX8hr5tb14B8iBI",
+        "created_at": "2026-07-13T07:05:59.822Z",
+        "expires_at": "2026-07-20T07:05:59Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 64,
+    "fields": {
+        "user": 2,
+        "jti": "36553eb07fd94bb39293abf18d7765d8",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzMTE2MSwiaWF0IjoxNzgzOTI2MzYxLCJqdGkiOiIzNjU1M2ViMDdmZDk0YmIzOTI5M2FiZjE4ZDc3NjVkOCIsInVzZXJfaWQiOiIyIn0.djdlxfMS_9cEfgtGQ2STTDapDnhLRD7wRyIdCis-OY0",
+        "created_at": "2026-07-13T07:06:01.018Z",
+        "expires_at": "2026-07-20T07:06:01Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 65,
+    "fields": {
+        "user": 3,
+        "jti": "58edbb34dd3142dea52e959a3007b815",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzMTMyMywiaWF0IjoxNzgzOTI2NTIzLCJqdGkiOiI1OGVkYmIzNGRkMzE0MmRlYTUyZTk1OWEzMDA3YjgxNSIsInVzZXJfaWQiOiIzIn0.Vr3uz_drBhSBsngixIK5P3oulKt_36TeeAI749bKllY",
+        "created_at": "2026-07-13T07:08:43.365Z",
+        "expires_at": "2026-07-20T07:08:43Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 66,
+    "fields": {
+        "user": 3,
+        "jti": "d28f090d37d34981bac990ddee4ddf10",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzMjIyNCwiaWF0IjoxNzgzOTI3NDI0LCJqdGkiOiJkMjhmMDkwZDM3ZDM0OTgxYmFjOTkwZGRlZTRkZGYxMCIsInVzZXJfaWQiOiIzIn0.2YP8MBYkmB4Nlu3YobVQA5eTCCwuGAO_soV79FVejCY",
+        "created_at": "2026-07-13T07:23:44.595Z",
+        "expires_at": "2026-07-20T07:23:44Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 67,
+    "fields": {
+        "user": 3,
+        "jti": "9aeb7e4dfaea437da566d9bf3f5cdaaa",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzMzEzNCwiaWF0IjoxNzgzOTI4MzM0LCJqdGkiOiI5YWViN2U0ZGZhZWE0MzdkYTU2NmQ5YmYzZjVjZGFhYSIsInVzZXJfaWQiOiIzIn0.XRvP9saEw84192nLi-Y_07lO_uXI6QFIn9EV5_8MG4A",
+        "created_at": "2026-07-13T07:38:54.561Z",
+        "expires_at": "2026-07-20T07:38:54Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 68,
+    "fields": {
+        "user": 2,
+        "jti": "cdc2dae42eb847caaea0f46265ded6b6",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzMzMzMSwiaWF0IjoxNzgzOTI4NTMxLCJqdGkiOiJjZGMyZGFlNDJlYjg0N2NhYWVhMGY0NjI2NWRlZDZiNiIsInVzZXJfaWQiOiIyIn0.Vk-D_Fozqsh-7dhs30dDbMitLbJ2BZVjRwFJ2Jtv6uk",
+        "created_at": "2026-07-13T07:42:11.864Z",
+        "expires_at": "2026-07-20T07:42:11Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 69,
+    "fields": {
+        "user": 3,
+        "jti": "aa95af972ec24797bc972d9066db6d2c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNDA0MCwiaWF0IjoxNzgzOTI5MjQwLCJqdGkiOiJhYTk1YWY5NzJlYzI0Nzk3YmM5NzJkOTA2NmRiNmQyYyIsInVzZXJfaWQiOiIzIn0.ZbcxMgIZf8wz8gx_A6HdfOKZmmeS2Y0JsOlRdcbJ0As",
+        "created_at": "2026-07-13T07:54:00.100Z",
+        "expires_at": "2026-07-20T07:54:00Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 70,
+    "fields": {
+        "user": 2,
+        "jti": "14d2acfdee674ad08d353cac29d68a57",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNDIzMywiaWF0IjoxNzgzOTI5NDMzLCJqdGkiOiIxNGQyYWNmZGVlNjc0YWQwOGQzNTNjYWMyOWQ2OGE1NyIsInVzZXJfaWQiOiIyIn0.VdEyxrIll0QMMdOtaEdFnY-DAQdWo9d02HnU6JeNxyU",
+        "created_at": "2026-07-13T07:57:13.812Z",
+        "expires_at": "2026-07-20T07:57:13Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 71,
+    "fields": {
+        "user": 2,
+        "jti": "924e87bb6a364208a0d2d4685022a0f5",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNTA4NCwiaWF0IjoxNzgzOTMwMjg0LCJqdGkiOiI5MjRlODdiYjZhMzY0MjA4YTBkMmQ0Njg1MDIyYTBmNSIsInVzZXJfaWQiOiIyIn0.FJ_QiuSQ4gAamCG3LE-fDYSsW8zQyK_KqYIJ1luiic0",
+        "created_at": "2026-07-13T08:11:24.190Z",
+        "expires_at": "2026-07-20T08:11:24Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 72,
+    "fields": {
+        "user": 2,
+        "jti": "a8e30d1108e349c2bfb80250c1a7d4e1",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNTE0MywiaWF0IjoxNzgzOTMwMzQzLCJqdGkiOiJhOGUzMGQxMTA4ZTM0OWMyYmZiODAyNTBjMWE3ZDRlMSIsInVzZXJfaWQiOiIyIn0.UXPWTgKbTCRS6QFxfWDcp7kdInXbIfx5PMTLxp1-Cqc",
+        "created_at": "2026-07-13T08:12:23.867Z",
+        "expires_at": "2026-07-20T08:12:23Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 73,
+    "fields": {
+        "user": 3,
+        "jti": "d646932785c5413cb736590546133610",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNTE1NCwiaWF0IjoxNzgzOTMwMzU0LCJqdGkiOiJkNjQ2OTMyNzg1YzU0MTNjYjczNjU5MDU0NjEzMzYxMCIsInVzZXJfaWQiOiIzIn0._dpNT9ksPQ8WL-h_Fd9f5zTGJuWOK6wBdJ4c5kntTE4",
+        "created_at": "2026-07-13T08:12:34.992Z",
+        "expires_at": "2026-07-20T08:12:34Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 74,
+    "fields": {
+        "user": 3,
+        "jti": "9a39261013214ab59590307c038a1e91",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNTE3OCwiaWF0IjoxNzgzOTMwMzc4LCJqdGkiOiI5YTM5MjYxMDEzMjE0YWI1OTU5MDMwN2MwMzhhMWU5MSIsInVzZXJfaWQiOiIzIn0.q7vbTEfTilihJJdcufQNmx8GF6YjtCFBvGePy-ifVhA",
+        "created_at": "2026-07-13T08:12:58.072Z",
+        "expires_at": "2026-07-20T08:12:58Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 75,
+    "fields": {
+        "user": 3,
+        "jti": "6492c31ff70f435d9c583e3701723aa7",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNTgzNywiaWF0IjoxNzgzOTMxMDM3LCJqdGkiOiI2NDkyYzMxZmY3MGY0MzVkOWM1ODNlMzcwMTcyM2FhNyIsInVzZXJfaWQiOiIzIn0.kSCyt5Zbp3sR1gj9X0SxXZogfPj9wOHMg_WEJglF47Y",
+        "created_at": "2026-07-13T08:23:57.047Z",
+        "expires_at": "2026-07-20T08:23:57Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 76,
+    "fields": {
+        "user": 3,
+        "jti": "dd92c591405d413ea1ff17d2b50fbda7",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNjc4OSwiaWF0IjoxNzgzOTMxOTg5LCJqdGkiOiJkZDkyYzU5MTQwNWQ0MTNlYTFmZjE3ZDJiNTBmYmRhNyIsInVzZXJfaWQiOiIzIn0.Nz-cdmC41HOsjhq5kcOmiPQwlVH9e5I4aoc-LbE6HxE",
+        "created_at": "2026-07-13T08:39:49.793Z",
+        "expires_at": "2026-07-20T08:39:49Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 77,
+    "fields": {
+        "user": 3,
+        "jti": "8ca92b1a1e7546bc9f121bef2e24084a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNzk2OCwiaWF0IjoxNzgzOTMzMTY4LCJqdGkiOiI4Y2E5MmIxYTFlNzU0NmJjOWYxMjFiZWYyZTI0MDg0YSIsInVzZXJfaWQiOiIzIn0.BTofJKEYoGzMUSw5Jvnx4qFFURfHUrsjmIJHLRYE7NE",
+        "created_at": "2026-07-13T08:59:28.633Z",
+        "expires_at": "2026-07-20T08:59:28Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 78,
+    "fields": {
+        "user": 3,
+        "jti": "5f5c4e18fd05455b9da92157c687d93a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzNzk5NSwiaWF0IjoxNzgzOTMzMTk1LCJqdGkiOiI1ZjVjNGUxOGZkMDU0NTViOWRhOTIxNTdjNjg3ZDkzYSIsInVzZXJfaWQiOiIzIn0.s0cAHYOXJ1IfCS-1G7bIZ8ugnDcUbodniyynrHxJ5Yw",
+        "created_at": "2026-07-13T08:59:55.100Z",
+        "expires_at": "2026-07-20T08:59:55Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 79,
+    "fields": {
+        "user": 3,
+        "jti": "05375f88af6e4874bf9cb191f41ad790",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzODk0OSwiaWF0IjoxNzgzOTM0MTQ5LCJqdGkiOiIwNTM3NWY4OGFmNmU0ODc0YmY5Y2IxOTFmNDFhZDc5MCIsInVzZXJfaWQiOiIzIn0.aLp19ffnqnUWSohU-4b1ZkSOk82qPPlCLnjmRjCZdtg",
+        "created_at": "2026-07-13T09:15:49.445Z",
+        "expires_at": "2026-07-20T09:15:49Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 80,
+    "fields": {
+        "user": 3,
+        "jti": "25a06d9e67844e7dbe6d117349755187",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDUzOTkxNiwiaWF0IjoxNzgzOTM1MTE2LCJqdGkiOiIyNWEwNmQ5ZTY3ODQ0ZTdkYmU2ZDExNzM0OTc1NTE4NyIsInVzZXJfaWQiOiIzIn0.WBig_UOzxwhsK9EupCdVFaAeWcSTovJsKTaudO1-ru4",
+        "created_at": "2026-07-13T09:31:56.984Z",
+        "expires_at": "2026-07-20T09:31:56Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 81,
+    "fields": {
+        "user": 3,
+        "jti": "232532cb83e84a568dac408ce7cbe3dc",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0MDgxOSwiaWF0IjoxNzgzOTM2MDE5LCJqdGkiOiIyMzI1MzJjYjgzZTg0YTU2OGRhYzQwOGNlN2NiZTNkYyIsInVzZXJfaWQiOiIzIn0.-AdkgLq8wkL1g8XAbcgy3OdAeilq6fDDm7RqvE5Y-r4",
+        "created_at": "2026-07-13T09:46:59.600Z",
+        "expires_at": "2026-07-20T09:46:59Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 82,
+    "fields": {
+        "user": 3,
+        "jti": "bc249c012e814ca19adcfe36f52b6f19",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0MDg0MiwiaWF0IjoxNzgzOTM2MDQyLCJqdGkiOiJiYzI0OWMwMTJlODE0Y2ExOWFkY2ZlMzZmNTJiNmYxOSIsInVzZXJfaWQiOiIzIn0.r6_vgKZeAmDQJKInBi0w2VU-3SlonhW5FyPgq3aJIkg",
+        "created_at": "2026-07-13T09:47:22.327Z",
+        "expires_at": "2026-07-20T09:47:22Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 83,
+    "fields": {
+        "user": 3,
+        "jti": "cb6e9e2f54c44e07acdefe09f55beafc",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0MzM0NiwiaWF0IjoxNzgzOTM4NTQ2LCJqdGkiOiJjYjZlOWUyZjU0YzQ0ZTA3YWNkZWZlMDlmNTViZWFmYyIsInVzZXJfaWQiOiIzIn0.F9UxzBJAnnUm-X6gzktMYqX0Bio3sA50C9sldrtnjIE",
+        "created_at": "2026-07-13T10:29:06.337Z",
+        "expires_at": "2026-07-20T10:29:06Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 84,
+    "fields": {
+        "user": 3,
+        "jti": "705050b9ade64b72b57b4c4bb398c658",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0NDMwMiwiaWF0IjoxNzgzOTM5NTAyLCJqdGkiOiI3MDUwNTBiOWFkZTY0YjcyYjU3YjRjNGJiMzk4YzY1OCIsInVzZXJfaWQiOiIzIn0.A7Nte6jrOrEAdnHPxzRUJV-q6LOO2a2oJW4m45jOe94",
+        "created_at": "2026-07-13T10:45:02.915Z",
+        "expires_at": "2026-07-20T10:45:02Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 85,
+    "fields": {
+        "user": 3,
+        "jti": "7072fd36eac54e15a6c750511ce29551",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0NDMzNCwiaWF0IjoxNzgzOTM5NTM0LCJqdGkiOiI3MDcyZmQzNmVhYzU0ZTE1YTZjNzUwNTExY2UyOTU1MSIsInVzZXJfaWQiOiIzIn0.ovJJR9Hjq7Ust-8lHo2SDAEpuWrjyn0DJNxSjobhA9M",
+        "created_at": "2026-07-13T10:45:34.137Z",
+        "expires_at": "2026-07-20T10:45:34Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 86,
+    "fields": {
+        "user": 2,
+        "jti": "c2bc6d5e17e441f58af075c606b0cfc6",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0NTA2MCwiaWF0IjoxNzgzOTQwMjYwLCJqdGkiOiJjMmJjNmQ1ZTE3ZTQ0MWY1OGFmMDc1YzYwNmIwY2ZjNiIsInVzZXJfaWQiOiIyIn0.6J2WEpnX1TZlHUkTt01T752NF84OwxxYhJOjKr27ylo",
+        "created_at": "2026-07-13T10:57:40.465Z",
+        "expires_at": "2026-07-20T10:57:40Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 87,
+    "fields": {
+        "user": 3,
+        "jti": "64a52000ad6b4c24a225b3222257d22e",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0NTIzNCwiaWF0IjoxNzgzOTQwNDM0LCJqdGkiOiI2NGE1MjAwMGFkNmI0YzI0YTIyNWIzMjIyMjU3ZDIyZSIsInVzZXJfaWQiOiIzIn0.eHfmLQ5zYnE8RjY1ES0jOhA9vMRgvVA-D6T85ccbMgs",
+        "created_at": "2026-07-13T11:00:34.341Z",
+        "expires_at": "2026-07-20T11:00:34Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 88,
+    "fields": {
+        "user": 3,
+        "jti": "25a5048ecb5e46da9b0cde5b6f390e9b",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0NTY4MCwiaWF0IjoxNzgzOTQwODgwLCJqdGkiOiIyNWE1MDQ4ZWNiNWU0NmRhOWIwY2RlNWI2ZjM5MGU5YiIsInVzZXJfaWQiOiIzIn0.TEoeiRwvQqULZSxaLgr0-HvWlTFdI0njJrDjiugve40",
+        "created_at": "2026-07-13T11:08:00.229Z",
+        "expires_at": "2026-07-20T11:08:00Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 89,
+    "fields": {
+        "user": 3,
+        "jti": "b68e7ef809b14757bd89e3b16de031cb",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0NTgyNiwiaWF0IjoxNzgzOTQxMDI2LCJqdGkiOiJiNjhlN2VmODA5YjE0NzU3YmQ4OWUzYjE2ZGUwMzFjYiIsInVzZXJfaWQiOiIzIn0.Gqt5E6OI6o2Dx_q7LxR4GZgpGnyAPtsOBxVg3GvasQ0",
+        "created_at": "2026-07-13T11:10:26.914Z",
+        "expires_at": "2026-07-20T11:10:26Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 90,
+    "fields": {
+        "user": 3,
+        "jti": "e08f7f70c66c42468aa123957dbcc797",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0OTUzMSwiaWF0IjoxNzgzOTQ0NzMxLCJqdGkiOiJlMDhmN2Y3MGM2NmM0MjQ2OGFhMTIzOTU3ZGJjYzc5NyIsInVzZXJfaWQiOiIzIn0.mje-3R8xSUixqO0vwf5nlPHf0Ye3vg64mSPpcxzYHtE",
+        "created_at": "2026-07-13T12:12:11.789Z",
+        "expires_at": "2026-07-20T12:12:11Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 91,
+    "fields": {
+        "user": 3,
+        "jti": "d5057d9f948e4986b739b2e05465b562",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0OTU2MywiaWF0IjoxNzgzOTQ0NzYzLCJqdGkiOiJkNTA1N2Q5Zjk0OGU0OTg2YjczOWIyZTA1NDY1YjU2MiIsInVzZXJfaWQiOiIzIn0.lBDGpPKhvd1NmBazGbEBMzoBjDVMazXA67sMu4r-OyU",
+        "created_at": "2026-07-13T12:12:43.786Z",
+        "expires_at": "2026-07-20T12:12:43Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 92,
+    "fields": {
+        "user": 3,
+        "jti": "fdd7da98caec4ca3a3ae3e3c303fc06b",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0OTYxNiwiaWF0IjoxNzgzOTQ0ODE2LCJqdGkiOiJmZGQ3ZGE5OGNhZWM0Y2EzYTNhZTNlM2MzMDNmYzA2YiIsInVzZXJfaWQiOiIzIn0.AaKQutCykd4TUgIY9PXSuZhGDsoKhlHT3SBYyIaaCKA",
+        "created_at": "2026-07-13T12:13:36.284Z",
+        "expires_at": "2026-07-20T12:13:36Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 93,
+    "fields": {
+        "user": 3,
+        "jti": "2074efcf600845aab1148cfce6d88d6c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU0OTY5MCwiaWF0IjoxNzgzOTQ0ODkwLCJqdGkiOiIyMDc0ZWZjZjYwMDg0NWFhYjExNDhjZmNlNmQ4OGQ2YyIsInVzZXJfaWQiOiIzIn0.p8CkFxXIl4RWN8hNj1LH4XGcDAzmgCBdsZBs2JV5vSM",
+        "created_at": "2026-07-13T12:14:50.420Z",
+        "expires_at": "2026-07-20T12:14:50Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 94,
+    "fields": {
+        "user": 3,
+        "jti": "a7884915b80e41718e90687cf8058e23",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU1MDE0NiwiaWF0IjoxNzgzOTQ1MzQ2LCJqdGkiOiJhNzg4NDkxNWI4MGU0MTcxOGU5MDY4N2NmODA1OGUyMyIsInVzZXJfaWQiOiIzIn0.x5AXn0u6dbsMiG7SbV9iYnvW9tsJELBPvIz5h9TJ2gc",
+        "created_at": "2026-07-13T12:22:26.604Z",
+        "expires_at": "2026-07-20T12:22:26Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 95,
+    "fields": {
+        "user": 2,
+        "jti": "9fa26addd67d4521a1a408070f634cd8",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU1MTAyNSwiaWF0IjoxNzgzOTQ2MjI1LCJqdGkiOiI5ZmEyNmFkZGQ2N2Q0NTIxYTFhNDA4MDcwZjYzNGNkOCIsInVzZXJfaWQiOiIyIn0.8Mulcz2gqxqfqt-gmy659RA2oif3oyvg9E7Unejeq5g",
+        "created_at": "2026-07-13T12:37:05.021Z",
+        "expires_at": "2026-07-20T12:37:05Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 96,
+    "fields": {
+        "user": 3,
+        "jti": "60c580180e2242109f8dbad8d3865cb8",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU1MTA1NSwiaWF0IjoxNzgzOTQ2MjU1LCJqdGkiOiI2MGM1ODAxODBlMjI0MjEwOWY4ZGJhZDhkMzg2NWNiOCIsInVzZXJfaWQiOiIzIn0.qxJTHriuiLq6EDtn8A4hSnGoCsH3TKXROE5XZraP-Nw",
+        "created_at": "2026-07-13T12:37:35.078Z",
+        "expires_at": "2026-07-20T12:37:35Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 97,
+    "fields": {
+        "user": 3,
+        "jti": "455581da02a348309455dda5f3e2ec06",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2MDQyMywiaWF0IjoxNzgzOTU1NjIzLCJqdGkiOiI0NTU1ODFkYTAyYTM0ODMwOTQ1NWRkYTVmM2UyZWMwNiIsInVzZXJfaWQiOiIzIn0.Tb262pBQ654Y4JCD-S8uQ_KN9v_23QpcjaT7U4wddgw",
+        "created_at": "2026-07-13T15:13:43.219Z",
+        "expires_at": "2026-07-20T15:13:43Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 98,
+    "fields": {
+        "user": 3,
+        "jti": "4bdda01d5bf84379915fa9781a9a838f",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2MTExMCwiaWF0IjoxNzgzOTU2MzEwLCJqdGkiOiI0YmRkYTAxZDViZjg0Mzc5OTE1ZmE5NzgxYTlhODM4ZiIsInVzZXJfaWQiOiIzIn0.Sizr7JaTAKRd_swVqUQindW4G5z2-J29dQTL0VYeoT8",
+        "created_at": "2026-07-13T15:25:10.336Z",
+        "expires_at": "2026-07-20T15:25:10Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 99,
+    "fields": {
+        "user": 2,
+        "jti": "cbef502c6214427e893c4d2e5792b063",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2MjAwMSwiaWF0IjoxNzgzOTU3MjAxLCJqdGkiOiJjYmVmNTAyYzYyMTQ0MjdlODkzYzRkMmU1NzkyYjA2MyIsInVzZXJfaWQiOiIyIn0.oIzcjmddUN34UI1K_EeegJbttxFggVcV401B6aPjy9E",
+        "created_at": "2026-07-13T15:40:01.291Z",
+        "expires_at": "2026-07-20T15:40:01Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 100,
+    "fields": {
+        "user": 3,
+        "jti": "7bd7dd85488e46c6bfa4d2abe1884f62",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2MjAxMSwiaWF0IjoxNzgzOTU3MjExLCJqdGkiOiI3YmQ3ZGQ4NTQ4OGU0NmM2YmZhNGQyYWJlMTg4NGY2MiIsInVzZXJfaWQiOiIzIn0.IOADNhwAK7za4tps8c1sjLlmbHT-E7W6mrDyXlBGP1U",
+        "created_at": "2026-07-13T15:40:11.410Z",
+        "expires_at": "2026-07-20T15:40:11Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 101,
+    "fields": {
+        "user": 3,
+        "jti": "c8344110120c4694b3320da3e0e61f3f",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2Mjk0MywiaWF0IjoxNzgzOTU4MTQzLCJqdGkiOiJjODM0NDExMDEyMGM0Njk0YjMzMjBkYTNlMGU2MWYzZiIsInVzZXJfaWQiOiIzIn0.NEEqKxj5wJop3hSPOq-J1476GADCfiJTVyWBTj7GqCw",
+        "created_at": "2026-07-13T15:55:43.409Z",
+        "expires_at": "2026-07-20T15:55:43Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 102,
+    "fields": {
+        "user": 3,
+        "jti": "55e0777a24a24782a19c1c317992fa70",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2MzE1OCwiaWF0IjoxNzgzOTU4MzU4LCJqdGkiOiI1NWUwNzc3YTI0YTI0NzgyYTE5YzFjMzE3OTkyZmE3MCIsInVzZXJfaWQiOiIzIn0.nASnJxAK_bipkSZsQqfKs120vuKkTBt5jW-OFQPc2z8",
+        "created_at": "2026-07-13T15:59:18.823Z",
+        "expires_at": "2026-07-20T15:59:18Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 103,
+    "fields": {
+        "user": 3,
+        "jti": "ec018d60655341938b9f0e7b746eb97c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2NDA1OCwiaWF0IjoxNzgzOTU5MjU4LCJqdGkiOiJlYzAxOGQ2MDY1NTM0MTkzOGI5ZjBlN2I3NDZlYjk3YyIsInVzZXJfaWQiOiIzIn0.sqjDGlwnFW3vhU7gjGJQjqR5zG2gzbcphkGHza7EVOQ",
+        "created_at": "2026-07-13T16:14:18.994Z",
+        "expires_at": "2026-07-20T16:14:18Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 104,
+    "fields": {
+        "user": 3,
+        "jti": "16a604f0804e4579a673b4b861437c1f",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2NDE0MSwiaWF0IjoxNzgzOTU5MzQxLCJqdGkiOiIxNmE2MDRmMDgwNGU0NTc5YTY3M2I0Yjg2MTQzN2MxZiIsInVzZXJfaWQiOiIzIn0.WpgNPCRFqp3cuf-54bbKNAHRMfRWcDXvtUV7Xa9YCVg",
+        "created_at": "2026-07-13T16:15:41.038Z",
+        "expires_at": "2026-07-20T16:15:41Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 105,
+    "fields": {
+        "user": 3,
+        "jti": "15dc51843a654194ac8ec6cf240a30fc",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDU2ODMwNiwiaWF0IjoxNzgzOTYzNTA2LCJqdGkiOiIxNWRjNTE4NDNhNjU0MTk0YWM4ZWM2Y2YyNDBhMzBmYyIsInVzZXJfaWQiOiIzIn0.zBGTBXnLUuxHnHlIfyZBdgddi3ugQyCZBVe6bke2zsc",
+        "created_at": "2026-07-13T17:25:06.301Z",
+        "expires_at": "2026-07-20T17:25:06Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 106,
+    "fields": {
+        "user": 3,
+        "jti": "59431d60b34740169942830b83a0b858",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYwODY3NCwiaWF0IjoxNzg0MDAzODc0LCJqdGkiOiI1OTQzMWQ2MGIzNDc0MDE2OTk0MjgzMGI4M2EwYjg1OCIsInVzZXJfaWQiOiIzIn0.fDhS3B6MtJr6IQbE-9VU5lLNz789HKWYoIcjSx2gylc",
+        "created_at": "2026-07-14T04:37:54.488Z",
+        "expires_at": "2026-07-21T04:37:54Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 107,
+    "fields": {
+        "user": 3,
+        "jti": "7b75022a3d5b4ea1a6dfc15db2fe5a38",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYwOTkwNiwiaWF0IjoxNzg0MDA1MTA2LCJqdGkiOiI3Yjc1MDIyYTNkNWI0ZWExYTZkZmMxNWRiMmZlNWEzOCIsInVzZXJfaWQiOiIzIn0.iVywLj9JMdZL5oPv1lZMNCe3YwCWqFBreU7RQFxxlwQ",
+        "created_at": "2026-07-14T04:58:26.767Z",
+        "expires_at": "2026-07-21T04:58:26Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 108,
+    "fields": {
+        "user": 3,
+        "jti": "4bd3da461466409b855bcfc265d59d17",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYxMDE4NCwiaWF0IjoxNzg0MDA1Mzg0LCJqdGkiOiI0YmQzZGE0NjE0NjY0MDliODU1YmNmYzI2NWQ1OWQxNyIsInVzZXJfaWQiOiIzIn0.lJ6UP1C6cwPJm9qhmDa2CFNhtkd73SAtG_1dC9eHoGI",
+        "created_at": "2026-07-14T05:03:04.734Z",
+        "expires_at": "2026-07-21T05:03:04Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 109,
+    "fields": {
+        "user": 3,
+        "jti": "fe2580f3d9294f84b1c9451600ac654b",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYxMjYwNywiaWF0IjoxNzg0MDA3ODA3LCJqdGkiOiJmZTI1ODBmM2Q5Mjk0Zjg0YjFjOTQ1MTYwMGFjNjU0YiIsInVzZXJfaWQiOiIzIn0.TdxRWWchb20HZu40ZQmf7QVi00zv6HExzx6RqizEbpI",
+        "created_at": "2026-07-14T05:43:27.561Z",
+        "expires_at": "2026-07-21T05:43:27Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 110,
+    "fields": {
+        "user": 3,
+        "jti": "be91f82833b240609aaf91224817af30",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYxNDAxOCwiaWF0IjoxNzg0MDA5MjE4LCJqdGkiOiJiZTkxZjgyODMzYjI0MDYwOWFhZjkxMjI0ODE3YWYzMCIsInVzZXJfaWQiOiIzIn0.G1ZH3cH7tHJHEUPLIoH5BMYmFCz31MF7D0XrK66VSvY",
+        "created_at": "2026-07-14T06:06:58.739Z",
+        "expires_at": "2026-07-21T06:06:58Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 111,
+    "fields": {
+        "user": 3,
+        "jti": "259f4a5fb944456cad48636eddabbb81",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYxNTg0MywiaWF0IjoxNzg0MDExMDQzLCJqdGkiOiIyNTlmNGE1ZmI5NDQ0NTZjYWQ0ODYzNmVkZGFiYmI4MSIsInVzZXJfaWQiOiIzIn0.PuyssJqVRJkA5w8zXTArkSrCoAHrr89U7x4lfZbp0WQ",
+        "created_at": "2026-07-14T06:37:23.654Z",
+        "expires_at": "2026-07-21T06:37:23Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 112,
+    "fields": {
+        "user": 3,
+        "jti": "cfb2a1af852747dab5676e9929fdf591",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyMDgzMywiaWF0IjoxNzg0MDE2MDMzLCJqdGkiOiJjZmIyYTFhZjg1Mjc0N2RhYjU2NzZlOTkyOWZkZjU5MSIsInVzZXJfaWQiOiIzIn0.RRE-HQ_CPR3Z05UMv0z97lIuVdxiyrZ1DOIINj3ss2c",
+        "created_at": "2026-07-14T08:00:33.614Z",
+        "expires_at": "2026-07-21T08:00:33Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 113,
+    "fields": {
+        "user": 3,
+        "jti": "b2d273675dc54fe281d6011256227373",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyMzAzNCwiaWF0IjoxNzg0MDE4MjM0LCJqdGkiOiJiMmQyNzM2NzVkYzU0ZmUyODFkNjAxMTI1NjIyNzM3MyIsInVzZXJfaWQiOiIzIn0.wD03zRvE7FwcLD84Rf36cfSN4QArMc5djE_7Pgoju94",
+        "created_at": "2026-07-14T08:37:14.625Z",
+        "expires_at": "2026-07-21T08:37:14Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 114,
+    "fields": {
+        "user": 3,
+        "jti": "4da7c3528b9e4a6eb4d90dd8ac1db28f",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyNDg0MSwiaWF0IjoxNzg0MDIwMDQxLCJqdGkiOiI0ZGE3YzM1MjhiOWU0YTZlYjRkOTBkZDhhYzFkYjI4ZiIsInVzZXJfaWQiOiIzIn0.rh7pZjhnkiVur3PQQKWuJF_PZ8cAVID_e1hE0zKhsrQ",
+        "created_at": "2026-07-14T09:07:21.596Z",
+        "expires_at": "2026-07-21T09:07:21Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 115,
+    "fields": {
+        "user": 3,
+        "jti": "c85791eef15e499ea91eed8d73f0d171",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyNTc5OSwiaWF0IjoxNzg0MDIwOTk5LCJqdGkiOiJjODU3OTFlZWYxNWU0OTllYTkxZWVkOGQ3M2YwZDE3MSIsInVzZXJfaWQiOiIzIn0.LFMPMmMdfIy7L6D0Vz4dx7h46wRr6_YRckJc4qTc0pk",
+        "created_at": "2026-07-14T09:23:19.946Z",
+        "expires_at": "2026-07-21T09:23:19Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 116,
+    "fields": {
+        "user": 2,
+        "jti": "24c75b6d87f344499366c12eafdb3495",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyNjcxNCwiaWF0IjoxNzg0MDIxOTE0LCJqdGkiOiIyNGM3NWI2ZDg3ZjM0NDQ5OTM2NmMxMmVhZmRiMzQ5NSIsInVzZXJfaWQiOiIyIn0.2kOdcypA71M2zOwf7iWXDsm4_qm6ypoOmbERE5ueeLc",
+        "created_at": "2026-07-14T09:38:34.918Z",
+        "expires_at": "2026-07-21T09:38:34Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 117,
+    "fields": {
+        "user": 3,
+        "jti": "964ada44ef014f10b971721e3c797e56",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyNzEyOSwiaWF0IjoxNzg0MDIyMzI5LCJqdGkiOiI5NjRhZGE0NGVmMDE0ZjEwYjk3MTcyMWUzYzc5N2U1NiIsInVzZXJfaWQiOiIzIn0.9Jdk3D4l4ZWtYpmYQmwwoBkF0pZHiBNFpY-pp2UiVms",
+        "created_at": "2026-07-14T09:45:29.901Z",
+        "expires_at": "2026-07-21T09:45:29Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 118,
+    "fields": {
+        "user": 3,
+        "jti": "d3d73f6b209b4bd894adc23a4166af25",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyNzIwMSwiaWF0IjoxNzg0MDIyNDAxLCJqdGkiOiJkM2Q3M2Y2YjIwOWI0YmQ4OTRhZGMyM2E0MTY2YWYyNSIsInVzZXJfaWQiOiIzIn0.5N3_sbiO0Bps3eUBJLyi8BdFjGkQVSLUUxQekI7EaJo",
+        "created_at": "2026-07-14T09:46:41.239Z",
+        "expires_at": "2026-07-21T09:46:41Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 119,
+    "fields": {
+        "user": 3,
+        "jti": "dca22cea641b474b96507b3c3a719811",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyODEyMSwiaWF0IjoxNzg0MDIzMzIxLCJqdGkiOiJkY2EyMmNlYTY0MWI0NzRiOTY1MDdiM2MzYTcxOTgxMSIsInVzZXJfaWQiOiIzIn0.UutBUI_FcYLuPuwFGDxR6QPGeAxzQdrke0BXSeu9auU",
+        "created_at": "2026-07-14T10:02:01.476Z",
+        "expires_at": "2026-07-21T10:02:01Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 120,
+    "fields": {
+        "user": 3,
+        "jti": "79dbdf8dfbe24efd85a8e147ce77eb42",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyOTU4MiwiaWF0IjoxNzg0MDI0NzgyLCJqdGkiOiI3OWRiZGY4ZGZiZTI0ZWZkODVhOGUxNDdjZTc3ZWI0MiIsInVzZXJfaWQiOiIzIn0.vd47M8SiSj9LuRLCj0Y66HaZ3osb4XoLbiJmDTf3e9k",
+        "created_at": "2026-07-14T10:26:22.140Z",
+        "expires_at": "2026-07-21T10:26:22Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 121,
+    "fields": {
+        "user": 3,
+        "jti": "f1f2f6b9592d4735801aec6480c63e04",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYyOTU5MSwiaWF0IjoxNzg0MDI0NzkxLCJqdGkiOiJmMWYyZjZiOTU5MmQ0NzM1ODAxYWVjNjQ4MGM2M2UwNCIsInVzZXJfaWQiOiIzIn0.HKftb1GUZoZp7KdDNBq2C2Y8vDpmjDjRUDFnKw3XqpA",
+        "created_at": "2026-07-14T10:26:31.662Z",
+        "expires_at": "2026-07-21T10:26:31Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 122,
+    "fields": {
+        "user": 3,
+        "jti": "cf762c9ea41b480b99295770207f0176",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzMDc1MywiaWF0IjoxNzg0MDI1OTUzLCJqdGkiOiJjZjc2MmM5ZWE0MWI0ODBiOTkyOTU3NzAyMDdmMDE3NiIsInVzZXJfaWQiOiIzIn0.saeeSXfN8kFF2A5UPHiHa7tEvU6O7Nxv7g0-NzpNgu8",
+        "created_at": "2026-07-14T10:45:53.221Z",
+        "expires_at": "2026-07-21T10:45:53Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 123,
+    "fields": {
+        "user": 3,
+        "jti": "126ab8a6e9b34ab1866ec01cd4d226c7",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzMTE0MSwiaWF0IjoxNzg0MDI2MzQxLCJqdGkiOiIxMjZhYjhhNmU5YjM0YWIxODY2ZWMwMWNkNGQyMjZjNyIsInVzZXJfaWQiOiIzIn0.faqsJR5z1bg-zbZL3WbAwq-McPsgafH0fej6JKsb5ms",
+        "created_at": "2026-07-14T10:52:21.241Z",
+        "expires_at": "2026-07-21T10:52:21Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 124,
+    "fields": {
+        "user": 3,
+        "jti": "f13fd7f89a1946809010a09d93c5883d",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzMTY5NywiaWF0IjoxNzg0MDI2ODk3LCJqdGkiOiJmMTNmZDdmODlhMTk0NjgwOTAxMGEwOWQ5M2M1ODgzZCIsInVzZXJfaWQiOiIzIn0.dNHX2zg1l3hGlfjYPDa1eNnja3K5xIDuidsG2MzJaHg",
+        "created_at": "2026-07-14T11:01:37.008Z",
+        "expires_at": "2026-07-21T11:01:37Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 125,
+    "fields": {
+        "user": 3,
+        "jti": "8159ebab7a01462dba0301b44b24beee",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzMjUwMiwiaWF0IjoxNzg0MDI3NzAyLCJqdGkiOiI4MTU5ZWJhYjdhMDE0NjJkYmEwMzAxYjQ0YjI0YmVlZSIsInVzZXJfaWQiOiIzIn0.ZqacmGztQ3x8u9gf9vRQ7woddU9TXc5IMozwHdFTyDI",
+        "created_at": "2026-07-14T11:15:02.533Z",
+        "expires_at": "2026-07-21T11:15:02Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 126,
+    "fields": {
+        "user": 3,
+        "jti": "b84c4cca377d4fe7aaa5c5b4f60df9a8",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzMjY1NywiaWF0IjoxNzg0MDI3ODU3LCJqdGkiOiJiODRjNGNjYTM3N2Q0ZmU3YWFhNWM1YjRmNjBkZjlhOCIsInVzZXJfaWQiOiIzIn0.Gt9Z3lBJxeYlfy4mkXsdpgsIdmDJAEIL_GSylPPxTs8",
+        "created_at": "2026-07-14T11:17:37.057Z",
+        "expires_at": "2026-07-21T11:17:37Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 127,
+    "fields": {
+        "user": 3,
+        "jti": "7b90a14495d9479cad65eec4686e51de",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzMzYxNywiaWF0IjoxNzg0MDI4ODE3LCJqdGkiOiI3YjkwYTE0NDk1ZDk0NzljYWQ2NWVlYzQ2ODZlNTFkZSIsInVzZXJfaWQiOiIzIn0.TVHDIkW8LV-XfYdAHAXI5Bg_axk_7qEts0k1QOGV8Ls",
+        "created_at": "2026-07-14T11:33:37.000Z",
+        "expires_at": "2026-07-21T11:33:37Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 128,
+    "fields": {
+        "user": 3,
+        "jti": "2f9b1b24cfab4bfe9f870bd3ac383c49",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzNDIxMCwiaWF0IjoxNzg0MDI5NDEwLCJqdGkiOiIyZjliMWIyNGNmYWI0YmZlOWY4NzBiZDNhYzM4M2M0OSIsInVzZXJfaWQiOiIzIn0.vTjz9OnpK-YxidRk5OPtBBD-YUvISfmrUjXqIIgRqS4",
+        "created_at": "2026-07-14T11:43:30.310Z",
+        "expires_at": "2026-07-21T11:43:30Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 129,
+    "fields": {
+        "user": 3,
+        "jti": "37f10ccaded3436b83e24e963ab5e972",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzNDUxOSwiaWF0IjoxNzg0MDI5NzE5LCJqdGkiOiIzN2YxMGNjYWRlZDM0MzZiODNlMjRlOTYzYWI1ZTk3MiIsInVzZXJfaWQiOiIzIn0.7FdYK-elNMNyMFvFW0Y6oDgK1l5WJBabOYuVyepGHN0",
+        "created_at": "2026-07-14T11:48:39.310Z",
+        "expires_at": "2026-07-21T11:48:39Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 130,
+    "fields": {
+        "user": 3,
+        "jti": "5071d729b828413690f3ae872f209b65",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzNTI1MSwiaWF0IjoxNzg0MDMwNDUxLCJqdGkiOiI1MDcxZDcyOWI4Mjg0MTM2OTBmM2FlODcyZjIwOWI2NSIsInVzZXJfaWQiOiIzIn0.0-dagkQLMxEnQhgOYVy_SwBJUlQVJJqFJa-ezY0l_50",
+        "created_at": "2026-07-14T12:00:51.978Z",
+        "expires_at": "2026-07-21T12:00:51Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 131,
+    "fields": {
+        "user": 3,
+        "jti": "04c8ee2e9fff455aba81f646bbb18cb6",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDYzNTQ3NiwiaWF0IjoxNzg0MDMwNjc2LCJqdGkiOiIwNGM4ZWUyZTlmZmY0NTVhYmE4MWY2NDZiYmIxOGNiNiIsInVzZXJfaWQiOiIzIn0.cXec49HchDbWlzen63gj7Hjqha6I6vZg8KbheHC_ymY",
+        "created_at": "2026-07-14T12:04:36.998Z",
+        "expires_at": "2026-07-21T12:04:36Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 132,
+    "fields": {
+        "user": 3,
+        "jti": "b24060adc9424d45a12b6bb30966fd64",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDY0MTE3OSwiaWF0IjoxNzg0MDM2Mzc5LCJqdGkiOiJiMjQwNjBhZGM5NDI0ZDQ1YTEyYjZiYjMwOTY2ZmQ2NCIsInVzZXJfaWQiOiIzIn0.x3skK5dwrDEKWDVH0Mujc85-VZbS2Ul7QjoaAfT8buI",
+        "created_at": "2026-07-14T13:39:39.884Z",
+        "expires_at": "2026-07-21T13:39:39Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 133,
+    "fields": {
+        "user": 3,
+        "jti": "877e9763602243faa5815c01f7a6c4ae",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDY0MjgyMywiaWF0IjoxNzg0MDM4MDIzLCJqdGkiOiI4NzdlOTc2MzYwMjI0M2ZhYTU4MTVjMDFmN2E2YzRhZSIsInVzZXJfaWQiOiIzIn0.z8ElRGv1T7zy283FWE4wyHT0k9m3Dsck4fjwqpp2JzQ",
+        "created_at": "2026-07-14T14:07:03.784Z",
+        "expires_at": "2026-07-21T14:07:03Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 134,
+    "fields": {
+        "user": 3,
+        "jti": "684ecd338baa4c5e920e1ebd12a8d867",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDY0MjkxMCwiaWF0IjoxNzg0MDM4MTEwLCJqdGkiOiI2ODRlY2QzMzhiYWE0YzVlOTIwZTFlYmQxMmE4ZDg2NyIsInVzZXJfaWQiOiIzIn0.T6sJo9E2yPeHJrZ6yD1bFMUYqGuM9bcYjBmNWDPVEaA",
+        "created_at": "2026-07-14T14:08:30.205Z",
+        "expires_at": "2026-07-21T14:08:30Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 135,
+    "fields": {
+        "user": 3,
+        "jti": "12fb5ffa67ba47329625bb732ac8b826",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDY5OTgyNCwiaWF0IjoxNzg0MDk1MDI0LCJqdGkiOiIxMmZiNWZmYTY3YmE0NzMyOTYyNWJiNzMyYWM4YjgyNiIsInVzZXJfaWQiOiIzIn0.I1qdEcHkDttqQWbXcE0QtB8K2K_4JoM79JEKegk3cc8",
+        "created_at": "2026-07-15T05:57:04.313Z",
+        "expires_at": "2026-07-22T05:57:04Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 136,
+    "fields": {
+        "user": 3,
+        "jti": "aa0603e7fb0a43889450a9b7ac2de42b",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcwNTg0OSwiaWF0IjoxNzg0MTAxMDQ5LCJqdGkiOiJhYTA2MDNlN2ZiMGE0Mzg4OTQ1MGE5YjdhYzJkZTQyYiIsInVzZXJfaWQiOiIzIn0.LBRVmGBXMIoyBzVr7z7EhorzGslRoyFGmbNSS7Aroj4",
+        "created_at": "2026-07-15T07:37:29.781Z",
+        "expires_at": "2026-07-22T07:37:29Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 137,
+    "fields": {
+        "user": 3,
+        "jti": "b3833249bd0c4101b9fefb659fe20555",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcwNjg0NCwiaWF0IjoxNzg0MTAyMDQ0LCJqdGkiOiJiMzgzMzI0OWJkMGM0MTAxYjlmZWZiNjU5ZmUyMDU1NSIsInVzZXJfaWQiOiIzIn0.kGwWqIYCUgpsfWp62Sf03zgLtPqBNNYh28xwnVcO63g",
+        "created_at": "2026-07-15T07:54:04.146Z",
+        "expires_at": "2026-07-22T07:54:04Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 138,
+    "fields": {
+        "user": 3,
+        "jti": "a7b89eb032574841837774fd247d4568",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxMDk1MCwiaWF0IjoxNzg0MTA2MTUwLCJqdGkiOiJhN2I4OWViMDMyNTc0ODQxODM3Nzc0ZmQyNDdkNDU2OCIsInVzZXJfaWQiOiIzIn0.jaxXd7CfKBXztKhopfFwGbl1_vdI6ugUue34OHG29ic",
+        "created_at": "2026-07-15T09:02:30.215Z",
+        "expires_at": "2026-07-22T09:02:30Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 139,
+    "fields": {
+        "user": 3,
+        "jti": "850e0c30dddd4f53996c0414d458df99",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxMTA2NywiaWF0IjoxNzg0MTA2MjY3LCJqdGkiOiI4NTBlMGMzMGRkZGQ0ZjUzOTk2YzA0MTRkNDU4ZGY5OSIsInVzZXJfaWQiOiIzIn0.kj_5O_DtwA-1GTMRgrewdN-Ac84cfIICfScRPpqBo28",
+        "created_at": "2026-07-15T09:04:27.586Z",
+        "expires_at": "2026-07-22T09:04:27Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 140,
+    "fields": {
+        "user": 3,
+        "jti": "0def3773265144a087a2cb588488bbfa",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxMTU5MCwiaWF0IjoxNzg0MTA2NzkwLCJqdGkiOiIwZGVmMzc3MzI2NTE0NGEwODdhMmNiNTg4NDg4YmJmYSIsInVzZXJfaWQiOiIzIn0.U2YvWu2uKWisYPdGHOi3OFvEBapDhVOAAKK6_7ZZMxc",
+        "created_at": "2026-07-15T09:13:10.249Z",
+        "expires_at": "2026-07-22T09:13:10Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 141,
+    "fields": {
+        "user": 3,
+        "jti": "f98e803af6e8432091938494e3ef4ca0",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxMjIxNCwiaWF0IjoxNzg0MTA3NDE0LCJqdGkiOiJmOThlODAzYWY2ZTg0MzIwOTE5Mzg0OTRlM2VmNGNhMCIsInVzZXJfaWQiOiIzIn0.PbZe6Rhw0Z5S37ncYzSv3wYgwtijES3t6yIOYAshgwU",
+        "created_at": "2026-07-15T09:23:34.120Z",
+        "expires_at": "2026-07-22T09:23:34Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 142,
+    "fields": {
+        "user": 3,
+        "jti": "997b198ca55f4fa1ac3a4ea533f70f2f",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxNDgxNCwiaWF0IjoxNzg0MTEwMDE0LCJqdGkiOiI5OTdiMTk4Y2E1NWY0ZmExYWMzYTRlYTUzM2Y3MGYyZiIsInVzZXJfaWQiOiIzIn0.AFfkwu9gsburXvTHACQ3eBKfw-ndCjdkTtfNeCzBLD8",
+        "created_at": "2026-07-15T10:06:54.585Z",
+        "expires_at": "2026-07-22T10:06:54Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 143,
+    "fields": {
+        "user": 3,
+        "jti": "c71c4fe1d16944d3b10701be28ae6814",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxNDgxNywiaWF0IjoxNzg0MTEwMDE3LCJqdGkiOiJjNzFjNGZlMWQxNjk0NGQzYjEwNzAxYmUyOGFlNjgxNCIsInVzZXJfaWQiOiIzIn0.rGOp56_L0v89D_Qze-D6ZIptnfy5LufrPdH_tImHdwY",
+        "created_at": "2026-07-15T10:06:57.771Z",
+        "expires_at": "2026-07-22T10:06:57Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 144,
+    "fields": {
+        "user": 3,
+        "jti": "e5bb59b652374e9eb531f698be3f4544",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxNTc1MSwiaWF0IjoxNzg0MTEwOTUxLCJqdGkiOiJlNWJiNTliNjUyMzc0ZTllYjUzMWY2OThiZTNmNDU0NCIsInVzZXJfaWQiOiIzIn0.bn1HNRvc_r_BC5aiWCFX1JQaoC3lV59zocZNffSYpiE",
+        "created_at": "2026-07-15T10:22:31.958Z",
+        "expires_at": "2026-07-22T10:22:31Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 145,
+    "fields": {
+        "user": 3,
+        "jti": "ff92ef38dbe741b7a786d55242c33d8d",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxNTgxNCwiaWF0IjoxNzg0MTExMDE0LCJqdGkiOiJmZjkyZWYzOGRiZTc0MWI3YTc4NmQ1NTI0MmMzM2Q4ZCIsInVzZXJfaWQiOiIzIn0.L9qZr_t3-F6-5hhDevwG70kLm3VaR06BBKUpmyGIvPk",
+        "created_at": "2026-07-15T10:23:34.349Z",
+        "expires_at": "2026-07-22T10:23:34Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 146,
+    "fields": {
+        "user": 3,
+        "jti": "31432a5c53844d5fb63fc3c07787fc52",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxODgzMSwiaWF0IjoxNzg0MTE0MDMxLCJqdGkiOiIzMTQzMmE1YzUzODQ0ZDVmYjYzZmMzYzA3Nzg3ZmM1MiIsInVzZXJfaWQiOiIzIn0.28Yiq0E3onbLFshfbNf-5XbWY0PFlbnWS8g283eyY-Y",
+        "created_at": "2026-07-15T11:13:51.495Z",
+        "expires_at": "2026-07-22T11:13:51Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 147,
+    "fields": {
+        "user": 3,
+        "jti": "bb4f8be0b7ab4124ade96cc7d7357e6a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxOTI5OCwiaWF0IjoxNzg0MTE0NDk4LCJqdGkiOiJiYjRmOGJlMGI3YWI0MTI0YWRlOTZjYzdkNzM1N2U2YSIsInVzZXJfaWQiOiIzIn0.098P5JviGCiEsEQHcO6uBKQBxBh0gvNiWQmcnpKJ_kQ",
+        "created_at": "2026-07-15T11:21:38.477Z",
+        "expires_at": "2026-07-22T11:21:38Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 148,
+    "fields": {
+        "user": 3,
+        "jti": "8f9ccb1562694aab91706774601bca84",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcxOTQyMSwiaWF0IjoxNzg0MTE0NjIxLCJqdGkiOiI4ZjljY2IxNTYyNjk0YWFiOTE3MDY3NzQ2MDFiY2E4NCIsInVzZXJfaWQiOiIzIn0.DR38szLHRQD-w1Qhwi9ngrEenPd0c4XwDIMRU1OERNM",
+        "created_at": "2026-07-15T11:23:41.022Z",
+        "expires_at": "2026-07-22T11:23:41Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 149,
+    "fields": {
+        "user": 3,
+        "jti": "7aba20dc4c8c42cf93e6afed4de7ab3d",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcyMDcyNywiaWF0IjoxNzg0MTE1OTI3LCJqdGkiOiI3YWJhMjBkYzRjOGM0MmNmOTNlNmFmZWQ0ZGU3YWIzZCIsInVzZXJfaWQiOiIzIn0.Ix32soHbdENCSQoXKWd6GU7c6hyyxnnKrP1aD1sW8jQ",
+        "created_at": "2026-07-15T11:45:27.764Z",
+        "expires_at": "2026-07-22T11:45:27Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 150,
+    "fields": {
+        "user": 3,
+        "jti": "e9c41d01c3f24c14a392950242e854ff",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcyNDQzMSwiaWF0IjoxNzg0MTE5NjMxLCJqdGkiOiJlOWM0MWQwMWMzZjI0YzE0YTM5Mjk1MDI0MmU4NTRmZiIsInVzZXJfaWQiOiIzIn0.AykOtFN3Bjoz08Klacka3T51FVT3zdiXYyk8IXiNUr0",
+        "created_at": "2026-07-15T12:47:11.419Z",
+        "expires_at": "2026-07-22T12:47:11Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 151,
+    "fields": {
+        "user": 3,
+        "jti": "e089d797330549b9a77f0f7ac19bf721",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcyNDc3OCwiaWF0IjoxNzg0MTE5OTc4LCJqdGkiOiJlMDg5ZDc5NzMzMDU0OWI5YTc3ZjBmN2FjMTliZjcyMSIsInVzZXJfaWQiOiIzIn0.dp4QoxxBHRm-daFXiEjr0lKuXvqR102HkR0keAztp2I",
+        "created_at": "2026-07-15T12:52:58.248Z",
+        "expires_at": "2026-07-22T12:52:58Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 152,
+    "fields": {
+        "user": 3,
+        "jti": "055513ed3c3949999eef864fde2f1637",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDcyODgyOSwiaWF0IjoxNzg0MTI0MDI5LCJqdGkiOiIwNTU1MTNlZDNjMzk0OTk5OWVlZjg2NGZkZTJmMTYzNyIsInVzZXJfaWQiOiIzIn0.GV20R7De7K8IjtCwdW6gZ5mlG2JtoxvTHMUHg1M-_r0",
+        "created_at": "2026-07-15T14:00:29.184Z",
+        "expires_at": "2026-07-22T14:00:29Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 153,
+    "fields": {
+        "user": 3,
+        "jti": "2d6c119fb3814e1dbc755ab2500023b0",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDczNjg5OSwiaWF0IjoxNzg0MTMyMDk5LCJqdGkiOiIyZDZjMTE5ZmIzODE0ZTFkYmM3NTVhYjI1MDAwMjNiMCIsInVzZXJfaWQiOiIzIn0.y_q19HxeNY_f50CpjVi53ZLfCSZzjgkkpbgOr89zQj0",
+        "created_at": "2026-07-15T16:14:59.630Z",
+        "expires_at": "2026-07-22T16:14:59Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 154,
+    "fields": {
+        "user": 3,
+        "jti": "93e8654b2d3d4e1d857418ab211db7a7",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDczNjkyMCwiaWF0IjoxNzg0MTMyMTIwLCJqdGkiOiI5M2U4NjU0YjJkM2Q0ZTFkODU3NDE4YWIyMTFkYjdhNyIsInVzZXJfaWQiOiIzIn0.EjsxilCR7KeXeLtjak5mnq7YtiMvmAeMW2E-O6JP3ug",
+        "created_at": "2026-07-15T16:15:20.698Z",
+        "expires_at": "2026-07-22T16:15:20Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 155,
+    "fields": {
+        "user": 3,
+        "jti": "d2cdb3fc1e454f3bb70f27d132720deb",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDczOTE0MCwiaWF0IjoxNzg0MTM0MzQwLCJqdGkiOiJkMmNkYjNmYzFlNDU0ZjNiYjcwZjI3ZDEzMjcyMGRlYiIsInVzZXJfaWQiOiIzIn0.oex3NnkGlyLtSb2BGPBfUY3V1ok_IgMdoJTfX-Qpp4k",
+        "created_at": "2026-07-15T16:52:20.400Z",
+        "expires_at": "2026-07-22T16:52:20Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 156,
+    "fields": {
+        "user": 3,
+        "jti": "f8bbef084c864d84bc5f70ca859e2676",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDczOTIyMCwiaWF0IjoxNzg0MTM0NDIwLCJqdGkiOiJmOGJiZWYwODRjODY0ZDg0YmM1ZjcwY2E4NTllMjY3NiIsInVzZXJfaWQiOiIzIn0.UZJmmBTYumZUj79l45fhz5Xe8TyYhHpQv8t5ZTh4oCU",
+        "created_at": "2026-07-15T16:53:40.071Z",
+        "expires_at": "2026-07-22T16:53:40Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 157,
+    "fields": {
+        "user": 3,
+        "jti": "54a3dcfda84347f1a9526fdc90b00b4c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc0MDA3NiwiaWF0IjoxNzg0MTM1Mjc2LCJqdGkiOiI1NGEzZGNmZGE4NDM0N2YxYTk1MjZmZGM5MGIwMGI0YyIsInVzZXJfaWQiOiIzIn0.2iRdj9xwwn1GiIxMA2omckFJx9f3aRrIEhg9d7CrEzc",
+        "created_at": "2026-07-15T17:07:56.055Z",
+        "expires_at": "2026-07-22T17:07:56Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 158,
+    "fields": {
+        "user": 3,
+        "jti": "dbd8fd64a9b749e0a471d15196e382b8",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc0MDI1OSwiaWF0IjoxNzg0MTM1NDU5LCJqdGkiOiJkYmQ4ZmQ2NGE5Yjc0OWUwYTQ3MWQxNTE5NmUzODJiOCIsInVzZXJfaWQiOiIzIn0.pJUkOS2Uo2f45iS7Gg4MPnkHr3ZLm1VF9rO13CaMiMs",
+        "created_at": "2026-07-15T17:10:59.014Z",
+        "expires_at": "2026-07-22T17:10:59Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 159,
+    "fields": {
+        "user": 3,
+        "jti": "14b9103e90c94b3fb2f2b5d2f8555361",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc0MTI1NiwiaWF0IjoxNzg0MTM2NDU2LCJqdGkiOiIxNGI5MTAzZTkwYzk0YjNmYjJmMmI1ZDJmODU1NTM2MSIsInVzZXJfaWQiOiIzIn0.em_qz-annna-Scq3S0FXKHmuz8jj0NMYM9XGatA91rQ",
+        "created_at": "2026-07-15T17:27:36.837Z",
+        "expires_at": "2026-07-22T17:27:36Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 160,
+    "fields": {
+        "user": 3,
+        "jti": "57f8343346854808b3909a73f4cda243",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc3NjAzOCwiaWF0IjoxNzg0MTcxMjM4LCJqdGkiOiI1N2Y4MzQzMzQ2ODU0ODA4YjM5MDlhNzNmNGNkYTI0MyIsInVzZXJfaWQiOiIzIn0.16MzmwJOCiX-zGJlayaJwtql2I0k0bC_VG9cwVskUxQ",
+        "created_at": "2026-07-16T03:07:18.868Z",
+        "expires_at": "2026-07-23T03:07:18Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 161,
+    "fields": {
+        "user": 3,
+        "jti": "7c34a9e65ff54af49718f7a63ea6b562",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc3NjA2OSwiaWF0IjoxNzg0MTcxMjY5LCJqdGkiOiI3YzM0YTllNjVmZjU0YWY0OTcxOGY3YTYzZWE2YjU2MiIsInVzZXJfaWQiOiIzIn0.-KdT9Gxt_U7j0uh1V839Kca1WevN-FC9nTeT9iJmyv4",
+        "created_at": "2026-07-16T03:07:49.966Z",
+        "expires_at": "2026-07-23T03:07:49Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 162,
+    "fields": {
+        "user": 3,
+        "jti": "2099a5cf3c154114be99f8f5a230b05c",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc3NjMzOCwiaWF0IjoxNzg0MTcxNTM4LCJqdGkiOiIyMDk5YTVjZjNjMTU0MTE0YmU5OWY4ZjVhMjMwYjA1YyIsInVzZXJfaWQiOiIzIn0.EGpACbQxW57-ngYLZBltFIvveDuFypkmp5v7Bkl9ZLA",
+        "created_at": "2026-07-16T03:12:18.750Z",
+        "expires_at": "2026-07-23T03:12:18Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 163,
+    "fields": {
+        "user": 3,
+        "jti": "ae3b33242b5643a4bf312236dd043778",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc3ODMyNywiaWF0IjoxNzg0MTczNTI3LCJqdGkiOiJhZTNiMzMyNDJiNTY0M2E0YmYzMTIyMzZkZDA0Mzc3OCIsInVzZXJfaWQiOiIzIn0.BReW0N19UYHvx9r0ApY9wDIPNAcgMPAxtJWtAyLKVyk",
+        "created_at": "2026-07-16T03:45:27.559Z",
+        "expires_at": "2026-07-23T03:45:27Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 164,
+    "fields": {
+        "user": 3,
+        "jti": "43e062d517874390b5ba8870023bdad0",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc4MDI1MSwiaWF0IjoxNzg0MTc1NDUxLCJqdGkiOiI0M2UwNjJkNTE3ODc0MzkwYjViYTg4NzAwMjNiZGFkMCIsInVzZXJfaWQiOiIzIn0.Jzq-vhdE2BCmWUE7-9Zg3DmtT4xQNp46YptfyR7FLf0",
+        "created_at": "2026-07-16T04:17:31.316Z",
+        "expires_at": "2026-07-23T04:17:31Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 165,
+    "fields": {
+        "user": 3,
+        "jti": "5e962b8ddde041c384dab7725035d248",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc4MDI3MiwiaWF0IjoxNzg0MTc1NDcyLCJqdGkiOiI1ZTk2MmI4ZGRkZTA0MWMzODRkYWI3NzI1MDM1ZDI0OCIsInVzZXJfaWQiOiIzIn0.YltiI6g3C8rFWNPlpyKcKR2WleKU7JAuttWB9ouTntE",
+        "created_at": "2026-07-16T04:17:52.703Z",
+        "expires_at": "2026-07-23T04:17:52Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 166,
+    "fields": {
+        "user": 3,
+        "jti": "dc7acad0f90149bba1e08c469ad377db",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc4MDI5NywiaWF0IjoxNzg0MTc1NDk3LCJqdGkiOiJkYzdhY2FkMGY5MDE0OWJiYTFlMDhjNDY5YWQzNzdkYiIsInVzZXJfaWQiOiIzIn0.jAcO-v89ujlejG5BdBD9VIOGSQywPOULctBgwM0LN58",
+        "created_at": "2026-07-16T04:18:17.100Z",
+        "expires_at": "2026-07-23T04:18:17Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 167,
+    "fields": {
+        "user": 3,
+        "jti": "313c705e6e904b039ffd603c3e744156",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc4MTkzNSwiaWF0IjoxNzg0MTc3MTM1LCJqdGkiOiIzMTNjNzA1ZTZlOTA0YjAzOWZmZDYwM2MzZTc0NDE1NiIsInVzZXJfaWQiOiIzIn0.xyFr_DJDOaQz_pROpp3UWOuACN18r4mOviVeEqIa3Qs",
+        "created_at": "2026-07-16T04:45:35.742Z",
+        "expires_at": "2026-07-23T04:45:35Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 168,
+    "fields": {
+        "user": 3,
+        "jti": "7cdf7dc8c6ee4bce972367edd0460c27",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc4MzQ4MSwiaWF0IjoxNzg0MTc4NjgxLCJqdGkiOiI3Y2RmN2RjOGM2ZWU0YmNlOTcyMzY3ZWRkMDQ2MGMyNyIsInVzZXJfaWQiOiIzIn0.xKc1hNvw8mF26kCqXPMyBYLCcHgvbuRzD9_3220Y3HI",
+        "created_at": "2026-07-16T05:11:21.982Z",
+        "expires_at": "2026-07-23T05:11:21Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 169,
+    "fields": {
+        "user": 3,
+        "jti": "4845dd204ca84a319482603484e2b289",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc5MDMxOCwiaWF0IjoxNzg0MTg1NTE4LCJqdGkiOiI0ODQ1ZGQyMDRjYTg0YTMxOTQ4MjYwMzQ4NGUyYjI4OSIsInVzZXJfaWQiOiIzIn0.v8HZLKLuniPkCRQdLihjMT3HS89RXNvFsrXesBsxCtY",
+        "created_at": "2026-07-16T07:05:18.760Z",
+        "expires_at": "2026-07-23T07:05:18Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 170,
+    "fields": {
+        "user": 3,
+        "jti": "23dc22f3320347649ab79bf901cf9611",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc5MTY1NywiaWF0IjoxNzg0MTg2ODU3LCJqdGkiOiIyM2RjMjJmMzMyMDM0NzY0OWFiNzliZjkwMWNmOTYxMSIsInVzZXJfaWQiOiIzIn0.Na40fVSoydel6bpkmhrNo4dk_8VPpEeVtVGOT1igc5k",
+        "created_at": "2026-07-16T07:27:37.589Z",
+        "expires_at": "2026-07-23T07:27:37Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 171,
+    "fields": {
+        "user": 3,
+        "jti": "5e4bdcfb714c4d3dad9bfce08207cf53",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc5Mjg2NCwiaWF0IjoxNzg0MTg4MDY0LCJqdGkiOiI1ZTRiZGNmYjcxNGM0ZDNkYWQ5YmZjZTA4MjA3Y2Y1MyIsInVzZXJfaWQiOiIzIn0.vEpr_EYCXkc3YsHlx_O9_R_4-M6h4VMB26gjDvH5gxM",
+        "created_at": "2026-07-16T07:47:44.329Z",
+        "expires_at": "2026-07-23T07:47:44Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 172,
+    "fields": {
+        "user": 3,
+        "jti": "5b2578e1b8a14ca9ae0082132102b33a",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc5NjYwNiwiaWF0IjoxNzg0MTkxODA2LCJqdGkiOiI1YjI1NzhlMWI4YTE0Y2E5YWUwMDgyMTMyMTAyYjMzYSIsInVzZXJfaWQiOiIzIn0.IkvUxBI833dKfQdHpomtb5tE8-Q2Z6uTF4xb1Sx-Up4",
+        "created_at": "2026-07-16T08:50:06.096Z",
+        "expires_at": "2026-07-23T08:50:06Z"
+    }
+},
+{
+    "model": "token_blacklist.outstandingtoken",
+    "pk": 173,
+    "fields": {
+        "user": 3,
+        "jti": "909e118d7e764b09b1005ae026fb5754",
+        "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoicmVmcmVzaCIsImV4cCI6MTc4NDc5NzgzMywiaWF0IjoxNzg0MTkzMDMzLCJqdGkiOiI5MDllMTE4ZDdlNzY0YjA5YjEwMDVhZTAyNmZiNTc1NCIsInVzZXJfaWQiOiIzIn0.JnWeITC8BCHwUgcsX09h3-_yw2hP5bkOByJlaAJkm7c",
+        "created_at": "2026-07-16T09:10:33.888Z",
+        "expires_at": "2026-07-23T09:10:33Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 1,
+    "fields": {
+        "token": 1,
+        "blacklisted_at": "2026-07-09T19:10:53.878Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 2,
+    "fields": {
+        "token": 3,
+        "blacklisted_at": "2026-07-09T19:38:09.282Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 3,
+    "fields": {
+        "token": 2,
+        "blacklisted_at": "2026-07-09T19:58:56.668Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 4,
+    "fields": {
+        "token": 5,
+        "blacklisted_at": "2026-07-09T20:06:48.864Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 5,
+    "fields": {
+        "token": 7,
+        "blacklisted_at": "2026-07-09T20:31:24.742Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 6,
+    "fields": {
+        "token": 8,
+        "blacklisted_at": "2026-07-09T20:46:30.774Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 7,
+    "fields": {
+        "token": 10,
+        "blacklisted_at": "2026-07-09T21:10:49.548Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 8,
+    "fields": {
+        "token": 6,
+        "blacklisted_at": "2026-07-09T22:23:16.935Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 9,
+    "fields": {
+        "token": 11,
+        "blacklisted_at": "2026-07-09T22:23:32.059Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 10,
+    "fields": {
+        "token": 13,
+        "blacklisted_at": "2026-07-09T22:46:46.922Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 11,
+    "fields": {
+        "token": 14,
+        "blacklisted_at": "2026-07-09T22:52:13.888Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 12,
+    "fields": {
+        "token": 12,
+        "blacklisted_at": "2026-07-09T22:53:01.104Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 13,
+    "fields": {
+        "token": 15,
+        "blacklisted_at": "2026-07-10T03:13:21.408Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 14,
+    "fields": {
+        "token": 17,
+        "blacklisted_at": "2026-07-10T03:20:42.495Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 15,
+    "fields": {
+        "token": 19,
+        "blacklisted_at": "2026-07-10T03:36:54.437Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 16,
+    "fields": {
+        "token": 18,
+        "blacklisted_at": "2026-07-10T03:52:07.725Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 17,
+    "fields": {
+        "token": 21,
+        "blacklisted_at": "2026-07-10T04:22:58.891Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 18,
+    "fields": {
+        "token": 16,
+        "blacklisted_at": "2026-07-10T04:29:54.929Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 19,
+    "fields": {
+        "token": 22,
+        "blacklisted_at": "2026-07-10T04:40:13.675Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 20,
+    "fields": {
+        "token": 24,
+        "blacklisted_at": "2026-07-10T04:46:09.764Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 21,
+    "fields": {
+        "token": 25,
+        "blacklisted_at": "2026-07-10T05:07:33.175Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 22,
+    "fields": {
+        "token": 27,
+        "blacklisted_at": "2026-07-10T05:23:22.462Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 23,
+    "fields": {
+        "token": 28,
+        "blacklisted_at": "2026-07-10T05:56:59.673Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 24,
+    "fields": {
+        "token": 29,
+        "blacklisted_at": "2026-07-10T06:12:47.029Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 25,
+    "fields": {
+        "token": 20,
+        "blacklisted_at": "2026-07-10T06:29:51.998Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 26,
+    "fields": {
+        "token": 30,
+        "blacklisted_at": "2026-07-10T06:43:22.747Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 27,
+    "fields": {
+        "token": 32,
+        "blacklisted_at": "2026-07-10T08:24:55.204Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 28,
+    "fields": {
+        "token": 31,
+        "blacklisted_at": "2026-07-10T08:27:47.446Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 29,
+    "fields": {
+        "token": 33,
+        "blacklisted_at": "2026-07-11T06:40:35.186Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 30,
+    "fields": {
+        "token": 35,
+        "blacklisted_at": "2026-07-11T07:18:25.275Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 31,
+    "fields": {
+        "token": 36,
+        "blacklisted_at": "2026-07-11T07:36:12.032Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 32,
+    "fields": {
+        "token": 37,
+        "blacklisted_at": "2026-07-11T08:02:23.288Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 33,
+    "fields": {
+        "token": 39,
+        "blacklisted_at": "2026-07-11T08:19:05.883Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 34,
+    "fields": {
+        "token": 40,
+        "blacklisted_at": "2026-07-11T08:36:06.373Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 35,
+    "fields": {
+        "token": 34,
+        "blacklisted_at": "2026-07-11T11:00:11.628Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 36,
+    "fields": {
+        "token": 41,
+        "blacklisted_at": "2026-07-11T11:01:57.728Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 37,
+    "fields": {
+        "token": 42,
+        "blacklisted_at": "2026-07-11T12:39:02.047Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 38,
+    "fields": {
+        "token": 44,
+        "blacklisted_at": "2026-07-11T13:08:16.705Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 39,
+    "fields": {
+        "token": 26,
+        "blacklisted_at": "2026-07-12T20:11:31.909Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 40,
+    "fields": {
+        "token": 46,
+        "blacklisted_at": "2026-07-12T20:25:01.659Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 41,
+    "fields": {
+        "token": 48,
+        "blacklisted_at": "2026-07-13T04:41:40.558Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 42,
+    "fields": {
+        "token": 45,
+        "blacklisted_at": "2026-07-13T04:56:27.136Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 43,
+    "fields": {
+        "token": 51,
+        "blacklisted_at": "2026-07-13T05:15:08.673Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 44,
+    "fields": {
+        "token": 49,
+        "blacklisted_at": "2026-07-13T05:15:20.268Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 45,
+    "fields": {
+        "token": 55,
+        "blacklisted_at": "2026-07-13T05:24:37.094Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 46,
+    "fields": {
+        "token": 56,
+        "blacklisted_at": "2026-07-13T05:30:15.877Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 47,
+    "fields": {
+        "token": 59,
+        "blacklisted_at": "2026-07-13T05:45:54.608Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 48,
+    "fields": {
+        "token": 60,
+        "blacklisted_at": "2026-07-13T06:23:19.336Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 49,
+    "fields": {
+        "token": 57,
+        "blacklisted_at": "2026-07-13T07:03:22.268Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 50,
+    "fields": {
+        "token": 58,
+        "blacklisted_at": "2026-07-13T07:06:00.850Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 51,
+    "fields": {
+        "token": 61,
+        "blacklisted_at": "2026-07-13T07:06:01.543Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 52,
+    "fields": {
+        "token": 65,
+        "blacklisted_at": "2026-07-13T07:23:44.796Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 53,
+    "fields": {
+        "token": 66,
+        "blacklisted_at": "2026-07-13T07:38:54.737Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 54,
+    "fields": {
+        "token": 62,
+        "blacklisted_at": "2026-07-13T07:42:12.247Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 55,
+    "fields": {
+        "token": 67,
+        "blacklisted_at": "2026-07-13T07:54:00.306Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 56,
+    "fields": {
+        "token": 68,
+        "blacklisted_at": "2026-07-13T07:57:13.996Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 57,
+    "fields": {
+        "token": 63,
+        "blacklisted_at": "2026-07-13T08:11:24.621Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 58,
+    "fields": {
+        "token": 70,
+        "blacklisted_at": "2026-07-13T08:12:24.047Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 59,
+    "fields": {
+        "token": 69,
+        "blacklisted_at": "2026-07-13T08:12:35.245Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 60,
+    "fields": {
+        "token": 75,
+        "blacklisted_at": "2026-07-13T08:39:49.940Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 61,
+    "fields": {
+        "token": 76,
+        "blacklisted_at": "2026-07-13T08:59:28.936Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 62,
+    "fields": {
+        "token": 78,
+        "blacklisted_at": "2026-07-13T09:15:49.585Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 63,
+    "fields": {
+        "token": 79,
+        "blacklisted_at": "2026-07-13T09:31:57.100Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 64,
+    "fields": {
+        "token": 80,
+        "blacklisted_at": "2026-07-13T09:46:59.753Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 65,
+    "fields": {
+        "token": 82,
+        "blacklisted_at": "2026-07-13T10:29:06.685Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 66,
+    "fields": {
+        "token": 83,
+        "blacklisted_at": "2026-07-13T10:45:03.028Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 67,
+    "fields": {
+        "token": 71,
+        "blacklisted_at": "2026-07-13T10:57:40.701Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 68,
+    "fields": {
+        "token": 85,
+        "blacklisted_at": "2026-07-13T11:00:34.634Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 69,
+    "fields": {
+        "token": 89,
+        "blacklisted_at": "2026-07-13T12:12:12.270Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 70,
+    "fields": {
+        "token": 86,
+        "blacklisted_at": "2026-07-13T12:37:05.289Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 71,
+    "fields": {
+        "token": 94,
+        "blacklisted_at": "2026-07-13T12:37:35.314Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 72,
+    "fields": {
+        "token": 95,
+        "blacklisted_at": "2026-07-13T12:46:16.498Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 73,
+    "fields": {
+        "token": 96,
+        "blacklisted_at": "2026-07-13T15:13:45.783Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 74,
+    "fields": {
+        "token": 72,
+        "blacklisted_at": "2026-07-13T15:40:01.499Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 75,
+    "fields": {
+        "token": 98,
+        "blacklisted_at": "2026-07-13T15:40:11.526Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 76,
+    "fields": {
+        "token": 100,
+        "blacklisted_at": "2026-07-13T15:55:43.481Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 77,
+    "fields": {
+        "token": 102,
+        "blacklisted_at": "2026-07-13T16:14:19.058Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 78,
+    "fields": {
+        "token": 101,
+        "blacklisted_at": "2026-07-13T16:15:41.190Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 79,
+    "fields": {
+        "token": 104,
+        "blacklisted_at": "2026-07-13T17:25:06.526Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 80,
+    "fields": {
+        "token": 105,
+        "blacklisted_at": "2026-07-14T04:37:55.066Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 81,
+    "fields": {
+        "token": 108,
+        "blacklisted_at": "2026-07-14T05:43:27.707Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 82,
+    "fields": {
+        "token": 109,
+        "blacklisted_at": "2026-07-14T06:06:58.802Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 83,
+    "fields": {
+        "token": 110,
+        "blacklisted_at": "2026-07-14T06:37:23.759Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 84,
+    "fields": {
+        "token": 111,
+        "blacklisted_at": "2026-07-14T08:00:33.891Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 85,
+    "fields": {
+        "token": 112,
+        "blacklisted_at": "2026-07-14T08:37:14.772Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 86,
+    "fields": {
+        "token": 113,
+        "blacklisted_at": "2026-07-14T09:07:21.790Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 87,
+    "fields": {
+        "token": 114,
+        "blacklisted_at": "2026-07-14T09:23:20.071Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 88,
+    "fields": {
+        "token": 99,
+        "blacklisted_at": "2026-07-14T09:38:35.073Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 89,
+    "fields": {
+        "token": 115,
+        "blacklisted_at": "2026-07-14T09:46:41.352Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 90,
+    "fields": {
+        "token": 117,
+        "blacklisted_at": "2026-07-14T10:02:01.569Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 91,
+    "fields": {
+        "token": 118,
+        "blacklisted_at": "2026-07-14T10:26:22.336Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 92,
+    "fields": {
+        "token": 119,
+        "blacklisted_at": "2026-07-14T10:26:31.893Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 93,
+    "fields": {
+        "token": 121,
+        "blacklisted_at": "2026-07-14T10:45:53.318Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 94,
+    "fields": {
+        "token": 120,
+        "blacklisted_at": "2026-07-14T10:52:21.329Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 95,
+    "fields": {
+        "token": 122,
+        "blacklisted_at": "2026-07-14T11:01:37.074Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 96,
+    "fields": {
+        "token": 123,
+        "blacklisted_at": "2026-07-14T11:15:02.784Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 97,
+    "fields": {
+        "token": 124,
+        "blacklisted_at": "2026-07-14T11:17:37.150Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 98,
+    "fields": {
+        "token": 126,
+        "blacklisted_at": "2026-07-14T11:33:37.072Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 99,
+    "fields": {
+        "token": 125,
+        "blacklisted_at": "2026-07-14T11:43:30.392Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 100,
+    "fields": {
+        "token": 127,
+        "blacklisted_at": "2026-07-14T11:48:39.510Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 101,
+    "fields": {
+        "token": 128,
+        "blacklisted_at": "2026-07-14T12:00:52.078Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 102,
+    "fields": {
+        "token": 129,
+        "blacklisted_at": "2026-07-14T12:04:37.058Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 103,
+    "fields": {
+        "token": 130,
+        "blacklisted_at": "2026-07-14T13:39:40.261Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 104,
+    "fields": {
+        "token": 131,
+        "blacklisted_at": "2026-07-14T14:07:04.043Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 105,
+    "fields": {
+        "token": 132,
+        "blacklisted_at": "2026-07-14T14:08:30.310Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 106,
+    "fields": {
+        "token": 134,
+        "blacklisted_at": "2026-07-15T05:57:05.070Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 107,
+    "fields": {
+        "token": 135,
+        "blacklisted_at": "2026-07-15T07:37:29.955Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 108,
+    "fields": {
+        "token": 136,
+        "blacklisted_at": "2026-07-15T07:54:04.269Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 109,
+    "fields": {
+        "token": 137,
+        "blacklisted_at": "2026-07-15T09:02:30.793Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 110,
+    "fields": {
+        "token": 133,
+        "blacklisted_at": "2026-07-15T09:13:10.400Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 111,
+    "fields": {
+        "token": 139,
+        "blacklisted_at": "2026-07-15T09:23:34.248Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 112,
+    "fields": {
+        "token": 141,
+        "blacklisted_at": "2026-07-15T10:06:55.052Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 113,
+    "fields": {
+        "token": 140,
+        "blacklisted_at": "2026-07-15T10:06:57.910Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 114,
+    "fields": {
+        "token": 143,
+        "blacklisted_at": "2026-07-15T10:22:32.149Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 115,
+    "fields": {
+        "token": 142,
+        "blacklisted_at": "2026-07-15T10:23:34.523Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 116,
+    "fields": {
+        "token": 145,
+        "blacklisted_at": "2026-07-15T11:13:51.976Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 117,
+    "fields": {
+        "token": 144,
+        "blacklisted_at": "2026-07-15T11:23:41.260Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 118,
+    "fields": {
+        "token": 148,
+        "blacklisted_at": "2026-07-15T11:45:27.938Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 119,
+    "fields": {
+        "token": 149,
+        "blacklisted_at": "2026-07-15T12:47:11.558Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 120,
+    "fields": {
+        "token": 147,
+        "blacklisted_at": "2026-07-15T12:52:58.419Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 121,
+    "fields": {
+        "token": 150,
+        "blacklisted_at": "2026-07-15T14:00:29.393Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 122,
+    "fields": {
+        "token": 151,
+        "blacklisted_at": "2026-07-15T16:15:00.319Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 123,
+    "fields": {
+        "token": 154,
+        "blacklisted_at": "2026-07-15T16:52:20.870Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 124,
+    "fields": {
+        "token": 152,
+        "blacklisted_at": "2026-07-15T16:53:40.194Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 125,
+    "fields": {
+        "token": 155,
+        "blacklisted_at": "2026-07-15T17:07:56.191Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 126,
+    "fields": {
+        "token": 156,
+        "blacklisted_at": "2026-07-15T17:10:59.094Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 127,
+    "fields": {
+        "token": 158,
+        "blacklisted_at": "2026-07-15T17:27:36.946Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 128,
+    "fields": {
+        "token": 157,
+        "blacklisted_at": "2026-07-16T03:07:19.582Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 129,
+    "fields": {
+        "token": 159,
+        "blacklisted_at": "2026-07-16T03:12:18.954Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 130,
+    "fields": {
+        "token": 161,
+        "blacklisted_at": "2026-07-16T03:45:27.637Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 131,
+    "fields": {
+        "token": 163,
+        "blacklisted_at": "2026-07-16T04:17:31.432Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 132,
+    "fields": {
+        "token": 162,
+        "blacklisted_at": "2026-07-16T04:18:17.179Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 133,
+    "fields": {
+        "token": 166,
+        "blacklisted_at": "2026-07-16T04:45:35.926Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 134,
+    "fields": {
+        "token": 165,
+        "blacklisted_at": "2026-07-16T05:11:22.306Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 135,
+    "fields": {
+        "token": 168,
+        "blacklisted_at": "2026-07-16T07:05:19.247Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 136,
+    "fields": {
+        "token": 169,
+        "blacklisted_at": "2026-07-16T07:27:38.046Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 137,
+    "fields": {
+        "token": 170,
+        "blacklisted_at": "2026-07-16T07:47:44.504Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 138,
+    "fields": {
+        "token": 171,
+        "blacklisted_at": "2026-07-16T08:50:06.221Z"
+    }
+},
+{
+    "model": "token_blacklist.blacklistedtoken",
+    "pk": 139,
+    "fields": {
+        "token": 172,
+        "blacklisted_at": "2026-07-16T09:10:34.092Z"
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 1,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$jdWTQCXAIQ3VQm5yZEuNxE$tyAwUIrsvCMh5hs5oYli040wKK8moQd42RsPQHqf5K0=",
+        "last_login": "2026-07-09T18:57:26.323Z",
+        "is_superuser": true,
+        "username": "mindstech",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-07-09T18:54:10.223Z",
+        "email": "mindstech12@gmail.com",
+        "created_at": "2026-07-09T18:54:11.183Z",
+        "updated_at": "2026-07-09T18:56:51.408Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 2,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$P5yH2aRLQJwzGNvjr2gUok$2T3idqmTtdazZ05ML7hQAqsYwrdDEQQKF0ozIxV2CfI=",
+        "last_login": "2026-07-13T05:09:32.558Z",
+        "is_superuser": true,
+        "username": "ank",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-07-09T19:42:44.970Z",
+        "email": "ank@gmail.com",
+        "created_at": "2026-07-09T19:42:45.893Z",
+        "updated_at": "2026-07-13T13:28:36.194Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 3,
+    "fields": {
+        "password": "pbkdf2_sha256$1200000$Zg8PaTDuaDIRav5pENY6vb$bAwolBIqOyBs+VAFeqUvLrWi3+jGNwu0jSl7qhzNUlU=",
+        "last_login": "2026-07-16T04:17:52.716Z",
+        "is_superuser": true,
+        "username": "ansil",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-07-13T07:08:01.500Z",
+        "email": "ansil@gmail.com",
+        "created_at": "2026-07-13T07:08:03.206Z",
+        "updated_at": "2026-07-14T09:45:05.428Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "accounts.user",
+    "pk": 4,
+    "fields": {
+        "password": "!VFNDMV2hgeReoSEHIGfrZ08DHiRQBV5ZHhu2gkhU",
+        "last_login": null,
+        "is_superuser": true,
+        "username": "testadmin@example.com",
+        "first_name": "",
+        "last_name": "",
+        "is_staff": true,
+        "is_active": true,
+        "date_joined": "2026-07-13T15:47:52.677Z",
+        "email": "Admin123!",
+        "created_at": "2026-07-13T15:47:52.677Z",
+        "updated_at": "2026-07-13T15:47:52.677Z",
+        "groups": [],
+        "user_permissions": []
+    }
+},
+{
+    "model": "adminpanel.enquiry",
+    "pk": 1,
+    "fields": {
+        "name": "Ansil",
+        "email": "ansil5252@gmail.com",
+        "phone": "+91 9778507917",
+        "company": "",
+        "subject": "General enquiries",
+        "message": "hai sir iam ansil i want to check is there any new things",
+        "source": "website",
+        "status": "Pending",
+        "created_at": "2026-07-09T19:36:19.038Z"
+    }
+},
+{
+    "model": "adminpanel.enquiry",
+    "pk": 2,
+    "fields": {
+        "name": "Ansil",
+        "email": "ansil5252@gmail.com",
+        "phone": "9778507917",
+        "company": "",
+        "subject": "General enquiries",
+        "message": "cdbhhd",
+        "source": "website",
+        "status": "Pending",
+        "created_at": "2026-07-09T20:12:09.092Z"
+    }
+},
+{
+    "model": "adminpanel.fieldwork",
+    "pk": 2,
+    "fields": {
+        "title": "Government command centre",
+        "location_meta": "New Delhi, India — 48-screen video wall",
+        "category": "Control room",
+        "image": "fieldwork/pexels-11783119-w1920.jpg",
+        "created_at": "2026-07-09T21:11:55.818Z"
+    }
+},
+{
+    "model": "adminpanel.fieldwork",
+    "pk": 3,
+    "fields": {
+        "title": "Luxury hotel, full property AV",
+        "location_meta": "Bangalore, India — 280 rooms and ballroom",
+        "category": "Hospitality",
+        "image": "fieldwork/unsplash-1551882547-ff40c63fe5fa-w1100.jpg",
+        "created_at": "2026-07-09T21:13:25.155Z"
+    }
+},
+{
+    "model": "adminpanel.fieldwork",
+    "pk": 4,
+    "fields": {
+        "title": "Broadcast studio fit-out",
+        "location_meta": "Nairobi, Kenya — production and streaming",
+        "category": "Broadcast",
+        "image": "fieldwork/pexels-7865064-w1100.jpg",
+        "created_at": "2026-07-09T21:15:16.566Z"
+    }
+},
+{
+    "model": "adminpanel.fieldwork",
+    "pk": 5,
+    "fields": {
+        "title": "Enterprise meeting rooms",
+        "location_meta": "Warsaw, Poland — 32 conference spaces",
+        "category": "Corporate",
+        "image": "fieldwork/pexels-13141583-w1400.jpg",
+        "created_at": "2026-07-09T21:16:29.191Z"
+    }
+},
+{
+    "model": "adminpanel.solution",
+    "pk": 1,
+    "fields": {
+        "title": "Digital Signage",
+        "desc": "LED walls, professional display panels and wayfinding for retail, transport and public space.",
+        "slug": "digital-signage",
+        "image": "solutions/pexels-3402937-w700.jpg",
+        "created_at": "2026-07-10T05:30:44.618Z"
+    }
+},
+{
+    "model": "adminpanel.solution",
+    "pk": 2,
+    "fields": {
+        "title": "Control Rooms",
+        "desc": "Video wall processors, KVM and 24/7-rated displays for command and monitoring environments.",
+        "slug": "control-rooms",
+        "image": "solutions/unsplash-1551288049-bebda4e38f71-w700.jpg",
+        "created_at": "2026-07-10T05:30:44.626Z"
+    }
+},
+{
+    "model": "adminpanel.solution",
+    "pk": 3,
+    "fields": {
+        "title": "Conferencing & Collaboration",
+        "desc": "Hybrid meeting rooms, ceiling audio, cameras and AV-over-IP for the modern workplace.",
+        "slug": "conferencing",
+        "image": "solutions/pexels-13323673-w700.jpg",
+        "created_at": "2026-07-10T05:30:44.629Z"
+    }
+},
+{
+    "model": "adminpanel.solution",
+    "pk": 4,
+    "fields": {
+        "title": "Hospitality AV",
+        "desc": "Guest-room entertainment, ballroom systems and background audio for hotels and venues.",
+        "slug": "hospitality",
+        "image": "solutions/pexels-29870245-w700.jpg",
+        "created_at": "2026-07-10T05:30:44.631Z"
+    }
+},
+{
+    "model": "adminpanel.solution",
+    "pk": 5,
+    "fields": {
+        "title": "Broadcast & Production",
+        "desc": "Cameras, switching, streaming and studio infrastructure for broadcasters and creators.",
+        "slug": "broadcast",
+        "image": "solutions/unsplash-1516035069371-29a1b244cc32-w700.jpg",
+        "created_at": "2026-07-10T05:30:44.634Z"
+    }
+},
+{
+    "model": "adminpanel.solution",
+    "pk": 6,
+    "fields": {
+        "title": "Live Events & Immersive",
+        "desc": "Touring-grade LED, projection mapping and spatial audio for events and experiential spaces.",
+        "slug": "live-events",
+        "image": "solutions/pexels-13230484-w700.jpg",
+        "created_at": "2026-07-10T05:30:44.637Z"
+    }
+},
+{
+    "model": "adminpanel.blog",
+    "pk": 16,
+    "fields": {
+        "title": "What Is an iPad Wireless Charging Wall Mount and How Does It Work?",
+        "desc": "Tired of your iPad dying at the worst possible moment? Or constantly dealing with cables that get in the way, fray, or just look messy? An iPad wireless charging wall mount fixes all of that in one go.\n\nIt’s pretty straightforward: your iPad stays mounted, charges automatically, and you’re not stuck with a jumble of wires or some clunky bracket taking up space. Works great whether you’re using it to control your smart home, running a menu board at a café, or just want a dedicated spot for video calls in your home office.\n\nThe best part? It actually looks good. No more trying to hide charging cables or dealing with a setup that screams “temporary fix.”\n\nWhat Exactly Is an iPad Wireless Charging Wall Mount?\nAt its core, a wall mount like this is a dedicated frame or enclosure that holds your iPad while charging it wirelessly. In simple terms, it eliminates cables, clutter, and repeated manual charging. Many beginners look up “What is an iPad Wireless Charging Wall Mount?” and discover that it’s not just a mount—it’s an integrated charging system designed to power the device anytime it’s docked.\n\nThese mounts typically use magnetic alignment and Qi-based wireless charging technology (or a proprietary equivalent). Once the iPad is placed on the mount, charging starts automatically, letting the device remain in a fixed spot like a digital hub.\n\nHow iPad Wireless Charging Wall Mounts Work?\nA lot of people wonder, “How does an iPad wireless charging wall mount work?” The concept is simple but smart:\n\n1. Built-In Wireless Charging Coil\nInside the mount is a charging coil that transfers power to the iPad when both coils align.\n\n2. Magnetic Guidance\nMost mounts use magnets to ensure perfect placement—no fiddling or sliding to find the charging spot.\n\n3. Constant Power Delivery\nOnce aligned, power flows automatically. Whether you’re using navigation, streaming content, or running management apps, the iPad remains charged.\n\n4. Hardwired Convenience\nThe mount itself is usually connected to a hidden power source in the wall, giving you a seamless, cable-free look.\n\nThis effortless process makes it easy to upgrade a space into something smarter, cleaner, and more functional.\n\nAlso Read: What Are Surface Mount Buttons for iPad and How Do They Work?\n\nWhy Are Wireless Charging Wall Mounts Becoming So Popular?\nA Clean, Cable-Free Setup\nGone are the days of tangled wires hanging from counters or desks. These mounts keep spaces uncluttered and polished.\n\nPerfect for Smart Homes and Automation\nAn iPad is often used as a home control panel for lights, cameras, alarms, and more. A constantly-charged device on the wall becomes the ideal command center.\n\nReliable Power for Commercial Use\nRestaurants, hospitals, hotels, offices, and retail stores use tablets for display, check-ins, POS, or signage. A wired charger can loosen or fail over time, but a wireless mount maintains consistent, safe charging.\n\nBetter for High-Traffic Areas\nWhen multiple people access a device, cables wear out fast. A wireless mount removes the weakest link.\n\nChoosing an iPad Wireless Charging Wall Mount: What to Look For\nIf you’re thinking about choosing an iPad wireless charging wall mount, keep these factors in mind:\n\n1. Compatibility\nNot every mount works with every iPad model. Always make sure that the mount matches the size and wireless charging capability of your device.\n\n2. Build Quality\nA sturdy aluminum or ABS body ensures durability, especially in public or commercial environments.\n\n3. Secure Locking Options\nIf the iPad will be in a public space, look for mounts with lockable frames.\n\n4. Charging Efficiency\nThe mount should support stable wireless charging without overheating.\n\n5. Aesthetic Integration\nChoose a design that suits your interior, like flush mounts. They look modern and almost invisible, while frame-style mounts stand out more.\n\nWhere These Mounts Make the Biggest Impact\nHome automation panels\nConference rooms and meeting spaces\nDigital menus and POS in restaurants\nTouchscreen directories in malls\nPatient check-in systems in hospitals\nInteractive displays in retail stores\nNo matter the location, the benefit remains the same: powered, secure, always-ready iPads without cable chaos.\n\nConclusion\nLook, if you’ve ever dealt with tangled charging cables or an iPad that’s dead when you need it most, you’ll get why a wireless charging wall mount is such a game-changer. It’s not just about cutting the cord; it’s about actually making your iPad work the way you need it to, whether that’s controlling your smart home from the kitchen or running a display at your shop.\n\nThe whole setup just feels cleaner. No more hunting for cables, no more wear and tear on charging ports, and your iPad stays put exactly where you want it while staying topped up.\n\nIf you’re serious about getting a solid mounting solution that actually lasts, Mindstec Distribution has the professional-grade gear worth checking out. They specialize in AV and smart-tech setups that hold up in real-world use",
+        "content": "",
+        "href": "",
+        "cat": "workspace",
+        "publish_date": "2026-02-20",
+        "is_featured": false,
+        "created_at": "2026-07-15T10:25:32.984Z"
+    }
+},
+{
+    "model": "adminpanel.blog",
+    "pk": 17,
+    "fields": {
+        "title": "word day of them",
+        "desc": "Connecting Global Innovation with Local Expertise\n\nMindstec operates through a growing network of regional offices to ensure seamless collaboration with manufacturers, partners, and system integrators. Our local teams understand regional market requirements while leveraging global technology partnerships to deliver tailored solutions, technical support, and business growth opportunities.\n\nWhy Our Regional Offices\n\nLocal Presence. Global Standards.\n\nOur regional teams help customers and partners by providing:\n\nLocal sales and business development\nTechnical consultation and solution design\nProduct demonstrations and experience centers\nTraining and certification programs\nPre-sales and post-sales technical support\nFaster communication and regional assistance\nRegional Network\n\nIndia Headquarters – Bangalore\n\nOur headquarters serves as the operational hub for business strategy, partner engagement, technical support, logistics coordination, and customer success across the region.\n\nPoland – Warsaw\n\nSupporting European partnerships, manufacturer collaboration, and regional business development while strengthening our global distribution network.",
+        "content": "",
+        "href": "",
+        "cat": "develoepr",
+        "publish_date": "2020-03-29",
+        "is_featured": false,
+        "created_at": "2026-07-15T11:23:17.306Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 1,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "New Delhi",
+        "address": "B1/14 Basement, EROS Apartment, 56, Nehru Place, New Delhi 110019",
+        "contact_name": "Mr. Ashwani",
+        "phone": "9555999163",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 2,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "Manesar",
+        "address": "Plot No. 292, Sector-7, IMT Manesar, Haryana 122050",
+        "contact_name": "Mr. Kishore",
+        "phone": "9873592319",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 3,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "Ahmedabad",
+        "address": "G/D No. 1051, Vishal Estate, Opp. Bharat Petrol Pump, Sarkhej Bavla Road, Taluka Sanand, Santhal, Ahmedabad 382210",
+        "contact_name": "Mr. Mukesh Parikh",
+        "phone": "9727355189",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 4,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "Pune",
+        "address": "Survey No. 119, Deokar Building, Pune Alandi Road, Kalas, Vishrantwadi, Pune 411015, Maharashtra",
+        "contact_name": "Mr. Samar Pan",
+        "phone": "9834480443",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 5,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "Mumbai (Thane)",
+        "address": "105, Sewanti Chhaya Building, Dombivali East, Ayre Road, Kalyan-Dombivali, Thane, Mumbai 421201",
+        "contact_name": "Mr. Anjani Tripathi",
+        "phone": "9643013881",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 6,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "Chennai",
+        "address": "Survey No. 91 & 92/2, No. 1/33, Kumaran Rice Mill Compound, Tirupati Road, Vellavedu, Chennai 602107, Tamil Nadu",
+        "contact_name": "Mr. Gyaniram Choudhary",
+        "phone": "9080113177",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 7,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "Jaipur",
+        "address": "Plot No. 1, Sita Nagar 2, Heerapur Rajni Pura, Heerawala, Ajmer Road, Jaipur 302024, Rajasthan",
+        "contact_name": "Mr. Shravan Swami",
+        "phone": "9261118000",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 8,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "Kolkata",
+        "address": "3/7, Jadavgarh, P.S. Garfa, Kolkata 700078",
+        "contact_name": "Mr. Indresh",
+        "phone": "7415191708",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 9,
+    "fields": {
+        "operator": "Deshwal Waste Management",
+        "city": "Bengaluru",
+        "address": "B-39, 3rd Cross Road, Near Bharat Sevashram Sangha, Jakkur, Bengaluru 560064, Karnataka",
+        "contact_name": "Mr. Lokesh",
+        "phone": "9873592320",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 10,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "New Delhi",
+        "address": "B-13, Okhla Phase-2, New Delhi",
+        "contact_name": "Mr. Ibrahim",
+        "phone": "9555493838",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 11,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Chennai",
+        "address": "No. 389, Sembium Road, Kathevedu, Puzhal, Chennai 600066",
+        "contact_name": "Mr. Dwevdi",
+        "phone": "9884309370",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 12,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Jammu",
+        "address": "Panamma Chowk, Jammu 180001",
+        "contact_name": "Mr. Narender Kumar",
+        "phone": "9419622202",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 13,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Patna",
+        "address": "South Gandhi Maidan, behind IMA Hall, Slimpur Ohra, Patna 800001",
+        "contact_name": "Mr. Satendra Prasad",
+        "phone": "9431079451",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 14,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Ranchi",
+        "address": "Mahadeo Munda, Near Kali Mandir, Chutia, Ranchi 834001",
+        "contact_name": "Mr. Briju Kumar",
+        "phone": "9113728020",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 15,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Ahmedabad",
+        "address": "23 Manorath Complex, Sarapur, Ahmedabad 380052",
+        "contact_name": "Mr. Rajesh Patel",
+        "phone": "9374887483",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 16,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Mumbai (Bhiwandi)",
+        "address": "Kolher Village, Near Kolher Vajan Kanta, Bhiwandi, Mumbai",
+        "contact_name": "Mr. Sanjay Kumar",
+        "phone": "9999434721",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 17,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Kolkata",
+        "address": "161/1 M G Road, Bangur Building, Kolkata 700007",
+        "contact_name": "Mr. M Tiwari",
+        "phone": "9831744758",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 18,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Bhubaneshwar",
+        "address": "24/711, Bhimpur, New Airport Road, Bhubaneshwar 751020",
+        "contact_name": "Mr. Basant",
+        "phone": "9338933801",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 19,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Guwahati",
+        "address": "A K Azad Road, Rehabari Tinali, Near Namghar, Guwahati",
+        "contact_name": "Mr. Raju",
+        "phone": "7002649709",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 20,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Nagpur",
+        "address": "J P Complex, MIDC T-Point, Amravati Road, Wadi, Nagpur 440024",
+        "contact_name": "Mr. Kailash",
+        "phone": "9823361807",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 21,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Bengaluru (Nelamangala)",
+        "address": "No. 63 A, Dasanapur, NH-4 Tumkur Road, Behind Hanuman Temple, Nelamangala, Bangalore 562123",
+        "contact_name": "Mr. Singh",
+        "phone": "9379757223",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 22,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Pune",
+        "address": "Lane No. 14, Opp. Municipal Garden, Tiger Nagar, Pune 411015",
+        "contact_name": "Mr. Deepak",
+        "phone": "9730007723",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 23,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Jaipur",
+        "address": "Plant No. 20, Dyanand Nagar, Jodla Power House, Bhandarana Road, Jaipur",
+        "contact_name": "Mr. Nawrang",
+        "phone": "9351755333",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 24,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Ludhiana",
+        "address": "Plot No. 17, Transport Nagar, Ludhiana",
+        "contact_name": "Mr. Birbal",
+        "phone": "9316055333",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 25,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Chandigarh",
+        "address": "SCO 1086-87, Cabin No. 7, Sector 22B, Chandigarh",
+        "contact_name": "Mr. Jaiver",
+        "phone": "9312255333",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 26,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Hyderabad",
+        "address": "1-A 600/12, Prakash Nagar, Hyderabad",
+        "contact_name": "Mr. Jammal",
+        "phone": "9346086996",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.collectioncentre",
+    "pk": 27,
+    "fields": {
+        "operator": "Reliable Trans Logistics",
+        "city": "Raipur",
+        "address": "Near Gurudwara, Station Road, Raipur",
+        "contact_name": "Mr. R. L. Sahu",
+        "phone": "9302228182",
+        "is_active": true,
+        "created_at": "2026-07-13T10:08:25.790Z",
+        "updated_at": "2026-07-13T10:08:25.790Z"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 1,
+    "fields": {
+        "title": "Dealer Meet — Colombo",
+        "category": "Partner Day",
+        "image": "gallery/photo-1556761175-4b46a572b786_I1aUtyL.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 2,
+    "fields": {
+        "title": "Annual Tech Summit 2024",
+        "category": "Annual Meet",
+        "image": "gallery/gallery_1540575467063-178a50c2df87.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 3,
+    "fields": {
+        "title": "Team Networking Evening",
+        "category": "Community",
+        "image": "gallery/gallery_1511578314322-379afb476865.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 4,
+    "fields": {
+        "title": "AV Workshop — Bangalore",
+        "category": "Tech Workshop",
+        "image": "gallery/gallery_1524178232363-1fb2b075b655.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 5,
+    "fields": {
+        "title": "Partner Appreciation Day",
+        "category": "Partner Day",
+        "image": "gallery/gallery_1515187029135-18ee286d815b.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 6,
+    "fields": {
+        "title": "Leadership Offsite — Nairobi",
+        "category": "Leadership Summit",
+        "image": "gallery/gallery_1582213782179-e0d53f98f2ca.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 7,
+    "fields": {
+        "title": "New Joiner Onboarding Day",
+        "category": "Team",
+        "image": "gallery/gallery_1522071820081-009f0129c71c.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 8,
+    "fields": {
+        "title": "Annual Awards Night",
+        "category": "Awards Night",
+        "image": "gallery/gallery_1492684223066-81342ee5ff30.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 9,
+    "fields": {
+        "title": "Community Outreach Drive",
+        "category": "Community Drive",
+        "image": "gallery/gallery_1559027615-cd4628902d4a.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 10,
+    "fields": {
+        "title": "Product Training — Warsaw",
+        "category": "Training Day",
+        "image": "gallery/gallery_1531482615713-2afd69097998.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 11,
+    "fields": {
+        "title": "Regional Sales Kickoff",
+        "category": "Annual Meet",
+        "image": "gallery/gallery_1475721027785-f74eccf877e2.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 12,
+    "fields": {
+        "title": "Tech Demo Day — Delhi",
+        "category": "Tech Workshop",
+        "image": "gallery/gallery_1505373877841-8d25f7d46678.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 13,
+    "fields": {
+        "title": "Team Building Retreat",
+        "category": "Team Outing",
+        "image": "gallery/gallery_1529156069898-49953e39b3ac.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 14,
+    "fields": {
+        "title": "Global Partner Summit",
+        "category": "Partner Day",
+        "image": "gallery/gallery_1519389950473-47ba0277781c.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 15,
+    "fields": {
+        "title": "Women in Tech Panel",
+        "category": "Community",
+        "image": "gallery/gallery_1573164713988-8665fc963095.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 16,
+    "fields": {
+        "title": "Mindstec Sports Day",
+        "category": "Team Outing",
+        "image": "gallery/gallery_1461896836934-ffe607ba8211.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 17,
+    "fields": {
+        "title": "Certification Ceremony",
+        "category": "Awards Night",
+        "image": "gallery/gallery_1523580494863-6f3031224c94.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 18,
+    "fields": {
+        "title": "Africa Region Town Hall",
+        "category": "Leadership Summit",
+        "image": "gallery/gallery_1551818255-e6e10975bc17.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 19,
+    "fields": {
+        "title": "CSR Tree Planting Drive",
+        "category": "Community Drive",
+        "image": "gallery/gallery_1542601906990-b4d3fb778b09.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 20,
+    "fields": {
+        "title": "Installer Certification Day",
+        "category": "Training Day",
+        "image": "gallery/gallery_1560250097-0b93528c311a.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 21,
+    "fields": {
+        "title": "Year-End Gala — 2023",
+        "category": "Annual Meet",
+        "image": "gallery/gallery_1516450360452-9312f5e86fc7.jpg"
+    }
+},
+{
+    "model": "adminpanel.galleryitem",
+    "pk": 22,
+    "fields": {
+        "title": "Office Culture Moments",
+        "category": "Community",
+        "image": "gallery/gallery_1497366754035-f200968a6e72.jpg"
+    }
+},
+{
+    "model": "adminpanel.region",
+    "pk": 1,
+    "fields": {
+        "name": "India",
+        "slug": "india",
+        "is_active": true,
+        "display_order": 0,
+        "enabled_pages": [
+            "ewaste"
+        ],
+        "created_at": "2026-07-15T15:53:19.958Z"
+    }
+},
+{
+    "model": "adminpanel.region",
+    "pk": 2,
+    "fields": {
+        "name": "Middle East",
+        "slug": "middle-east",
+        "is_active": true,
+        "display_order": 1,
+        "enabled_pages": [],
+        "created_at": "2026-07-15T15:58:23.782Z"
+    }
+},
+{
+    "model": "adminpanel.region",
+    "pk": 3,
+    "fields": {
+        "name": "Africa",
+        "slug": "africa",
+        "is_active": true,
+        "display_order": 2,
+        "enabled_pages": [],
+        "created_at": "2026-07-15T15:58:23.795Z"
+    }
+},
+{
+    "model": "adminpanel.region",
+    "pk": 4,
+    "fields": {
+        "name": "South Asia",
+        "slug": "south-asia",
+        "is_active": true,
+        "display_order": 3,
+        "enabled_pages": [],
+        "created_at": "2026-07-15T15:58:23.798Z"
+    }
+},
+{
+    "model": "adminpanel.region",
+    "pk": 5,
+    "fields": {
+        "name": "Hong Kong / China",
+        "slug": "hong-kong-china",
+        "is_active": true,
+        "display_order": 4,
+        "enabled_pages": [],
+        "created_at": "2026-07-15T15:58:23.802Z"
+    }
+},
+{
+    "model": "adminpanel.teammember",
+    "pk": 2,
+    "fields": {
+        "region": 1,
+        "name": "Karthikeyan Sekar",
+        "role": "Head of Sales — South",
+        "photo": "team/Karthikeyan-Sekar-Profile-Pic.jpg-5.jpeg",
+        "display_order": 0,
+        "is_active": true,
+        "created_at": "2026-07-15T17:07:56.450Z"
+    }
+},
+{
+    "model": "adminpanel.teammember",
+    "pk": 3,
+    "fields": {
+        "region": 1,
+        "name": "Syed Abdul Wahab",
+        "role": "Founder & Chairman",
+        "photo": "team/WhatsApp-Image-2026-04-09-at-11.41.55-AM.jpeg",
+        "display_order": 1,
+        "is_active": true,
+        "created_at": "2026-07-15T17:09:25.514Z"
+    }
+},
+{
+    "model": "adminpanel.teammember",
+    "pk": 4,
+    "fields": {
+        "region": 1,
+        "name": "Sabarishan N",
+        "role": "Managing Director — India & SAARC",
+        "photo": "team/Sab-White-Bankground-1.jpg",
+        "display_order": 2,
+        "is_active": true,
+        "created_at": "2026-07-15T17:10:45.417Z"
+    }
+},
+{
+    "model": "adminpanel.regioncontact",
+    "pk": 1,
+    "fields": {
+        "region": 1,
+        "phone": "+918045256922",
+        "phone_display": "+91 80 4525 6922",
+        "email": "india@mindstec.com",
+        "address": "Bangalore",
+        "office_name": "Bangalore HQ",
+        "map_embed_url": "",
+        "map_link": ""
+    }
+},
+{
+    "model": "adminpanel.regioncontact",
+    "pk": 2,
+    "fields": {
+        "region": 2,
+        "phone": "+971000000000",
+        "phone_display": "+971 — Middle East Desk",
+        "email": "middleeast@mindstec.com",
+        "address": "K14 – LIU/ Warehouse, Dubai Airport Free Zone Area, Dubai, UAE",
+        "office_name": "Mindstec Distribution — Middle East",
+        "map_embed_url": "",
+        "map_link": ""
+    }
+},
+{
+    "model": "adminpanel.regioncontact",
+    "pk": 3,
+    "fields": {
+        "region": 3,
+        "phone": "+254000000000",
+        "phone_display": "+254 — Africa Desk",
+        "email": "africa@mindstec.com",
+        "address": "Africa Regional Office",
+        "office_name": "Mindstec Distribution — Africa",
+        "map_embed_url": "",
+        "map_link": ""
+    }
+},
+{
+    "model": "adminpanel.regioncontact",
+    "pk": 4,
+    "fields": {
+        "region": 4,
+        "phone": "+918045256922",
+        "phone_display": "+91 — South Asia Desk",
+        "email": "southasia@mindstec.com",
+        "address": "South Asia Regional Office",
+        "office_name": "Mindstec Distribution — South Asia",
+        "map_embed_url": "",
+        "map_link": ""
+    }
+},
+{
+    "model": "adminpanel.regioncontact",
+    "pk": 5,
+    "fields": {
+        "region": 5,
+        "phone": "+85200000000",
+        "phone_display": "+852 — Hong Kong / China Desk",
+        "email": "china@mindstec.com",
+        "address": "Hong Kong / China Regional Office",
+        "office_name": "Mindstec Distribution — Hong Kong / China",
+        "map_embed_url": "",
+        "map_link": ""
+    }
+},
+{
+    "model": "adminpanel.document",
+    "pk": 5,
+    "fields": {
+        "version": 1,
+        "created_at": "2026-07-13T07:44:45.844Z",
+        "updated_at": "2026-07-13T07:44:45.844Z",
+        "title": "Mindstec_Company_Profile",
+        "file": "documents/Mindstec_Company_Profile.pdf",
+        "category": "Documentation",
+        "status": "Indexed",
+        "extracted_text": "MINDSTEC DISTRIBUTION INDIA\nCompany Knowledge Base & Overview Document\n1. Company Overview\nMindstec Distribution India is a leading procurement and distribution specialist for high-end\naudio-visual (AV) solutions. Acting as a strategic bridge between global AV manufacturers and\nregional dealers or system integrators, Mindstec helps international brands tap into the immense\nbusiness potential of the SAARC markets.\nThey provide reliable supply chains, technical expertise, and end-to-end support that empowers\nintegrators,  consultants,  and  enterprises  to  deliver  exceptional,  future-ready  AV  experiences.\nWhile operating with a strong regional presence in India, Mindstec boasts a global footprint across\nthe UAE, Middle East, Africa, and Asia.\n2. Mission & Vision\nVision: To be a distribution leader in futuristic convergent technology-driven system-solutions.\nMission: A regional leader in cutting-edge audio-visual system solution distribution focused on\ncreating immense value for its supplier-dealer networks while envisaging to be the first and the\nfastest in bringing the latest technology to the region.\n3. Core Solutions & Services\nMindstec caters to a wide variety of industries by offering specialized AV and technology solutions:\nConferencing & Collaboration: Tools and systems to help people share ideas and work\ntogether efficiently in corporate environments.\nControl Rooms & Critical Environments: Complete Network Operations Center (NOC)\nsolutions for businesses, public utilities, universities, and government sectors.\nDigital Signage & DOOH (Digital Out-Of-Home): Display solutions for targeted messaging\nand dynamic advertising.\n• \n• \n• \nBroadcast, Production & Streaming: Public notification solutions and media distribution\ntechnologies.\nImmersive Experience: Technologies designed to engage and inspire through immersive\nvirtual reality and visual environments.\nHospitality & Guest Experience: Solutions to enhance comfort, convenience, and\nengagement in the hospitality sector.\nInformation & Communication Technology: Solutions for enhanced connectivity, efficiency,\nand digital transformation.\n4. Key Partner Brands\nMindstec  partners  with  top-tier  global  technology  brands  to  distribute  their  products.  Notable\nmanufacturer partners include:\nBlustream\nB-Tech AV Mounts\nChristie\nDatapath\nGoGet\niPort\nKordz\nMagnum\nMTC\nNetgear AV\nPolywall\nRDL\nSapling\nSCT (Sound Control Technologies)\nT1V\nTelycam\nWavex\n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n• \n5. Leadership & Key Team Members\nSyed Abdul Wahab: Founder & CEO (Over 30 years of experience; leads global expansion).\nSabarishan N.: Managing Director, India (Focuses on growth, partner relationships, and\nmarket expansion).\nManasa Iyer: Admin & Finance Director, India.\nKarthikeyan Selvaraj: Country Head – Projects & Service Support.\nSneha Shenoy: HR Operations Manager.\nFlavia Robert: Finance & Administration Manager.\nSajid Ali Kazi: Regional Sales Manager.\nKarthikeyan Sekar: Regional Manager, Sales (South).\n6. Company Policies & Business Model\nB2B  Distribution  Model: Mindstec  supports  dealers  with  sales,  marketing,  and  promotional\nstrategies,  fostering  growth  without  competing  against  them.  They  operate  strictly  as  a  B2B\ndistributor rather than a direct-to-consumer retailer.\nQuality  &  Support: The  company  continuously  invests  in  technical  expertise  to  provide\ncustomized support solutions, fast logistics, and reliable after-sales assistance.\nSustainability: Mindstec takes sustainability seriously, enforcing an E-Waste Management policy\nto handle the responsible disposal and recycling of electronic components.\n7. Contact Information\nHeadquarters (India):\nNo. 5M-645, Banaswadi Village,\nOMBR Layout, Bangalore 560043, India\nPhone: +9180 452 56922\nEmail: india@mindstec.com\nWebsite: https://www.mindstec.com/in/\nGenerated for Chatbot Knowledge Base Training \n• \n• \n• \n• \n• \n• \n• \n•",
+        "metadata": {}
+    }
+}
+]

@@ -8,7 +8,7 @@ const ChatHeader = () => {
   const { t } = useTranslation();
 
   return (
-    <div className="flex items-center justify-between h-14 px-4 bg-black/65 backdrop-blur-md border-b border-white/10 text-white shadow-sm select-none z-10 flex-shrink-0">
+    <div className="flex items-center justify-between h-14 px-4 bg-black/65 backdrop-blur-md border-b border-[rgba(255,255,255,0.08)] text-white shadow-sm select-none z-10 flex-shrink-0">
       <div className="flex items-center space-x-3">
         {/* Circular AI Avatar (40x40) */}
         <SupportAvatar size={40} showOnlineBadge={false} />

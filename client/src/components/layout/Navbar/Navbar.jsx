@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useContext } from 'react';
@@ -14,6 +14,8 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
   const { t } = useTranslation();
   const { changeLanguage } = useContext(LanguageContext);
   const { region, setRegion, isPageEnabled } = useRegion();
+
+  const [activeDropdown, setActiveDropdown] = useState(null);
 
   const regionLanguageMap = {
     'India': 'en',
@@ -41,8 +43,27 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
     };
   }, []);
 
+  // Close dropdown on route change
+  useEffect(() => {
+    setActiveDropdown(null);
+  }, [location.pathname]);
+
+  // Click outside to close dropdowns
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   // Handle installations link navigation vs section scroll on Home page
   const handleInstallationsClick = (e) => {
+    setActiveDropdown(null);
     if (location.pathname === '/') {
       e.preventDefault();
       const target = document.querySelector('#work');
@@ -56,6 +77,19 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
     }
   };
 
+  const handleMouseEnter = (name) => {
+    setActiveDropdown(name);
+  };
+
+  const handleMouseLeave = () => {
+    setActiveDropdown(null);
+  };
+
+  const handleItemClick = (name, e) => {
+    e.stopPropagation();
+    setActiveDropdown((prev) => (prev === name ? null : name));
+  };
+
   const isSolutionsActive = location.pathname.startsWith('/solutions');
   const isAboutActive = location.pathname === '/about' || location.pathname === '/partners';
 
@@ -63,6 +97,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
   const isResourcesActive =
     location.pathname === '/blogs' ||
     location.pathname === '/experience' ||
+    location.pathname === '/gallery' ||
     (isPageEnabled('ewaste') && location.pathname === '/ewaste');
 
   // Only E-Waste is region-gated — null while loading (hidden until confirmed)
@@ -70,58 +105,73 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
 
   return (
     <header ref={navRef} className="nav" id="nav">
-      <Link to="/" className="logo" aria-label="Mindstec home">
+      <Link to="/" className="logo" aria-label="Mindstec home" onClick={() => setActiveDropdown(null)}>
         <img src="/mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today" />
       </Link>
       <nav aria-label="Primary">
         <ul className="nav-links">
           <li>
-            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''}>{t('navbar.home')}</NavLink>
+            <NavLink to="/" end className={({ isActive }) => isActive ? 'active' : ''} onClick={() => setActiveDropdown(null)}>{t('navbar.home')}</NavLink>
           </li>
-          <li className="nav-item">
-            <Link to="/about" className={isAboutActive ? 'active' : ''}>
+          <li 
+            className={`nav-item ${activeDropdown === 'about' ? 'open' : ''}`}
+            onMouseEnter={() => handleMouseEnter('about')}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link to="/about" className={isAboutActive ? 'active' : ''} onClick={(e) => handleItemClick('about', e)}>
               {t('navbar.about')}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M6 9l6 6 6-6" />
               </svg>
             </Link>
-            <div className="sub">
-              <NavLink to="/about" end className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('navbar.about_us')}</NavLink>
-              <NavLink to="/partners" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('navbar.partners')}</NavLink>
+            <div className={`sub ${activeDropdown === 'about' ? 'open' : ''}`}>
+              <NavLink to="/about" end className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('navbar.about_us')}</NavLink>
+              <NavLink to="/partners" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('navbar.partners')}</NavLink>
             </div>
           </li>
-          <li className="nav-item">
-            <Link to="/solutions" className={isSolutionsActive ? 'active' : ''}>
+          <li 
+            className={`nav-item ${activeDropdown === 'solutions' ? 'open' : ''}`}
+            onMouseEnter={() => handleMouseEnter('solutions')}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link to="/solutions" className={isSolutionsActive ? 'active' : ''} onClick={(e) => handleItemClick('solutions', e)}>
               {t('navbar.solutions')}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M6 9l6 6 6-6" />
               </svg>
             </Link>
-            <div className="sub">
-              <NavLink to="/solutions/digital-signage" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('solutions.arr.0.name')}</NavLink>
-              <NavLink to="/solutions/control-rooms" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('solutions.arr.1.name')}</NavLink>
-              <NavLink to="/solutions/conferencing" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('solutions.arr.2.name')}</NavLink>
-              <NavLink to="/solutions/hospitality" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('solutions.arr.3.name')}</NavLink>
-              <NavLink to="/solutions/broadcast" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('solutions.arr.4.name')}</NavLink>
-              <NavLink to="/solutions/live-events" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('solutions.arr.5.name')}</NavLink>
+            <div className={`sub ${activeDropdown === 'solutions' ? 'open' : ''}`}>
+              <NavLink to="/solutions/digital-signage" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('solutions.arr.0.name')}</NavLink>
+              <NavLink to="/solutions/control-rooms" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('solutions.arr.1.name')}</NavLink>
+              <NavLink to="/solutions/conferencing" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('solutions.arr.2.name')}</NavLink>
+              <NavLink to="/solutions/hospitality" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('solutions.arr.3.name')}</NavLink>
+              <NavLink to="/solutions/broadcast" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('solutions.arr.4.name')}</NavLink>
+              <NavLink to="/solutions/live-events" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('solutions.arr.5.name')}</NavLink>
             </div>
           </li>
-          <li className="nav-item">
-            <Link to="/blogs" className={isResourcesActive ? 'active' : ''}>
+          <li 
+            className={`nav-item ${activeDropdown === 'resources' ? 'open' : ''}`}
+            onMouseEnter={() => handleMouseEnter('resources')}
+            onMouseLeave={handleMouseLeave}
+          >
+            <Link to="/blogs" className={isResourcesActive ? 'active' : ''} onClick={(e) => handleItemClick('resources', e)}>
               {t('navbar.resources')}
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <path d="M6 9l6 6 6-6" />
               </svg>
             </Link>
-            <div className="sub">
-              <NavLink to="/blogs" className={({ isActive }) => isActive ? 'sub-active' : ''}>{t('navbar.blogs')}</NavLink>
+            <div className={`sub ${activeDropdown === 'resources' ? 'open' : ''}`}>
+              <NavLink to="/blogs" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>{t('navbar.blogs')}</NavLink>
               {showEwaste && (
-                <NavLink to="/ewaste" className={({ isActive }) => isActive ? 'sub-active' : ''}>
+                <NavLink to="/ewaste" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>
                   {t('navbar.ewaste', 'E-Waste Management')}
                 </NavLink>
               )}
-              <NavLink to="/experience" className={({ isActive }) => isActive ? 'sub-active' : ''}>
+              <NavLink to="/experience" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>
                 {t('navbar.experience', 'Experience Centre')}
+              </NavLink>
+              <NavLink to="/gallery" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>
+                {t('navbar.gallery', 'Gallery')}
               </NavLink>
             </div>
           </li>
@@ -131,8 +181,13 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
         </ul>
       </nav>
       <div className="nav-cta">
-        <div className="nav-item">
-          <button className="nav-region" id="regionBtn" aria-label={`Change region, current region ${region}`}>
+        <li 
+          className={`nav-item ${activeDropdown === 'region' ? 'open' : ''}`}
+          style={{ listStyle: 'none' }}
+          onMouseEnter={() => handleMouseEnter('region')}
+          onMouseLeave={handleMouseLeave}
+        >
+          <button className="nav-region" id="regionBtn" aria-label={`Change region, current region ${region}`} onClick={(e) => handleItemClick('region', e)}>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <circle cx="12" cy="12" r="9" />
               <path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z" />
@@ -142,7 +197,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
               <path d="M6 9l6 6 6-6" />
             </svg>
           </button>
-          <div className="sub" style={{ right: 0, left: 'auto' }}>
+          <div className={`sub ${activeDropdown === 'region' ? 'open' : ''}`} style={{ right: 0, left: 'auto' }}>
             {['India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => {
               const regKey = `navbar.regions.${r.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`;
               return (
@@ -153,6 +208,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
                     e.preventDefault();
                     setRegion(r);
                     changeLanguage(regionLanguageMap[r] || 'en');
+                    setActiveDropdown(null);
                   }}
                   className={region === r ? 'sub-active' : ''}
                 >
@@ -161,8 +217,8 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
               );
             })}
           </div>
-        </div>
-        <Button solid to="/contact">
+        </li>
+        <Button solid to="/contact" onClick={() => setActiveDropdown(null)}>
           <span>{t('navbar.talk_to_us')}</span>
         </Button>
         <button

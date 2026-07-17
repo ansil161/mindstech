@@ -320,11 +320,17 @@
       "title_em": "in the room.",
       "btn1": "Get a quote",
       "btn2": "Become a partner",
+      "email_label": "Email",
       "contacts": {
         "india": "India operations",
         "global": "+91 80 4525 6922",
         "partnerships": "Global enquiries"
       }
+    },
+    "testimonials": {
+      "label": "Client voices",
+      "title_main": "What our",
+      "title_em": "clients say"
     }
   },
   "partners": {

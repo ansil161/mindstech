@@ -41,8 +41,6 @@ const Home = () => {
   const containerRef = useRef(null);
   const mapBaseRef = useRef(null);
   const mapOverlayRef = useRef(null);
-  const solPreviewRef = useRef(null);
-  const solListRef = useRef(null);
   const edgeListRef = useRef(null);
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
@@ -77,7 +75,7 @@ const Home = () => {
       try {
         const res = await getPublicRegionData(regionSlug);
         if (!cancelled) {
-          setRegionContact(res.data.contact_info || null);
+          setRegionContact(Array.isArray(res.data.contact_info) ? res.data.contact_info[0] : (res.data.contact_info || null));
           setTestimonials(res.data.testimonials || []);
         }
       } catch {
@@ -149,34 +147,47 @@ const Home = () => {
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // Hero intro timeline
+      // Immediately apply initial hidden states on mount to prevent unstyled flashes,
+      // layout shifts, or blank states before the transition begins.
+      gsap.set('#heroImg', { scale: 1.12, filter: 'brightness(.2) saturate(.8)' });
+      gsap.set('#heroH .w', { yPercent: 80, opacity: 0 });
+      gsap.set('#heroBrief', { opacity: 0, y: 20 });
+      gsap.set('#heroFoot .fact', { opacity: 0, y: 15 });
+      gsap.set('.hero-scrollcue', { opacity: 0, x: -10 });
+      gsap.set('#cueLine', { scaleX: 0 });
+
+      // Snappier Hero intro timeline
       const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
       intro.fromTo('#heroImg', 
-          { scale: 1.15, filter: 'brightness(.2) saturate(.8)' },
-          { scale: 1, filter: 'brightness(.58) saturate(1)', duration: 2.2, ease: 'power2.out' })
+          { scale: 1.12, filter: 'brightness(.2) saturate(.8)' },
+          { scale: 1, filter: 'brightness(.58) saturate(1)', duration: 1.8, ease: 'power2.out' })
         .fromTo('#heroH .w', 
-          { yPercent: 115, rotate: 2 }, 
-          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.09, ease: 'power4.out' }, 
-          '-=1.8')
+          { yPercent: 80, opacity: 0 }, 
+          { yPercent: 0, opacity: 1, duration: 1.3, stagger: 0.12, ease: 'power4.out' }, 
+          '-=1.7')
         .fromTo('#heroBrief', 
-          { opacity: 0, y: 30 }, 
-          { opacity: 1, y: 0, duration: 1.2 }, 
-          '-=1.2')
-        .fromTo('#heroFoot', 
           { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 1.0 }, 
+          { opacity: 1, y: 0, duration: 0.9 }, 
+          '-=1.2')
+        .fromTo('#heroFoot .fact', 
+          { opacity: 0, y: 15 }, 
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }, 
           '-=0.9')
+        .fromTo('.hero-scrollcue', 
+          { opacity: 0, x: -10 }, 
+          { opacity: 1, x: 0, duration: 0.8 }, 
+          '-=0.7')
         .fromTo('#cueLine', 
           { scaleX: 0 }, 
-          { scaleX: 1, duration: 0.8 }, 
-          '-=0.7');
+          { scaleX: 1, duration: 0.6 }, 
+          '-=0.5');
 
       const runIntro = () => {
         intro.play();
       };
       runIntroHandler = runIntro;
 
-      if (!document.getElementById('preloader')) {
+      if (!document.getElementById('preloader') || window.__preloaderExited) {
         runIntro();
       } else {
         window.addEventListener('preloaderExited', runIntro);
@@ -204,7 +215,7 @@ const Home = () => {
         { opacity: 0.18 },
         {
           opacity: 1,
-          color: (i, t) => t.parentElement.tagName === 'EM' ? '#CC0001' : '#FAFAFA',
+          color: (i, t) => (t.parentElement && t.parentElement.tagName === 'EM') ? '#CC0001' : '#FAFAFA',
           stagger: 0.4,
           ease: 'none',
           scrollTrigger: {
@@ -251,23 +262,6 @@ const Home = () => {
           }
         );
       });
-
-      // 6. Solutions cascade
-      gsap.fromTo('.sol-row', 
-        { opacity: 0, y: 34 }, 
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.7,
-          stagger: 0.08,
-          ease: 'power2.out',
-          scrollTrigger: {
-            trigger: '#solList',
-            start: 'top 80%',
-            once: true,
-          }
-        }
-      );
 
       // 7. Stat counters
       document.querySelectorAll('.count').forEach((el) => {
@@ -345,67 +339,30 @@ const Home = () => {
     };
   }, []);
 
-  // Solutions hover image coordinates tracker (pointer: fine)
+  // Separate effect for solutions row animations triggered when solutions render
   useEffect(() => {
-    const preview = solPreviewRef.current;
-    const solList = solListRef.current;
-    if (!preview || !solList) return;
+    if (solutions.length === 0) return;
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const fine = window.matchMedia('(pointer: fine)').matches;
-    if (!fine || reduceMotion) return;
-
-    const qx = gsap.quickTo(preview, 'left', { duration: 0.45, ease: 'power3' });
-    const qy = gsap.quickTo(preview, 'top', { duration: 0.45, ease: 'power3' });
-    const qRotate = gsap.quickTo(preview, 'rotate', { duration: 0.45, ease: 'power3' });
-    let lastX = 0;
-    let shown = false;
-
-    const onPointerMove = (e) => {
-      qx(e.clientX + 28);
-      qy(e.clientY - 100);
-      
-      const velocity = (e.clientX - lastX) * 0.08;
-      const angle = Math.min(Math.max(velocity, -10), 10);
-      qRotate(angle);
-      lastX = e.clientX;
-    };
-
-    const fadePreview = (show) => {
-      gsap.to(preview, {
-        opacity: show ? 1 : 0,
-        scale: show ? 1 : 0.92,
-        rotate: show ? undefined : 0,
-        duration: 0.35,
-        ease: 'power2.out',
-        overwrite: 'auto',
-      });
-    };
-
-    const pImgs = preview.querySelectorAll('img');
-    const rows = solList.querySelectorAll('.sol-row');
-    rows.forEach((row, i) => {
-      row.addEventListener('pointerenter', () => {
-        pImgs.forEach((img, idx) => img.classList.toggle('on', idx === i));
-        if (!shown) {
-          fadePreview(true);
-          shown = true;
+    const ctx = gsap.context(() => {
+      gsap.fromTo('.sol-row', 
+        { opacity: 0, y: 20 }, 
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#solList',
+            start: 'top 82%',
+            once: true,
+          }
         }
-      });
-    });
-
-    const onPointerLeave = () => {
-      fadePreview(false);
-      shown = false;
-    };
-
-    solList.addEventListener('pointermove', onPointerMove);
-    solList.addEventListener('pointerleave', onPointerLeave);
+      );
+    }, containerRef);
 
     return () => {
-      solList.removeEventListener('pointermove', onPointerMove);
-      solList.removeEventListener('pointerleave', onPointerLeave);
-      gsap.killTweensOf(preview);
+      ctx.revert();
     };
   }, [solutions]);
 
@@ -588,7 +545,7 @@ const Home = () => {
               <span className="line-mask"><span className="w">{t('home.hero.line2')}</span></span>
               <span className="line-mask"><span className="w"><em>{t('home.hero.line3')}</em></span></span>
             </h1>
-            <div className="hero-brief reveal" id="heroBrief">
+            <div className="hero-brief" id="heroBrief">
               <p>{t('home.hero.brief')}</p>
               <Button href="#solutions">
                 <span>{t('home.hero.explore_btn')}</span>
@@ -598,11 +555,11 @@ const Home = () => {
               </Button>
             </div>
           </div>
-          <div className="hero-foot reveal" id="heroFoot">
+          <div className="hero-foot" id="heroFoot">
             <div className="fact"><b>{t('home.hero.fact1_b')}</b><span>{t('home.hero.fact1_s')}</span></div>
             <div className="fact"><b>{t('home.hero.fact2_b')}</b><span>{t('home.hero.fact2_s')}</span></div>
             <div className="fact"><b>{t('home.hero.fact3_b')}</b><span>{t('home.hero.fact3_s')}</span></div>
-            <div className="hero-scrollcue" aria-hidden="true"><i id="cueLine"></i>{t('home.hero.scroll')}</div>
+            <div className="hero-scrollcue"><i id="cueLine"></i>{t('home.hero.scroll')}</div>
           </div>
         </div>
       </section>
@@ -637,14 +594,14 @@ const Home = () => {
           </div>
           <p className="lede side">{t('home.solutions.lede')}</p>
         </div>
-        <div className="sol-list" id="solList" ref={solListRef}>
+        <div className="sol-list" id="solList">
           {solutions.map((sol, i) => (
-            <Link key={i} className="sol-row" to={`/solutions/${sol.slug}`} data-img={i}>
+            <Link key={i} className="sol-row" to={`/solutions/${sol.slug}`}>
               <span className="num">{(i + 1).toString().padStart(2, '0')}</span>
               <span className="sol-title">{sol.title}</span>
-              <span className="sol-img" aria-hidden="true">
-                <img src={sol.image} alt="" loading="lazy" />
-              </span>
+              <div className="sol-img">
+                <img src={sol.image} alt={sol.title} loading="lazy" />
+              </div>
               <span className="sol-desc">{sol.desc}</span>
               <span className="sol-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -652,11 +609,6 @@ const Home = () => {
                 </svg>
               </span>
             </Link>
-          ))}
-        </div>
-        <div className="sol-preview" id="solPreview" ref={solPreviewRef} aria-hidden="true">
-          {solutions.map((sol, i) => (
-            <img key={i} src={sol.image} alt={sol.title} loading="lazy" />
           ))}
         </div>
       </section>
@@ -841,7 +793,7 @@ const Home = () => {
           <div className="mc">
             <span>{region}</span>
             {regionContact?.phone && (
-              <a href={`tel:${regionContact.phone}`}>
+              <a href={`tel:${(regionContact.phone_display || regionContact.phone || '').replace(/[^+\d]/g, '')}`}>
                 {regionContact.phone_display || regionContact.phone}
               </a>
             )}
@@ -918,9 +870,9 @@ const Home = () => {
           {/* Section head */}
           <div className="flex justify-between items-end gap-6 mb-14">
             <div>
-              <span className="label label--red">Client voices</span>
+              <span className="label label--red">{t('home.testimonials.label', 'Client voices')}</span>
               <h2 className="display text-[clamp(26px,3.2vw,44px)] mt-4">
-                What our <em>clients say</em>
+                {t('home.testimonials.title_main', 'What our')} <em>{t('home.testimonials.title_em', 'clients say')}</em>
               </h2>
             </div>
           </div>
@@ -1040,7 +992,7 @@ const Home = () => {
           </div>
           <div className="cta-contacts">
             <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
-            <div className="c-item"><span>Email</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
+            <div className="c-item"><span>{t('home.cta.email_label', 'Email')}</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
             <div className="c-item"><span>{t('contact_info.partner_label')}</span><a href={`mailto:${t('contact_info.partner_email')}`}>{t('contact_info.partner_email')}</a></div>
           </div>
         </div>
