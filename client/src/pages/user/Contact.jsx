@@ -60,10 +60,10 @@ const Contact = () => {
   const contactInfo = contacts[0] || null;
   const [allRegionContacts, setAllRegionContacts] = useState([]);
 
-  const { translatedData: translatedContact } = useDynamicTranslation(
-    contactInfo,
+  const { translatedData: translatedContacts } = useDynamicTranslation(
+    contacts,
     ['office_name', 'address'],
-    `contact_info_${regionSlug}`
+    `contact_list_${regionSlug}`
   );
 
   useEffect(() => {
@@ -212,8 +212,8 @@ const Contact = () => {
   };
 
   // Use contactInfo as the authoritative source (updates when region changes).
-  // translatedContact only adds translated office_name/address on top — never replaces the base data.
   const baseContact = contactInfo || FALLBACK_CONTACT;
+  const translatedContact = translatedContacts && translatedContacts.length > 0 ? translatedContacts[0] : null;
   const telHref = (baseContact.phone_display || baseContact.phone || FALLBACK_CONTACT.phone || '').replace(/[^+\d]/g, '');
   const telLabel = baseContact.phone_display || baseContact.phone || FALLBACK_CONTACT.phone_display;
   const contactEmail = baseContact.email || FALLBACK_CONTACT.email;
@@ -222,7 +222,7 @@ const Contact = () => {
   const mapEmbed = baseContact.map_embed_url || FALLBACK_CONTACT.map_embed_url;
   const mapLink = baseContact.map_link || FALLBACK_CONTACT.map_link;
 
-  const displayContacts = contacts.length > 0 ? contacts : [FALLBACK_CONTACT];
+  const displayContacts = translatedContacts && translatedContacts.length > 0 ? translatedContacts : (contacts.length > 0 ? contacts : [FALLBACK_CONTACT]);
 
   const regionalDesks = allRegionContacts.length > 0
     ? allRegionContacts
@@ -369,8 +369,8 @@ const Contact = () => {
             <div>
               <b>Visit us</b>
               {displayContacts.map((contact, idx) => {
-                const addr = (idx === 0 && translatedContact?.address && translatedContact.email === contact.email ? translatedContact.address : null) || contact.address;
-                const office = (idx === 0 && translatedContact?.office_name && translatedContact.email === contact.email ? translatedContact.office_name : null) || contact.office_name;
+                const addr = contact.address;
+                const office = contact.office_name;
                 if (!addr) return null;
                 return (
                   <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '12px' : '0', borderTop: idx > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none', paddingTop: idx > 0 ? '8px' : '0' }}>

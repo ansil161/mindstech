@@ -366,6 +366,51 @@ const Home = () => {
     };
   }, [solutions]);
 
+  // Separate effect for testimonial card animations
+  useEffect(() => {
+    if (translatedTestimonials.length === 0) return;
+
+    const ctx = gsap.context(() => {
+      // Animate the section header
+      gsap.fromTo('#testimonials .section-head',
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: '#testimonials',
+            start: 'top 75%',
+            once: true,
+          }
+        }
+      );
+
+      // Animate the testimonial cards staggering in
+      gsap.fromTo('.testimonial-card-premium',
+        { opacity: 0, y: 50, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          stagger: 0.15,
+          ease: 'back.out(1.2)',
+          scrollTrigger: {
+            trigger: '#testimonials .grid',
+            start: 'top 80%',
+            once: true,
+          }
+        }
+      );
+    }, containerRef);
+
+    return () => {
+      ctx.revert();
+    };
+  }, [translatedTestimonials]);
+
   // Edge accordion logic (matches original scrollHeight mapping)
   useEffect(() => {
     const list = edgeListRef.current;
@@ -813,7 +858,7 @@ const Home = () => {
       </section>
 
       {/* INSTALLATIONS GRID */}
-      <section className="work" id="work">
+      <section className="work home-section-spacer" id="work">
         <div className="section-head">
           <div>
             <span className="label label--red">{t('home.work.label')}</span>
@@ -866,53 +911,58 @@ const Home = () => {
 
       {/* TESTIMONIALS */}
       {translatedTestimonials.length > 0 && (
-        <section id="testimonials" aria-label="Client testimonials" className="py-20 px-[var(--pad)]">
+        <section id="testimonials" aria-label="Client testimonials" className="testimonials-section-custom px-[var(--pad)] relative overflow-hidden">
           {/* Section head */}
-          <div className="flex justify-between items-end gap-6 mb-14">
+          <div className="section-head">
             <div>
               <span className="label label--red">{t('home.testimonials.label', 'Client voices')}</span>
-              <h2 className="display text-[clamp(26px,3.2vw,44px)] mt-4">
+              <h2 className="display" style={{ marginTop: '16px' }}>
                 {t('home.testimonials.title_main', 'What our')} <em>{t('home.testimonials.title_em', 'clients say')}</em>
               </h2>
             </div>
           </div>
 
           {/* Cards grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {translatedTestimonials.map((item, i) => (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 mt-48">
+            {[...translatedTestimonials].reverse().slice(0, 6).map((item, i) => (
               <article
                 key={item.id || i}
-                className="reveal group relative flex flex-col gap-5 rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-8 overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:border-red-600/30 hover:shadow-[0_20px_60px_rgba(0,0,0,.4),0_0_0_1px_rgba(204,0,1,.1)]"
+                className="group testimonial-card-premium"
               >
                 {/* Red glow on hover */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-red-600/[0.07] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-red-600/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
 
-                {/* Quote icon */}
-                <svg className="w-7 h-auto text-red-600 opacity-30 relative z-10" viewBox="0 0 40 30" fill="currentColor">
-                  <path d="M0 30V18C0 8.059 6.716 2.118 20.147 0l1.912 3.294C15.324 4.647 11.5 8.118 10.735 13.5H18V30H0zm22 0V18C22 8.059 28.716 2.118 42.147 0l1.912 3.294C37.324 4.647 33.5 8.118 32.735 13.5H40V30H22z"/>
-                </svg>
+                {/* Person Image (overlapping card top, rectangular portrait) */}
+                <div className="testimonial-portrait-premium">
+                  {item.photo ? (
+                    <img
+                      src={item.photo}
+                      alt={`Portrait of ${item.name}`}
+                      loading="lazy"
+                    />
+                  ) : (
+                    <div className="w-full h-full bg-gradient-to-br from-red-600/20 to-zinc-900 flex items-center justify-center text-4xl font-bold text-red-500 font-[var(--display)] tracking-wide">
+                      {item.name
+                        ? item.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
+                        : 'AV'}
+                    </div>
+                  )}
+                </div>
 
-                {/* Message */}
-                <blockquote className="relative z-10 flex-1 text-[15px] leading-[1.75] text-[var(--white)] not-italic">
-                  {item.message}
+                {/* Name */}
+                <h3 className="text-lg font-bold text-white tracking-tight relative z-10">
+                  {item.name}
+                </h3>
+
+                {/* Designation / Company */}
+                <p className="text-[12px] text-[var(--grey)] font-medium mb-5 relative z-10 uppercase tracking-wider">
+                  {item.designation} {item.company && <span className="text-white/40">·</span>} <span className="text-red-500 font-semibold">{item.company}</span>
+                </p>
+
+                {/* Quote Message */}
+                <blockquote className="relative z-10 flex-1 text-[14.5px] leading-[1.8] text-white/70 group-hover:text-white/95 not-italic transition-colors duration-300 max-w-xs mx-auto">
+                  "{item.message}"
                 </blockquote>
-
-                {/* Author */}
-                <footer className="relative z-10 flex items-center gap-4 pt-5 border-t border-white/[0.06]">
-                  <div className="w-11 h-11 rounded-full overflow-hidden border border-white/10 bg-[var(--ink-2)] flex-shrink-0 flex items-center justify-center">
-                    {item.photo
-                      ? <img src={item.photo} alt={`Portrait of ${item.name}`} loading="lazy" className="w-full h-full object-cover" />
-                      : <span className="text-sm font-bold text-red-500 font-[var(--display)] tracking-wide">
-                          {item.name.split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase()}
-                        </span>
-                    }
-                  </div>
-                  <div className="flex flex-col gap-0.5 min-w-0">
-                    <strong className="text-[13.5px] font-semibold text-[var(--white)] tracking-tight truncate">{item.name}</strong>
-                    <span className="text-[11.5px] text-[var(--grey)] truncate">{item.designation}</span>
-                    <span className="text-[11.5px] text-red-500 font-medium truncate">{item.company}</span>
-                  </div>
-                </footer>
               </article>
             ))}
           </div>
@@ -922,7 +972,7 @@ const Home = () => {
       <div className="rule"></div>
 
       {/* JOURNAL GRID */}
-      <section className="journal" id="journal">
+      <section className="journal home-section-spacer" id="journal">
         <div className="section-head">
           <div>
             <span className="label label--red">{t('home.journal.label')}</span>

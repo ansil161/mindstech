@@ -2535,3 +2535,67 @@ footer { border-top: 1px solid var(--line-soft); }
   -webkit-box-orient: vertical;
   overflow: hidden;
 }
+
+/* Custom premium testimonials and homepage height adjustments */
+.home-section-spacer {
+  padding-top: clamp(100px, 15vw, 200px) !important;
+  padding-bottom: clamp(100px, 15vw, 200px) !important;
+}
+
+.testimonials-section-custom {
+  padding-top: 56px !important; /* Small space above the header */
+  padding-bottom: 120px !important; /* Generous space at the bottom */
+}
+
+
+/* Premium Testimonial Card Layout (Flow based) */
+.testimonial-card-premium {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  background: rgba(12, 12, 14, 0.85) !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 20px !important;
+  padding: 32px 28px 48px 28px !important; /* Balanced standard padding */
+  margin-top: 100px !important; /* Pushes card down to fit portrait margin */
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.testimonial-card-premium:hover {
+  transform: translateY(-10px) !important;
+  border-color: rgba(204, 0, 1, 0.35) !important;
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(204, 0, 1, 0.15) !important;
+}
+
+.testimonial-portrait-premium {
+  width: 176px;
+  height: 224px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
+  background: var(--ink-2);
+  margin-top: -112px !important; /* Pulls it up above the card's top edge */
+  margin-bottom: 28px !important; /* Generous gap before text starts */
+  z-index: 10;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.testimonial-card-premium:hover .testimonial-portrait-premium {
+  transform: scale(1.04);
+  border-color: rgba(204, 0, 1, 0.35);
+}
+
+.testimonial-portrait-premium img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.1);
+  transition: filter 0.5s ease;
+}
+
+.testimonial-card-premium:hover .testimonial-portrait-premium img {
+  filter: grayscale(0%) contrast(1.0);
+}

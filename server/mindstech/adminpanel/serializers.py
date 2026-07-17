@@ -204,6 +204,7 @@ class RegionSerializer(serializers.ModelSerializer):
 
 class TeamMemberSerializer(serializers.ModelSerializer):
     photo = serializers.ImageField(use_url=True)
+    is_active = serializers.BooleanField(default=True, required=False)
 
     class Meta:
         model = TeamMember
@@ -232,6 +233,7 @@ class RegionContactSerializer(serializers.ModelSerializer):
 
 class TestimonialSerializer(serializers.ModelSerializer):
     photo = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    is_active = serializers.BooleanField(default=True, required=False)
 
     class Meta:
         model = ClientTestimonial
@@ -278,6 +280,7 @@ class RegionDetailSerializer(serializers.ModelSerializer):
 
 class RegionBrandSerializer(serializers.ModelSerializer):
     logo = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    is_active = serializers.BooleanField(default=True, required=False)
     solutions = serializers.PrimaryKeyRelatedField(
         many=True,
         queryset=Solution.objects.all(),

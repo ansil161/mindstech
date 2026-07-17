@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import { useAuth } from '../../context/AuthContext';
 import axios from '../../api/axios';
 import DocumentManager from '../../components/admin/DocumentManager';
@@ -85,7 +86,7 @@ export default function AdminDashboard() {
   const handleAddFieldwork = async (e) => {
     e.preventDefault();
     if (!newTitle.trim() || !newLocationMeta.trim() || !newCategory.trim() || !newImage) {
-      alert('Please fill out all fields and select a project image.');
+      notify('Please fill out all fields and select a project image.');
       return;
     }
     setSubmittingFieldwork(true);
@@ -113,7 +114,7 @@ export default function AdminDashboard() {
       const serverMsg = err.response?.data 
         ? JSON.stringify(err.response.data) 
         : err.message;
-      alert(`Failed to save project. Server error details: ${serverMsg}`);
+      notify(`Failed to save project. Server error details: ${serverMsg}`);
     } finally {
       setSubmittingFieldwork(false);
     }
@@ -126,7 +127,7 @@ export default function AdminDashboard() {
       setFieldwork(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error(err);
-      alert('Failed to delete fieldwork project.');
+      notify('Failed to delete fieldwork project.');
     }
   };
 
@@ -226,23 +227,42 @@ export default function AdminDashboard() {
   const [editMemberPhoto, setEditMemberPhoto] = useState(null);
   const [submittingMemberEdit, setSubmittingMemberEdit] = useState(false);
 
-  // Toast notifications state
-  const [toast, setToast] = useState(null);
+  // Toast notifications state handled by react-hot-toast
+  const notify = (msg) => {
+    let finalMsg = typeof msg === 'string' ? msg : String(msg);
+    
+    // Parse backend JSON errors into readable messages
+    if (finalMsg.includes('{') && finalMsg.includes('}')) {
+      try {
+        const jsonStartIndex = finalMsg.indexOf('{');
+        const prefix = finalMsg.substring(0, jsonStartIndex).trim();
+        const jsonStr = finalMsg.substring(jsonStartIndex);
+        const errObj = JSON.parse(jsonStr);
+        
+        let readableErrors = [];
+        for (const [field, errors] of Object.entries(errObj)) {
+          const fieldName = field.charAt(0).toUpperCase() + field.slice(1);
+          if (Array.isArray(errors)) {
+            readableErrors.push(`${fieldName}: ${errors.join(' ')}`);
+          } else if (typeof errors === 'string') {
+            readableErrors.push(`${fieldName}: ${errors}`);
+          }
+        }
+        if (readableErrors.length > 0) {
+          finalMsg = (prefix ? prefix + ' ' : '') + readableErrors.join(' | ');
+        }
+      } catch (e) {
+        // Not parseable, leave as is
+      }
+    }
 
-  const triggerToast = (type, title, msg) => {
-    setToast({ type, title, message: msg });
+    const isSuccess = finalMsg.toLowerCase().includes('success') || finalMsg.toLowerCase().includes('saved') || finalMsg.toLowerCase().includes('uploaded') || finalMsg.toLowerCase().includes('updated') || finalMsg.toLowerCase().includes('added') || finalMsg.toLowerCase().includes('deleted');
+    if (isSuccess) {
+      toast.success(finalMsg, { duration: 5000 });
+    } else {
+      toast.error(finalMsg, { duration: 6000 });
+    }
   };
-
-  const alert = (msg) => {
-    const isSuccess = msg.toLowerCase().includes('success') || msg.toLowerCase().includes('saved') || msg.toLowerCase().includes('uploaded') || msg.toLowerCase().includes('updated') || msg.toLowerCase().includes('added') || msg.toLowerCase().includes('deleted');
-    triggerToast(isSuccess ? 'success' : 'error', isSuccess ? 'Success' : 'Notification', msg);
-  };
-
-  useEffect(() => {
-    if (!toast) return;
-    const t = setTimeout(() => setToast(null), 5000);
-    return () => clearTimeout(t);
-  }, [toast]);
 
   // Brand states
   const [brands, setBrands] = useState([]);
@@ -292,7 +312,7 @@ export default function AdminDashboard() {
   const handleAddGalleryItem = async (e) => {
     e.preventDefault();
     if (!galTitle.trim() || !galCategory.trim() || !galImage) {
-      alert('Please fill out all fields and select an image.');
+      notify('Please fill out all fields and select an image.');
       return;
     }
     setSubmittingGallery(true);
@@ -315,7 +335,7 @@ export default function AdminDashboard() {
       const serverMsg = err.response?.data
         ? JSON.stringify(err.response.data)
         : err.message;
-      alert(`Failed to save gallery item. Server error details: ${serverMsg}`);
+      notify(`Failed to save gallery item. Server error details: ${serverMsg}`);
     } finally {
       setSubmittingGallery(false);
     }
@@ -328,7 +348,7 @@ export default function AdminDashboard() {
       setGalleryItems(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error(err);
-      alert('Failed to delete gallery item.');
+      notify('Failed to delete gallery item.');
     }
   };
 
@@ -368,7 +388,7 @@ export default function AdminDashboard() {
       setContacts(contactsRes.data || []);
     } catch (err) {
       console.error(err);
-      alert('Failed to load region details.');
+      notify('Failed to load region details.');
     } finally {
       setLoadingTeam(false);
       setLoadingContacts(false);
@@ -379,7 +399,7 @@ export default function AdminDashboard() {
   const handleAddRegion = async (e) => {
     e.preventDefault();
     if (!newRegionName.trim()) {
-      alert('Please enter a region name.');
+      notify('Please enter a region name.');
       return;
     }
     const slug = newRegionSlug.trim() || slugifyRegion(newRegionName);
@@ -390,10 +410,10 @@ export default function AdminDashboard() {
       setNewRegionName('');
       setNewRegionSlug('');
       setShowAddRegionForm(false);
-      alert('Region created successfully.');
+      notify('Region created successfully.');
     } catch (err) {
       console.error(err);
-      alert(`Failed to create region: ${JSON.stringify(err.response?.data || err.message)}`);
+      notify(`Failed to create region: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally {
       setSubmittingRegion(false);
     }
@@ -405,17 +425,17 @@ export default function AdminDashboard() {
       await deleteRegion(id);
       setRegions(prev => prev.filter(r => r.id !== id));
       if (selectedRegion?.id === id) setSelectedRegion(null);
-      alert('Region deleted successfully.');
+      notify('Region deleted successfully.');
     } catch (err) {
       console.error(err);
-      alert('Failed to delete region.');
+      notify('Failed to delete region.');
     }
   };
 
   const handleAddTeamMember = async (e) => {
     e.preventDefault();
     if (!newMemberName.trim() || !newMemberRole.trim() || !newMemberPhoto) {
-      alert('Please fill out name, role, and upload a photo.');
+      notify('Please fill out name, role, and upload a photo.');
       return;
     }
     setSubmittingTeam(true);
@@ -424,6 +444,7 @@ export default function AdminDashboard() {
     formData.append('role', newMemberRole.trim());
     formData.append('photo', newMemberPhoto);
     formData.append('display_order', teamMembers.length);
+    formData.append('is_active', 'true');
     try {
       const res = await addTeamMember(selectedRegion.id, formData);
       setTeamMembers(prev => [...prev, res.data]);
@@ -432,10 +453,10 @@ export default function AdminDashboard() {
       setNewMemberPhoto(null);
       setShowAddTeamForm(false);
       setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, team_count: (r.team_count || 0) + 1 } : r));
-      alert('Team member added successfully.');
+      notify('Team member added successfully.');
     } catch (err) {
       console.error(err);
-      alert(`Failed to add team member: ${JSON.stringify(err.response?.data || err.message)}`);
+      notify(`Failed to add team member: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally {
       setSubmittingTeam(false);
     }
@@ -447,16 +468,16 @@ export default function AdminDashboard() {
       await deleteTeamMember(id);
       setTeamMembers(prev => prev.filter(m => m.id !== id));
       setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, team_count: Math.max(0, (r.team_count || 1) - 1) } : r));
-      alert('Team member deleted successfully.');
+      notify('Team member deleted successfully.');
     } catch (err) {
       console.error(err);
-      alert('Failed to delete team member.');
+      notify('Failed to delete team member.');
     }
   };
 
   const handleEditTeamMember = async (e, memberId) => {
     e.preventDefault();
-    if (!editMemberName.trim() || !editMemberRole.trim()) { alert('Name and role are required.'); return; }
+    if (!editMemberName.trim() || !editMemberRole.trim()) { notify('Name and role are required.'); return; }
     setSubmittingMemberEdit(true);
     const fd = new FormData();
     fd.append('name', editMemberName.trim());
@@ -466,9 +487,9 @@ export default function AdminDashboard() {
       const res = await updateTeamMember(memberId, fd);
       setTeamMembers(prev => prev.map(m => m.id === memberId ? res.data : m));
       setEditingMemberId(null);
-      alert('Team member updated successfully.');
+      notify('Team member updated successfully.');
     } catch (err) {
-      alert(`Failed to update: ${JSON.stringify(err.response?.data || err.message)}`);
+      notify(`Failed to update: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally { setSubmittingMemberEdit(false); }
   };
 
@@ -477,17 +498,18 @@ export default function AdminDashboard() {
       const res = await updateRegion(region.id, { is_active: !region.is_active });
       setRegions(prev => prev.map(r => r.id === region.id ? { ...r, is_active: res.data.is_active } : r));
       if (selectedRegion?.id === region.id) setSelectedRegion(p => ({ ...p, is_active: res.data.is_active }));
-    } catch (err) { alert('Failed to toggle region status.'); }
+    } catch (err) { notify('Failed to toggle region status.'); }
   };
 
   const handleAddBrand = async (e) => {
     e.preventDefault();
-    if (!newBrandName.trim()) { alert('Brand name is required.'); return; }
+    if (!newBrandName.trim()) { notify('Brand name is required.'); return; }
     setSubmittingBrand(true);
     const fd = new FormData();
     fd.append('name', newBrandName.trim());
     fd.append('website_url', newBrandWebsite.trim());
     fd.append('display_order', brands.length);
+    fd.append('is_active', 'true');
     if (newBrandLogo) fd.append('logo', newBrandLogo);
     selectedSolutions.forEach(id => {
       fd.append('solutions', id);
@@ -501,7 +523,7 @@ export default function AdminDashboard() {
       setSelectedSolutions([]);
       setShowAddBrandForm(false);
     } catch (err) {
-      alert(`Failed to add brand: ${JSON.stringify(err.response?.data || err.message)}`);
+      notify(`Failed to add brand: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally { setSubmittingBrand(false); }
   };
 
@@ -510,14 +532,14 @@ export default function AdminDashboard() {
     try {
       await deleteBrand(id);
       setBrands(prev => prev.filter(b => b.id !== id));
-      alert('Brand deleted successfully.');
-    } catch (err) { alert('Failed to delete brand.'); }
+      notify('Brand deleted successfully.');
+    } catch (err) { notify('Failed to delete brand.'); }
   };
 
   const handleAddContact = async (e) => {
     e.preventDefault();
     if (!newOfficeName.trim() || !newContactAddress.trim() || !newContactEmail.trim() || !newContactPhone.trim()) {
-      alert('Please fill out office name, address, email, and phone.');
+      notify('Please fill out office name, address, email, and phone.');
       return;
     }
     setSubmittingContact(true);
@@ -541,10 +563,10 @@ export default function AdminDashboard() {
       setNewContactMapLink('');
       setShowAddContactForm(false);
       setRegions(prev => prev.map(r => r.id === selectedRegion.id ? { ...r, has_contact: true } : r));
-      alert('Contact office added successfully.');
+      notify('Contact office added successfully.');
     } catch (err) {
       console.error(err);
-      alert(`Failed to add contact office: ${JSON.stringify(err.response?.data || err.message)}`);
+      notify(`Failed to add contact office: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally {
       setSubmittingContact(false);
     }
@@ -561,17 +583,17 @@ export default function AdminDashboard() {
         }
         return next;
       });
-      alert('Contact office deleted successfully.');
+      notify('Contact office deleted successfully.');
     } catch (err) {
       console.error(err);
-      alert('Failed to delete contact office.');
+      notify('Failed to delete contact office.');
     }
   };
 
   const handleEditContact = async (e, id) => {
     e.preventDefault();
     if (!editOfficeName.trim() || !editContactAddress.trim() || !editContactEmail.trim() || !editContactPhone.trim()) {
-      alert('Office name, address, email, and phone are required.');
+      notify('Office name, address, email, and phone are required.');
       return;
     }
     setSubmittingContact(true);
@@ -588,9 +610,9 @@ export default function AdminDashboard() {
       const res = await updateRegionContactDetail(id, data);
       setContacts(prev => prev.map(c => c.id === id ? res.data : c));
       setEditingContactId(null);
-      alert('Contact office updated successfully.');
+      notify('Contact office updated successfully.');
     } catch (err) {
-      alert(`Failed to update contact office: ${JSON.stringify(err.response?.data || err.message)}`);
+      notify(`Failed to update contact office: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally {
       setSubmittingContact(false);
     }
@@ -599,7 +621,7 @@ export default function AdminDashboard() {
   const handleAddTestimonial = async (e) => {
     e.preventDefault();
     if (!newTestiName.trim() || !newTestiDesignation.trim() || !newTestiCompany.trim() || !newTestiMessage.trim()) {
-      alert('Name, designation, company and message are required.'); return;
+      notify('Name, designation, company and message are required.'); return;
     }
     setSubmittingTestimonial(true);
     const fd = new FormData();
@@ -608,6 +630,7 @@ export default function AdminDashboard() {
     fd.append('company', newTestiCompany.trim());
     fd.append('message', newTestiMessage.trim());
     fd.append('display_order', testimonials.length);
+    fd.append('is_active', 'true');
     if (newTestiPhoto) fd.append('photo', newTestiPhoto);
     try {
       const res = await addTestimonial(selectedRegion.id, fd);
@@ -615,7 +638,7 @@ export default function AdminDashboard() {
       setNewTestiName(''); setNewTestiDesignation(''); setNewTestiCompany('');
       setNewTestiMessage(''); setNewTestiPhoto(null); setShowAddTestimonialForm(false);
     } catch (err) {
-      alert(`Failed to add testimonial: ${JSON.stringify(err.response?.data || err.message)}`);
+      notify(`Failed to add testimonial: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally { setSubmittingTestimonial(false); }
   };
 
@@ -624,7 +647,7 @@ export default function AdminDashboard() {
     try {
       await deleteTestimonial(id);
       setTestimonials(prev => prev.filter(t => t.id !== id));
-    } catch (err) { alert('Failed to delete testimonial.'); }
+    } catch (err) { notify('Failed to delete testimonial.'); }
   };
 
   const fetchCollectionCentres = async () => {
@@ -648,7 +671,7 @@ export default function AdminDashboard() {
   const handleAddCollectionCentre = async (e) => {
     e.preventDefault();
     if (Object.values(newCentre).some(value => !value.trim())) {
-      alert('Please fill out all collection centre fields.');
+      notify('Please fill out all collection centre fields.');
       return;
     }
     setSubmittingCentre(true);
@@ -659,7 +682,7 @@ export default function AdminDashboard() {
       setShowCollectionCentreForm(false);
     } catch (err) {
       console.error(err);
-      alert(`Failed to save collection centre: ${JSON.stringify(err.response?.data || err.message)}`);
+      notify(`Failed to save collection centre: ${JSON.stringify(err.response?.data || err.message)}`);
     } finally {
       setSubmittingCentre(false);
     }
@@ -671,7 +694,7 @@ export default function AdminDashboard() {
       setCollectionCentres(prev => prev.map(item => item.id === centre.id ? res.data : item));
     } catch (err) {
       console.error(err);
-      alert('Failed to update collection centre.');
+      notify('Failed to update collection centre.');
     }
   };
 
@@ -682,7 +705,7 @@ export default function AdminDashboard() {
       setCollectionCentres(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error(err);
-      alert('Failed to delete collection centre.');
+      notify('Failed to delete collection centre.');
     }
   };
 
@@ -708,7 +731,7 @@ export default function AdminDashboard() {
   const handleAddSolution = async (e) => {
     e.preventDefault();
     if (!solTitle.trim() || !solSlug.trim() || !solDescription.trim() || !solImage) {
-      alert('Please fill out all fields and select a solution image.');
+      notify('Please fill out all fields and select a solution image.');
       return;
     }
     setSubmittingSolution(true);
@@ -737,7 +760,7 @@ export default function AdminDashboard() {
       const serverMsg = err.response?.data 
         ? JSON.stringify(err.response.data) 
         : err.message;
-      alert(`Failed to save solution. Server error details: ${serverMsg}`);
+      notify(`Failed to save solution. Server error details: ${serverMsg}`);
     } finally {
       setSubmittingSolution(false);
     }
@@ -750,7 +773,7 @@ export default function AdminDashboard() {
       setSolutions(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error(err);
-      alert('Failed to delete solution.');
+      notify('Failed to delete solution.');
     }
   };
 
@@ -777,7 +800,7 @@ export default function AdminDashboard() {
   const handleAddBlog = async (e) => {
     e.preventDefault();
     if (!newBlogTitle.trim() || !newBlogDesc.trim() || !newBlogCat.trim() || !newBlogPublishDate) {
-      alert('Please fill out all required fields.');
+      notify('Please fill out all required fields.');
       return;
     }
     setSubmittingBlog(true);
@@ -802,12 +825,13 @@ export default function AdminDashboard() {
       setNewBlogPublishDate('');
       setNewBlogIsFeatured(false);
       setShowAddBlogForm(false);
+      notify('Blog post added successfully.');
     } catch (err) {
       console.error(err);
       const serverMsg = err.response?.data 
         ? JSON.stringify(err.response.data) 
         : err.message;
-      alert(`Failed to save blog post. Server error details: ${serverMsg}`);
+      notify(`Failed to save blog post. Server error details: ${serverMsg}`);
     } finally {
       setSubmittingBlog(false);
     }
@@ -820,7 +844,7 @@ export default function AdminDashboard() {
       setBlogs(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error(err);
-      alert('Failed to delete blog post.');
+      notify('Failed to delete blog post.');
     }
   };
 
@@ -842,7 +866,8 @@ export default function AdminDashboard() {
       setEditFields({});
     } catch (err) {
       console.error(err);
-      alert('Failed to update blog post.');
+      const serverMsg = err.response?.data ? JSON.stringify(err.response.data) : err.message;
+      notify(`Failed to update blog post: ${serverMsg}`);
     } finally {
       setSubmittingEdit(false);
     }
@@ -864,7 +889,7 @@ export default function AdminDashboard() {
       setEnquiries(prev => prev.map(item => item.id === id ? res.data : item));
     } catch (err) {
       console.error(err);
-      alert('Failed to update enquiry status.');
+      notify('Failed to update enquiry status.');
     }
   };
 
@@ -875,7 +900,7 @@ export default function AdminDashboard() {
       setEnquiries(prev => prev.filter(item => item.id !== id));
     } catch (err) {
       console.error(err);
-      alert('Failed to delete enquiry.');
+      notify('Failed to delete enquiry.');
     }
   };
 
@@ -2414,51 +2439,8 @@ export default function AdminDashboard() {
         </div>
       </main>
 
-      {/* Toast Notification */}
-      {toast && (
-        <div style={{
-          position: 'fixed',
-          bottom: '24px',
-          right: '24px',
-          zIndex: 99999,
-          background: toast.type === 'success' ? 'rgba(6, 78, 59, 0.95)' : 'rgba(127, 29, 29, 0.95)',
-          border: `1px solid ${toast.type === 'success' ? '#10b981' : '#ef4444'}`,
-          backdropFilter: 'blur(12px)',
-          WebkitBackdropFilter: 'blur(12px)',
-          padding: '16px 20px',
-          borderRadius: '12px',
-          boxShadow: '0 20px 40px rgba(0,0,0,0.5)',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '12px',
-          maxWidth: '380px',
-          animation: 'adminSlideIn 0.3s ease-out',
-          color: '#ffffff'
-        }}>
-          <style>{`
-            @keyframes adminSlideIn {
-              from { transform: translateY(100px); opacity: 0; }
-              to { transform: translateY(0); opacity: 1; }
-            }
-          `}</style>
-          {toast.type === 'success' ? (
-            <svg style={{ width: '22px', height: '22px', color: '#10b981', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-          ) : (
-            <svg style={{ width: '22px', height: '22px', color: '#ef4444', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-            </svg>
-          )}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-            <span style={{ fontWeight: '700', fontSize: '13.5px' }}>{toast.title}</span>
-            <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.85)' }}>{toast.message}</span>
-          </div>
-          <button onClick={() => setToast(null)} style={{ background: 'none', border: 'none', color: '#ffffff', opacity: 0.5, cursor: 'pointer', padding: '4px', fontSize: '14px', marginLeft: 'auto', outline: 'none' }}>
-            ×
-          </button>
-        </div>
-      )}
+      {/* Toast Notification Provider */}
+      <Toaster position="top-right" reverseOrder={false} />
     </div>
   );
 }
