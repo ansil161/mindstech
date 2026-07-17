@@ -15,6 +15,8 @@ from .views import (
     RegionBrandListCreateView, RegionBrandDetailView,
     TestimonialListCreateView, TestimonialDetailView,
     RegionContactListCreateView, RegionContactDetailView,
+    EventNewsListCreateView, EventNewsDetailView,
+    PublicUpcomingEventsView, PublicNewsView,
 )
 
 urlpatterns = [
@@ -76,4 +78,12 @@ urlpatterns = [
     # Testimonials
     path('regions/<int:region_id>/testimonials/', TestimonialListCreateView.as_view(), name='region-testimonial-list-create'),
     path('testimonials/<int:pk>/', TestimonialDetailView.as_view(), name='testimonial-detail'),
+
+    # Events & News (admin CRUD)
+    path('event-news/', EventNewsListCreateView.as_view(), name='eventnews-list-create'),
+    path('event-news/<int:pk>/', EventNewsDetailView.as_view(), name='eventnews-detail'),
+
+    # Events & News (public — no auth)
+    path('public/events/', PublicUpcomingEventsView.as_view(), name='public-upcoming-events'),
+    path('public/news/', PublicNewsView.as_view(), name='public-news'),
 ]

@@ -10,6 +10,7 @@ import Experience from '../pages/user/Experience';
 import Contact from '../pages/user/Contact';
 import EWaste from '../pages/user/EWaste';
 import Gallery from '../pages/user/gallery/Gallery';
+import Events from '../pages/user/Events';
 import NotFound from '../pages/user/NotFound';
 import RegionGuard from '../components/common/RegionGuard.jsx';
 
@@ -72,6 +73,10 @@ export const router = createBrowserRouter([
       {
         path: '/gallery',
         element: <Gallery />,
+      },
+      {
+        path: '/events',
+        element: <Events />,
       },
     ],
   },

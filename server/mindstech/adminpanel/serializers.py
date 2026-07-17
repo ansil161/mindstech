@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem, Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem, Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial, EventNews
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
@@ -295,3 +295,27 @@ class RegionBrandSerializer(serializers.ModelSerializer):
     def validate_name(self, value):
         return strip_tags(value).strip()
 
+
+class EventNewsSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True, required=False, allow_null=True)
+
+    class Meta:
+        model = EventNews
+        fields = [
+            'id', 'type', 'title', 'description', 'image',
+            'category', 'event_date', 'location',
+            'external_url', 'register_url',
+            'is_active', 'created_at',
+        ]
+        read_only_fields = ['id', 'created_at']
+
+    def validate_title(self, value):
+        return strip_tags(value).strip()
+
+    def validate_description(self, value):
+        return strip_tags(value).strip()
+
+    def validate_type(self, value):
+        if value not in dict(EventNews.TYPE_CHOICES):
+            raise serializers.ValidationError('Type must be either "event" or "news".')
+        return value

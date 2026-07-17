@@ -108,6 +108,40 @@ class GalleryItem(models.Model):
         return f"{self.title} ({self.category})"
 
 
+class EventNews(models.Model):
+    """A single model for both Events and News items shown on the public /events page."""
+
+    TYPE_CHOICES = (
+        ('event', 'Event'),
+        ('news', 'News'),
+    )
+
+    type = models.CharField(max_length=10, choices=TYPE_CHOICES)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    image = models.ImageField(upload_to='events/', blank=True, null=True)
+
+    # News-only
+    category = models.CharField(max_length=100, blank=True, default='')
+
+    # Event-only
+    event_date = models.DateTimeField(blank=True, null=True)
+    location = models.CharField(max_length=200, blank=True, default='')
+
+    # Shared optional links
+    external_url = models.URLField(max_length=500, blank=True, default='')
+    register_url = models.URLField(max_length=500, blank=True, default='')
+
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"[{self.type.upper()}] {self.title}"
+
+
 class Region(models.Model):
     """A geographic region the company operates in (e.g. India, Middle East)."""
     name = models.CharField(max_length=100, unique=True)

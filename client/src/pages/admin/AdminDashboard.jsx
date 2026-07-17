@@ -200,6 +200,25 @@ export default function AdminDashboard() {
   const [newMemberRole, setNewMemberRole] = useState('');
   const [newMemberPhoto, setNewMemberPhoto] = useState(null);
   const [submittingTeam, setSubmittingTeam] = useState(false);
+
+  // Events & News states
+  const [eventNews, setEventNews] = useState([]);
+  const [loadingEventNews, setLoadingEventNews] = useState(false);
+  const [eventNewsError, setEventNewsError] = useState('');
+  const [showAddEventNewsForm, setShowAddEventNewsForm] = useState(false);
+  
+  // Add EventNews form states
+  const [evType, setEvType] = useState('event');
+  const [evTitle, setEvTitle] = useState('');
+  const [evDescription, setEvDescription] = useState('');
+  const [evImage, setEvImage] = useState(null);
+  const [evCategory, setEvCategory] = useState('');
+  const [evDate, setEvDate] = useState('');
+  const [evLocation, setEvLocation] = useState('');
+  const [evExternalUrl, setEvExternalUrl] = useState('');
+  const [evRegisterUrl, setEvRegisterUrl] = useState('');
+  const [submittingEventNews, setSubmittingEventNews] = useState(false);
+
   const [contacts, setContacts] = useState([]);
   const [loadingContacts, setLoadingContacts] = useState(false);
   const [submittingContact, setSubmittingContact] = useState(false);
@@ -903,6 +922,93 @@ export default function AdminDashboard() {
       notify('Failed to delete enquiry.');
     }
   };
+
+  // Event & News Handlers & Effects
+  const fetchEventNews = async () => {
+    setLoadingEventNews(true);
+    setEventNewsError('');
+    try {
+      // Fetch all items (events and news)
+      const res = await axios.get('/admin/event-news/');
+      setEventNews(res.data);
+    } catch (err) {
+      console.error(err);
+      setEventNewsError('Failed to load events and news.');
+    } finally {
+      setLoadingEventNews(false);
+    }
+  };
+
+  useEffect(() => {
+    if (activeTab === 'event-news') {
+      fetchEventNews();
+    }
+  }, [activeTab]);
+
+  const handleAddEventNews = async (e) => {
+    e.preventDefault();
+    if (!evTitle.trim() || !evDescription.trim()) {
+      notify('Please fill out the Title and Description.');
+      return;
+    }
+
+    setSubmittingEventNews(true);
+    const formData = new FormData();
+    formData.append('type', evType);
+    formData.append('title', evTitle.trim());
+    formData.append('description', evDescription.trim());
+    if (evImage) {
+      formData.append('image', evImage);
+    }
+
+    if (evType === 'news') {
+      formData.append('category', evCategory.trim());
+      formData.append('external_url', evExternalUrl.trim());
+    } else {
+      if (evDate) {
+        formData.append('event_date', evDate);
+      }
+      formData.append('location', evLocation.trim());
+      formData.append('register_url', evRegisterUrl.trim());
+    }
+
+    try {
+      const res = await axios.post('/admin/event-news/', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      });
+      setEventNews(prev => [res.data, ...prev]);
+      // Reset form
+      setEvTitle('');
+      setEvDescription('');
+      setEvImage(null);
+      setEvCategory('');
+      setEvDate('');
+      setEvLocation('');
+      setEvExternalUrl('');
+      setEvRegisterUrl('');
+      setShowAddEventNewsForm(false);
+      notify('Event/News item added successfully.');
+    } catch (err) {
+      console.error(err);
+      const serverMsg = err.response?.data ? JSON.stringify(err.response.data) : err.message;
+      notify(`Failed to save item: ${serverMsg}`);
+    } finally {
+      setSubmittingEventNews(false);
+    }
+  };
+
+  const handleDeleteEventNews = async (id) => {
+    if (!window.confirm('Are you sure you want to delete this item?')) return;
+    try {
+      await axios.delete(`/admin/event-news/${id}/`);
+      setEventNews(prev => prev.filter(item => item.id !== id));
+      notify('Item deleted successfully.');
+    } catch (err) {
+      console.error(err);
+      notify('Failed to delete item.');
+    }
+  };
+
 
   const renderContent = () => {
     switch (activeTab) {
@@ -2233,6 +2339,207 @@ export default function AdminDashboard() {
             )}
           </div>
         );
+      case 'event-news':
+        return (
+          <div style={{ width: '100%' }}>
+            {/* Header Panel */}
+            <div className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                  <h2 className="admin-welcome-title" style={{ margin: 0 }}>Events &amp; News Management</h2>
+                  <p className="admin-welcome-desc" style={{ margin: '8px 0 0' }}>
+                    Publish upcoming live/virtual events and regional press news items.
+                  </p>
+                </div>
+                <button
+                  onClick={() => setShowAddEventNewsForm(!showAddEventNewsForm)}
+                  className="admin-btn"
+                  style={{ width: 'auto', marginTop: 0, padding: '8px 16px' }}
+                >
+                  {showAddEventNewsForm ? 'Cancel' : 'Add Event / News'}
+                </button>
+              </div>
+            </div>
+
+            {/* Add Form */}
+            {showAddEventNewsForm && (
+              <form onSubmit={handleAddEventNews} className="admin-welcome-panel" style={{ width: '100%', marginBottom: '24px', display: 'flex', flexDirection: 'column', gap: '16px', background: 'var(--ink-2)', border: '1px solid var(--line)' }}>
+                <h3 style={{ margin: 0, color: 'var(--white)', fontSize: '16px', fontWeight: '600' }}>New Publication</h3>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Type</label>
+                    <select
+                      value={evType}
+                      onChange={(e) => setEvType(e.target.value)}
+                      style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                    >
+                      <option value="event">Event (Upcoming Live/Virtual)</option>
+                      <option value="news">News (Press / Announcements)</option>
+                    </select>
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                    <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Title</label>
+                    <input
+                      type="text"
+                      value={evTitle}
+                      onChange={(e) => setEvTitle(e.target.value)}
+                      placeholder="Enter title..."
+                      style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                      required
+                    />
+                  </div>
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Description / Summary</label>
+                  <textarea
+                    value={evDescription}
+                    onChange={(e) => setEvDescription(e.target.value)}
+                    placeholder="Short description snippet..."
+                    rows={3}
+                    style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px', resize: 'vertical' }}
+                    required
+                  />
+                </div>
+
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                  <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Image (Cover / Logo)</label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setEvImage(e.target.files[0])}
+                    style={{ color: 'var(--grey)', fontSize: '14px' }}
+                  />
+                </div>
+
+                {evType === 'news' ? (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Category Tag</label>
+                      <input
+                        type="text"
+                        value={evCategory}
+                        onChange={(e) => setEvCategory(e.target.value)}
+                        placeholder="e.g. Press Release, Partnership"
+                        style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <label style={{ fontSize: '12px', color: 'var(--grey)' }}>External Article URL (optional)</label>
+                      <input
+                        type="url"
+                        value={evExternalUrl}
+                        onChange={(e) => setEvExternalUrl(e.target.value)}
+                        placeholder="https://..."
+                        style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                      />
+                    </div>
+                  </div>
+                ) : (
+                  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Event Date &amp; Time</label>
+                      <input
+                        type="datetime-local"
+                        value={evDate}
+                        onChange={(e) => setEvDate(e.target.value)}
+                        style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Location / Venue</label>
+                      <input
+                        type="text"
+                        value={evLocation}
+                        onChange={(e) => setEvLocation(e.target.value)}
+                        placeholder="e.g. Dubai, UAE / Zoom"
+                        style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                      />
+                    </div>
+                    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                      <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Registration Page URL (optional)</label>
+                      <input
+                        type="url"
+                        value={evRegisterUrl}
+                        onChange={(e) => setEvRegisterUrl(e.target.value)}
+                        placeholder="https://..."
+                        style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                      />
+                    </div>
+                  </div>
+                )}
+
+                <div style={{ display: 'flex', gap: '12px', marginTop: '8px' }}>
+                  <button
+                    type="submit"
+                    className="admin-btn"
+                    disabled={submittingEventNews}
+                    style={{ width: 'auto', marginTop: 0, padding: '10px 24px' }}
+                  >
+                    {submittingEventNews ? 'Saving...' : 'Publish Item'}
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setShowAddEventNewsForm(false)}
+                    className="admin-btn"
+                    style={{ width: 'auto', marginTop: 0, padding: '10px 24px', background: 'var(--line-soft)', color: 'var(--white)', border: '1px solid var(--line)' }}
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            )}
+
+            {/* List */}
+            {loadingEventNews ? (
+              <p style={{ color: 'var(--grey)', fontSize: '14px' }}>Loading publications...</p>
+            ) : eventNewsError ? (
+              <p style={{ color: 'var(--red)', fontSize: '14px' }}>{eventNewsError}</p>
+            ) : eventNews.length === 0 ? (
+              <p style={{ color: 'var(--grey)', fontSize: '14px' }}>No items published yet.</p>
+            ) : (
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '20px' }}>
+                {eventNews.map(item => (
+                  <div key={item.id} className="admin-stat-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: '12px' }}>
+                    {item.image && (
+                      <img src={item.image} alt="" style={{ width: '100%', height: '140px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--line)' }} />
+                    )}
+                    <div>
+                      <div style={{ display: 'flex', gap: '6px', marginBottom: '8px' }}>
+                        <span className="admin-welcome-chip" style={{ color: item.type === 'event' ? '#3b82f6' : '#22c55e', background: item.type === 'event' ? 'rgba(59,130,246,0.08)' : 'rgba(34,197,94,0.08)', border: `1px solid ${item.type === 'event' ? 'rgba(59,130,246,0.2)' : 'rgba(34,197,94,0.2)'}`, fontSize: '9px', textTransform: 'uppercase', fontWeight: '700' }}>
+                          {item.type}
+                        </span>
+                        {item.category && (
+                          <span className="admin-welcome-chip" style={{ color: 'var(--grey)', background: 'var(--line)', fontSize: '9px', textTransform: 'uppercase', fontWeight: '700' }}>
+                            {item.category}
+                          </span>
+                        )}
+                      </div>
+                      <h4 style={{ margin: '0 0 6px', fontSize: '15px', color: 'var(--white)', fontWeight: '600' }}>{item.title}</h4>
+                      <p style={{ margin: 0, fontSize: '12px', color: 'var(--grey)', lineHeight: '1.4' }}>{item.description}</p>
+                      {item.type === 'event' && (
+                        <div style={{ marginTop: '8px', fontSize: '11px', color: 'var(--grey)' }}>
+                          <p>📅 {item.event_date ? new Date(item.event_date).toLocaleString() : 'No date set'}</p>
+                          <p>📍 {item.location || 'No location set'}</p>
+                        </div>
+                      )}
+                    </div>
+                    <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', paddingTop: '8px', borderTop: '1px solid var(--line-soft)' }}>
+                      <button
+                        onClick={() => handleDeleteEventNews(item.id)}
+                        className="admin-btn"
+                        style={{ width: 'auto', marginTop: 0, padding: '6px 12px', background: '#fef2f2', color: '#dc2626', border: '1px solid #fee2e2', fontSize: '11px' }}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        );
       default:
         return (
           <>
@@ -2243,6 +2550,7 @@ export default function AdminDashboard() {
                 <p className="admin-stat-value">{solutions.length}</p>
                 <p className="admin-stat-subtext">Core tech services listed</p>
               </div>
+
 
               <div className="admin-stat-card">
                 <p className="admin-stat-label">Total Blog Posts</p>
@@ -2368,9 +2676,19 @@ export default function AdminDashboard() {
               <span>Gallery</span>
             </button>
             <button
+              onClick={() => setActiveTab('event-news')}
+              className={`admin-sidebar-link ${activeTab === 'event-news' ? 'active' : ''}`}
+            >
+              <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>Events &amp; News</span>
+            </button>
+            <button
               onClick={() => { setActiveTab('regions'); setSelectedRegion(null); }}
               className={`admin-sidebar-link ${activeTab === 'regions' ? 'active' : ''}`}
             >
+
               <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>

@@ -1,17 +1,65 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
+import axios from '../../api/axios';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
+import { useRegion } from '../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../api/regionApi.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Solutions = () => {
   const { t } = useTranslation();
+  const { regionSlug } = useRegion();
   const containerRef = useRef(null);
 
+  const [rawSolutions, setRawSolutions] = useState([]);
+  const [regionContact, setRegionContact] = useState(null);
+
+  const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'solutions_list');
+
+  // Fetch solutions from the backend
   useEffect(() => {
+    const fetchSolutions = async () => {
+      try {
+        const res = await axios.get('/admin/solutions/');
+        if (res.data && res.data.length > 0) {
+          setRawSolutions(res.data);
+        }
+      } catch (err) {
+        console.error('Failed to load solutions:', err);
+      }
+    };
+    fetchSolutions();
+  }, []);
+
+  // Fetch contact info for CTA section
+  useEffect(() => {
+    let cancelled = false;
+    const fetchContact = async () => {
+      try {
+        const res = await getPublicRegionData(regionSlug);
+        if (!cancelled) {
+          setRegionContact(Array.isArray(res.data.contact_info) ? res.data.contact_info[0] : (res.data.contact_info || null));
+        }
+      } catch {
+        if (!cancelled) setRegionContact(null);
+      }
+    };
+    fetchContact();
+    return () => { cancelled = true; };
+  }, [regionSlug]);
+
+  const telHref = (regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\d]/g, '');
+  const telLabel = regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_label');
+  const email = regionContact?.email || t('contact_info.email');
+
+  useEffect(() => {
+    if (solutions.length === 0) return;
+
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -87,71 +135,9 @@ const Solutions = () => {
       });
     }, containerRef);
 
-    return () => ctx.revert();
-  }, []);
-
-  const solutions = [
-    {
-      id: '01',
-      slug: 'digital-signage',
-      cat: t('solutions.arr.0.cat'),
-      name: t('solutions.arr.0.name'),
-      desc: t('solutions.arr.0.desc'),
-      tags: [t('solutions.arr.0.tag1'), t('solutions.arr.0.tag2'), t('solutions.arr.0.tag3'), t('solutions.arr.0.tag4')],
-      img: '/assets/img/pexels-3402937-w1400.jpg',
-      alt: 'Tokyo street at night covered in glowing digital signs and screen facades'
-    },
-    {
-      id: '02',
-      slug: 'control-rooms',
-      cat: t('solutions.arr.1.cat'),
-      name: t('solutions.arr.1.name'),
-      desc: t('solutions.arr.1.desc'),
-      tags: [t('solutions.arr.1.tag1'), t('solutions.arr.1.tag2'), t('solutions.arr.1.tag3'), t('solutions.arr.1.tag4')],
-      img: '/assets/img/pexels-11783119-w1400.jpg',
-      alt: 'An operator facing a dark wall of monitors with red timecode displays'
-    },
-    {
-      id: '03',
-      slug: 'conferencing',
-      cat: t('solutions.arr.2.cat'),
-      name: t('solutions.arr.2.name'),
-      desc: t('solutions.arr.2.desc'),
-      tags: [t('solutions.arr.2.tag1'), t('solutions.arr.2.tag2'), t('solutions.arr.2.tag3'), t('solutions.arr.2.tag4')],
-      img: '/assets/img/pexels-13323673-w1400.jpg',
-      alt: 'A dark-toned conference room with a wall-mounted display and leather chairs'
-    },
-    {
-      id: '04',
-      slug: 'hospitality',
-      cat: t('solutions.arr.3.cat'),
-      name: t('solutions.arr.3.name'),
-      desc: t('solutions.arr.3.desc'),
-      tags: [t('solutions.arr.3.tag1'), t('solutions.arr.3.tag2'), t('solutions.arr.3.tag3'), t('solutions.arr.3.tag4')],
-      img: '/assets/img/pexels-29870245-w1400.jpg',
-      alt: 'A dark stone-walled luxury hotel lounge with glowing cube lamps'
-    },
-    {
-      id: '05',
-      slug: 'broadcast',
-      cat: t('solutions.arr.4.cat'),
-      name: t('solutions.arr.4.name'),
-      desc: t('solutions.arr.4.desc'),
-      tags: [t('solutions.arr.4.tag1'), t('solutions.arr.4.tag2'), t('solutions.arr.4.tag3'), t('solutions.arr.4.tag4')],
-      img: '/assets/img/pexels-7865064-w1400.jpg',
-      alt: 'Two professional pedestal cameras in a dark television studio facing a lit set'
-    },
-    {
-      id: '06',
-      slug: 'live-events',
-      cat: t('solutions.arr.5.cat'),
-      name: t('solutions.arr.5.name'),
-      desc: t('solutions.arr.5.desc'),
-      tags: [t('solutions.arr.5.tag1'), t('solutions.arr.5.tag2'), t('solutions.arr.5.tag3'), t('solutions.arr.5.tag4')],
-      img: '/assets/img/pexels-13230484-w1400.jpg',
-      alt: 'A night concert stage with red LED fixtures and blue beam lights over the crowd'
-    }
-  ];
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
+  }, [solutions]);
 
   return (
     <main id="top" ref={containerRef}>
@@ -173,39 +159,26 @@ const Solutions = () => {
         <div className="fact"><b>{t('solutions.meta.installs_b')}</b><span>{t('solutions.meta.installs_s')}</span></div>
       </div>
 
-      {/* SOLUTION ROWS */}
+      {/* SOLUTION ROWS — from backend */}
       <div className="sol-flow" id="solFlow">
-        {solutions.map(sol => (
-          <article className="srow" key={sol.id}>
+        {solutions.map((sol, idx) => (
+          <article className="srow" key={sol.id || idx}>
             <Link
               className="srow-media reveal-img"
               to={`/solutions/${sol.slug}`}
-              aria-label={`Explore ${sol.name}`}
+              aria-label={`Explore ${sol.title}`}
             >
-              <img src={sol.img} alt={sol.alt} loading="lazy" />
-              <span className="srow-cat">{sol.cat}</span>
+              <img src={sol.image} alt={sol.title} loading="lazy" />
+              <span className="srow-cat">{sol.title}</span>
             </Link>
             <div className="srow-body reveal">
-              <span className="num">{sol.id}</span>
+              <span className="num">{String(idx + 1).padStart(2, '0')}</span>
               <h2 className="display">
-                <Link to={`/solutions/${sol.slug}`}>{sol.name}</Link>
+                <Link to={`/solutions/${sol.slug}`}>{sol.title}</Link>
               </h2>
               <p>{sol.desc}</p>
-              <div className="srow-tags">
-                {sol.tags.map((tag, idx) => (
-                  <span key={idx}>{tag}</span>
-                ))}
-              </div>
               <Link className="srow-link" to={`/solutions/${sol.slug}`}>
-                Explore {
-                  sol.slug === 'conferencing' 
-                    ? 'Conferencing' 
-                    : sol.slug === 'broadcast' 
-                      ? 'Broadcast' 
-                      : sol.slug === 'live-events' 
-                        ? 'Live Events' 
-                        : sol.name
-                }
+                {t('solutions.explore', 'Explore')} {sol.title}
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M5 12h14M13 6l6 6-6 6" />
                 </svg>
@@ -221,24 +194,24 @@ const Solutions = () => {
           <img src="/assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy" />
         </div>
         <div className="cta-inner">
-          <span className="label label--red">Start a project</span>
+          <span className="label label--red">{t('solutions.cta.label', 'Start a project')}</span>
           <h2 className="display" id="ctaH" style={{ marginTop: '20px' }}>
-            <span className="line-mask"><span className="w">Tell us what the</span></span>
-            <span className="line-mask"><span className="w">space needs <em>to do.</em></span></span>
+            <span className="line-mask"><span className="w">{t('solutions.cta.line1', 'Tell us what the')}</span></span>
+            <span className="line-mask"><span className="w">{t('solutions.cta.line2', 'space needs')} <em>{t('solutions.cta.line2_em', 'to do.')}</em></span></span>
           </h2>
           <div className="cta-row reveal">
             <div className="cta-actions">
               <Button to="/contact" className="btn btn--solid">
-                <span>Get a quote</span>
+                <span>{t('solutions.cta.btn1', 'Get a quote')}</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M9 7h8v8" />
                 </svg>
               </Button>
-              <Button to="/partners" className="btn"><span>See our brands</span></Button>
+              <Button to="/partners" className="btn"><span>{t('solutions.cta.btn2', 'See our brands')}</span></Button>
             </div>
             <div className="cta-contacts">
-              <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
-              <div className="c-item"><span>Email</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
+              <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${telHref}`}>{telLabel}</a></div>
+              <div className="c-item"><span>Email</span><a href={`mailto:${email}`}>{email}</a></div>
             </div>
           </div>
         </div>

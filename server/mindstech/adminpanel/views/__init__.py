@@ -10,6 +10,10 @@ from .collection_centres import CollectionCentreListCreateView, CollectionCentre
 from .documents import DocumentListCreateView, DocumentDetailView, DocumentParseView, DocumentIndexView
 from .chatbot import ChatBotView, ChatHistoryView
 from .gallery import GalleryListCreateView, GalleryDetailView
+from .events import (
+    EventNewsListCreateView, EventNewsDetailView,
+    PublicUpcomingEventsView, PublicNewsView,
+)
 from .region import (
     RegionListCreateView, RegionDetailView,
     TeamMemberListCreateView, TeamMemberDetailView,
@@ -49,4 +53,8 @@ __all__ = [
     "PublicRegionSolutionBrandsView",
     "RegionContactListCreateView",
     "RegionContactDetailView",
+    "EventNewsListCreateView",
+    "EventNewsDetailView",
+    "PublicUpcomingEventsView",
+    "PublicNewsView",
 ]

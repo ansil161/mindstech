@@ -98,6 +98,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
     location.pathname === '/blogs' ||
     location.pathname === '/experience' ||
     location.pathname === '/gallery' ||
+    location.pathname === '/events' ||
     (isPageEnabled('ewaste') && location.pathname === '/ewaste');
 
   // Only E-Waste is region-gated — null while loading (hidden until confirmed)
@@ -172,6 +173,9 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
               </NavLink>
               <NavLink to="/gallery" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>
                 {t('navbar.gallery', 'Gallery')}
+              </NavLink>
+              <NavLink to="/events" className={({ isActive }) => isActive ? 'sub-active' : ''} onClick={() => setActiveDropdown(null)}>
+                {t('navbar.events', 'Events & News')}
               </NavLink>
             </div>
           </li>

@@ -29,6 +29,12 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
           {t('navbar.ewaste', 'E-Waste Management')}
         </NavLink>
       )}
+      <NavLink to="/gallery" className="drawer-sub" onClick={() => setDrawerOpen(false)}>
+        {t('navbar.gallery', 'Gallery')}
+      </NavLink>
+      <NavLink to="/events" className="drawer-sub" onClick={() => setDrawerOpen(false)}>
+        {t('navbar.events', 'Events & News')}
+      </NavLink>
       <NavLink to="/contact" onClick={() => setDrawerOpen(false)}>{t('footer.contact', 'Contact')}</NavLink>
       <div className="drawer-meta">
         <span className="label">{t('home.hero.fact2_b', 'India · Africa · Poland')}</span>
