@@ -232,10 +232,14 @@ csrf_trusted_env = os.getenv("CSRF_TRUSTED_ORIGINS", cors_origins_env)
 CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_trusted_env.split(",") if origin.strip()]
 
 
-# Celery Configurations
-REDIS_URL = os.getenv('REDIS_URL', os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0'))
+# Celery & Redis Configurations
+REDIS_URL = os.getenv('REDIS_URL') or os.getenv('CELERY_BROKER_URL') or 'redis://localhost:6379/0'
+if os.getenv('REDIS_URL'):
+    REDIS_URL = os.getenv('REDIS_URL')
+
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
+
 
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
