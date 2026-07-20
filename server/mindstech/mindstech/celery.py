@@ -10,13 +10,11 @@ app = Celery('mindstech')
 # the configuration object to child processes.
 app.config_from_object('django.conf:settings', namespace='CELERY')
 
-# Priority resolution for Redis URL (Render REDIS_URL > CELERY_BROKER_URL > Local fallback)
-redis_url = os.getenv("REDIS_URL") or os.getenv("CELERY_BROKER_URL") or "redis://localhost:6379/0"
-if os.getenv("REDIS_URL"):
-    redis_url = os.getenv("REDIS_URL")
-
+# Priority resolution for Redis URL (Render REDIS_URL > Local fallback)
+redis_url = os.getenv("REDIS_URL", "redis://localhost:6379/0")
 app.conf.broker_url = redis_url
 app.conf.result_backend = redis_url
+
 
 # Load task modules from all registered Django apps.
 app.autodiscover_tasks()
