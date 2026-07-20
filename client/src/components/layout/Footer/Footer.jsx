@@ -5,6 +5,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRegion } from '../../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../../api/regionApi.js';
+import { useDynamicTranslation } from '../../../hooks/useDynamicTranslation.js';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -12,6 +13,13 @@ const Footer = () => {
   const { regionSlug, isPageEnabled } = useRegion();
   const [regionContact, setRegionContact] = useState(null);
   const showEwaste = isPageEnabled('ewaste') === true;
+
+  const { translatedData: translatedContact } = useDynamicTranslation(
+    regionContact,
+    ['office_name', 'address'],
+    `footer_contact_${regionSlug}`
+  );
+  const activeContact = translatedContact || regionContact;
 
   useEffect(() => {
     let cancelled = false;
@@ -98,18 +106,18 @@ const Footer = () => {
           <Link to="/blogs">{t('navbar.blogs')}</Link>
           <Link to="/contact">{t('footer.contact')}</Link>
         </div>
-        {regionContact && (regionContact.office_name || regionContact.address || regionContact.phone || regionContact.phone_display || regionContact.email) && (
+        {activeContact && (activeContact.office_name || activeContact.address || activeContact.phone || activeContact.phone_display || activeContact.email) && (
           <div className="foot-col">
-            {regionContact.office_name && <h5>{regionContact.office_name}</h5>}
-            {regionContact.address && <address style={{ whiteSpace: 'pre-wrap' }}>{regionContact.address}</address>}
-            {(regionContact.phone_display || regionContact.phone) && (
-              <a href={`tel:${(regionContact.phone_display || regionContact.phone).replace(/[^+\d]/g, '')}`} style={{ marginTop: '10px' }}>
-                {regionContact.phone_display || regionContact.phone}
+            {activeContact.office_name && <h5>{activeContact.office_name}</h5>}
+            {activeContact.address && <address style={{ whiteSpace: 'pre-wrap' }}>{activeContact.address}</address>}
+            {(activeContact.phone_display || activeContact.phone) && (
+              <a href={`tel:${(activeContact.phone_display || activeContact.phone).replace(/[^+\d]/g, '')}`} style={{ marginTop: '10px' }}>
+                {activeContact.phone_display || activeContact.phone}
               </a>
             )}
-            {regionContact.email && (
-              <a href={`mailto:${regionContact.email}`}>
-                {regionContact.email}
+            {activeContact.email && (
+              <a href={`mailto:${activeContact.email}`}>
+                {activeContact.email}
               </a>
             )}
           </div>

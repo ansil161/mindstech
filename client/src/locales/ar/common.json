@@ -840,7 +840,7 @@
       "avg_response": "متوسط الاستجابة أقل من 30 ثانية"
     },
     "input": {
-      "placeholder": "اسأل عن المنتجات أو الحلول أو الدعم..."
+      "placeholder": "اكتب رسالتك..."
     },
     "quick_actions": {
       "company_info": {

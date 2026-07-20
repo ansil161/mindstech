@@ -14,9 +14,12 @@ export const LanguageProvider = ({ children }) => {
       
       // Update HTML lang attribute
       document.documentElement.lang = lng;
-      // Handle RTL for Arabic
-      document.documentElement.dir = lng === 'ar' ? 'rtl' : 'ltr';
+      // Keep page layout strictly LTR across all languages (including Arabic)
+      document.documentElement.dir = 'ltr';
     };
+
+    // Ensure document direction stays LTR on initial load
+    document.documentElement.dir = 'ltr';
 
     i18n.on('languageChanged', handleLanguageChanged);
 

@@ -8,6 +8,9 @@ import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
+import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee.jsx';
+import { safeFromTo } from '../../utils/gsapSafe';
+
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -54,6 +57,17 @@ const Home = () => {
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
   const { translatedData: translatedTestimonials } = useDynamicTranslation(testimonials, ['name', 'designation', 'company', 'message'], `home_testimonials_${regionSlug}`);
+
+  const marqueeTestimonials = (translatedTestimonials || []).map((item) => ({
+    author: {
+      name: item.name || 'Client',
+      handle: [item.designation, item.company].filter(Boolean).join(' · ') || '@client',
+      avatar: item.photo || '',
+    },
+    text: item.message || '',
+    href: item.link || undefined,
+  }));
+
 
   useEffect(() => {
     const fetchSolutions = async () => {
@@ -373,7 +387,7 @@ const Home = () => {
 
     const ctx = gsap.context(() => {
       // Animate the section header
-      gsap.fromTo('#testimonials .section-head',
+      safeFromTo('#testimonials [data-testimonials-head]',
         { opacity: 0, y: 30 },
         {
           opacity: 1,
@@ -388,19 +402,19 @@ const Home = () => {
         }
       );
 
-      // Animate the testimonial cards staggering in
-      gsap.fromTo('.testimonial-card-premium',
-        { opacity: 0, y: 50, scale: 0.95 },
+      // Animate the marquee track in as a whole (cards are duplicated for the
+      // seamless loop, so staggering individual cards doesn't apply here)
+      safeFromTo('#testimonials [data-testimonials-track]',
+        { opacity: 0, y: 40, scale: 0.97 },
         {
           opacity: 1,
           y: 0,
           scale: 1,
           duration: 1,
-          stagger: 0.15,
-          ease: 'back.out(1.2)',
+          ease: 'power3.out',
           scrollTrigger: {
-            trigger: '#testimonials .grid',
-            start: 'top 80%',
+            trigger: '#testimonials [data-testimonials-track]',
+            start: 'top 85%',
             once: true,
           }
         }
@@ -910,65 +924,21 @@ const Home = () => {
 
       <div className="rule"></div>
 
-      {/* TESTIMONIALS */}
-      {translatedTestimonials.length > 0 && (
-        <section id="testimonials" aria-label="Client testimonials" className="testimonials-section-custom px-[var(--pad)] relative overflow-hidden">
-          {/* Section head */}
-          <div className="section-head">
-            <div>
-              <span className="label label--red">{t('home.testimonials.label', 'Client voices')}</span>
-              <h2 className="display" style={{ marginTop: '16px' }}>
+      {/* TESTIMONIALS MARQUEE */}
+      {marqueeTestimonials.length > 0 && (
+        <section id="testimonials" aria-label="Client testimonials" className="relative">
+          <TestimonialsSection
+            title={
+              <>
                 {t('home.testimonials.title_main', 'What our')} <em>{t('home.testimonials.title_em', 'clients say')}</em>
-              </h2>
-            </div>
-          </div>
-
-          {/* Cards grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-16 mt-48">
-            {[...translatedTestimonials].reverse().slice(0, 6).map((item, i) => (
-              <article
-                key={item.id || i}
-                className="group testimonial-card-premium"
-              >
-                {/* Red glow on hover */}
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-red-600/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-2xl" />
-
-                {/* Person Image (overlapping card top, rectangular portrait) */}
-                <div className="testimonial-portrait-premium">
-                  {item.photo ? (
-                    <img
-                      src={item.photo}
-                      alt={`Portrait of ${item.name}`}
-                      loading="lazy"
-                    />
-                  ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-red-600/20 to-zinc-900 flex items-center justify-center text-4xl font-bold text-red-500 font-[var(--display)] tracking-wide">
-                      {item.name
-                        ? item.name.split(' ').map((n) => n[0]).join('').slice(0, 2).toUpperCase()
-                        : 'AV'}
-                    </div>
-                  )}
-                </div>
-
-                {/* Name */}
-                <h3 className="text-lg font-bold text-white tracking-tight relative z-10">
-                  {item.name}
-                </h3>
-
-                {/* Designation / Company */}
-                <p className="text-[12px] text-[var(--grey)] font-medium mb-5 relative z-10 uppercase tracking-wider">
-                  {item.designation} {item.company && <span className="text-white/40">·</span>} <span className="text-red-500 font-semibold">{item.company}</span>
-                </p>
-
-                {/* Quote Message */}
-                <blockquote className="relative z-10 flex-1 text-[14.5px] leading-[1.8] text-white/70 group-hover:text-white/95 not-italic transition-colors duration-300 max-w-xs mx-auto">
-                  "{item.message}"
-                </blockquote>
-              </article>
-            ))}
-          </div>
+              </>
+            }
+            description={t('home.testimonials.subtitle', 'Hear directly from our valued clients and global partners.')}
+            testimonials={marqueeTestimonials}
+          />
         </section>
       )}
+
 
       <div className="rule"></div>
 

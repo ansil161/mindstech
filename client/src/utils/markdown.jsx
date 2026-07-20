@@ -12,26 +12,26 @@ export const parseInlineMarkdown = (text) => {
 
   return parts.map((part, index) => {
     if (part.startsWith('**') && part.endsWith('**')) {
-      return <strong key={index} className="font-bold text-neutral-900">{part.slice(2, -2)}</strong>;
+      return <strong key={index} className="font-bold text-[#FAFAFA]">{part.slice(2, -2)}</strong>;
     }
     if (part.startsWith('`') && part.endsWith('`')) {
       return (
-        <code key={index} className="px-1.5 py-0.5 rounded bg-neutral-100 font-mono text-xs text-red-650 border border-neutral-200/50">
+        <code key={index} className="px-1.5 py-0.5 rounded bg-white/[0.06] font-mono text-xs text-[#ff4d4d] border border-white/10">
           {part.slice(1, -1)}
         </code>
       );
     }
-    
+
     // Check for links [anchor](url)
     const linkMatch = part.match(/^\[(.*?)\]\((.*?)\)$/);
     if (linkMatch) {
       return (
-        <a 
-          key={index} 
-          href={linkMatch[2]} 
-          target="_blank" 
-          rel="noopener noreferrer" 
-          className="text-blue-600 hover:text-blue-500 underline transition-colors"
+        <a
+          key={index}
+          href={linkMatch[2]}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-[#ff6f6f] hover:text-[#ff4d4d] underline decoration-white/20 hover:decoration-[#ff4d4d]/60 transition-colors"
         >
           {linkMatch[1]}
         </a>
@@ -59,7 +59,7 @@ export const renderMarkdown = (markdownText) => {
   const flushList = (key) => {
     if (currentList.length > 0) {
       elements.push(
-        <ul key={`list-${key}`} className="list-disc pl-5 my-2 space-y-1 text-sm text-neutral-750">
+        <ul key={`list-${key}`} className="list-disc pl-5 my-2 space-y-1 text-sm text-white/80">
           {currentList}
         </ul>
       );
@@ -76,11 +76,11 @@ export const renderMarkdown = (markdownText) => {
         // Close code block
         inCodeBlock = false;
         elements.push(
-          <div key={`code-${i}`} className="my-3 rounded-lg overflow-hidden border border-neutral-200 bg-neutral-50 font-mono text-xs text-emerald-800 shadow-inner">
+          <div key={`code-${i}`} className="my-3 rounded-lg overflow-hidden border border-white/10 bg-white/[0.04] font-mono text-xs text-white/80 shadow-inner">
             {codeLang && (
-              <div className="bg-neutral-100 px-4 py-1.5 text-[10px] text-neutral-500 border-b border-neutral-200 uppercase tracking-wider flex justify-between items-center">
+              <div className="bg-white/[0.06] px-4 py-1.5 text-[10px] text-white/40 border-b border-white/10 uppercase tracking-wider flex justify-between items-center">
                 <span>{codeLang}</span>
-                <span className="text-neutral-400 select-none">Code</span>
+                <span className="text-white/30 select-none">Code</span>
               </div>
             )}
             <pre className="p-4 overflow-x-auto whitespace-pre">
@@ -120,7 +120,7 @@ export const renderMarkdown = (markdownText) => {
     // Handle headers
     if (line.trim().startsWith('###')) {
       elements.push(
-        <h4 key={`h3-${i}`} className="text-base font-bold mt-3 mb-1 text-neutral-900 border-b border-neutral-100 pb-1">
+        <h4 key={`h3-${i}`} className="text-base font-bold mt-3 mb-1 text-[#FAFAFA] border-b border-white/10 pb-1">
           {parseInlineMarkdown(line.trim().substring(4))}
         </h4>
       );
@@ -128,7 +128,7 @@ export const renderMarkdown = (markdownText) => {
     }
     if (line.trim().startsWith('##')) {
       elements.push(
-        <h3 key={`h2-${i}`} className="text-lg font-bold mt-4 mb-2 text-neutral-900 border-b border-neutral-200 pb-1">
+        <h3 key={`h2-${i}`} className="text-lg font-bold mt-4 mb-2 text-[#FAFAFA] border-b border-white/10 pb-1">
           {parseInlineMarkdown(line.trim().substring(3))}
         </h3>
       );
@@ -145,7 +145,7 @@ export const renderMarkdown = (markdownText) => {
 
     // Standard paragraph line
     elements.push(
-      <p key={`p-${i}`} className="text-sm my-1 leading-relaxed text-neutral-750">
+      <p key={`p-${i}`} className="text-sm my-1 leading-relaxed text-white/80">
         {parseInlineMarkdown(line)}
       </p>
     );

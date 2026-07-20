@@ -45,6 +45,12 @@ const ChatWindow = () => {
       role="dialog"
       aria-label="Mindstec AI Assistant Chat Window"
     >
+      {/* Ambient red radial glow, scaled from the site's body::before motif */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 bg-[radial-gradient(circle_260px_at_50%_-80px,rgba(204,0,1,0.08),transparent_80%)]"
+      />
+
       {/* Header Controls (Fixed 64px, Glassmorphic) */}
       <ChatHeader />
 

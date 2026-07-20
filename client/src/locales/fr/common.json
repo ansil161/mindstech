@@ -840,7 +840,7 @@
       "avg_response": "Réponse moyenne < 30 sec"
     },
     "input": {
-      "placeholder": "Posez des questions sur les produits, les solutions..."
+      "placeholder": "Écrivez votre message..."
     },
     "quick_actions": {
       "company_info": {

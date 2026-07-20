@@ -6,6 +6,7 @@ import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation.js';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -18,6 +19,13 @@ const Experience = () => {
   
   const { regionSlug } = useRegion();
   const [regionContact, setRegionContact] = useState(null);
+
+  const { translatedData: translatedContact } = useDynamicTranslation(
+    regionContact,
+    ['office_name', 'address'],
+    `experience_contact_${regionSlug}`
+  );
+  const activeContact = translatedContact || regionContact;
 
   useEffect(() => {
     let cancelled = false;
@@ -346,16 +354,16 @@ const Experience = () => {
           <div className="vrow reveal">
             <span className="num">01</span>
             <div>
-              <h4>{regionContact?.office_name || t('experience.visit.arr.0.title', 'Where')}</h4>
-              <p style={{ whiteSpace: 'pre-wrap' }}>{regionContact?.address || t('experience.visit.arr.0.desc', 'No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India')}</p>
+              <h4>{activeContact?.office_name || t('experience.visit.arr.0.title', 'Where')}</h4>
+              <p style={{ whiteSpace: 'pre-wrap' }}>{activeContact?.address || t('experience.visit.arr.0.desc', 'No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India')}</p>
             </div>
           </div>
           <div className="vrow reveal">
             <span className="num">02</span>
             <div>
               <h4>{t('experience.visit.arr.1.title', 'Call ahead')}</h4>
-              <a href={`tel:${(regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\\d]/g, '')}`}>
-                {regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_label')}
+              <a href={`tel:${(activeContact?.phone_display || activeContact?.phone || t('contact_info.tel_href')).replace(/[^+\\d]/g, '')}`}>
+                {activeContact?.phone_display || activeContact?.phone || t('contact_info.tel_label')}
               </a>
               <p className="sub-note">{t('experience.visit.arr.1.desc', 'Mon–Fri, business hours IST')}</p>
             </div>

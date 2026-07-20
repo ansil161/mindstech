@@ -847,7 +847,7 @@
       "avg_response": "平均响应时间 < 30 秒"
     },
     "input": {
-      "placeholder": "咨询产品、解决方案 or 支持..."
+      "placeholder": "输入您的消息..."
     },
     "quick_actions": {
       "company_info": {

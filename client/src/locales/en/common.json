@@ -911,7 +911,7 @@
       "avg_response": "Avg. response <30 sec"
     },
     "input": {
-      "placeholder": "Ask about products, solutions or support..."
+      "placeholder": "Type your message..."
     },
     "quick_actions": {
       "company_info": {

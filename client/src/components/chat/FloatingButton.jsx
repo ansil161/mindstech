@@ -19,9 +19,9 @@ const FloatingButton = () => {
       <motion.button
         onClick={toggleChat}
         className="flex items-center justify-center w-14 h-14 rounded-full bg-[#CC0001] hover:bg-[#b30001] text-white shadow-[0_4px_20px_rgba(204,0,1,0.3)] border border-white/10 focus:outline-none cursor-pointer"
-        whileHover={{ 
+        whileHover={{
           scale: 1.08,
-          boxShadow: '0 0 25px rgba(204, 0, 1, 0.6)' 
+          boxShadow: '0 0 25px rgba(204, 0, 1, 0.6)'
         }}
         whileTap={{ scale: 0.92 }}
         initial={{ scale: 0, opacity: 0 }}

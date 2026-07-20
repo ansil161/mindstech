@@ -39,7 +39,7 @@ const TypingIndicator = () => {
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.2 }}
         >
-          <span className="text-[13px] text-[rgba(255,255,255,0.72)] font-sans font-medium">
+          <span className="text-[13px] text-white/70 font-sans font-medium">
             AI Assistant is typing
           </span>
 

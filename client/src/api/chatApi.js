@@ -33,7 +33,7 @@ export const chatApi = {
     
     // Live API call to Django
     try {
-      const response = await apiClient.get(`/admin/chat/history/${conversationId}/`);
+      const response = await apiClient.get(`/admin/chat/history/${conversationId}/`, { timeout: 30000 });
       return response.data;
     } catch (error) {
       console.error('Error fetching conversation history:', error);
@@ -79,11 +79,11 @@ export const chatApi = {
       });
     }
 
-    // Live API call to Django
+    // Live API call to Django - AI generation can take up to 60 seconds
     const response = await apiClient.post('/admin/chatbot/', {
       message,
       conversation_id: conversationId,
-    });
+    }, { timeout: 60000 });
     return response.data;
   },
 

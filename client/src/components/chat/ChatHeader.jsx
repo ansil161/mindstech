@@ -30,7 +30,7 @@ const ChatHeader = () => {
       {/* Close Button */}
       <button
         onClick={toggleChat}
-        className="w-8 h-8 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500/50"
+        className="w-8 h-8 rounded-full bg-white/5 border border-white/5 hover:bg-white/10 text-white/60 hover:text-white transition-all duration-200 flex items-center justify-center cursor-pointer focus:outline-none focus:ring-2 focus:ring-[#CC0001]/50"
         title="Close chat"
         aria-label="Close chat"
       >

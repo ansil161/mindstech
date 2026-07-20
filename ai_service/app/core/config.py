@@ -86,8 +86,9 @@ class Settings(BaseSettings):
         return self
 
     # RAG Validation Messages
-    SCOPE_REJECTION_MESSAGE: str = "I'm here to answer questions about our company, products, services, brands, solutions, documentation, and other company-related information. Your question appears to be outside the scope of my knowledge base."
-    LOW_SIMILARITY_MESSAGE: str = "I couldn't find information related to your question in our current knowledge base."
+    SCOPE_REJECTION_MESSAGE: str = "I specialize in assisting with Mindstec's professional AV and IT solutions, products, and services. How can I help you with our offerings today?"
+    LOW_SIMILARITY_MESSAGE: str = "I don't have details on that specific request at the moment. Would you like to explore our AV/IT products, solutions, or connect with our support team?"
+
 
     # Embedding Settings
     # Supports SentenceTransformers local models or API provider models (e.g. OpenAI)
