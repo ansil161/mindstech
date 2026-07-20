@@ -17,9 +17,7 @@ def parse_document_task(self, document_id: int):
         doc.status = 'Processing'
         doc.save(update_fields=['status'])
         
-        url = getattr(settings, "AI_SERVICE_URL", "http://localhost:8000")
-        if url.endswith("/"):
-            url = url[:-1]
+        url = getattr(settings, "AI_SERVICE_URL", os.getenv("AI_SERVICE_URL", "http://ai-service:8000")).rstrip("/")
         
         with open(doc.file.path, 'rb') as f:
             files = {'file': (doc.file.name, f, 'application/octet-stream')}

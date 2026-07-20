@@ -230,8 +230,9 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = int(os.getenv('CELERY_TASK_TIME_LIMIT', '300'))
 
 # AI Service Integration Settings
-AI_SERVICE_URL = os.getenv('AI_SERVICE_URL', 'http://localhost:8001')
+AI_SERVICE_URL = os.getenv('AI_SERVICE_URL', 'http://ai-service:8000').rstrip('/')
 AI_SERVICE_API_KEY = os.getenv('AI_SERVICE_API_KEY', 'secret-key')
+
 
 # Production Security Headers (Active when DEBUG is False)
 if not DEBUG:
