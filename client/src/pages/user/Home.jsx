@@ -13,14 +13,14 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CITIES = {
   bangalore: { lat: 12.97, lng: 77.59, label: 'Bangalore HQ', chip: true },
-  delhi:     { lat: 28.61, lng: 77.21, label: 'New Delhi' },
-  dhaka:     { lat: 23.81, lng: 90.41, label: 'Dhaka' },
-  colombo:   { lat: 6.93,  lng: 79.86, label: 'Colombo' },
-  nairobi:   { lat: -1.29, lng: 36.82, label: 'Nairobi', chip: true },
-  lagos:     { lat: 6.52,  lng: 3.38,  label: 'Lagos' },
-  joburg:    { lat: -26.20, lng: 28.05, label: 'Johannesburg' },
-  warsaw:    { lat: 52.23, lng: 21.01, label: 'Warsaw', chip: true },
-  prague:    { lat: 50.08, lng: 14.44, label: 'Prague' }
+  delhi: { lat: 28.61, lng: 77.21, label: 'New Delhi' },
+  dhaka: { lat: 23.81, lng: 90.41, label: 'Dhaka' },
+  colombo: { lat: 6.93, lng: 79.86, label: 'Colombo' },
+  nairobi: { lat: -1.29, lng: 36.82, label: 'Nairobi', chip: true },
+  lagos: { lat: 6.52, lng: 3.38, label: 'Lagos' },
+  joburg: { lat: -26.20, lng: 28.05, label: 'Johannesburg' },
+  warsaw: { lat: 52.23, lng: 21.01, label: 'Warsaw', chip: true },
+  prague: { lat: 50.08, lng: 14.44, label: 'Prague' }
 };
 
 const ROUTES = [
@@ -110,7 +110,7 @@ const Home = () => {
     if (fieldwork.length === 0) return;
 
     // Clear any existing ScrollTriggers on these elements to prevent duplicates
-    const triggers = ScrollTrigger.getAll().filter(t => 
+    const triggers = ScrollTrigger.getAll().filter(t =>
       t.trigger && t.trigger.classList.contains('reveal-img')
     );
     triggers.forEach(t => t.kill());
@@ -158,28 +158,28 @@ const Home = () => {
 
       // Snappier Hero intro timeline
       const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
-      intro.fromTo('#heroImg', 
-          { scale: 1.12, filter: 'brightness(.2) saturate(.8)' },
-          { scale: 1, filter: 'brightness(.58) saturate(1)', duration: 1.8, ease: 'power2.out' })
-        .fromTo('#heroH .w', 
-          { yPercent: 80, opacity: 0 }, 
-          { yPercent: 0, opacity: 1, duration: 1.3, stagger: 0.12, ease: 'power4.out' }, 
+      intro.fromTo('#heroImg',
+        { scale: 1.12, filter: 'brightness(.2) saturate(.8)' },
+        { scale: 1, filter: 'brightness(.58) saturate(1)', duration: 1.8, ease: 'power2.out' })
+        .fromTo('#heroH .w',
+          { yPercent: 80, opacity: 0 },
+          { yPercent: 0, opacity: 1, duration: 1.3, stagger: 0.12, ease: 'power4.out' },
           '-=1.7')
-        .fromTo('#heroBrief', 
-          { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 0.9 }, 
+        .fromTo('#heroBrief',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.9 },
           '-=1.2')
-        .fromTo('#heroFoot .fact', 
-          { opacity: 0, y: 15 }, 
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 }, 
+        .fromTo('#heroFoot .fact',
+          { opacity: 0, y: 15 },
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 },
           '-=0.9')
-        .fromTo('.hero-scrollcue', 
-          { opacity: 0, x: -10 }, 
-          { opacity: 1, x: 0, duration: 0.8 }, 
+        .fromTo('.hero-scrollcue',
+          { opacity: 0, x: -10 },
+          { opacity: 1, x: 0, duration: 0.8 },
           '-=0.7')
-        .fromTo('#cueLine', 
-          { scaleX: 0 }, 
-          { scaleX: 1, duration: 0.6 }, 
+        .fromTo('#cueLine',
+          { scaleX: 0 },
+          { scaleX: 1, duration: 0.6 },
           '-=0.5');
 
       const runIntro = () => {
@@ -191,6 +191,7 @@ const Home = () => {
         runIntro();
       } else {
         window.addEventListener('preloaderExited', runIntro);
+        setTimeout(() => runIntro(), 300);
       }
 
       if (reduceMotion) {
@@ -211,7 +212,7 @@ const Home = () => {
       });
 
       // 3. Statement word color transition
-      gsap.fromTo('#stText .st-w', 
+      gsap.fromTo('#stText .st-w',
         { opacity: 0.18 },
         {
           opacity: 1,
@@ -285,8 +286,8 @@ const Home = () => {
       });
 
       // 8. Band parallaxes
-      gsap.fromTo('#bandImg', 
-        { yPercent: -9 }, 
+      gsap.fromTo('#bandImg',
+        { yPercent: -9 },
         {
           yPercent: 9,
           ease: 'none',
@@ -298,8 +299,8 @@ const Home = () => {
           }
         }
       );
-      gsap.fromTo('#bandH', 
-        { opacity: 0, y: 50 }, 
+      gsap.fromTo('#bandH',
+        { opacity: 0, y: 50 },
         {
           opacity: 1,
           y: 0,
@@ -314,8 +315,8 @@ const Home = () => {
       );
 
       // 9. CTA masked title
-      gsap.fromTo('#ctaH .w', 
-        { yPercent: 110 }, 
+      gsap.fromTo('#ctaH .w',
+        { yPercent: 110 },
         {
           yPercent: 0,
           duration: 1.1,
@@ -344,8 +345,8 @@ const Home = () => {
     if (solutions.length === 0) return;
 
     const ctx = gsap.context(() => {
-      gsap.fromTo('.sol-row', 
-        { opacity: 0, y: 20 }, 
+      gsap.fromTo('.sol-row',
+        { opacity: 0, y: 20 },
         {
           opacity: 1,
           y: 0,
@@ -502,7 +503,7 @@ const Home = () => {
     const quad = (t, a, m, b) => (1 - t) * (1 - t) * a + 2 * (1 - t) * t * m + t * t * b;
 
     const tl = gsap.timeline({ repeat: -1, repeatDelay: 2, defaults: { ease: 'power2.inOut' } });
-    
+
     ROUTES.forEach((route, i) => {
       const path = paths[i];
       const dot = dots[i];
@@ -514,7 +515,7 @@ const Home = () => {
 
       const t0 = i * 0.3;
       tl.to(path, { strokeDashoffset: 0, duration: 2 }, t0);
-      
+
       const prox = { t: 0 };
       tl.to(prox, {
         t: 1,
@@ -576,11 +577,11 @@ const Home = () => {
       {/* HERO SECTION */}
       <section className="hero" aria-label="Introduction">
         <div className="hero-media">
-          <img 
-            id="heroImg" 
-            src="/assets/img/pexels-7513419-w1920.jpg" 
-            alt="A technician silhouetted on a dark stage while installing a large glowing LED video wall" 
-            fetchPriority="high" 
+          <img
+            id="heroImg"
+            src="/assets/img/pexels-7513419-w1920.jpg"
+            alt="A technician silhouetted on a dark stage while installing a large glowing LED video wall"
+            fetchPriority="high"
           />
         </div>
         <div className="hero-inner">
@@ -608,7 +609,7 @@ const Home = () => {
           </div>
         </div>
       </section>
- 
+
       {/* BRAND TICKER STRIP */}
       <div className="strip" aria-label="Represented manufacturers">
         <div className="strip-track">
@@ -616,7 +617,7 @@ const Home = () => {
           <span aria-hidden="true">Samsung Professional</span><span aria-hidden="true">Crestron</span><span aria-hidden="true">Extron</span><span aria-hidden="true">Shure</span><span aria-hidden="true">Barco</span><span aria-hidden="true">LG Electronics</span><span aria-hidden="true">Sony Professional</span><span aria-hidden="true">Biamp</span><span aria-hidden="true">QSC</span><span aria-hidden="true">Christie</span><span aria-hidden="true">Sennheiser</span><span aria-hidden="true">Epson</span>
         </div>
       </div>
- 
+
       {/* STATEMENT SECTION */}
       <section className="statement" aria-label="About Mindstec">
         {statementText()}
@@ -627,9 +628,9 @@ const Home = () => {
           <small>{t('home.statement.side_text')}</small>
         </div>
       </section>
- 
+
       <div className="rule"></div>
- 
+
       {/* SOLUTIONS SECTION */}
       <section className="solutions" id="solutions">
         <div className="section-head">
@@ -702,8 +703,8 @@ const Home = () => {
           </div>
           <div className="edge-list" id="edgeList" ref={edgeListRef}>
             {edgeItems.map((item, i) => (
-              <div 
-                key={i} 
+              <div
+                key={i}
                 className={`edge-item ${i === 0 ? 'open' : ''}`}
                 data-visual={i}
                 data-caption={item.caption}

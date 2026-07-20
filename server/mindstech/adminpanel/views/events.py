@@ -79,7 +79,7 @@ class EventNewsDetailView(APIView):
 
 
 class PublicUpcomingEventsView(APIView):
-    """Public endpoint — returns only active upcoming events (event_date >= now), sorted soonest first."""
+    """Public endpoint — returns active upcoming events (event_date >= now), sorted soonest first. Fallbacks to all events if no future events scheduled."""
     permission_classes = [AllowAny]
 
     def get(self, request):
@@ -88,6 +88,10 @@ class PublicUpcomingEventsView(APIView):
             type='event',
             event_date__gte=now,
         ).order_by('event_date')
+        if not events.exists():
+            events = EventNews.objects.filter(
+                type='event',
+            ).order_by('-event_date', '-created_at')
         serializer = EventNewsSerializer(events, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)
 

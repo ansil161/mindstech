@@ -226,7 +226,7 @@ const Events = () => {
 
     const t = setTimeout(() => ScrollTrigger.refresh(), 100);
     return () => { ctx.revert(); clearTimeout(t); };
-  }, [loading, events, news]);
+  }, [loading, events, news, activeTab]);
 
   const showEvents = activeTab === 'all' || activeTab === 'events';
   const showNews   = activeTab === 'all' || activeTab === 'news';

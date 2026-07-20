@@ -61,21 +61,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
     };
   }, []);
 
-  // Handle installations link navigation vs section scroll on Home page
-  const handleInstallationsClick = (e) => {
-    setActiveDropdown(null);
-    if (location.pathname === '/') {
-      e.preventDefault();
-      const target = document.querySelector('#work');
-      if (target) {
-        if (window.lenis) {
-          window.lenis.scrollTo(target, { offset: -70 });
-        } else {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    }
-  };
+
 
   const handleMouseEnter = (name) => {
     setActiveDropdown(name);
@@ -179,9 +165,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
               </NavLink>
             </div>
           </li>
-          <li>
-            <Link to="/#work" onClick={handleInstallationsClick}>{t('navbar.installations')}</Link>
-          </li>
+
         </ul>
       </nav>
       <div className="nav-cta">

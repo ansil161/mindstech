@@ -352,8 +352,9 @@ img { display: block; max-width: 100%; }
 .hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(12,12,12,.96) 0%, rgba(12,12,12,.45) 45%, rgba(12,12,12,.25) 100%); }
 .hero-inner { position: relative; z-index: 2; flex: 1; display: flex; flex-direction: column; justify-content: space-between; padding: clamp(120px, 18vh, 180px) var(--pad) clamp(32px, 5vh, 56px); }
 .hero-top { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; margin-bottom: clamp(24px, 4vh, 44px); }
+.line-mask { display: block; overflow: hidden; }
 .hero h1 { font-size: clamp(26px, 3.8vw, 56px); max-width: 14ch; line-height: 1.05; letter-spacing: -.03em; }
-.hero h1 .w { transform: translateY(115%) rotate(2deg); }
+.hero h1 .w { display: inline-block; will-change: transform, opacity; }
 .hero-brief { max-width: 310px; padding-bottom: 10px; opacity: 0; transform: translateY(20px); }
 .hero-brief p { font-size: 14px; color: #D1D1D6; line-height: 1.75; letter-spacing: 0.01em; }
 .hero-brief .btn { margin-top: 22px; }
@@ -1674,13 +1675,15 @@ footer { border-top: 1px solid var(--line-soft); }
 }
 
 .admin-dashboard-page {
+  position: fixed;
+  inset: 0;
   height: 100vh;
+  width: 100vw;
   overflow: hidden;
   background: var(--ink);
   color: var(--white);
   font-family: var(--body);
   display: flex;
-  width: 100%;
 }
 
 .admin-sidebar {
@@ -1773,11 +1776,13 @@ footer { border-top: 1px solid var(--line-soft); }
 
 .admin-main {
   flex: 1;
+  height: 100vh;
   background: var(--ink);
   display: flex;
   flex-direction: column;
   min-width: 0;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .admin-header {
@@ -2689,8 +2694,6 @@ footer { border-top: 1px solid var(--line-soft); }
   display: flex;
   flex-direction: column;
   transition: transform .4s var(--ease), border-color .4s, box-shadow .4s;
-  opacity: 0;
-  transform: translateY(30px);
 }
 
 .ev-card:hover {
