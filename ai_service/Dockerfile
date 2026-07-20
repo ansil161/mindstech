@@ -38,4 +38,4 @@ USER appuser
 EXPOSE 8000
 
 # Run with Gunicorn using Uvicorn workers for production scalability
-CMD ["gunicorn", "-k", "uvicorn.workers.UvicornWorker", "--bind", "0.0.0.0:8000", "app.main:app"]
+CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT app.main:app"]
