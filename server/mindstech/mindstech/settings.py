@@ -30,7 +30,11 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t", "yes")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_HOSTS") else []
+ALLOWED_HOSTS = [
+    host.strip()
+    for host in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,.onrender.com").split(",")
+    if host.strip()
+]
 
 
 # Application definition
@@ -216,23 +220,18 @@ SIMPLE_JWT = {
 
 # CORS Configuration
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000",
-]
+DEFAULT_CORS_ORIGINS = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000,https://mindstech.onrender.com"
+cors_origins_env = os.getenv("CORS_ALLOWED_ORIGINS", DEFAULT_CORS_ORIGINS)
+CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
 
 # CSRF Configuration
 CSRF_COOKIE_HTTPONLY = False          # Must be False so frontend JS can read CSRF token
 CSRF_COOKIE_SAMESITE = 'Lax'
 CSRF_COOKIE_SECURE = not DEBUG        # Only send CSRF cookie over HTTPS in production
-CSRF_TRUSTED_ORIGINS = [
-    "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000",
-]
+
+csrf_trusted_env = os.getenv("CSRF_TRUSTED_ORIGINS", cors_origins_env)
+CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_trusted_env.split(",") if origin.strip()]
+
 
 # Celery Configurations
 REDIS_URL = os.getenv('REDIS_URL', os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0'))
