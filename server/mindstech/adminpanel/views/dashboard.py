@@ -18,7 +18,7 @@ class DashboardStatsView(APIView):
             "fieldwork_projects": Fieldwork.objects.count(),
             "solutions": Solution.objects.count(),
             "blogs": Blog.objects.count(),
-            "collection_centres": CollectionCentre.objects.filter(is_active=True).count(),
+            "collection_centres": CollectionCentre.objects.count(),
             "documents": Document.objects.count(),
         }
         return Response(stats, status=status.HTTP_200_OK)

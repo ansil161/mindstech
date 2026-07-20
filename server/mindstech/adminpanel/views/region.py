@@ -323,6 +323,18 @@ class TestimonialDetailView(APIView):
 # Public: Region data (no auth required)
 # ──────────────────────────────────────────────
 
+class PublicRegionListView(APIView):
+    """
+    Public endpoint that returns all active top-level regions and their sub_regions.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        regions = Region.objects.filter(parent__isnull=True).order_by('display_order', 'name')
+        serializer = RegionSerializer(regions, many=True, context={'request': request})
+        return Response(serializer.data)
+
+
 class PublicRegionDataView(APIView):
     """
     Public endpoint that returns a region's team members, contact info, and brands.
@@ -332,7 +344,7 @@ class PublicRegionDataView(APIView):
 
     def get(self, request, slug):
         try:
-            region = Region.objects.get(slug=slug, is_active=True)
+            region = Region.objects.get(slug=slug)
         except Region.DoesNotExist:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
         serializer = RegionDetailSerializer(region, context={'request': request})
@@ -347,7 +359,7 @@ class PublicRegionSolutionBrandsView(APIView):
 
     def get(self, request, region_slug, solution_slug):
         try:
-            region = Region.objects.get(slug=region_slug, is_active=True)
+            region = Region.objects.get(slug=region_slug)
         except Region.DoesNotExist:
             return Response({'detail': 'Region not found.'}, status=status.HTTP_404_NOT_FOUND)
 
@@ -359,8 +371,7 @@ class PublicRegionSolutionBrandsView(APIView):
         # Filter active brands for the region that are linked to this solution
         brands = RegionBrand.objects.filter(
             region=region,
-            solutions=solution,
-            is_active=True
+            solutions=solution
         ).order_by('display_order', 'created_at')
 
         serializer = RegionBrandSerializer(brands, many=True, context={'request': request})

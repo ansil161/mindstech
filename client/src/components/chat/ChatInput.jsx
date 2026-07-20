@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import useChat from '../../hooks/useChat';
@@ -9,6 +9,19 @@ const ChatInput = () => {
   const { sendMessage, isLoading } = useChat();
   const [text, setText] = useState('');
   const { t } = useTranslation();
+  const textareaRef = useRef(null);
+
+  const resizeTextarea = () => {
+    const textarea = textareaRef.current;
+    if (textarea) {
+      textarea.style.height = 'auto';
+      textarea.style.height = `${Math.min(textarea.scrollHeight, 120)}px`;
+    }
+  };
+
+  useEffect(() => {
+    resizeTextarea();
+  }, [text]);
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
@@ -28,17 +41,18 @@ const ChatInput = () => {
 
   return (
     <div className="px-4 py-4 bg-[#0B0B0E] border-t border-[rgba(255,255,255,0.08)] select-none flex-shrink-0 z-10">
-      <form onSubmit={handleSubmit} className="relative flex items-center bg-[#111216] border border-[rgba(255,255,255,0.08)] rounded-[28px] pl-4 pr-1.5 py-1.5 shadow-inner focus-within:border-[#CC0001]/50 focus-within:ring-2 focus-within:ring-[#CC0001]/10 transition-all duration-200 w-full">
+      <form onSubmit={handleSubmit} className="relative flex items-end bg-[#111216] border border-[rgba(255,255,255,0.08)] rounded-[24px] pl-4 pr-1.5 py-1.5 shadow-inner focus-within:border-[#CC0001]/50 focus-within:ring-2 focus-within:ring-[#CC0001]/10 transition-all duration-200 w-full">
         
         {/* Textarea Input (Enter to Send, Shift+Enter for new line) */}
         <textarea
+          ref={textareaRef}
           rows={1}
           value={text}
           onChange={(e) => setText(e.target.value.slice(0, CHAR_LIMIT))}
           onKeyDown={handleKeyDown}
           placeholder={t('chat.input.placeholder', 'Type your question...')}
           disabled={isLoading}
-          className="flex-grow bg-transparent text-[#FAFAFA] placeholder-white/30 text-[14px] font-sans focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none outline-none disabled:opacity-50 py-1 pr-3 resize-none max-h-20 overflow-y-auto leading-[1.4] h-[22px] min-h-[22px] align-middle"
+          className="flex-grow bg-transparent text-[#FAFAFA] placeholder-white/30 text-[14px] font-sans focus:outline-none focus:ring-0 focus-visible:outline-none focus-visible:ring-0 border-none outline-none disabled:opacity-50 py-2 pr-3 resize-none overflow-y-auto leading-[1.4] min-h-[24px] align-middle custom-chatbot-scroll"
           style={{ outline: 'none', border: 'none', boxShadow: 'none' }}
           aria-label="Chat input field"
         />

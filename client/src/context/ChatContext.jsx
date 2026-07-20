@@ -264,20 +264,14 @@ export const ChatProvider = ({ children }) => {
         };
         setMessages((prev) => [...prev, assistantMessage]);
 
-        // Trigger collection when EITHER the user message OR the AI reply signals
-        // service interest — covers cases where the AI gives a contact-details answer
-        // without using the exact legacy keywords.
-        const intentDetected =
-          detectServiceIntent(aiText) || detectServiceIntent(content.trim());
+        // Disabled automatic intent detection hijack because it causes an infinite 
+        // lead-gen loop that blocks natural AI conversation. The LLM now natively 
+        // provides contact info via its system prompt.
+        const intentDetected = false;
 
         if (enquiryStateRef.current === ENQUIRY_IDLE && intentDetected) {
+          // Unreachable now, but preserved for future structured function calling
           setEnquiryStateSynced(ENQUIRY_COLLECTING);
-          setCollectedDataSynced({});
-          setTimeout(() => {
-            pushBotMessage(
-              "I'd be happy to connect you with our team! 😊\n\nCould you please share a few details?\n\n- **Full name**\n- **Email address**\n- **Phone number**\n\nFeel free to share them all in one message or one at a time."
-            );
-          }, 700);
         }
       } catch (err) {
         console.error('Failed to send message:', err);

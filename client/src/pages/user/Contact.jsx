@@ -146,7 +146,7 @@ const Contact = () => {
   }, []);
 
   useEffect(() => {
-    const activeContacts = contacts.length > 0 ? contacts : [FALLBACK_CONTACT];
+    const activeContacts = contacts;
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -212,25 +212,19 @@ const Contact = () => {
   };
 
   // Use contactInfo as the authoritative source (updates when region changes).
-  const baseContact = contactInfo || FALLBACK_CONTACT;
+  const baseContact = contactInfo || {};
   const translatedContact = translatedContacts && translatedContacts.length > 0 ? translatedContacts[0] : null;
-  const telHref = (baseContact.phone_display || baseContact.phone || FALLBACK_CONTACT.phone || '').replace(/[^+\d]/g, '');
-  const telLabel = baseContact.phone_display || baseContact.phone || FALLBACK_CONTACT.phone_display;
-  const contactEmail = baseContact.email || FALLBACK_CONTACT.email;
-  const contactAddress = (translatedContact?.address && translatedContact.email === baseContact.email ? translatedContact.address : null) || baseContact.address || FALLBACK_CONTACT.address;
-  const officeName = (translatedContact?.office_name && translatedContact.email === baseContact.email ? translatedContact.office_name : null) || baseContact.office_name || FALLBACK_CONTACT.office_name;
-  const mapEmbed = baseContact.map_embed_url || FALLBACK_CONTACT.map_embed_url;
-  const mapLink = baseContact.map_link || FALLBACK_CONTACT.map_link;
+  const telHref = (baseContact.phone_display || baseContact.phone || '').replace(/[^+\d]/g, '');
+  const telLabel = baseContact.phone_display || baseContact.phone || '';
+  const contactEmail = baseContact.email || '';
+  const contactAddress = (translatedContact?.address && translatedContact.email === baseContact.email ? translatedContact.address : null) || baseContact.address || '';
+  const officeName = (translatedContact?.office_name && translatedContact.email === baseContact.email ? translatedContact.office_name : null) || baseContact.office_name || '';
+  const mapEmbed = baseContact.map_embed_url || '';
+  const mapLink = baseContact.map_link || '';
 
-  const displayContacts = translatedContacts && translatedContacts.length > 0 ? translatedContacts : (contacts.length > 0 ? contacts : [FALLBACK_CONTACT]);
+  const displayContacts = translatedContacts && translatedContacts.length > 0 ? translatedContacts : contacts;
 
-  const regionalDesks = allRegionContacts.length > 0
-    ? allRegionContacts
-    : [
-        { label: 'India', email: 'india@mindstec.com' },
-        { label: 'Africa', email: 'africa@mindstec.com' },
-        { label: 'Partnerships', email: 'partners@mindstec.com' },
-      ];
+  const regionalDesks = allRegionContacts;
 
   return (
     <main id="top" ref={containerRef}>

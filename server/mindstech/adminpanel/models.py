@@ -152,6 +152,14 @@ class Region(models.Model):
     # e.g. ["ewaste", "gallery", "experience", "blogs"]
     # An empty list means no optional pages are enabled.
     enabled_pages = models.JSONField(default=list, blank=True)
+    parent = models.ForeignKey(
+        'self', 
+        on_delete=models.CASCADE, 
+        null=True, 
+        blank=True, 
+        related_name='sub_regions',
+        help_text="If this is a country/sub-region, select its parent region (e.g., Global)."
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

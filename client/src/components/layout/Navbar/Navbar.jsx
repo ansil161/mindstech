@@ -13,7 +13,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
   const location = useLocation();
   const { t } = useTranslation();
   const { changeLanguage } = useContext(LanguageContext);
-  const { region, setRegion, isPageEnabled } = useRegion();
+  const { region, setRegion, isPageEnabled, allRegions } = useRegion();
 
   const [activeDropdown, setActiveDropdown] = useState(null);
 
@@ -202,24 +202,60 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
             </svg>
           </button>
           <div className={`sub ${activeDropdown === 'region' ? 'open' : ''}`} style={{ right: 0, left: 'auto' }}>
-            {['India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => {
-              const regKey = `navbar.regions.${r.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`;
-              return (
-                <a
-                  key={r}
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setRegion(r);
-                    changeLanguage(regionLanguageMap[r] || 'en');
-                    setActiveDropdown(null);
-                  }}
-                  className={region === r ? 'sub-active' : ''}
-                >
-                  {t(regKey, r)}
-                </a>
-              );
-            })}
+            {allRegions && allRegions.length > 0 ? (
+              allRegions.map((r) => (
+                <React.Fragment key={r.name}>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRegion(r.name);
+                      changeLanguage(regionLanguageMap[r.name] || 'en');
+                      setActiveDropdown(null);
+                    }}
+                    className={region === r.name ? 'sub-active' : ''}
+                    style={{ fontWeight: r.sub_regions?.length > 0 ? '600' : 'normal' }}
+                  >
+                    {t(`navbar.regions.${r.name.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, r.name)}
+                  </a>
+                  {r.sub_regions && r.sub_regions.map(sub => (
+                    <a
+                      key={sub.name}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setRegion(sub.name);
+                        changeLanguage(regionLanguageMap[sub.name] || 'en');
+                        setActiveDropdown(null);
+                      }}
+                      className={region === sub.name ? 'sub-active' : ''}
+                      style={{ paddingLeft: '24px', fontSize: '0.95em' }}
+                    >
+                      - {t(`navbar.regions.${sub.name.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, sub.name)}
+                    </a>
+                  ))}
+                </React.Fragment>
+              ))
+            ) : (
+              ['India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => {
+                const regKey = `navbar.regions.${r.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`;
+                return (
+                  <a
+                    key={r}
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setRegion(r);
+                      changeLanguage(regionLanguageMap[r] || 'en');
+                      setActiveDropdown(null);
+                    }}
+                    className={region === r ? 'sub-active' : ''}
+                  >
+                    {t(regKey, r)}
+                  </a>
+                );
+              })
+            )}
           </div>
         </li>
         <Button solid to="/contact" onClick={() => setActiveDropdown(null)}>

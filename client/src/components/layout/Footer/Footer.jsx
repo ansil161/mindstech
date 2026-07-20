@@ -1,12 +1,33 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRegion } from '../../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../../api/regionApi.js';
 
 const Footer = () => {
   const { t } = useTranslation();
   const location = useLocation();
+  const { regionSlug } = useRegion();
+  const [regionContact, setRegionContact] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchRegionContact = async () => {
+      if (!regionSlug) return;
+      try {
+        const res = await getPublicRegionData(regionSlug);
+        if (!cancelled) {
+          setRegionContact(Array.isArray(res.data.contact_info) ? res.data.contact_info[0] : (res.data.contact_info || null));
+        }
+      } catch (err) {
+        if (!cancelled) setRegionContact(null);
+      }
+    };
+    fetchRegionContact();
+    return () => { cancelled = true; };
+  }, [regionSlug]);
 
   useEffect(() => {
     // Ported footer mark animation scroll trigger
@@ -77,10 +98,14 @@ const Footer = () => {
           <Link to="/contact">{t('footer.contact')}</Link>
         </div>
         <div className="foot-col">
-          <h5>{t('home.cities.bangalore', 'Bangalore HQ')}</h5>
-          <address>{t('footer.address_val', 'No. 5M-645, Banaswadi Village,\nOMBR Layout, Bangalore 560043, India')}</address>
-          <a href={`tel:${t('contact_info.tel_href')}`} style={{ marginTop: '10px' }}>{t('contact_info.tel_label')}</a>
-          <a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a>
+          <h5>{regionContact?.office_name || t('home.cities.bangalore', 'Bangalore HQ')}</h5>
+          <address style={{ whiteSpace: 'pre-wrap' }}>{regionContact?.address || t('footer.address_val', 'No. 5M-645, Banaswadi Village,\nOMBR Layout, Bangalore 560043, India')}</address>
+          <a href={`tel:${(regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\\d]/g, '')}`} style={{ marginTop: '10px' }}>
+            {regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_label')}
+          </a>
+          <a href={`mailto:${regionContact?.email || t('contact_info.email')}`}>
+            {regionContact?.email || t('contact_info.email')}
+          </a>
         </div>
       </div>
       <div className="foot-mark" aria-hidden="true">MINDSTEC<i>.</i></div>

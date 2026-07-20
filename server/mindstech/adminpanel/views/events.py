@@ -23,7 +23,7 @@ class EventNewsListCreateView(APIView):
         return [IsAuthenticated(), IsAdminUser()]
 
     def get(self, request):
-        qs = EventNews.objects.filter(is_active=True)
+        qs = EventNews.objects.all()
         item_type = request.query_params.get('type')
         if item_type in ('event', 'news'):
             qs = qs.filter(type=item_type)
@@ -86,7 +86,6 @@ class PublicUpcomingEventsView(APIView):
         now = timezone.now()
         events = EventNews.objects.filter(
             type='event',
-            is_active=True,
             event_date__gte=now,
         ).order_by('event_date')
         serializer = EventNewsSerializer(events, many=True, context={'request': request})
@@ -100,7 +99,6 @@ class PublicNewsView(APIView):
     def get(self, request):
         news = EventNews.objects.filter(
             type='news',
-            is_active=True,
         ).order_by('-created_at')
         serializer = EventNewsSerializer(news, many=True, context={'request': request})
         return Response(serializer.data, status=status.HTTP_200_OK)

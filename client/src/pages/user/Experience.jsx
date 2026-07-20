@@ -4,6 +4,8 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
+import { useRegion } from '../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../api/regionApi.js';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -13,6 +15,26 @@ const Experience = () => {
   const containerRef = useRef(null);
   const videoRef = useRef(null);
   const [coverHidden, setCoverHidden] = useState(false);
+  
+  const { regionSlug } = useRegion();
+  const [regionContact, setRegionContact] = useState(null);
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchRegionContact = async () => {
+      if (!regionSlug) return;
+      try {
+        const res = await getPublicRegionData(regionSlug);
+        if (!cancelled) {
+          setRegionContact(Array.isArray(res.data.contact_info) ? res.data.contact_info[0] : (res.data.contact_info || null));
+        }
+      } catch (err) {
+        if (!cancelled) setRegionContact(null);
+      }
+    };
+    fetchRegionContact();
+    return () => { cancelled = true; };
+  }, [regionSlug]);
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -324,15 +346,17 @@ const Experience = () => {
           <div className="vrow reveal">
             <span className="num">01</span>
             <div>
-              <h4>{t('experience.visit.arr.0.title', 'Where')}</h4>
-              <p>{t('experience.visit.arr.0.desc', 'No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India')}</p>
+              <h4>{regionContact?.office_name || t('experience.visit.arr.0.title', 'Where')}</h4>
+              <p style={{ whiteSpace: 'pre-wrap' }}>{regionContact?.address || t('experience.visit.arr.0.desc', 'No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India')}</p>
             </div>
           </div>
           <div className="vrow reveal">
             <span className="num">02</span>
             <div>
               <h4>{t('experience.visit.arr.1.title', 'Call ahead')}</h4>
-              <a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a>
+              <a href={`tel:${(regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\\d]/g, '')}`}>
+                {regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_label')}
+              </a>
               <p className="sub-note">{t('experience.visit.arr.1.desc', 'Mon–Fri, business hours IST')}</p>
             </div>
           </div>
@@ -340,7 +364,9 @@ const Experience = () => {
             <span className="num">03</span>
             <div>
               <h4>{t('experience.visit.arr.2.title', 'Write to us')}</h4>
-              <a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a>
+              <a href={`mailto:${regionContact?.email || t('contact_info.email')}`}>
+                {regionContact?.email || t('contact_info.email')}
+              </a>
               <p className="sub-note">{t('experience.visit.arr.2.desc', 'Tell us which zones you want live')}</p>
             </div>
           </div>
@@ -377,8 +403,18 @@ const Experience = () => {
               <Button to="/solutions" className="btn"><span>{t('experience.cta.solutions', 'See all solutions')}</span></Button>
             </div>
             <div className="cta-contacts">
-              <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
-              <div className="c-item"><span>{t('contact_info.partner_label')}</span><a href={`mailto:${t('contact_info.partner_email')}`}>{t('contact_info.partner_email')}</a></div>
+              <div className="c-item">
+                <span>{t('contact_info.label')}</span>
+                <a href={`tel:${(regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\\d]/g, '')}`}>
+                  {regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_label')}
+                </a>
+              </div>
+              <div className="c-item">
+                <span>{t('contact_info.partner_label')}</span>
+                <a href={`mailto:${regionContact?.email || t('contact_info.partner_email')}`}>
+                  {regionContact?.email || t('contact_info.partner_email')}
+                </a>
+              </div>
             </div>
           </div>
         </div>

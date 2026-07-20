@@ -67,9 +67,9 @@ const About = () => {
   }, [regionSlug]);
 
   const contact = translatedContact || contactInfo;
-  const telHref = (contact?.phone_display || contact?.phone || FALLBACK_CONTACT.phone || '').replace(/[^+\d]/g, '');
-  const telLabel = contact?.phone_display || contact?.phone || FALLBACK_CONTACT.phone_display;
-  const email = contact?.email || FALLBACK_CONTACT.email;
+  const telHref = (contact?.phone_display || contact?.phone || '').replace(/[^+\d]/g, '');
+  const telLabel = contact?.phone_display || contact?.phone || '';
+  const email = contact?.email || '';
 
   useEffect(() => {
     const ctx = gsap.context(() => {

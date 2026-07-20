@@ -17,7 +17,7 @@ from .events import (
 from .region import (
     RegionListCreateView, RegionDetailView,
     TeamMemberListCreateView, TeamMemberDetailView,
-    RegionContactView, PublicRegionDataView, PublicRegionSolutionBrandsView,
+    RegionContactView, PublicRegionDataView, PublicRegionSolutionBrandsView, PublicRegionListView,
     RegionBrandListCreateView, RegionBrandDetailView,
     TestimonialListCreateView, TestimonialDetailView,
     RegionContactListCreateView, RegionContactDetailView,
@@ -50,6 +50,7 @@ __all__ = [
     "TeamMemberDetailView",
     "RegionContactView",
     "PublicRegionDataView",
+    "PublicRegionListView",
     "PublicRegionSolutionBrandsView",
     "RegionContactListCreateView",
     "RegionContactDetailView",

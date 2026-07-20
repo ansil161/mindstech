@@ -4,7 +4,6 @@ import useChat from '../../hooks/useChat';
 import MessageBubble from './MessageBubble';
 import TypingIndicator from './TypingIndicator';
 import SupportAvatar from './SupportAvatar';
-import { scrollToBottom } from '../../utils/scroll';
 
 const welcomeTopics = [
   'Products',
@@ -23,10 +22,46 @@ const ChatMessages = () => {
   // Exclude the synthetic welcome seed message so the welcome screen shows
   const chatMessages = messages.filter((m) => m.id !== 'msg-welcome');
 
-  useEffect(() => {
-    if (chatMessages.length > 0 || isTyping) {
-      scrollToBottom(scrollContainerRef.current, true);
+  // Keep track of whether the user is near the bottom
+  const isNearBottomRef = useRef(true);
+  const contentRef = useRef(null);
+
+  const checkScrollPosition = () => {
+    if (!scrollContainerRef.current) return;
+    const { scrollTop, scrollHeight, clientHeight } = scrollContainerRef.current;
+    // Consider "near bottom" if within 100px of the bottom
+    isNearBottomRef.current = scrollHeight - scrollTop - clientHeight < 100;
+  };
+
+  const scrollToBottomIfNear = () => {
+    if (!scrollContainerRef.current) return;
+    if (isNearBottomRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: scrollContainerRef.current.scrollHeight,
+        behavior: 'smooth'
+      });
     }
+  };
+
+  useEffect(() => {
+    const container = scrollContainerRef.current;
+    if (container) {
+      container.addEventListener('scroll', checkScrollPosition);
+      return () => container.removeEventListener('scroll', checkScrollPosition);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!contentRef.current) return;
+    const observer = new ResizeObserver(() => {
+      scrollToBottomIfNear();
+    });
+    observer.observe(contentRef.current);
+    
+    // Also trigger on new messages specifically
+    scrollToBottomIfNear();
+    
+    return () => observer.disconnect();
   }, [chatMessages.length, isTyping]);
 
   return (
@@ -68,7 +103,7 @@ const ChatMessages = () => {
         </motion.div>
       ) : (
         /* Chat message list */
-        <div className="space-y-5 pr-1">
+        <div ref={contentRef} className="space-y-5 pr-1">
           {chatMessages.map((message) => (
             <MessageBubble key={message.id} message={message} />
           ))}

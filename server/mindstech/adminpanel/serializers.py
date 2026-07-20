@@ -169,14 +169,20 @@ class GalleryItemSerializer(serializers.ModelSerializer):
 class RegionSerializer(serializers.ModelSerializer):
     team_count = serializers.SerializerMethodField()
     has_contact = serializers.SerializerMethodField()
+    sub_regions = serializers.SerializerMethodField()
 
     class Meta:
         model = Region
         fields = [
             'id', 'name', 'slug', 'is_active', 'display_order',
-            'enabled_pages', 'created_at', 'team_count', 'has_contact',
+            'enabled_pages', 'created_at', 'team_count', 'has_contact', 'parent', 'sub_regions'
         ]
-        read_only_fields = ['id', 'created_at', 'team_count', 'has_contact']
+        read_only_fields = ['id', 'created_at', 'team_count', 'has_contact', 'sub_regions']
+
+    def get_sub_regions(self, obj):
+        if obj.sub_regions.exists():
+            return RegionSerializer(obj.sub_regions.all(), many=True).data
+        return []
 
     def get_team_count(self, obj):
         return obj.team_members.filter(is_active=True).count()

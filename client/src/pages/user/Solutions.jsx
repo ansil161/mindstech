@@ -53,9 +53,9 @@ const Solutions = () => {
     return () => { cancelled = true; };
   }, [regionSlug]);
 
-  const telHref = (regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\d]/g, '');
-  const telLabel = regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_label');
-  const email = regionContact?.email || t('contact_info.email');
+  const telHref = (regionContact?.phone_display || regionContact?.phone || '').replace(/[^+\d]/g, '');
+  const telLabel = regionContact?.phone_display || regionContact?.phone || '';
+  const email = regionContact?.email || '';
 
   useEffect(() => {
     if (solutions.length === 0) return;

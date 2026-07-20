@@ -46,6 +46,49 @@ class Settings(BaseSettings):
     GEMINI_API_KEY: str | None = None
     GROQ_API_KEY: str | None = None
 
+    OPENAI_API_KEYS: List[str] = []
+    GEMINI_API_KEYS: List[str] = []
+    GROQ_API_KEYS: List[str] = []
+    
+    API_KEY_COOLDOWN_SECONDS: int = 60
+    
+    # Query Router Settings
+    QUERY_ALIAS_MAPPING: dict = {
+        "AV": "Audio Visual",
+        "UC": "Unified Communications"
+    }
+    
+    # A/B Testing Flag for Generation Mode
+    USE_QUERY_REPLACEMENT: bool = False
+
+    @field_validator("OPENAI_API_KEYS", "GEMINI_API_KEYS", "GROQ_API_KEYS", mode="before")
+    @classmethod
+    def parse_api_keys(cls, v: Union[str, List[str], None]) -> List[str]:
+        if not v:
+            return []
+        if isinstance(v, str):
+            if v.startswith("["):
+                import json
+                try:
+                    return json.loads(v)
+                except:
+                    pass
+            return [i.strip() for i in v.split(",") if i.strip()]
+        return v
+
+    @model_validator(mode="after")
+    def assemble_api_keys_list(self) -> "Settings":
+        for provider in ["OPENAI", "GEMINI", "GROQ"]:
+            single = getattr(self, f"{provider}_API_KEY")
+            plural = getattr(self, f"{provider}_API_KEYS")
+            if single and single not in plural:
+                plural.insert(0, single)
+        return self
+
+    # RAG Validation Messages
+    SCOPE_REJECTION_MESSAGE: str = "I'm here to answer questions about our company, products, services, brands, solutions, documentation, and other company-related information. Your question appears to be outside the scope of my knowledge base."
+    LOW_SIMILARITY_MESSAGE: str = "I couldn't find information related to your question in our current knowledge base."
+
     # Embedding Settings
     # Supports SentenceTransformers local models or API provider models (e.g. OpenAI)
     EMBEDDING_PROVIDER: str = "sentence_transformer"  # sentence_transformer or openai

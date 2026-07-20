@@ -17,11 +17,7 @@ class CollectionCentreListCreateView(APIView):
         return [IsAuthenticated(), IsAdminUser()]
 
     def get(self, request):
-        centres = (
-            CollectionCentre.objects.all()
-            if request.user.is_authenticated and request.user.is_staff
-            else CollectionCentre.objects.filter(is_active=True)
-        )
+        centres = CollectionCentre.objects.all()
         return Response(CollectionCentreSerializer(centres, many=True).data, status=status.HTTP_200_OK)
 
     def post(self, request):

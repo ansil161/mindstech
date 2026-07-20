@@ -192,6 +192,7 @@ export default function AdminDashboard() {
   const [showAddRegionForm, setShowAddRegionForm] = useState(false);
   const [newRegionName, setNewRegionName] = useState('');
   const [newRegionSlug, setNewRegionSlug] = useState('');
+  const [newRegionParent, setNewRegionParent] = useState('');
   const [submittingRegion, setSubmittingRegion] = useState(false);
   const [teamMembers, setTeamMembers] = useState([]);
   const [loadingTeam, setLoadingTeam] = useState(false);
@@ -424,10 +425,13 @@ export default function AdminDashboard() {
     const slug = newRegionSlug.trim() || slugifyRegion(newRegionName);
     setSubmittingRegion(true);
     try {
-      const res = await createRegion({ name: newRegionName.trim(), slug, display_order: regions.length });
+      const payload = { name: newRegionName.trim(), slug, display_order: regions.length };
+      if (newRegionParent) payload.parent = newRegionParent;
+      const res = await createRegion(payload);
       setRegions(prev => [...prev, res.data]);
       setNewRegionName('');
       setNewRegionSlug('');
+      setNewRegionParent('');
       setShowAddRegionForm(false);
       notify('Region created successfully.');
     } catch (err) {
@@ -1771,6 +1775,19 @@ export default function AdminDashboard() {
                           style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
                           required
                         />
+                      </div>
+                      <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+                        <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Parent Region (Optional)</label>
+                        <select
+                          value={newRegionParent}
+                          onChange={(e) => setNewRegionParent(e.target.value)}
+                          style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+                        >
+                          <option value="">None (Top-Level)</option>
+                          {regions.map(r => (
+                            <option key={r.id} value={r.id}>{r.name}</option>
+                          ))}
+                        </select>
                       </div>
                     </div>
                     <button type="submit" disabled={submittingRegion} className="admin-btn" style={{ width: 'fit-content', marginTop: 0, padding: '10px 24px' }}>
