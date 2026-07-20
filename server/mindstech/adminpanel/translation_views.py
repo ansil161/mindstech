@@ -1,6 +1,7 @@
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
+from rest_framework.throttling import ScopedRateThrottle
 from rest_framework import status
 from adminpanel.services.translation_service import translation_service
 
@@ -15,6 +16,8 @@ class TranslateDynamicContentView(APIView):
     }
     """
     permission_classes = [AllowAny] # Since this is used by frontend for unauthenticated pages too
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'translation'
 
     def post(self, request, *args, **kwargs):
         data = request.data.get('data')

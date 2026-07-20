@@ -38,7 +38,7 @@
       "line2": "Purpose.",
       "line3": "Progress.",
       "label": "About Us",
-      "brief": "Mindstec Distribution is a leading procurement and distribution specialist for high-end audio-visual solutions across the Middle East, Africa and Asia â€” bringing cutting-edge AV technology to these regions at accessible prices.",
+      "brief": "Mindstec Distribution is a leading procurement and distribution specialist for high-end audio-visual solutions across the Middle East, Africa and Asia — bringing cutting-edge AV technology to these regions at accessible prices.",
       "meet_team_btn": "Meet the team",
       "caption": "High-end AV, delivered"
     },
@@ -213,7 +213,7 @@
       "explore_btn": "Explore solutions",
       "fact1_b": "Since 2008",
       "fact1_s": "AV distribution",
-      "fact2_b": "India Â· Africa Â· Poland",
+      "fact2_b": "India · Africa · Poland",
       "fact2_s": "Three regional operations",
       "fact3_b": "50+ brands",
       "fact3_s": "Manufacturer portfolio",
@@ -234,7 +234,7 @@
     "stats": {
       "years_desc": "Years distributing professional AV technology",
       "brands_desc": "Manufacturer brands in the portfolio",
-      "ops_desc": "Regional operations â€” India, Africa, Poland",
+      "ops_desc": "Regional operations — India, Africa, Poland",
       "installs_desc": "Installations supplied and supported to date"
     },
     "edge": {
@@ -273,11 +273,11 @@
       "label": "Regions",
       "title_main": "Where we",
       "title_em": "operate",
-      "lede": "Stock, currency, warranty and people â€” all handled in-region.",
+      "lede": "Stock, currency, warranty and people — all handled in-region.",
       "contacts": {
-        "india": "India â€” SAARC Â· Bangalore HQ",
-        "africa": "Africa â€” Commercial hubs Â· Nairobi",
-        "poland": "Poland â€” Central &amp; Eastern Europe Â· Warsaw"
+        "india": "India — SAARC · Bangalore HQ",
+        "africa": "Africa — Commercial hubs · Nairobi",
+        "poland": "Poland — Central & Eastern Europe · Warsaw"
       }
     },
     "work": {
@@ -384,7 +384,7 @@
       "b25": "AV accessories"
     },
     "why": {
-      "label": "For manufacturers &amp; dealers",
+      "label": "For manufacturers & dealers",
       "title_main": "Why brands choose",
       "title_em": "Mindstec",
       "p1_title": "One price list, every category",
@@ -422,8 +422,8 @@
     },
     "ov": {
       "label": "Overview",
-      "lede_main": "Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of it",
-      "lede_em": "gets a second life.",
+      "lede_main": "Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of them",
+      "lede_em": "get a second life.",
       "p1": "E-waste is the informal name for electronic products nearing the end of their useful life — computers, televisions, displays, copiers, phones, audio equipment and batteries. Many of their components contain hazardous materials that pose a real threat to human health and the environment when disposed of improperly.",
       "p2": "Most of these products can be reused, refurbished or recycled in an environmentally sound manner. Under India's E-Waste (Management & Handling) Rules, Mindstec runs a compliant take-back programme so the hardware we distribute never ends up where it shouldn't."
     },
@@ -720,7 +720,7 @@
       },
       "conferencing": {
         "name": "Conferencing & Collaboration",
-        "title": "Conferencing &amp; <em>Collaboration</em>",
+        "title": "Conferencing & <em>Collaboration</em>",
         "intro": "Hybrid meeting rooms that sound as good as they look — interactive displays, cameras, ceiling audio and the AV-over-IP backbone connecting them.",
         "fact": "Workplace · Education · Hybrid",
         "capsSide": "Rooms people actually want to book — from huddle spaces to boardrooms and lecture theatres.",
@@ -770,7 +770,7 @@
       },
       "broadcast": {
         "name": "Broadcast & Production",
-        "title": "Broadcast &amp; <em>Production</em>",
+        "title": "Broadcast & <em>Production</em>",
         "intro": "Cameras, switching, live graphics and streaming infrastructure for broadcasters, studios and creators — from single-operator setups to full facilities.",
         "fact": "Studios · Streaming · Creators",
         "capsSide": "From a one-person streaming desk to a national newsroom — the same signal discipline applies.",
@@ -795,7 +795,7 @@
       },
       "live-events": {
         "name": "Live Events & Immersive",
-        "title": "Live Events &amp; <em>Immersive</em>",
+        "title": "Live Events & <em>Immersive</em>",
         "intro": "Touring-grade LED, projection mapping and spatial audio for concerts, exhibitions and experiential spaces — built to survive the road.",
         "fact": "Concerts · Exhibitions · XR",
         "capsSide": "Rigged, run and struck in hours — event technology has no second chances, so we spec accordingly.",

@@ -197,6 +197,14 @@ class RegionContact(models.Model):
     map_embed_url = models.URLField(max_length=500, blank=True, default='')
     map_link = models.URLField(max_length=500, blank=True, default='')
 
+    class Meta:
+        verbose_name = 'Region Contact'
+        verbose_name_plural = 'Region Contacts'
+
+    def __str__(self):
+        return f"Contact — {self.region.name}"
+
+
 
 class RegionBrand(models.Model):
     """A brand/partner associated with a specific region."""
@@ -215,13 +223,7 @@ class RegionBrand(models.Model):
     def __str__(self):
         return f"{self.name} ({self.region.name})"
 
-    class Meta:
-        verbose_name = 'Region Contact'
-        verbose_name_plural = 'Region Contacts'
-
-    def __str__(self):
-        return f"Contact — {self.region.name}"
-
+  
 
 class ClientTestimonial(models.Model):
     """A client testimonial associated with a specific region."""
@@ -258,9 +260,12 @@ class BaseModel(models.Model):
     def save(self, *args, **kwargs):
         """
         Increment the document version on each content modification to control re-indexing.
+        Only increment version when content fields are updated, not on status updates.
         """
+        update_fields = kwargs.get('update_fields')
         if self.pk:
-            self.version += 1
+            if update_fields is None or any(f in update_fields for f in ['file', 'extracted_text', 'title', 'category']):
+                self.version += 1
         super().save(*args, **kwargs)
 
 
@@ -290,17 +295,25 @@ class Document(BaseModel):
 
     def delete(self, *args, **kwargs):
         from .tasks.ai_tasks import delete_document_task
+        from django.db import transaction
         
-        # Trigger Celery task to delete from Qdrant (using ID prefix)
-        delete_document_task.delay(f"document_{self.id}", self.category)
+        doc_id = f"document_{self.id}"
+        category = self.category
+        file_path = self.file.path if (self.file and hasattr(self.file, 'path')) else None
+
+        # Execute DB deletion
+        res = super().delete(*args, **kwargs)
+
+        # Trigger Celery task to delete from Qdrant only after DB transaction is successfully committed
+        transaction.on_commit(lambda: delete_document_task.delay(doc_id, category))
         
-        # Delete the file from local storage
-        if self.file:
+        # Delete file from local storage after DB deletion succeeds
+        if file_path:
             import os
-            if os.path.isfile(self.file.path):
+            if os.path.isfile(file_path):
                 try:
-                    os.remove(self.file.path)
+                    os.remove(file_path)
                 except OSError:
                     pass
-                    
-        super().delete(*args, **kwargs)
+
+        return res

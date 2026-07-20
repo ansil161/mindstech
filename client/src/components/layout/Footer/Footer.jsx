@@ -9,8 +9,9 @@ import { getPublicRegionData } from '../../../api/regionApi.js';
 const Footer = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  const { regionSlug } = useRegion();
+  const { regionSlug, isPageEnabled } = useRegion();
   const [regionContact, setRegionContact] = useState(null);
+  const showEwaste = isPageEnabled('ewaste') === true;
 
   useEffect(() => {
     let cancelled = false;
@@ -92,21 +93,27 @@ const Footer = () => {
           <Link to="/about">{t('navbar.about_us')}</Link>
           <Link to="/partners">{t('navbar.partners')}</Link>
           <Link to="/experience">{t('footer.experience', 'Experience Centre')}</Link>
-          <Link to="/ewaste">{t('footer.ewaste', 'E-Waste Management')}</Link>
+          {showEwaste && <Link to="/ewaste">{t('footer.ewaste', 'E-Waste Management')}</Link>}
           <Link to="/#work" onClick={handleInstallationsClick}>{t('navbar.installations')}</Link>
           <Link to="/blogs">{t('navbar.blogs')}</Link>
           <Link to="/contact">{t('footer.contact')}</Link>
         </div>
-        <div className="foot-col">
-          <h5>{regionContact?.office_name || t('home.cities.bangalore', 'Bangalore HQ')}</h5>
-          <address style={{ whiteSpace: 'pre-wrap' }}>{regionContact?.address || t('footer.address_val', 'No. 5M-645, Banaswadi Village,\nOMBR Layout, Bangalore 560043, India')}</address>
-          <a href={`tel:${(regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\\d]/g, '')}`} style={{ marginTop: '10px' }}>
-            {regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_label')}
-          </a>
-          <a href={`mailto:${regionContact?.email || t('contact_info.email')}`}>
-            {regionContact?.email || t('contact_info.email')}
-          </a>
-        </div>
+        {regionContact && (regionContact.office_name || regionContact.address || regionContact.phone || regionContact.phone_display || regionContact.email) && (
+          <div className="foot-col">
+            {regionContact.office_name && <h5>{regionContact.office_name}</h5>}
+            {regionContact.address && <address style={{ whiteSpace: 'pre-wrap' }}>{regionContact.address}</address>}
+            {(regionContact.phone_display || regionContact.phone) && (
+              <a href={`tel:${(regionContact.phone_display || regionContact.phone).replace(/[^+\d]/g, '')}`} style={{ marginTop: '10px' }}>
+                {regionContact.phone_display || regionContact.phone}
+              </a>
+            )}
+            {regionContact.email && (
+              <a href={`mailto:${regionContact.email}`}>
+                {regionContact.email}
+              </a>
+            )}
+          </div>
+        )}
       </div>
       <div className="foot-mark" aria-hidden="true">MINDSTEC<i>.</i></div>
       <div className="foot-bottom">

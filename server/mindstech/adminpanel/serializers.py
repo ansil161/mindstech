@@ -268,7 +268,7 @@ class RegionDetailSerializer(serializers.ModelSerializer):
         ]
 
     def get_team_members(self, obj):
-        members = obj.team_members.filter(is_active=True).order_by('display_order', 'created_at')
+        members = obj.team_members.all().order_by('display_order', 'created_at')
         return TeamMemberSerializer(members, many=True, context=self.context).data
 
     def get_contact_info(self, obj):
@@ -276,11 +276,11 @@ class RegionDetailSerializer(serializers.ModelSerializer):
         return RegionContactSerializer(contacts, many=True, context=self.context).data
 
     def get_brands(self, obj):
-        brands = obj.brands.filter(is_active=True).order_by('display_order', 'created_at')
+        brands = obj.brands.all().order_by('display_order', 'created_at')
         return RegionBrandSerializer(brands, many=True, context=self.context).data
 
     def get_testimonials(self, obj):
-        items = obj.testimonials.filter(is_active=True).order_by('display_order', 'created_at')
+        items = obj.testimonials.all().order_by('display_order', 'created_at')
         return TestimonialSerializer(items, many=True, context=self.context).data
 
 

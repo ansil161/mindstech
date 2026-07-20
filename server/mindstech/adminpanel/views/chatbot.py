@@ -2,6 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import AllowAny
+from rest_framework.throttling import ScopedRateThrottle
 
 from ..services.ai_client import AIClient, AIClientError
 
@@ -11,6 +12,8 @@ class ChatBotView(APIView):
     Public chatbot query endpoint that retrieves context and invokes LLM generation.
     """
     permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'chatbot'
 
     def post(self, request):
         message = request.data.get("message")
@@ -41,6 +44,8 @@ class ChatHistoryView(APIView):
     Public endpoint to retrieve the session's conversational logs.
     """
     permission_classes = [AllowAny]
+    throttle_classes = [ScopedRateThrottle]
+    throttle_scope = 'chatbot'
 
     def get(self, request, conversation_id):
         ai_client = AIClient()

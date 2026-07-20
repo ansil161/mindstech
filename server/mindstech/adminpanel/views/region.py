@@ -330,7 +330,7 @@ class PublicRegionListView(APIView):
     permission_classes = [AllowAny]
 
     def get(self, request):
-        regions = Region.objects.filter(parent__isnull=True).order_by('display_order', 'name')
+        regions = Region.objects.filter(parent__isnull=True).prefetch_related('sub_regions').order_by('display_order', 'name')
         serializer = RegionSerializer(regions, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -344,7 +344,7 @@ class PublicRegionDataView(APIView):
 
     def get(self, request, slug):
         try:
-            region = Region.objects.get(slug=slug)
+            region = Region.objects.prefetch_related('team_members', 'contacts', 'brands', 'testimonials').get(slug=slug)
         except Region.DoesNotExist:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
         serializer = RegionDetailSerializer(region, context={'request': request})

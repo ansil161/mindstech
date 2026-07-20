@@ -25,11 +25,25 @@ export const RegionProvider = ({ children }) => {
   }, []);
 
   const setRegion = useCallback((r) => {
-    setRegionState(r);
-    localStorage.setItem('mindstec_region', r);
+    const name = typeof r === 'object' ? r.name : r;
+    setRegionState(name);
+    localStorage.setItem('mindstec_region', name);
   }, []);
 
-  const regionSlug = region.toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-');
+  // Helper to find region object by name from allRegions tree
+  const findRegionInTree = (regions, targetName) => {
+    for (const r of regions) {
+      if (r.name === targetName || r.slug === targetName) return r;
+      if (r.sub_regions && r.sub_regions.length > 0) {
+        const found = findRegionInTree(r.sub_regions, targetName);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  const currentRegionObj = findRegionInTree(allRegions, region);
+  const regionSlug = currentRegionObj?.slug || region.toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-');
 
   // Fetch region data (including enabled_pages) whenever the slug changes
   useEffect(() => {

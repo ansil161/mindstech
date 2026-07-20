@@ -74,41 +74,52 @@ const About = () => {
   useEffect(() => {
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduceMotion) return;
+      if (reduceMotion) {
+        gsap.set('.reveal', { opacity: 1, y: 0 });
+        gsap.set('.reveal-img', { clipPath: 'inset(0 0 0% 0)' });
+        return;
+      }
 
-      // Parallax on the Hero visual background image
-      gsap.to('#aheroImg', {
-        yPercent: 12,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.about-hero-frame',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        }
+      // Hero Intro Timeline Animation
+      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      intro.fromTo('#aheroH .w', 
+          { yPercent: 115, rotate: 2 }, 
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
+        .fromTo('#aheroSide', 
+          { opacity: 0, y: 30 }, 
+          { opacity: 1, y: 0, duration: 1.0 }, 
+          '-=.8')
+        .fromTo('.ahero-meta', 
+          { opacity: 0, y: 20 }, 
+          { opacity: 1, y: 0, duration: 0.8 }, 
+          '-=.6');
+
+      // Scroll reveals for sections
+      gsap.utils.toArray('.reveal').forEach((el) => {
+        gsap.to(el, {
+          opacity: 1,
+          y: 0,
+          duration: 1.2,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 88%',
+            once: true,
+          }
+        });
       });
 
-      // Layered scroll parallax for the two story cards
-      gsap.to('.about-card-back', {
-        yPercent: -8,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.story',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        }
-      });
-
-      gsap.to('.about-card-front', {
-        yPercent: 8,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: '.story',
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: true,
-        }
+      gsap.utils.toArray('.reveal-img').forEach((el) => {
+        gsap.to(el, {
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 1.2,
+          ease: 'power4.inOut',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 85%',
+            once: true,
+          }
+        });
       });
     }, containerRef);
 
@@ -145,64 +156,15 @@ const About = () => {
         ))}
       </div>
 
-      {/* HERO VISUAL */}
-      <div className="about-hero-frame relative mx-[var(--pad)] mt-12 overflow-hidden rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-3 shadow-[0_24px_50px_rgba(0,0,0,0.55)] reveal-img">
-        <div className="relative aspect-[16/7] min-h-[260px] overflow-hidden rounded-xl">
-          <img 
-            id="aheroImg" 
-            src="/assets/img/technology_hub.png" 
-            alt="A curved wall of bright video displays inside a dark showroom" 
-            fetchPriority="high" 
-            className="absolute inset-0 w-full h-[120%] object-cover brightness-[0.75] saturate-[0.95]"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
-          <span className="absolute left-6 bottom-5 z-10 text-[10.5px] font-semibold tracking-[0.14em] uppercase text-white/90 bg-black/60 backdrop-blur-md py-1.5 px-4 rounded-full border border-white/10">
-            {t('about.hero.caption')}
-          </span>
-        </div>
-      </div>
-
       {/* STORY */}
-      <section className="story" aria-label="Our story">
-        <div>
-          <div className="story-text" id="storyText">
-            <p>{renderWords(t('about.story.p1'))}</p>
-            <p>{renderWords(t('about.story.p2'))}</p>
-          </div>
-          <div className="story-more reveal">
-            <p>{t('about.story.more_p1')}</p>
-            <p>{t('about.story.more_p2')}</p>
-          </div>
+      <section className="story story--single flex flex-col max-w-4xl mx-auto py-16 px-[var(--pad)]" aria-label="Our story">
+        <div className="story-text" id="storyText">
+          <p>{renderWords(t('about.story.p1'))}</p>
+          <p>{renderWords(t('about.story.p2'))}</p>
         </div>
-        <div className="about-story-visuals sticky top-24 flex flex-col gap-10">
-          <figure className="about-card-back group relative w-[90%] overflow-hidden rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-3 shadow-[0_24px_48px_rgba(0,0,0,0.45)] reveal-img transition-all duration-500 hover:border-red-500/20 hover:shadow-[0_32px_64px_rgba(0,0,0,0.6)]">
-            <div className="relative aspect-[4/5] overflow-hidden rounded-xl">
-              <img 
-                src="/assets/uploads/2025/03/about-img-2.jpg" 
-                alt="Extreme close-up of an LED display panel glowing magenta and red" 
-                loading="lazy" 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-              <figcaption className="absolute left-5 bottom-4 z-10 text-[10px] font-semibold tracking-[0.12em] uppercase text-white/95 bg-black/70 backdrop-blur-md py-1.5 px-3.5 rounded-md border border-white/10">
-                {t('about.story.cap1')}
-              </figcaption>
-            </div>
-          </figure>
-          <figure className="about-card-front group relative w-[80%] self-end -mt-24 z-10 overflow-hidden rounded-2xl border border-white/[0.08] bg-[var(--panel)] p-3 shadow-[0_30px_60px_rgba(0,0,0,0.65)] reveal-img transition-all duration-500 hover:border-red-500/25 hover:shadow-[0_40px_80px_rgba(0,0,0,0.8)]">
-            <div className="relative aspect-[16/10] overflow-hidden rounded-xl">
-              <img 
-                src="/assets/uploads/2025/03/cta-bg.jpg" 
-                alt="Macro view of an LED video wall surface in blue and pink light" 
-                loading="lazy" 
-                className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-[1.04]"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent"></div>
-              <figcaption className="absolute left-5 bottom-4 z-10 text-[10px] font-semibold tracking-[0.12em] uppercase text-white/95 bg-black/70 backdrop-blur-md py-1.5 px-3.5 rounded-md border border-white/10">
-                {t('about.story.cap2')}
-              </figcaption>
-            </div>
-          </figure>
+        <div className="story-more reveal mt-10 pt-8 border-t border-white/10">
+          <p>{t('about.story.more_p1')}</p>
+          <p className="mt-4">{t('about.story.more_p2')}</p>
         </div>
       </section>
 
