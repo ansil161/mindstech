@@ -30,11 +30,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t", "yes")
 
-ALLOWED_HOSTS = [
-    host.strip()
-    for host in os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1,.onrender.com").split(",")
-    if host.strip()
-]
+raw_hosts = os.getenv("ALLOWED_HOSTS", "")
+env_hosts = [h.strip() for h in raw_hosts.split(",") if h.strip()]
+ALLOWED_HOSTS = list(set(["localhost", "127.0.0.1", "mindstech.onrender.com", ".onrender.com", "*"] if os.getenv("ALLOW_ALL_HOSTS") else ["localhost", "127.0.0.1", "mindstech.onrender.com", ".onrender.com"] + env_hosts))
+
 
 
 # Application definition
