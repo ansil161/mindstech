@@ -74,6 +74,16 @@ class SolutionSerializer(serializers.ModelSerializer):
         fields = ['id', 'title', 'desc', 'slug', 'image', 'created_at']
         read_only_fields = ['id', 'created_at']
 
+    def to_internal_value(self, data):
+        # Support both 'desc' and 'description' keys from frontend callers
+        if hasattr(data, 'copy'):
+            data = data.copy()
+        else:
+            data = dict(data)
+        if 'description' in data and not data.get('desc'):
+            data['desc'] = data['description']
+        return super().to_internal_value(data)
+
     def validate_title(self, value):
         return strip_tags(value).strip()
 
