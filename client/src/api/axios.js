@@ -44,13 +44,19 @@ function getCookie(name) {
   return cookieValue;
 }
 
-// Request interceptor to manually attach the CSRF token on cross-origin requests
+// Request interceptor to manually attach CSRF token and Bearer token on requests
 apiClient.interceptors.request.use(
   (config) => {
     // Retrieve CSRF token from localStorage (set during login/refresh)
     const csrfToken = localStorage.getItem('csrf_token');
     if (csrfToken) {
       config.headers['X-CSRFToken'] = csrfToken;
+    }
+
+    // Attach Bearer token header as fallback for cross-domain browsers blocking 3rd party cookies
+    const accessToken = localStorage.getItem('access_token');
+    if (accessToken && !config.headers['Authorization']) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
 
     const currentLang = localStorage.getItem('i18nextLng') || 'en';
@@ -60,12 +66,18 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor to handle global error payloads and save csrf_token from responses
+// Interceptor to handle global error payloads and save tokens from responses
 apiClient.interceptors.response.use(
   (response) => {
-    // If the response contains a csrf_token, save it to localStorage
+    // Save tokens to localStorage as fallback for cross-origin setups
     if (response.data?.data?.csrf_token) {
       localStorage.setItem('csrf_token', response.data.data.csrf_token);
+    }
+    if (response.data?.data?.access_token) {
+      localStorage.setItem('access_token', response.data.data.access_token);
+    }
+    if (response.data?.data?.refresh_token) {
+      localStorage.setItem('refresh_token', response.data.data.refresh_token);
     }
     return response;
   },
@@ -97,8 +109,12 @@ apiClient.interceptors.response.use(
       isRefreshing = true;
 
       try {
-        // Call refresh endpoint - HttpOnly cookies will be sent automatically
-        await apiClient.post('/accounts/refresh/');
+        // Call refresh endpoint with fallback payload
+        const refreshToken = localStorage.getItem('refresh_token');
+        const refreshResponse = await apiClient.post('/accounts/refresh/', { refresh: refreshToken });
+        if (refreshResponse.data?.data?.access_token) {
+          localStorage.setItem('access_token', refreshResponse.data.data.access_token);
+        }
         isRefreshing = false;
         processQueue(null);
         return apiClient(originalRequest);
@@ -107,6 +123,8 @@ apiClient.interceptors.response.use(
         processQueue(refreshError);
         // Dispatch custom event to notify auth context to log out
         localStorage.removeItem('csrf_token');
+        localStorage.removeItem('access_token');
+        localStorage.removeItem('refresh_token');
         window.dispatchEvent(new CustomEvent('auth:unauthorized'));
         const fallbackError = {
           success: false,
