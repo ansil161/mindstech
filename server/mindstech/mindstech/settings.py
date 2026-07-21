@@ -176,7 +176,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # Django REST Framework Settings
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'accounts.authentication.HttpOnlyCookieJWTAuthentication',
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
@@ -208,17 +208,21 @@ SIMPLE_JWT = {
     'AUTH_TOKEN_CLASSES': ('rest_framework_simplejwt.tokens.AccessToken',),
     
     # Custom JWT Cookie Settings
-    'AUTH_COOKIE': 'access_token',
+    'AUTH_COOKIE': '@access_token',
     'AUTH_COOKIE_REFRESH': 'refresh_token',
     'AUTH_COOKIE_DOMAIN': None,
     'AUTH_COOKIE_SECURE': not DEBUG,  # Only send over HTTPS in production
-    'AUTH_COOKIE_HTTP_ONLY': True,    # Cannot be accessed via JS (XSS protection)
+    'AUTH_COOKIE_HTTP_ONLY': False,   # Must be false for JS to read the access token
     'AUTH_COOKIE_PATH': '/',
     'AUTH_COOKIE_SAMESITE': 'None' if not DEBUG else 'Lax',    # Allow cross-domain cookies in production
 }
 
 # CORS Configuration
+from corsheaders.defaults import default_headers
 CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_HEADERS = list(default_headers) + [
+    'authorization',
+]
 CORS_ALLOWED_ORIGINS = [
     "https://mindstech.vercel.app",
   
