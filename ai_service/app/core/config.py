@@ -45,6 +45,7 @@ class Settings(BaseSettings):
     OPENAI_API_KEY: str | None = None
     GEMINI_API_KEY: str | None = None
     GROQ_API_KEY: str | None = None
+    HUGGINGFACE_API_KEY: str | None = None
 
     OPENAI_API_KEYS: List[str] = []
     GEMINI_API_KEYS: List[str] = []
@@ -91,9 +92,9 @@ class Settings(BaseSettings):
 
 
     # Embedding Settings
-    # Supports SentenceTransformers local models or API provider models (e.g. OpenAI)
-    EMBEDDING_PROVIDER: str = "sentence_transformer"  # sentence_transformer or openai
-    EMBEDDING_MODEL: str = "all-MiniLM-L6-v2"
+    # Supports Hugging Face Inference API, OpenAI, or sentence_transformer
+    EMBEDDING_PROVIDER: str = "huggingface"  # huggingface, sentence_transformer, or openai
+    EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
     EMBEDDING_BATCH_SIZE: int = 32
     EMBEDDING_MAX_TOKENS: int = 512
 
