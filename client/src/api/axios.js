@@ -53,7 +53,7 @@ apiClient.interceptors.request.use(
     }
     
     // Attach the access token if it exists
-    const accessToken = getCookie('@access_token');
+    const accessToken = getCookie('access_token');
     if (accessToken) {
       config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
