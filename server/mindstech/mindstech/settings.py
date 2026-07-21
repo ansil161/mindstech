@@ -28,7 +28,7 @@ load_dotenv(BASE_DIR.parent / '.env')
 SECRET_KEY = os.getenv("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t", "yes")
+DEBUG = False
 
 raw_hosts = os.getenv("ALLOWED_HOSTS", "")
 env_hosts = [h.strip() for h in raw_hosts.split(",") if h.strip()]
