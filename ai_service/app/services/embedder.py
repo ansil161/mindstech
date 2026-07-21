@@ -5,8 +5,9 @@ from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
-# Lazy load OpenAI client if OpenAI is configured as embedding provider
+# Lazy load clients
 _openai_client = None
+_hf_client = None
 
 def _get_openai_client():
     global _openai_client
@@ -20,11 +21,23 @@ def _get_openai_client():
             raise e
     return _openai_client
 
+def _get_hf_client():
+    global _hf_client
+    if _hf_client is None:
+        try:
+            from huggingface_hub import InferenceClient
+            logger.info("Initializing Hugging Face InferenceClient...")
+            _hf_client = InferenceClient(api_key=settings.HUGGINGFACE_API_KEY)
+        except Exception as e:
+            logger.exception("Failed to initialize Hugging Face InferenceClient: %s", str(e))
+            raise e
+    return _hf_client
+
 
 class Embedder:
     """
-    Embedding generation service supporting Hugging Face Inference API or OpenAI API.
-    Removes local model weight loading to ensure lightweight RAM usage on Render free tier.
+    Embedding generation service using Hugging Face's hosted Inference API or OpenAI API.
+    Zero local model loading — ultra-lightweight RAM footprint on Render free tier.
     """
     def __init__(self):
         self.provider = settings.EMBEDDING_PROVIDER.lower()
@@ -33,20 +46,32 @@ class Embedder:
             model_name = f"sentence-transformers/{model_name}"
         self.model_name = model_name
 
-    def _call_huggingface_api(self, texts: List[str]) -> List[List[float]]:
+    def _call_huggingface_api(self, input_item) -> List:
         """
-        Call Hugging Face hosted Inference API for Feature Extraction / Embeddings.
+        Call Hugging Face Inference API for Feature Extraction / Embeddings using official InferenceClient,
+        with HTTP request fallback.
         """
+        # Primary method: Official Hugging Face InferenceClient
+        try:
+            client = _get_hf_client()
+            res = client.feature_extraction(input_item, model=self.model_name)
+            if hasattr(res, 'tolist'):
+                return res.tolist()
+            if isinstance(res, list):
+                return res
+        except Exception as e:
+            logger.warning("Hugging Face InferenceClient call failed, trying direct HTTP fallback: %s", str(e))
+
+        # Fallback method: Direct HTTP POST to HF Serverless Router
         api_key = settings.HUGGINGFACE_API_KEY
         headers = {}
         if api_key:
             headers["Authorization"] = f"Bearer {api_key}"
 
-        # Standard Hugging Face Inference endpoints
         urls = [
+            f"https://router.huggingface.co/hf-inference/models/{self.model_name}",
             f"https://api-inference.huggingface.co/pipeline/feature-extraction/{self.model_name}",
             f"https://api-inference.huggingface.co/models/{self.model_name}",
-            f"https://router.huggingface.co/hf-inference/models/{self.model_name}",
         ]
 
         last_error = None
@@ -55,42 +80,24 @@ class Embedder:
                 response = requests.post(
                     url,
                     headers=headers,
-                    json={"inputs": texts, "options": {"wait_for_model": True}},
+                    json={"inputs": input_item, "options": {"wait_for_model": True}},
                     timeout=30.0
                 )
                 if response.status_code == 200:
                     data = response.json()
                     if isinstance(data, list):
-                        # List of document embeddings: [ [v1, v2...], [v1, v2...] ]
-                        if data and isinstance(data[0], list) and (not data[0] or isinstance(data[0][0], (int, float))):
-                            return data
-                        # Token-level embeddings: [ [ [t1_1...], [t1_2...] ], ... ]
-                        elif data and isinstance(data[0], list) and isinstance(data[0][0], list):
-                            pooled = []
-                            for doc_tokens in data:
-                                num_tokens = len(doc_tokens)
-                                if num_tokens == 0:
-                                    pooled.append([0.0] * 384)
-                                    continue
-                                vec_dim = len(doc_tokens[0])
-                                mean_vec = [
-                                    sum(doc_tokens[t][i] for t in range(num_tokens)) / num_tokens
-                                    for i in range(vec_dim)
-                                ]
-                                pooled.append(mean_vec)
-                            return pooled
+                        return data
                 else:
-                    logger.warning("HF Inference API endpoint '%s' status %d: %s", url, response.status_code, response.text[:200])
                     last_error = f"Status {response.status_code}: {response.text[:200]}"
-            except Exception as e:
-                logger.warning("HF Inference API request to '%s' failed: %s", url, str(e))
-                last_error = str(e)
+            except Exception as ex:
+                last_error = str(ex)
 
         raise RuntimeError(f"Hugging Face Inference API failed for model '{self.model_name}'. Details: {last_error}")
 
     def get_embedding(self, text: str) -> List[float]:
         """
-        Generate embedding vector for a single text input.
+        Generate embedding vector (List[float]) for a single text string.
+        Returns 384-dim vector for sentence-transformers models.
         """
         if not text.strip():
             dim = 1536 if self.provider == "openai" else 384
@@ -103,13 +110,23 @@ class Embedder:
                 input=text
             )
             return response.data[0].embedding
-        else:
-            embeddings = self._call_huggingface_api([text])
-            return embeddings[0]
+
+        res = self._call_huggingface_api(text)
+        # Process vector output from HF API
+        if isinstance(res, list) and len(res) > 0 and isinstance(res[0], list):
+            # Token-level or batch wrapped: extract 1D vector or pool tokens
+            if isinstance(res[0][0], list):
+                doc_tokens = res[0]
+                num_tokens = len(doc_tokens)
+                vec_dim = len(doc_tokens[0])
+                res = [sum(doc_tokens[t][i] for t in range(num_tokens)) / num_tokens for i in range(vec_dim)]
+            else:
+                res = res[0]
+        return [float(x) for x in res]
 
     def get_embeddings(self, texts: List[str]) -> List[List[float]]:
         """
-        Batch generate embedding vectors for a list of texts.
+        Batch generate embedding vectors (List[List[float]]) for a list of text strings.
         """
         if not texts:
             return []
@@ -121,8 +138,20 @@ class Embedder:
                 input=texts
             )
             return [item.embedding for item in response.data]
-        else:
-            return self._call_huggingface_api(texts)
+
+        res = self._call_huggingface_api(texts)
+        # Ensure List[List[float]] output for batch
+        out = []
+        if isinstance(res, list):
+            for item in res:
+                if isinstance(item, list) and len(item) > 0 and isinstance(item[0], list):
+                    # Pool token-level embeddings if 3D array
+                    doc_tokens = item
+                    num_tokens = len(doc_tokens)
+                    vec_dim = len(doc_tokens[0])
+                    item = [sum(doc_tokens[t][i] for t in range(num_tokens)) / num_tokens for i in range(vec_dim)]
+                out.append([float(x) for x in item])
+        return out
 
 # Singleton instance
 embedder = Embedder()

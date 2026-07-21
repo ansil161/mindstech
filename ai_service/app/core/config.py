@@ -87,7 +87,7 @@ class Settings(BaseSettings):
         return self
 
     # RAG Validation Messages
-    SCOPE_REJECTION_MESSAGE: str = "I specialize in assisting with Mindstec's professional AV and IT solutions, products, and services. How can I help you with our offerings today?"
+    SCOPE_REJECTION_MESSAGE: str = "Hai ,I specialize in assisting with Mindstec's professional AV and IT solutions, products, and services. How can I help you with our offerings today?"
     LOW_SIMILARITY_MESSAGE: str = "I don't have details on that specific request at the moment. Would you like to explore our AV/IT products, solutions, or connect with our support team?"
 
 

@@ -296,24 +296,35 @@ class Document(BaseModel):
     def delete(self, *args, **kwargs):
         from .tasks.ai_tasks import delete_document_task
         from django.db import transaction
-        
+        import logging
+
         doc_id = f"document_{self.id}"
         category = self.category
-        file_path = self.file.path if (self.file and hasattr(self.file, 'path')) else None
+        file_obj = self.file
 
         # Execute DB deletion
         res = super().delete(*args, **kwargs)
 
-        # Trigger Celery task to delete from Qdrant only after DB transaction is successfully committed
-        transaction.on_commit(lambda: delete_document_task.delay(doc_id, category))
-        
-        # Delete file from local storage after DB deletion succeeds
-        if file_path:
-            import os
-            if os.path.isfile(file_path):
+        def trigger_qdrant_delete():
+            try:
+                # Trigger Celery async deletion task
+                delete_document_task.delay(doc_id, category)
+            except Exception:
+                # Direct API call fallback if Celery worker is not active
                 try:
-                    os.remove(file_path)
-                except OSError:
-                    pass
+                    from .services.ai_client import AIClient
+                    client = AIClient()
+                    client.delete_document(document_id=doc_id, category=category)
+                except Exception as e:
+                    logging.getLogger(__name__).error("Failed to delete document %s from Qdrant: %s", doc_id, str(e))
+
+        transaction.on_commit(trigger_qdrant_delete)
+        
+        # Delete file safely without raising NotImplementedError for Cloudinary
+        if file_obj:
+            try:
+                file_obj.delete(save=False)
+            except Exception:
+                pass
 
         return res
