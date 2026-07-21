@@ -874,5 +874,67 @@
     "label": "Opérations en Afrique",
     "partner_email": "partners@mindstec.com",
     "partner_label": "Partenariats"
+  },
+  "events": {
+    "hero": {
+      "title_main": "Événements &",
+      "title_em": "Actualités",
+      "label": "Ce qui se passe",
+      "desc": "Événements à venir chez Mindstec — lancements de produits, salons professionnels et conférences partenaires — ainsi que les dernières actualités et communiqués de presse de nos régions."
+    },
+    "tabs": {
+      "all": "Tous",
+      "events": "Événements",
+      "news": "Actualités"
+    },
+    "upcoming": {
+      "label": "Événements à venir",
+      "title_main": "Retrouvez-nous",
+      "title_em": "en direct.",
+      "desc": "Rencontrez l'équipe Mindstec lors de salons, d'événements de lancement et de conférences partenaires dans nos régions.",
+      "empty": "Aucun événement à venir pour le moment — revenez bientôt."
+    },
+    "news": {
+      "label": "Dernières actualités",
+      "title_main": "Restez",
+      "title_em": "informés.",
+      "desc": "Communiqués de presse, partenariats industriels et annonces de produits de Mindstec Distribution.",
+      "empty": "Aucune actualité pour le moment — revenez bientôt."
+    },
+    "card": {
+      "register_now": "S'inscrire maintenant",
+      "read_more": "En savoir plus"
+    },
+    "cta": {
+      "label": "Restez connecté",
+      "title_main": "Vous souhaitez être",
+      "title_em": "au prochain ?",
+      "btn_contact": "Contactez-nous",
+      "btn_partners": "Nos partenaires"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "meta_label": "Communauté & Événements",
+      "meta_subtitle": "Galerie Mindstec",
+      "eyebrow": "Personnes · Culture · Étapes clés",
+      "title_our": "Notre",
+      "title_community": "Communauté",
+      "desc": "Derrière chaque grande entreprise technologique se trouvent les personnes et les moments qui définissent sa culture. Voici un aperçu de Mindstec — nos sommets, ateliers, sorties et célébrations.",
+      "stat_moments": "Moments",
+      "stat_events": "Événements",
+      "stat_people": "Personnes",
+      "scroll_cue": "Faites défiler pour explorer"
+    },
+    "cta": {
+      "label": "Rejoignez la communauté",
+      "title_main": "Envie de faire partie de notre",
+      "title_em": "prochain chapitre ?",
+      "desc": "Que vous soyez un partenaire potentiel, un passionné de technologie ou quelqu'un souhaitant travailler avec nous — nous aimerions avoir de vos nouvelles.",
+      "btn_contact": "Contactez-nous",
+      "btn_solutions": "Voir les solutions"
+    },
+    "loading": "Chargement de la galerie…",
+    "error": "Échec du chargement de la galerie."
   }
 }

@@ -874,5 +874,67 @@
     "label": "Europa-Aktivitäten",
     "partner_email": "partners@mindstec.com",
     "partner_label": "Partnerschaften"
+  },
+  "events": {
+    "hero": {
+      "title_main": "Events &",
+      "title_em": "News",
+      "label": "Was passiert",
+      "desc": "Kommende Events von Mindstec — Produkteinführungen, Messen und Partnerkonferenzen — zusammen mit den neuesten Nachrichten aus unseren Regionen."
+    },
+    "tabs": {
+      "all": "Alle",
+      "events": "Events",
+      "news": "News"
+    },
+    "upcoming": {
+      "label": "Kommende Events",
+      "title_main": "Erleben Sie uns",
+      "title_em": "live.",
+      "desc": "Treffen Sie das Mindstec-Team auf Messen, Launch-Events und Partnerkonferenzen in unseren Regionen.",
+      "empty": "Derzeit keine kommenden Events — schauen Sie bald wieder vorbei."
+    },
+    "news": {
+      "label": "Neueste Nachrichten",
+      "title_main": "Bleiben Sie",
+      "title_em": "informiert.",
+      "desc": "Pressemitteilungen, Branchenpartnerschaften und Produktankündigungen von Mindstec Distribution.",
+      "empty": "Noch keine Nachrichten vorhanden — schauen Sie bald wieder vorbei."
+    },
+    "card": {
+      "register_now": "Jetzt registrieren",
+      "read_more": "Mehr lesen"
+    },
+    "cta": {
+      "label": "In Verbindung bleiben",
+      "title_main": "Möchten Sie beim",
+      "title_em": "nächsten Mal dabei sein?",
+      "btn_contact": "Kontakt aufnehmen",
+      "btn_partners": "Unsere Partner"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "meta_label": "Community & Events",
+      "meta_subtitle": "Mindstec Galerie",
+      "eyebrow": "Menschen · Kultur · Meilensteine",
+      "title_our": "Unsere",
+      "title_community": "Gemeinschaft",
+      "desc": "Hinter jedem großen Technologieunternehmen stehen die Menschen und Momente, die seine Kultur prägen. Hier ist ein Einblick in Mindstec — unsere Summits, Workshops, Ausflüge und Feiern.",
+      "stat_moments": "Moments",
+      "stat_events": "Events",
+      "stat_people": "Personen",
+      "scroll_cue": "Scrollen zum Erkunden"
+    },
+    "cta": {
+      "label": "Der Community beitreten",
+      "title_main": "Möchten Sie Teil unseres",
+      "title_em": "nächsten Kapitels sein?",
+      "desc": "Egal ob potenzieller Partner, Technologiebegeisterter oder jemand, der mit uns arbeiten möchte — wir freuen uns auf Sie.",
+      "btn_contact": "Kontakt aufnehmen",
+      "btn_solutions": "Lösungen anzeigen"
+    },
+    "loading": "Galerie wird geladen…",
+    "error": "Fehler beim Laden der Galerie."
   }
 }

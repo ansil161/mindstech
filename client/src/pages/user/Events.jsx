@@ -12,26 +12,28 @@ gsap.registerPlugin(ScrollTrigger);
 
 // ── helpers ─────────────────────────────────────────────────────────────────
 
-const formatEventDate = (iso) => {
+const formatEventDate = (iso, lang = 'en') => {
   if (!iso) return { day: '', month: '', year: '', full: '' };
   const d = new Date(iso);
+  const locale = lang === 'zh' ? 'zh-CN' : lang === 'ar' ? 'ar-EG' : lang === 'fr' ? 'fr-FR' : lang === 'de' ? 'de-DE' : 'en';
   return {
     day:   d.getDate().toString().padStart(2, '0'),
-    month: d.toLocaleString('en', { month: 'short' }).toUpperCase(),
+    month: d.toLocaleString(locale, { month: 'short' }).toUpperCase(),
     year:  d.getFullYear(),
-    full:  d.toLocaleString('en', { dateStyle: 'long', timeStyle: 'short' }),
+    full:  d.toLocaleString(locale, { dateStyle: 'long', timeStyle: 'short' }),
   };
 };
 
-const formatNewsDate = (iso) => {
+const formatNewsDate = (iso, lang = 'en') => {
   if (!iso) return '';
-  return new Date(iso).toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' });
+  const locale = lang === 'zh' ? 'zh-CN' : lang === 'ar' ? 'ar-EG' : lang === 'fr' ? 'fr-FR' : lang === 'de' ? 'de-DE' : 'en';
+  return new Date(iso).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
 };
 
 // ── sub-components ──────────────────────────────────────────────────────────
 
-const EventCard = ({ item, idx, t }) => {
-  const date = formatEventDate(item.event_date);
+const EventCard = ({ item, idx, t, lang }) => {
+  const date = formatEventDate(item.event_date, lang);
   return (
     <article className="ev-card reveal">
       {/* Image */}
@@ -78,8 +80,8 @@ const EventCard = ({ item, idx, t }) => {
   );
 };
 
-const NewsCard = ({ item, t }) => {
-  const dateStr = formatNewsDate(item.created_at);
+const NewsCard = ({ item, t, lang }) => {
+  const dateStr = formatNewsDate(item.created_at, lang);
   return (
     <article className="nw-card reveal">
       {item.image && (
@@ -115,7 +117,7 @@ const NewsCard = ({ item, t }) => {
 // ── main page ───────────────────────────────────────────────────────────────
 
 const Events = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { regionSlug } = useRegion();
   const containerRef = useRef(null);
 
@@ -304,7 +306,7 @@ const Events = () => {
           ) : (
             <div className="ev-grid">
               {events.map((item, idx) => (
-                <EventCard key={item.id} item={item} idx={idx} t={t} />
+                <EventCard key={item.id} item={item} idx={idx} t={t} lang={i18n.language} />
               ))}
             </div>
           )}
@@ -333,7 +335,7 @@ const Events = () => {
           ) : (
             <div className="nw-grid">
               {news.map(item => (
-                <NewsCard key={item.id} item={item} t={t} />
+                <NewsCard key={item.id} item={item} t={t} lang={i18n.language} />
               ))}
             </div>
           )}
