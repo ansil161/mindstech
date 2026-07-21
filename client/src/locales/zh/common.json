@@ -881,5 +881,67 @@
     "label": "亚洲业务",
     "partner_email": "partners@mindstec.com",
     "partner_label": "合作伙伴关系"
+  },
+  "events": {
+    "hero": {
+      "title_main": "活动与",
+      "title_em": "新闻",
+      "label": "最新动态",
+      "desc": "Mindstec 的即将举行的活动 — 新品发布、行业展会和合作伙伴会议 — 以及来自我们各个地区的最新新闻和媒体报道。"
+    },
+    "tabs": {
+      "all": "全部",
+      "events": "活动",
+      "news": "新闻"
+    },
+    "upcoming": {
+      "label": "即将举行的活动",
+      "title_main": "现场",
+      "title_em": "体验。",
+      "desc": "在我们各个地区的贸易展会、发布会和合作伙伴会议上与 Mindstec 团队面对面交流。",
+      "empty": "目前没有即将举行的活动 — 请稍后回来查看。"
+    },
+    "news": {
+      "label": "最新新闻",
+      "title_main": "保持",
+      "title_em": "关注。",
+      "desc": "来自 Mindstec Distribution 的新闻稿、行业合作伙伴关系和产品发布公告。",
+      "empty": "暂无新闻 — 请稍后回来查看。"
+    },
+    "card": {
+      "register_now": "立即报名",
+      "read_more": "阅读更多"
+    },
+    "cta": {
+      "label": "保持联系",
+      "title_main": "想参加",
+      "title_em": "下一次活动吗？",
+      "btn_contact": "联系我们",
+      "btn_partners": "我们的合作伙伴"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "meta_label": "社区与活动",
+      "meta_subtitle": "Mindstec 画廊",
+      "eyebrow": "团队 · 文化 · 里程碑",
+      "title_our": "我们的",
+      "title_community": "团队社区",
+      "desc": "每一家优秀的科技公司背后，都有塑造其文化的精彩瞬间与团队成员。这里展示了 Mindstec 的峰会、研讨会、团队出行和庆祝活动。",
+      "stat_moments": "精彩瞬间",
+      "stat_events": "活动",
+      "stat_people": "成员",
+      "scroll_cue": "滚动探索"
+    },
+    "cta": {
+      "label": "加入社区",
+      "title_main": "想要成为我们",
+      "title_em": "下一篇章的一部分吗？",
+      "desc": "无论您是潜在的合作伙伴、技术爱好者，还是希望与我们合作的人 — 我们都很乐意倾听您的声音。",
+      "btn_contact": "联系我们",
+      "btn_solutions": "查看解决方案"
+    },
+    "loading": "正在加载画廊…",
+    "error": "加载画廊失败。"
   }
 }
