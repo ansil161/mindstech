@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
 
   const fetchProfile = async () => {
     try {
-      const response = await apiClient.get('/api/v1/accounts/profile/');
+      const response = await apiClient.get('/accounts/profile/');
       if (response.data?.success && response.data?.data) {
         setUser(response.data.data);
         setIsAuthenticated(true);
@@ -42,7 +42,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password) => {
     try {
-      const response = await apiClient.post('/api/v1/accounts/login/', { email, password });
+      const response = await apiClient.post('/accounts/login/', { email, password });
       if (response.data?.success && response.data?.data?.user) {
         setUser(response.data.data.user);
         setIsAuthenticated(true);
@@ -56,7 +56,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await apiClient.post('/api/v1/accounts/logout/');
+      await apiClient.post('/accounts/logout/');
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
