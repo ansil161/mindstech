@@ -214,22 +214,31 @@ SIMPLE_JWT = {
     'AUTH_COOKIE_SECURE': not DEBUG,  # Only send over HTTPS in production
     'AUTH_COOKIE_HTTP_ONLY': True,    # Cannot be accessed via JS (XSS protection)
     'AUTH_COOKIE_PATH': '/',
-    'AUTH_COOKIE_SAMESITE': 'Lax',    # CSRF mitigation
+    'AUTH_COOKIE_SAMESITE': 'None' if not DEBUG else 'Lax',    # Allow cross-domain cookies in production
 }
 
 # CORS Configuration
 CORS_ALLOW_CREDENTIALS = True
-DEFAULT_CORS_ORIGINS = "http://localhost:5173,http://localhost:3000,http://127.0.0.1:5173,http://127.0.0.1:3000,https://mindstech.onrender.com"
-cors_origins_env = os.getenv("CORS_ALLOWED_ORIGINS", DEFAULT_CORS_ORIGINS)
-CORS_ALLOWED_ORIGINS = [origin.strip() for origin in cors_origins_env.split(",") if origin.strip()]
+CORS_ALLOWED_ORIGINS = [
+    "https://mindstech.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
+]
 
 # CSRF Configuration
 CSRF_COOKIE_HTTPONLY = False          # Must be False so frontend JS can read CSRF token
-CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'
 CSRF_COOKIE_SECURE = not DEBUG        # Only send CSRF cookie over HTTPS in production
 
-csrf_trusted_env = os.getenv("CSRF_TRUSTED_ORIGINS", cors_origins_env)
-CSRF_TRUSTED_ORIGINS = [origin.strip() for origin in csrf_trusted_env.split(",") if origin.strip()]
+CSRF_TRUSTED_ORIGINS = [
+    "https://mindstech.vercel.app",
+    "http://localhost:5173",
+    "http://localhost:3000",
+    "http://127.0.0.1:5173",
+    "http://127.0.0.1:3000",
+]
 
 
 # Celery & Redis Configurations
