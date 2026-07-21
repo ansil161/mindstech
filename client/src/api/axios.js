@@ -51,6 +51,13 @@ apiClient.interceptors.request.use(
     if (csrfToken) {
       config.headers['X-CSRFToken'] = csrfToken;
     }
+    
+    // Attach the access token if it exists
+    const accessToken = getCookie('@access_token');
+    if (accessToken) {
+      config.headers['Authorization'] = `Bearer ${accessToken}`;
+    }
+
     const currentLang = localStorage.getItem('i18nextLng') || 'en';
     config.headers['Accept-Language'] = currentLang;
     return config;
