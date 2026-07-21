@@ -43,6 +43,7 @@ export function useSolutions() {
     const formData = new FormData();
     formData.append('title', title.trim());
     formData.append('slug', slug.trim());
+    formData.append('desc', description.trim());
     formData.append('description', description.trim());
     formData.append('image', image);
 
