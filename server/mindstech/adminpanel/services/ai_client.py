@@ -42,14 +42,11 @@ class AIClient:
     """
     def __init__(self):
         # Read parameters from Django settings, fallback to environment or defaults
-        self.base_url = getattr(settings, "AI_SERVICE_URL", os.getenv("AI_SERVICE_URL", "http://localhost:8000"))
+        self.base_url = getattr(settings, "AI_SERVICE_URL", os.getenv("AI_SERVICE_URL", "http://ai-service:8000")).rstrip("/")
         self.api_key = getattr(settings, "AI_SERVICE_API_KEY", os.getenv("AI_SERVICE_API_KEY", "secret-key"))
         self.timeout = float(getattr(settings, "AI_SERVICE_TIMEOUT", os.getenv("REQUEST_TIMEOUT", "30.0")))
         self.max_retries = int(getattr(settings, "AI_SERVICE_MAX_RETRIES", os.getenv("MAX_RETRIES", "3")))
-        
-        # Trim base URL trailing slash if present
-        if self.base_url.endswith("/"):
-            self.base_url = self.base_url[:-1]
+
 
     def _get_headers(self) -> Dict[str, str]:
         """Generate authentication and client headers."""

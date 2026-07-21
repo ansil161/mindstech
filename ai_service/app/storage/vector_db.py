@@ -13,22 +13,24 @@ class QdrantManager:
     """
     def __init__(self):
         self.collection_name = settings.QDRANT_COLLECTION_NAME
-        
-        # Connect to Qdrant
-        if settings.QDRANT_API_KEY:
-            self.client = QdrantClient(
-                url=settings.QDRANT_URL,
-                api_key=settings.QDRANT_API_KEY
+        self._client = None
+
+    @property
+    def client(self):
+        if self._client is None:
+            import os
+            # Connect to Qdrant
+            self._client = QdrantClient(
+                url=os.getenv("QDRANT_URL"),
+                api_key=os.getenv("QDRANT_API_KEY"),
             )
-        else:
-            self.client = QdrantClient(url=settings.QDRANT_URL)
-            
-        self._ensure_collection_exists()
+            self._ensure_collection_exists()
+        return self._client
 
     def _ensure_collection_exists(self):
         """Checks if the collection exists, otherwise creates it dynamically."""
         try:
-            collections = self.client.get_collections().collections
+            collections = self._client.get_collections().collections
             collection_names = [col.name for col in collections]
             
             if self.collection_name not in collection_names:
@@ -49,7 +51,7 @@ class QdrantManager:
                     "Collection '%s' does not exist. Creating it now with dimension %d.",
                     self.collection_name, dimension
                 )
-                self.client.create_collection(
+                self._client.create_collection(
                     collection_name=self.collection_name,
                     vectors_config=qmodels.VectorParams(
                         size=dimension,

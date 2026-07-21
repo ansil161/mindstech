@@ -30,7 +30,10 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.getenv("DEBUG", "False").lower() in ("true", "1", "t", "yes")
 
-ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "").split(",") if os.getenv("ALLOWED_HOSTS") else []
+raw_hosts = os.getenv("ALLOWED_HOSTS", "")
+env_hosts = [h.strip() for h in raw_hosts.split(",") if h.strip()]
+ALLOWED_HOSTS = list(set(["localhost", "127.0.0.1", "mindstech.onrender.com", ".onrender.com", "*"] if os.getenv("ALLOW_ALL_HOSTS") else ["localhost", "127.0.0.1", "mindstech.onrender.com", ".onrender.com"] + env_hosts))
+
 
 
 # Application definition
@@ -84,16 +87,31 @@ WSGI_APPLICATION = 'mindstech.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
+if os.getenv("DATABASE_URL"):
+    from urllib.parse import urlparse
+    db_url = urlparse(os.getenv("DATABASE_URL"))
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": db_url.path[1:],
+            "USER": db_url.username,
+            "PASSWORD": db_url.password,
+            "HOST": db_url.hostname,
+            "PORT": db_url.port or 5432,
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": os.getenv("DB_NAME"),
+            "USER": os.getenv("DB_USER"),
+            "PASSWORD": os.getenv("DB_PASSWORD"),
+            "HOST": os.getenv("DB_HOST"),
+            "PORT": os.getenv("DB_PORT"),
+        }
+    }
+
 
 
 
@@ -122,7 +140,7 @@ AUTH_PASSWORD_VALIDATORS = [
 CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.redis.RedisCache',
-        'LOCATION': os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0'),
+        'LOCATION': os.getenv('REDIS_URL', os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')),
     }
 }
 
@@ -196,12 +214,13 @@ SIMPLE_JWT = {
     'AUTH_COOKIE_SECURE': not DEBUG,  # Only send over HTTPS in production
     'AUTH_COOKIE_HTTP_ONLY': True,    # Cannot be accessed via JS (XSS protection)
     'AUTH_COOKIE_PATH': '/',
-    'AUTH_COOKIE_SAMESITE': 'Lax',    # CSRF mitigation
+    'AUTH_COOKIE_SAMESITE': 'None' if not DEBUG else 'Lax',    # Allow cross-domain cookies in production
 }
 
 # CORS Configuration
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
+    "https://mindstech.vercel.app",
     "http://localhost:5173",
     "http://localhost:3000",
     "http://127.0.0.1:5173",
@@ -210,18 +229,25 @@ CORS_ALLOWED_ORIGINS = [
 
 # CSRF Configuration
 CSRF_COOKIE_HTTPONLY = False          # Must be False so frontend JS can read CSRF token
-CSRF_COOKIE_SAMESITE = 'Lax'
+CSRF_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'
 CSRF_COOKIE_SECURE = not DEBUG        # Only send CSRF cookie over HTTPS in production
+
 CSRF_TRUSTED_ORIGINS = [
+    "https://mindstech.vercel.app",
     "http://localhost:5173",
     "http://localhost:3000",
     "http://127.0.0.1:5173",
     "http://127.0.0.1:3000",
 ]
 
-# Celery Configurations
-CELERY_BROKER_URL = os.getenv('CELERY_BROKER_URL', 'redis://localhost:6379/0')
-CELERY_RESULT_BACKEND = os.getenv('CELERY_RESULT_BACKEND', 'redis://localhost:6379/0')
+
+# Celery & Redis Configurations
+REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
+CELERY_BROKER_URL = REDIS_URL
+CELERY_RESULT_BACKEND = REDIS_URL
+
+
+
 CELERY_ACCEPT_CONTENT = ['json']
 CELERY_TASK_SERIALIZER = 'json'
 CELERY_RESULT_SERIALIZER = 'json'
@@ -230,8 +256,9 @@ CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = int(os.getenv('CELERY_TASK_TIME_LIMIT', '300'))
 
 # AI Service Integration Settings
-AI_SERVICE_URL = os.getenv('AI_SERVICE_URL', 'http://localhost:8001')
+AI_SERVICE_URL = os.getenv('AI_SERVICE_URL', 'http://ai-service:8000').rstrip('/')
 AI_SERVICE_API_KEY = os.getenv('AI_SERVICE_API_KEY', 'secret-key')
+
 
 # Production Security Headers (Active when DEBUG is False)
 if not DEBUG:

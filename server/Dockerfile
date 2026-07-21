@@ -28,5 +28,6 @@ USER django-user
 
 EXPOSE 8000
 
-# Run with Gunicorn in production by default
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "--workers", "3", "mindstech.wsgi:application"]
+# Run both Gunicorn and Celery worker via Supervisor
+CMD ["supervisord", "-c", "/app/supervisord.conf"]
+
