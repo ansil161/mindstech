@@ -237,6 +237,10 @@ CSRF_COOKIE_HTTPONLY = False          # Must be False so frontend JS can read CS
 CSRF_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'
 CSRF_COOKIE_SECURE = not DEBUG        # Only send CSRF cookie over HTTPS in production
 
+# Session Configuration
+SESSION_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'
+SESSION_COOKIE_SECURE = not DEBUG     # Only send session cookie over HTTPS in production
+
 CSRF_TRUSTED_ORIGINS = [
     "https://mindstech.vercel.app",
     "http://localhost:5173",
