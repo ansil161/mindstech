@@ -1,4 +1,5 @@
 import { useRef, lazy, Suspense } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHeroAnimations } from '../hooks/useGalleryAnimations';
 
 const GalleryBackground = lazy(() => import('./GalleryBackground'));
@@ -21,6 +22,7 @@ function SplitWords({ text }) {
 }
 
 export default function GalleryHero() {
+  const { t } = useTranslation();
   const containerRef = useRef(null);
   useHeroAnimations(containerRef);
 
@@ -106,7 +108,7 @@ export default function GalleryHero() {
                 color: '#CC0001',
               }}
             >
-              Community &amp; Events
+              {t('gallery.hero.meta_label', 'Community & Events')}
             </span>
           </div>
           <span
@@ -118,7 +120,7 @@ export default function GalleryHero() {
               color: 'rgba(255,255,255,0.2)',
             }}
           >
-            Mindstec Gallery
+            {t('gallery.hero.meta_subtitle', 'Mindstec Gallery')}
           </span>
         </div>
 
@@ -136,7 +138,7 @@ export default function GalleryHero() {
             }}
           >
             <span style={{ display: 'block', width: 28, height: 1, background: 'rgba(255,255,255,0.25)' }} />
-            People · Culture · Milestones
+            {t('gallery.hero.eyebrow', 'People · Culture · Milestones')}
           </div>
 
           {/* Main heading */}
@@ -151,7 +153,7 @@ export default function GalleryHero() {
             }}
           >
             <div style={{ overflow: 'hidden', display: 'block' }}>
-              <span className="gallery-hero-word inline-block">Our</span>
+              <span className="gallery-hero-word inline-block">{t('gallery.hero.title_our', 'Our')}</span>
             </div>
             <div style={{ overflow: 'hidden', display: 'block' }}>
               <span
@@ -163,7 +165,7 @@ export default function GalleryHero() {
                   backgroundClip: 'text',
                 }}
               >
-                Community
+                {t('gallery.hero.title_community', 'Community')}
               </span>
             </div>
           </h1>
@@ -181,17 +183,15 @@ export default function GalleryHero() {
                 maxWidth: '40ch',
               }}
             >
-              Behind every great technology company are the people and moments
-              that define its culture. Here's a look at Mindstec — our
-              summits, workshops, outings and celebrations.
+              {t('gallery.hero.desc', "Behind every great technology company are the people and moments that define its culture. Here's a look at Mindstec — our summits, workshops, outings and celebrations.")}
             </p>
 
             {/* Stats */}
             <div className="flex gap-8 sm:gap-12 items-start flex-shrink-0">
               {[
-                { value: '22+',  label: 'Moments' },
-                { value: '50+',  label: 'Events'  },
-                { value: '300+', label: 'People'  },
+                { value: '22+',  label: t('gallery.hero.stat_moments', 'Moments') },
+                { value: '50+',  label: t('gallery.hero.stat_events', 'Events')  },
+                { value: '300+', label: t('gallery.hero.stat_people', 'People')  },
               ].map(({ value, label }) => (
                 <div key={label} className="flex flex-col gap-1">
                   <span
@@ -250,7 +250,7 @@ export default function GalleryHero() {
             }}
             aria-hidden="true"
           >
-            Scroll to explore
+            {t('gallery.hero.scroll_cue', 'Scroll to explore')}
           </span>
         </div>
       </div>
