@@ -56,11 +56,14 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      await apiClient.post('/accounts/logout/');
+      const refreshToken = localStorage.getItem('refresh_token');
+      await apiClient.post('/accounts/logout/', { refresh: refreshToken });
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
       localStorage.removeItem('csrf_token');
+      localStorage.removeItem('access_token');
+      localStorage.removeItem('refresh_token');
       setUser(null);
       setIsAuthenticated(false);
     }

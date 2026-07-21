@@ -43,7 +43,10 @@ class LoginView(APIView):
                 "csrf_token": get_token(request)
             }
         )
-        AuthService.login_user(response, user)
+        tokens = AuthService.login_user(response, user)
+        if tokens:
+            response.data['data']['access_token'] = tokens.get('access_token')
+            response.data['data']['refresh_token'] = tokens.get('refresh_token')
         return response
 
 
@@ -55,7 +58,7 @@ class LogoutView(APIView):
 
     def post(self, request, *args, **kwargs):
         refresh_cookie_name = settings.SIMPLE_JWT.get('AUTH_COOKIE_REFRESH', 'refresh_token')
-        refresh_token = request.COOKIES.get(refresh_cookie_name)
+        refresh_token = request.COOKIES.get(refresh_cookie_name) or request.data.get('refresh') or request.data.get('refresh_token')
 
         response = StandardResponse(message="Logout successful.")
         AuthService.logout_user(response, refresh_token)
@@ -64,14 +67,14 @@ class LogoutView(APIView):
 
 class TokenRefreshView(APIView):
     """
-    Handle token refresh. Reads refresh token from HttpOnly cookie,
+    Handle token refresh. Reads refresh token from HttpOnly cookie or request payload,
     rotates it, and sets updated access and refresh cookies.
     """
     permission_classes = [AllowAny]
 
     def post(self, request, *args, **kwargs):
         refresh_cookie_name = settings.SIMPLE_JWT.get('AUTH_COOKIE_REFRESH', 'refresh_token')
-        refresh_token = request.COOKIES.get(refresh_cookie_name)
+        refresh_token = request.COOKIES.get(refresh_cookie_name) or request.data.get('refresh') or request.data.get('refresh_token')
 
         response = StandardResponse(
             message="Token refreshed successfully.",
@@ -79,7 +82,10 @@ class TokenRefreshView(APIView):
                 "csrf_token": get_token(request)
             }
         )
-        AuthService.refresh_user_tokens(response, refresh_token)
+        tokens = AuthService.refresh_user_tokens(response, refresh_token)
+        if tokens:
+            response.data['data']['access_token'] = tokens.get('access_token')
+            response.data['data']['refresh_token'] = tokens.get('refresh_token')
         return response
 
 
