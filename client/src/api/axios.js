@@ -47,15 +47,10 @@ function getCookie(name) {
 // Request interceptor to manually attach the CSRF token on cross-origin requests
 apiClient.interceptors.request.use(
   (config) => {
-    const csrfToken = getCookie('csrftoken');
+    // Retrieve CSRF token from localStorage (set during login/refresh)
+    const csrfToken = localStorage.getItem('csrf_token');
     if (csrfToken) {
       config.headers['X-CSRFToken'] = csrfToken;
-    }
-    
-    // Attach the access token if it exists
-    const accessToken = getCookie('access_token');
-    if (accessToken) {
-      config.headers['Authorization'] = `Bearer ${accessToken}`;
     }
 
     const currentLang = localStorage.getItem('i18nextLng') || 'en';
@@ -65,9 +60,15 @@ apiClient.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor to handle global error payloads (matching backend response format)
+// Interceptor to handle global error payloads and save csrf_token from responses
 apiClient.interceptors.response.use(
-  (response) => response,
+  (response) => {
+    // If the response contains a csrf_token, save it to localStorage
+    if (response.data?.data?.csrf_token) {
+      localStorage.setItem('csrf_token', response.data.data.csrf_token);
+    }
+    return response;
+  },
   async (error) => {
     const originalRequest = error.config;
 
@@ -105,6 +106,7 @@ apiClient.interceptors.response.use(
         isRefreshing = false;
         processQueue(refreshError);
         // Dispatch custom event to notify auth context to log out
+        localStorage.removeItem('csrf_token');
         window.dispatchEvent(new CustomEvent('auth:unauthorized'));
         const fallbackError = {
           success: false,
