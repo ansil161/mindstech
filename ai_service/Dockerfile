@@ -35,7 +35,7 @@ COPY --chown=appuser:appuser config/ ./config/
 
 USER appuser
 
-EXPOSE 8000
+EXPOSE 8001
 
 # Run with Gunicorn using Uvicorn workers for production scalability
 CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT app.main:app"]
