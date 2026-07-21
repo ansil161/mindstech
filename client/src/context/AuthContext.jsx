@@ -60,6 +60,7 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error('Logout error:', error);
     } finally {
+      localStorage.removeItem('csrf_token');
       setUser(null);
       setIsAuthenticated(false);
     }

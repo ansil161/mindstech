@@ -4,6 +4,7 @@ from rest_framework.throttling import ScopedRateThrottle
 from django.conf import settings
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import ensure_csrf_cookie
+from django.middleware.csrf import get_token
 
 from accounts.serializers import LoginSerializer, UserProfileSerializer
 from accounts.services import AuthService
@@ -38,7 +39,8 @@ class LoginView(APIView):
                     "first_name": user.first_name,
                     "last_name": user.last_name,
                     "is_staff": user.is_staff
-                }
+                },
+                "csrf_token": get_token(request)
             }
         )
         AuthService.login_user(response, user)
@@ -71,7 +73,12 @@ class TokenRefreshView(APIView):
         refresh_cookie_name = settings.SIMPLE_JWT.get('AUTH_COOKIE_REFRESH', 'refresh_token')
         refresh_token = request.COOKIES.get(refresh_cookie_name)
 
-        response = StandardResponse(message="Token refreshed successfully.")
+        response = StandardResponse(
+            message="Token refreshed successfully.",
+            data={
+                "csrf_token": get_token(request)
+            }
+        )
         AuthService.refresh_user_tokens(response, refresh_token)
         return response
 
