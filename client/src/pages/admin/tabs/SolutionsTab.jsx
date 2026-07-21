@@ -1,5 +1,6 @@
 import React from 'react';
 import useSolutions from '../hooks/useSolutions';
+import { getImageUrl, handleImageError } from '../../../utils/getImageUrl';
 
 export default function SolutionsTab() {
   const {
@@ -127,8 +128,9 @@ export default function SolutionsTab() {
           {solutions.map((item) => (
             <div key={item.id} className="admin-stat-card" style={{ padding: '16px', display: 'flex', flexDirection: 'column', gap: '12px', background: 'var(--panel)', border: '1px solid var(--line)', borderRadius: '12px' }}>
               <img
-                src={item.image}
+                src={getImageUrl(item.image)}
                 alt={item.title}
+                onError={handleImageError}
                 style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--line)' }}
               />
               <div>
