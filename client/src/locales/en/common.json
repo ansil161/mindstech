@@ -943,5 +943,67 @@
     "label": "India operations",
     "partner_email": "partners@mindstec.com",
     "partner_label": "Partnerships"
+  },
+  "events": {
+    "hero": {
+      "title_main": "Events &",
+      "title_em": "News",
+      "label": "What's happening",
+      "desc": "Upcoming events from Mindstec — product launches, industry shows, and partner conferences — alongside the latest news and press from across our regions."
+    },
+    "tabs": {
+      "all": "All",
+      "events": "Events",
+      "news": "News"
+    },
+    "upcoming": {
+      "label": "Upcoming Events",
+      "title_main": "See us",
+      "title_em": "live.",
+      "desc": "Meet the Mindstec team at trade shows, launch events, and partner conferences across our regions.",
+      "empty": "No upcoming events at the moment — check back soon."
+    },
+    "news": {
+      "label": "Latest News",
+      "title_main": "Stay",
+      "title_em": "informed.",
+      "desc": "Press releases, industry partnerships, and product announcements from Mindstec Distribution.",
+      "empty": "No news items yet — check back soon."
+    },
+    "card": {
+      "register_now": "Register Now",
+      "read_more": "Read More"
+    },
+    "cta": {
+      "label": "Stay connected",
+      "title_main": "Want to be",
+      "title_em": "at the next one?",
+      "btn_contact": "Get in touch",
+      "btn_partners": "Our partners"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "meta_label": "Community & Events",
+      "meta_subtitle": "Mindstec Gallery",
+      "eyebrow": "People · Culture · Milestones",
+      "title_our": "Our",
+      "title_community": "Community",
+      "desc": "Behind every great technology company are the people and moments that define its culture. Here's a look at Mindstec — our summits, workshops, outings and celebrations.",
+      "stat_moments": "Moments",
+      "stat_events": "Events",
+      "stat_people": "People",
+      "scroll_cue": "Scroll to explore"
+    },
+    "cta": {
+      "label": "Join the Community",
+      "title_main": "Want to be part of our",
+      "title_em": "next chapter?",
+      "desc": "Whether you're a prospective partner, a technology enthusiast, or someone who wants to work with us — we'd love to hear from you.",
+      "btn_contact": "Get in touch",
+      "btn_solutions": "View Solutions"
+    },
+    "loading": "Loading gallery…",
+    "error": "Failed to load gallery."
   }
 }

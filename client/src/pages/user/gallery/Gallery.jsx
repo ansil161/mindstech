@@ -1,5 +1,6 @@
 import { useState, useCallback, useEffect } from 'react';
 import { AnimatePresence } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
 
 import CursorFollower from './components/CursorFollower';
 import GalleryHero from './components/GalleryHero';
@@ -7,19 +8,22 @@ import GalleryGrid from './components/GalleryGrid';
 import GalleryModal from './components/GalleryModal';
 import { usePageEntrance } from './hooks/useGalleryAnimations';
 import apiClient from '../../../api/axios';
+import { useDynamicTranslation } from '../../../hooks/useDynamicTranslation';
 
 export default function Gallery() {
   const { laserRef } = usePageEntrance();
 
   // ── Data ─────────────────────────────────────────────────────────────────
-  const [items, setItems] = useState([]);
+  const [rawItems, setRawItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { translatedData: items } = useDynamicTranslation(rawItems, ['title', 'category'], 'gallery_list');
 
   useEffect(() => {
     let cancelled = false;
     apiClient.get('/admin/gallery/')
-      .then(({ data }) => { if (!cancelled) { setItems(data); setLoading(false); } })
+      .then(({ data }) => { if (!cancelled) { setRawItems(data); setLoading(false); } })
       .catch(() => { if (!cancelled) { setError('Failed to load gallery.'); setLoading(false); } });
     return () => { cancelled = true; };
   }, []);
@@ -104,6 +108,7 @@ export default function Gallery() {
 
 /* ─── Loading state ─────────────────────────────────────────────────────── */
 function GalleryLoadingState() {
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -117,13 +122,14 @@ function GalleryLoadingState() {
         textTransform: 'uppercase',
       }}
     >
-      Loading gallery…
+      {t('gallery.loading', 'Loading gallery…')}
     </div>
   );
 }
 
 /* ─── Error state ────────────────────────────────────────────────────────── */
 function GalleryErrorState({ message }) {
+  const { t } = useTranslation();
   return (
     <div
       style={{
@@ -136,13 +142,14 @@ function GalleryErrorState({ message }) {
         letterSpacing: '0.06em',
       }}
     >
-      {message}
+      {t('gallery.error', message || 'Failed to load gallery.')}
     </div>
   );
 }
 
 /* ─── CTA strip ─────────────────────────────────────────────────────────── */
 function CtaStrip() {
+  const { t } = useTranslation();
   return (
     <section
       style={{
@@ -169,7 +176,7 @@ function CtaStrip() {
         }}
       >
         <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#CC0001', display: 'inline-block' }} />
-        Join the Community
+        {t('gallery.cta.label', 'Join the Community')}
       </div>
 
       <h2
@@ -183,7 +190,7 @@ function CtaStrip() {
           maxWidth: '16ch',
         }}
       >
-        Want to be part of our{' '}
+        {t('gallery.cta.title_main', 'Want to be part of our')}{' '}
         <em
           style={{
             fontStyle: 'normal',
@@ -193,7 +200,7 @@ function CtaStrip() {
             backgroundClip: 'text',
           }}
         >
-          next chapter?
+          {t('gallery.cta.title_em', 'next chapter?')}
         </em>
       </h2>
 
@@ -205,19 +212,18 @@ function CtaStrip() {
           maxWidth: '42ch',
         }}
       >
-        Whether you're a prospective partner, a technology enthusiast, or
-        someone who wants to work with us — we'd love to hear from you.
+        {t('gallery.cta.desc', "Whether you're a prospective partner, a technology enthusiast, or someone who wants to work with us — we'd love to hear from you.")}
       </p>
 
       <div style={{ display: 'flex', gap: 14, flexWrap: 'wrap', justifyContent: 'center', marginTop: 8 }}>
         <a href="/contact" className="btn btn--solid">
-          <span>Get in touch</span>
+          <span>{t('gallery.cta.btn_contact', 'Get in touch')}</span>
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
             <path d="M7 17L17 7M9 7h8v8" />
           </svg>
         </a>
         <a href="/solutions" className="btn">
-          <span>View Solutions</span>
+          <span>{t('gallery.cta.btn_solutions', 'View Solutions')}</span>
         </a>
       </div>
     </section>

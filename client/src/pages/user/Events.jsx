@@ -6,6 +6,7 @@ import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,7 +30,7 @@ const formatNewsDate = (iso) => {
 
 // ── sub-components ──────────────────────────────────────────────────────────
 
-const EventCard = ({ item, idx }) => {
+const EventCard = ({ item, idx, t }) => {
   const date = formatEventDate(item.event_date);
   return (
     <article className="ev-card reveal">
@@ -66,7 +67,7 @@ const EventCard = ({ item, idx }) => {
             rel="noopener noreferrer"
             className="ev-register-btn"
           >
-            <span>Register Now</span>
+            <span>{t('events.card.register_now', 'Register Now')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M7 17L17 7M9 7h8v8" />
             </svg>
@@ -77,7 +78,7 @@ const EventCard = ({ item, idx }) => {
   );
 };
 
-const NewsCard = ({ item }) => {
+const NewsCard = ({ item, t }) => {
   const dateStr = formatNewsDate(item.created_at);
   return (
     <article className="nw-card reveal">
@@ -100,7 +101,7 @@ const NewsCard = ({ item }) => {
             rel="noopener noreferrer"
             className="nw-read-more"
           >
-            Read More
+            {t('events.card.read_more', 'Read More')}
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
@@ -118,11 +119,14 @@ const Events = () => {
   const { regionSlug } = useRegion();
   const containerRef = useRef(null);
 
-  const [events, setEvents]       = useState([]);
-  const [news, setNews]           = useState([]);
+  const [rawEvents, setRawEvents] = useState([]);
+  const [rawNews, setRawNews]     = useState([]);
   const [loading, setLoading]     = useState(true);
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'events' | 'news'
   const [regionContact, setRegionContact] = useState(null);
+
+  const { translatedData: events } = useDynamicTranslation(rawEvents, ['title', 'description', 'location'], 'events_list');
+  const { translatedData: news }   = useDynamicTranslation(rawNews, ['title', 'description', 'category'], 'news_list');
 
   // ── fetch data ─────────────────────────────────────────────────────────────
   useEffect(() => {
@@ -133,8 +137,8 @@ const Events = () => {
           axios.get('/admin/public/events/', { withCredentials: false }),
           axios.get('/admin/public/news/',   { withCredentials: false }),
         ]);
-        setEvents(evRes.data || []);
-        setNews(nwRes.data   || []);
+        setRawEvents(evRes.data || []);
+        setRawNews(nwRes.data   || []);
       } catch (err) {
         console.error('Failed to load events/news:', err);
       } finally {
@@ -237,16 +241,15 @@ const Events = () => {
       {/* ── HERO ─────────────────────────────────────────────────────── */}
       <section className="shero" aria-label="Events and News">
         <h1 className="display" id="evheroH">
-          <span className="line-mask"><span className="w">Events &amp;</span></span>
-          <span className="line-mask"><span className="w"><em>News</em></span></span>
+          <span className="line-mask"><span className="w">{t('events.hero.title_main', 'Events &')}</span></span>
+          <span className="line-mask"><span className="w"><em>{t('events.hero.title_em', 'News')}</em></span></span>
         </h1>
         <div className="shero-side reveal" id="evheroSide">
           <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>
-            What's happening
+            {t('events.hero.label', "What's happening")}
           </span>
           <p>
-            Upcoming events from Mindstec — product launches, industry shows, and partner
-            conferences — alongside the latest news and press from across our regions.
+            {t('events.hero.desc', 'Upcoming events from Mindstec — product launches, industry shows, and partner conferences — alongside the latest news and press from across our regions.')}
           </p>
         </div>
       </section>
@@ -254,9 +257,9 @@ const Events = () => {
       {/* ── TAB FILTER ───────────────────────────────────────────────── */}
       <div className="ev-tabs" role="tablist" aria-label="Filter events and news">
         {[
-          { key: 'all',    label: 'All' },
-          { key: 'events', label: 'Events' },
-          { key: 'news',   label: 'News'  },
+          { key: 'all',    label: t('events.tabs.all', 'All') },
+          { key: 'events', label: t('events.tabs.events', 'Events') },
+          { key: 'news',   label: t('events.tabs.news', 'News')  },
         ].map(tab => (
           <button
             key={tab.key}
@@ -286,22 +289,22 @@ const Events = () => {
         <section className="ev-section" aria-label="Upcoming Events">
           <div className="ev-section-head section-head">
             <div>
-              <span className="label label--red">Upcoming Events</span>
+              <span className="label label--red">{t('events.upcoming.label', 'Upcoming Events')}</span>
               <h2 className="display" style={{ marginTop: '16px' }}>
-                See us <em>live.</em>
+                {t('events.upcoming.title_main', 'See us')} <em>{t('events.upcoming.title_em', 'live.')}</em>
               </h2>
             </div>
             <p className="lede side">
-              Meet the Mindstec team at trade shows, launch events, and partner conferences across our regions.
+              {t('events.upcoming.desc', 'Meet the Mindstec team at trade shows, launch events, and partner conferences across our regions.')}
             </p>
           </div>
 
           {events.length === 0 ? (
-            <p className="ev-empty">No upcoming events at the moment — check back soon.</p>
+            <p className="ev-empty">{t('events.upcoming.empty', 'No upcoming events at the moment — check back soon.')}</p>
           ) : (
             <div className="ev-grid">
               {events.map((item, idx) => (
-                <EventCard key={item.id} item={item} idx={idx} />
+                <EventCard key={item.id} item={item} idx={idx} t={t} />
               ))}
             </div>
           )}
@@ -315,22 +318,22 @@ const Events = () => {
         <section className="ev-section" aria-label="Latest News">
           <div className="ev-section-head section-head">
             <div>
-              <span className="label label--red">Latest News</span>
+              <span className="label label--red">{t('events.news.label', 'Latest News')}</span>
               <h2 className="display" style={{ marginTop: '16px' }}>
-                Stay <em>informed.</em>
+                {t('events.news.title_main', 'Stay')} <em>{t('events.news.title_em', 'informed.')}</em>
               </h2>
             </div>
             <p className="lede side">
-              Press releases, industry partnerships, and product announcements from Mindstec Distribution.
+              {t('events.news.desc', 'Press releases, industry partnerships, and product announcements from Mindstec Distribution.')}
             </p>
           </div>
 
           {news.length === 0 ? (
-            <p className="ev-empty">No news items yet — check back soon.</p>
+            <p className="ev-empty">{t('events.news.empty', 'No news items yet — check back soon.')}</p>
           ) : (
             <div className="nw-grid">
               {news.map(item => (
-                <NewsCard key={item.id} item={item} />
+                <NewsCard key={item.id} item={item} t={t} />
               ))}
             </div>
           )}
@@ -343,20 +346,20 @@ const Events = () => {
           <img src="/assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy" />
         </div>
         <div className="cta-inner">
-          <span className="label label--red">Stay connected</span>
+          <span className="label label--red">{t('events.cta.label', 'Stay connected')}</span>
           <h2 className="display" id="ctaH" style={{ marginTop: '20px' }}>
-            <span className="line-mask"><span className="w">Want to be</span></span>
-            <span className="line-mask"><span className="w"><em>at the next one?</em></span></span>
+            <span className="line-mask"><span className="w">{t('events.cta.title_main', 'Want to be')}</span></span>
+            <span className="line-mask"><span className="w"><em>{t('events.cta.title_em', 'at the next one?')}</em></span></span>
           </h2>
           <div className="cta-row reveal">
             <div className="cta-actions">
               <Button to="/contact" className="btn btn--solid">
-                <span>Get in touch</span>
+                <span>{t('events.cta.btn_contact', 'Get in touch')}</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M9 7h8v8" />
                 </svg>
               </Button>
-              <Button to="/partners" className="btn"><span>Our partners</span></Button>
+              <Button to="/partners" className="btn"><span>{t('events.cta.btn_partners', 'Our partners')}</span></Button>
             </div>
             <div className="cta-contacts">
               <div className="c-item">
