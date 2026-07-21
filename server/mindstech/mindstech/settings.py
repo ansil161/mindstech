@@ -210,10 +210,10 @@ SIMPLE_JWT = {
     'AUTH_COOKIE': 'access_token',
     'AUTH_COOKIE_REFRESH': 'refresh_token',
     'AUTH_COOKIE_DOMAIN': None,
-    'AUTH_COOKIE_SECURE': not DEBUG,  # Only send over HTTPS in production
+    'AUTH_COOKIE_SECURE': True,       # Always True for cross-site SameSite=None cookies over HTTPS
     'AUTH_COOKIE_HTTP_ONLY': True,    # HttpOnly since JS cannot read cross-site cookies anyway
     'AUTH_COOKIE_PATH': '/',
-    'AUTH_COOKIE_SAMESITE': 'None' if not DEBUG else 'Lax',    # Allow cross-domain cookies in production
+    'AUTH_COOKIE_SAMESITE': 'None',   # Required for cross-domain cookies (Vercel -> Render)
 }
 
 # CORS Configuration
@@ -224,29 +224,23 @@ CORS_ALLOW_HEADERS = list(default_headers) + [
 ]
 CORS_ALLOWED_ORIGINS = [
     "https://mindstech.vercel.app",
-  
     "https://mindstech-7zm2rsg5k-ansil161s-projects.vercel.app",
     "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000",
 ]
 
 # CSRF Configuration
 CSRF_COOKIE_HTTPONLY = False          # Must be False so frontend JS can read CSRF token
-CSRF_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'
-CSRF_COOKIE_SECURE = not DEBUG        # Only send CSRF cookie over HTTPS in production
+CSRF_COOKIE_SAMESITE = 'None'         # Required for cross-domain CSRF cookie sending
+CSRF_COOKIE_SECURE = True             # Required when SameSite is None
 
 # Session Configuration
-SESSION_COOKIE_SAMESITE = 'None' if not DEBUG else 'Lax'
-SESSION_COOKIE_SECURE = not DEBUG     # Only send session cookie over HTTPS in production
+SESSION_COOKIE_SAMESITE = 'None'      # Required for cross-domain session cookies
+SESSION_COOKIE_SECURE = True          # Required when SameSite is None
 
 CSRF_TRUSTED_ORIGINS = [
     "https://mindstech.vercel.app",
+    "https://mindstech-7zm2rsg5k-ansil161s-projects.vercel.app",
     "http://localhost:5173",
-    "http://localhost:3000",
-    "http://127.0.0.1:5173",
-    "http://127.0.0.1:3000",
 ]
 
 
@@ -254,7 +248,6 @@ CSRF_TRUSTED_ORIGINS = [
 REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379/0')
 CELERY_BROKER_URL = REDIS_URL
 CELERY_RESULT_BACKEND = REDIS_URL
-
 
 
 CELERY_ACCEPT_CONTENT = ['json']
