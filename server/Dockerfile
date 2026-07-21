@@ -29,5 +29,5 @@ USER django-user
 EXPOSE 8000
 
 # Run both Gunicorn and Celery worker via Supervisor
-CMD ["supervisord", "-c", "/app/supervisord.conf"]
+CMD ["gunicorn", "mindstech.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "1", "--threads", "2"]
 
