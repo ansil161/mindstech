@@ -221,6 +221,8 @@ SIMPLE_JWT = {
 CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "https://mindstech.vercel.app",
+  
+    "https://mindstech-7zm2rsg5k-ansil161s-projects.vercel.app"
     "http://localhost:5173",
     "http://localhost:3000",
     "http://127.0.0.1:5173",
