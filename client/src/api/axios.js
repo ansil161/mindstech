@@ -5,7 +5,7 @@ import axios from 'axios';
  * withCredentials: true ensures HttpOnly cookies are automatically sent with requests.
  */
 const apiClient = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
+  baseURL: (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') + '/api/v1',
   timeout: 30000,
   headers: {
     'Content-Type': 'application/json',
@@ -68,7 +68,7 @@ apiClient.interceptors.response.use(
     if (error.response?.status === 401 && !originalRequest._retry) {
       // Do not try to refresh if the request was to login or refresh itself
       const requestUrl = originalRequest.url || '';
-      if (requestUrl.includes('/api/v1/accounts/login/') || requestUrl.includes('/api/v1/accounts/refresh/')) {
+      if (requestUrl.includes('/accounts/login/') || requestUrl.includes('/accounts/refresh/')) {
         const fallbackError = {
           success: false,
           message: error.response?.data?.message || 'Authentication failed.',
@@ -90,7 +90,7 @@ apiClient.interceptors.response.use(
 
       try {
         // Call refresh endpoint - HttpOnly cookies will be sent automatically
-        await apiClient.post('/api/v1/accounts/refresh/');
+        await apiClient.post('/accounts/refresh/');
         isRefreshing = false;
         processQueue(null);
         return apiClient(originalRequest);
