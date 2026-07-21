@@ -5,36 +5,37 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 
 class HttpOnlyCookieJWTAuthentication(JWTAuthentication):
     """
-    Custom authentication class that reads the access token from an HttpOnly cookie
-    and performs CSRF validation if cookie authentication is successfully matched.
+    Custom DRF authentication class that extracts the SimpleJWT access token
+    from an HttpOnly cookie ('access_token'). Falls back to the Authorization header if missing.
     """
     def authenticate(self, request):
         cookie_name = settings.SIMPLE_JWT.get('AUTH_COOKIE', 'access_token')
         raw_token = request.COOKIES.get(cookie_name)
         
-        # If the access token is not present in the cookies, delegate/return None
+        # If cookie is absent, fall back to default Authorization header checking
         if raw_token is None:
-            return None
+            return super().authenticate(request)
 
-        # Validate the token using Simple JWT's base validation
+        # Validate token using Simple JWT's base validation
         validated_token = self.get_validated_token(raw_token)
         user = self.get_user(validated_token)
 
-        # Enforce CSRF check if user is authenticated via cookie
-        # to protect against Cross-Site Request Forgery (CSRF)
+        # Enforce CSRF check for state-changing requests (POST, PUT, PATCH, DELETE)
         self.enforce_csrf(request)
 
         return user, validated_token
 
     def enforce_csrf(self, request):
         """
-        Enforce CSRF validation for state-changing requests.
+        Enforce CSRF validation for state-changing requests when authenticated via cookies.
+        Safe HTTP methods (GET, HEAD, OPTIONS, TRACE) skip CSRF checks.
         """
+        if request.method in ('GET', 'HEAD', 'OPTIONS', 'TRACE'):
+            return
+
         check = CSRFCheck(request)
-        # Populates request.META['CSRF_COOKIE']
         check.process_request(request)
         
-        # Runs the standard Django CSRF checks
         reason = check.process_view(request, None, (), {})
         if reason:
             raise PermissionDenied(f"CSRF Failed: {reason}")
