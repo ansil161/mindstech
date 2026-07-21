@@ -67,12 +67,11 @@ class EventNewsDetailView(APIView):
 
     def delete(self, request, pk):
         item = get_object_or_404(EventNews, pk=pk)
-        # Remove image file from disk if it exists
+        # Remove image file if present
         if item.image:
             try:
-                if os.path.isfile(item.image.path):
-                    os.remove(item.image.path)
-            except OSError:
+                item.image.delete(save=False)
+            except Exception:
                 pass
         item.delete()
         return Response({'message': 'Item deleted successfully.'}, status=status.HTTP_204_NO_CONTENT)

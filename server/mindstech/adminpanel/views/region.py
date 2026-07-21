@@ -136,13 +136,12 @@ class TeamMemberDetailView(APIView):
         member = self.get_object(pk)
         if member is None:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
-        # Delete the photo file from disk
+        # Delete the photo file if present
         if member.photo:
-            if os.path.isfile(member.photo.path):
-                try:
-                    os.remove(member.photo.path)
-                except OSError:
-                    pass
+            try:
+                member.photo.delete(save=False)
+            except Exception:
+                pass
         member.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -238,13 +237,12 @@ class RegionBrandDetailView(APIView):
         brand = self.get_object(pk)
         if brand is None:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
-        # Delete the logo file from disk if it exists
+        # Delete the logo file if present
         if brand.logo:
-            if os.path.isfile(brand.logo.path):
-                try:
-                    os.remove(brand.logo.path)
-                except OSError:
-                    pass
+            try:
+                brand.logo.delete(save=False)
+            except Exception:
+                pass
         brand.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
@@ -309,12 +307,12 @@ class TestimonialDetailView(APIView):
         testimonial = self.get_object(pk)
         if testimonial is None:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
+        # Delete the photo file if present
         if testimonial.photo:
-            if os.path.isfile(testimonial.photo.path):
-                try:
-                    os.remove(testimonial.photo.path)
-                except OSError:
-                    pass
+            try:
+                testimonial.photo.delete(save=False)
+            except Exception:
+                pass
         testimonial.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
