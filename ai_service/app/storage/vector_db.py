@@ -14,14 +14,12 @@ class QdrantManager:
     def __init__(self):
         self.collection_name = settings.QDRANT_COLLECTION_NAME
         
+        import os
         # Connect to Qdrant
-        if settings.QDRANT_API_KEY:
-            self.client = QdrantClient(
-                url=settings.QDRANT_URL,
-                api_key=settings.QDRANT_API_KEY
-            )
-        else:
-            self.client = QdrantClient(url=settings.QDRANT_URL)
+        self.client = QdrantClient(
+            url=os.getenv("QDRANT_URL"),
+            api_key=os.getenv("QDRANT_API_KEY"),
+        )
             
         self._ensure_collection_exists()
 

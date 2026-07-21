@@ -110,23 +110,13 @@ class Settings(BaseSettings):
 
 
     # Vector Database Settings
-    QDRANT_HOST: str = "localhost"
-    QDRANT_PORT: int = 6333
     QDRANT_URL: str | None = None
     QDRANT_API_KEY: str | None = None
     QDRANT_COLLECTION_NAME: str = "mindstec_rag"
     QDRANT_VECTOR_DIMENSION: int = 1536
     QDRANT_DISTANCE_METRIC: str = "Cosine"  # Options: Cosine, Dot, Euclid
 
-    @classmethod
-    def assemble_url(cls, host: str, port: int) -> str:
-        return f"http://{host}:{port}"
 
-    @model_validator(mode="after")
-    def assemble_qdrant_url(self) -> "Settings":
-        if not self.QDRANT_URL:
-            self.QDRANT_URL = self.assemble_url(self.QDRANT_HOST, self.QDRANT_PORT)
-        return self
 
 
 
