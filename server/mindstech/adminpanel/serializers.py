@@ -107,6 +107,17 @@ class BlogSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['id', 'created_at', 'date', 'dateStr']
 
+    def to_internal_value(self, data):
+        if hasattr(data, 'copy'):
+            data = data.copy()
+        else:
+            data = dict(data)
+        if 'category' in data and not data.get('cat'):
+            data['cat'] = data['category']
+        if 'description' in data and not data.get('desc'):
+            data['desc'] = data['description']
+        return super().to_internal_value(data)
+
     def get_date(self, obj):
         return obj.publish_date.strftime("%d %b %Y") if obj.publish_date else ""
 
@@ -324,6 +335,15 @@ class EventNewsSerializer(serializers.ModelSerializer):
             'is_active', 'created_at',
         ]
         read_only_fields = ['id', 'created_at']
+
+    def to_internal_value(self, data):
+        if hasattr(data, 'copy'):
+            data = data.copy()
+        else:
+            data = dict(data)
+        if 'desc' in data and not data.get('description'):
+            data['description'] = data['desc']
+        return super().to_internal_value(data)
 
     def validate_title(self, value):
         return strip_tags(value).strip()
