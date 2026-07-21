@@ -80,13 +80,20 @@ class AuthService:
                 pass
 
         # Clear cookies on response
+        samesite_setting = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+        secure_setting = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'] or (samesite_setting and samesite_setting.lower() == 'none')
+
         response.delete_cookie(
             key=settings.SIMPLE_JWT['AUTH_COOKIE'],
-            path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH']
+            path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH'],
+            samesite=samesite_setting,
+            secure=secure_setting,
         )
         response.delete_cookie(
             key=settings.SIMPLE_JWT['AUTH_COOKIE_REFRESH'],
-            path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH']
+            path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH'],
+            samesite=samesite_setting,
+            secure=secure_setting,
         )
 
     @staticmethod
@@ -133,8 +140,9 @@ class AuthService:
         """
         Helper method to apply common cookie properties.
         """
-        # Determine secure dynamically from settings.DEBUG at runtime (e.g. True in tests and prod)
-        secure_cookie = not settings.DEBUG
+        samesite_setting = settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE']
+        # SameSite=None ALWAYS requires secure=True in modern browsers
+        secure_cookie = settings.SIMPLE_JWT['AUTH_COOKIE_SECURE'] or (samesite_setting and samesite_setting.lower() == 'none')
         
         response.set_cookie(
             key=key,
@@ -142,6 +150,6 @@ class AuthService:
             max_age=max_age,
             secure=secure_cookie,
             httponly=settings.SIMPLE_JWT['AUTH_COOKIE_HTTP_ONLY'],
-            samesite=settings.SIMPLE_JWT['AUTH_COOKIE_SAMESITE'],
+            samesite=samesite_setting,
             path=settings.SIMPLE_JWT['AUTH_COOKIE_PATH']
         )
