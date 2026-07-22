@@ -19,7 +19,7 @@ def parse_document_task(self, document_id: int):
         
         url = getattr(settings, "AI_SERVICE_URL", os.getenv("AI_SERVICE_URL", "http://ai-service:8000")).rstrip("/")
         
-        with open(doc.file.path, 'rb') as f:
+        with doc.file.open('rb') as f:
             files = {'file': (doc.file.name, f, 'application/octet-stream')}
             # Need to pass API Key if required
             api_key = getattr(settings, "AI_SERVICE_API_KEY", "secret-key")
