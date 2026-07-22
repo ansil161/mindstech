@@ -8,6 +8,7 @@ import axios from '../../api/axios';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
+import { SOLUTION_SLUGS } from '../../constants/solutions.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,6 +57,20 @@ const Solutions = () => {
   const telHref = (regionContact?.phone_display || regionContact?.phone || '').replace(/[^+\d]/g, '');
   const telLabel = regionContact?.phone_display || regionContact?.phone || '';
   const email = regionContact?.email || '';
+
+  // The six solution verticals' category label + tags are already translated
+  // in i18n (solutions.arr.<i>) and already rendered on SolutionDetails.jsx —
+  // this just resolves the same copy for a given API-returned slug so the
+  // existing .srow-cat/.srow-tags markup below isn't left empty.
+  const getSolutionMeta = (slug) => {
+    const i = SOLUTION_SLUGS.indexOf(slug);
+    if (i === -1) return null;
+    const cat = t(`solutions.arr.${i}.cat`, '');
+    const tags = [1, 2, 3, 4]
+      .map((n) => t(`solutions.arr.${i}.tag${n}`, ''))
+      .filter(Boolean);
+    return { cat, tags };
+  };
 
   useEffect(() => {
     if (solutions.length === 0) return;
@@ -161,31 +176,39 @@ const Solutions = () => {
 
       {/* SOLUTION ROWS — from backend */}
       <div className="sol-flow" id="solFlow">
-        {solutions.map((sol, idx) => (
-          <article className="srow" key={sol.id || idx}>
-            <Link
-              className="srow-media reveal-img"
-              to={`/solutions/${sol.slug}`}
-              aria-label={`Explore ${sol.title}`}
-            >
-              <img src={sol.image} alt={sol.title} loading="lazy" />
-              <span className="srow-cat">{sol.title}</span>
-            </Link>
-            <div className="srow-body reveal">
-              <span className="num">{String(idx + 1).padStart(2, '0')}</span>
-              <h2 className="display">
-                <Link to={`/solutions/${sol.slug}`}>{sol.title}</Link>
-              </h2>
-              <p>{sol.desc}</p>
-              <Link className="srow-link" to={`/solutions/${sol.slug}`}>
-                {t('solutions.explore', 'Explore')} {sol.title}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M5 12h14M13 6l6 6-6 6" />
-                </svg>
+        {solutions.map((sol, idx) => {
+          const meta = getSolutionMeta(sol.slug);
+          return (
+            <article className="srow" key={sol.id || idx}>
+              <Link
+                className="srow-media reveal-img"
+                to={`/solutions/${sol.slug}`}
+                aria-label={`Explore ${sol.title}`}
+              >
+                <img src={sol.image} alt={sol.title} loading="lazy" />
+                {meta?.cat && <span className="srow-cat">{meta.cat}</span>}
               </Link>
-            </div>
-          </article>
-        ))}
+              <div className="srow-body reveal">
+                <span className="num">{String(idx + 1).padStart(2, '0')}</span>
+                <h2 className="display">
+                  <Link to={`/solutions/${sol.slug}`}>{sol.title}</Link>
+                </h2>
+                <p>{sol.desc}</p>
+                {meta?.tags?.length > 0 && (
+                  <div className="srow-tags">
+                    {meta.tags.map((tag) => <span key={tag}>{tag}</span>)}
+                  </div>
+                )}
+                <Link className="srow-link" to={`/solutions/${sol.slug}`}>
+                  {t('solutions.explore', 'Explore')} {sol.title}
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M5 12h14M13 6l6 6-6 6" />
+                  </svg>
+                </Link>
+              </div>
+            </article>
+          );
+        })}
       </div>
 
       {/* CTA */}
