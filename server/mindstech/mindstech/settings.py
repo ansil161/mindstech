@@ -210,11 +210,11 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle',
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '100000/day' if DEBUG else '100/day',
-        'user': '1000000/day' if DEBUG else '1000/day',
-        'login': '1000/minute' if DEBUG else '5/minute',
-        'chatbot': '100/minute' if DEBUG else '30/minute',
-        'translation': '100/minute' if DEBUG else '60/minute',
+        'anon': '100000/day' ,
+        'user': '1000000/day' ,
+        'login': '1000/minute',
+        'chatbot': '100/minute',
+        'translation': '100/minute',
     },
     'EXCEPTION_HANDLER': 'accounts.utils.custom_exception_handler',
 }
