@@ -507,8 +507,49 @@ img { display: block; max-width: 100%; }
 .map-pin { cursor: pointer; }
 .map-pin .pin-core { transition: r .25s var(--ease); }
 .map-pin:hover .pin-core { r: 5; }
+.map-pin--hq .pin-core { r: 4; }
+.map-pin--hq:hover .pin-core { r: 6; }
+.map-pin .pin-halo { filter: blur(3px); opacity: .3; transition: opacity .25s var(--ease), r .25s var(--ease); pointer-events: none; }
+.map-pin:hover .pin-halo { opacity: .7; r: 9; }
+.map-pin--hq .pin-halo { opacity: .45; }
+.map-pin--hq:hover .pin-halo { opacity: .85; r: 11; }
 .map-label rect { fill: rgba(11,11,14,0.85); stroke: rgba(255,255,255,0.1); rx: 4px; }
 .map-label text { fill: var(--white); font-family: var(--body); font-size: 9px; font-weight: 600; letter-spacing: .05em; }
+.map-pin:hover .map-label rect { stroke: rgba(204,0,1,0.5); }
+.map-leader { stroke: rgba(255,255,255,0.28); stroke-width: 0.6; stroke-dasharray: 2 2; pointer-events: none; }
+
+/* Popover anchored to the hovered/tapped .map-pin (positioned via JS from the
+   marker's actual on-screen rect), with a small arrow pointing at it. */
+.map-tooltip {
+  position: fixed;
+  z-index: 70;
+  min-width: 176px;
+  padding: 14px 16px;
+  background: rgba(11,11,14,0.96);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 20px 44px rgba(0,0,0,.5);
+  pointer-events: none;
+  opacity: 0;
+  transform: translate(-50%, 6px);
+  transition: opacity .2s var(--ease), transform .2s var(--ease);
+}
+.map-tooltip.on { opacity: 1; transform: translate(-50%, 0); }
+.map-tooltip::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  width: 10px;
+  height: 10px;
+  background: rgba(11,11,14,0.96);
+  transform: translateX(-50%) rotate(45deg);
+}
+.map-tooltip.tooltip-above::after { bottom: -5px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.map-tooltip.tooltip-below::after { top: -5px; border-left: 1px solid var(--line); border-top: 1px solid var(--line); }
+.map-tooltip .mt-city { display: flex; align-items: center; gap: 6px; font-family: var(--body); font-size: 15px; font-weight: 700; color: var(--white); }
+.map-tooltip .mt-pin { font-size: 12px; line-height: 1; }
+.map-tooltip .mt-country { margin-top: 4px; font-size: 12.5px; color: var(--grey); }
+.map-tooltip .mt-type { margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--line-soft); font-size: 10.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--red); font-weight: 700; }
 .map-contacts { display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap; margin: clamp(28px, 4vw, 48px) var(--pad) 0; border-top: 1px solid var(--line-soft); padding-top: 28px; }
 .map-contacts .mc { display: flex; flex-direction: column; gap: 4px; }
 .map-contacts .mc span { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--grey); }
@@ -1470,6 +1511,9 @@ footer { border-top: 1px solid var(--line-soft); }
   .edge-a p { padding-left: 0; }
   .edge-q .num { width: 32px; }
   .map-contacts { flex-direction: column; gap: 20px; }
+  /* Tablet: keep every city label, just tighten them up. */
+  .map-label text { font-size: 7.5px; }
+  .map-label rect { rx: 3px; }
   .work-grid { grid-template-columns: 1fr; }
   .project { grid-column: 1/-1 !important; aspect-ratio: 16/10 !important; margin-top: 0 !important; }
   .journal-grid { grid-template-columns: 1fr; }
@@ -1500,6 +1544,8 @@ footer { border-top: 1px solid var(--line-soft); }
   .hero-scrollcue { display: none; }
   .section-head { flex-direction: column; align-items: flex-start; gap: 16px; }
   .nav .btn { display: none; }
+  /* Mobile: markers only — city names show in the tap tooltip instead. */
+  .map-label, .map-leader { display: none; }
   .stats-grid { grid-template-columns: 1fr; }
   .foot-grid { grid-template-columns: 1fr; }
   .cta .cta-row { flex-direction: column; align-items: flex-start; }

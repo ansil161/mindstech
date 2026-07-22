@@ -197,15 +197,14 @@
   },
   "home": {
     "cities": {
-      "bangalore": "Bangalore HQ",
-      "delhi": "New Delhi",
-      "dhaka": "Dhaka",
-      "colombo": "Colombo",
+      "bangalore": "Bangalore",
+      "dubai": "Dubai",
+      "riyadh": "Riyadh",
       "nairobi": "Nairobi",
-      "lagos": "Lagos",
-      "joburg": "Johannesburg",
-      "warsaw": "Warsaw",
-      "prague": "Prague"
+      "johannesburg": "Johannesburg",
+      "cairo": "Cairo",
+      "bangkok": "Bangkok",
+      "warsaw": "Warsaw"
     },
     "hero": {
       "line1": "The quiet",
@@ -276,6 +275,9 @@
       "title_main": "Where we",
       "title_em": "operate",
       "lede": "Stock, currency, warranty and people — all handled in-region.",
+      "hq_suffix": "(HQ)",
+      "office_hq": "Global Headquarters",
+      "office_regional": "Regional Office",
       "contacts": {
         "india": "India — SAARC · Bangalore HQ",
         "africa": "Africa — Commercial hubs · Nairobi",
