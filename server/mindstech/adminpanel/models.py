@@ -309,14 +309,8 @@ class Document(BaseModel):
             try:
                 # Trigger Celery async deletion task
                 delete_document_task.delay(doc_id, category)
-            except Exception:
-                # Direct API call fallback if Celery worker is not active
-                try:
-                    from .services.ai_client import AIClient
-                    client = AIClient()
-                    client.delete_document(document_id=doc_id, category=category)
-                except Exception as e:
-                    logging.getLogger(__name__).error("Failed to delete document %s from Qdrant: %s", doc_id, str(e))
+            except Exception as e:
+                logging.getLogger(__name__).error("Failed to dispatch Celery delete task for document %s: %s", doc_id, str(e))
 
         transaction.on_commit(trigger_qdrant_delete)
         
