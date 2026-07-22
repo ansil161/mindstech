@@ -10,6 +10,7 @@ import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee.jsx';
 import { safeFromTo } from '../../utils/gsapSafe';
+import { buildSolutionsFallback } from '../../constants/solutions.js';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -45,6 +46,8 @@ const Home = () => {
   const mapBaseRef = useRef(null);
   const mapOverlayRef = useRef(null);
   const edgeListRef = useRef(null);
+  const solListRef = useRef(null);
+  const solPreviewRef = useRef(null);
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
 
@@ -57,6 +60,10 @@ const Home = () => {
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
   const { translatedData: translatedTestimonials } = useDynamicTranslation(testimonials, ['name', 'designation', 'company', 'message'], `home_testimonials_${regionSlug}`);
+
+  // The section promises "six verticals" — if the API is unreachable or returns
+  // nothing, fall back to the canonical list in i18n so it never renders empty.
+  const solutionRows = solutions.length > 0 ? solutions : buildSolutionsFallback(t);
 
   const marqueeTestimonials = (translatedTestimonials || []).map((item) => ({
     author: {
@@ -354,9 +361,13 @@ const Home = () => {
     };
   }, []);
 
-  // Separate effect for solutions row animations triggered when solutions render
+  // Separate effect for solutions row animations triggered when solutions render.
+  // Guard on solutionRows (always populated, API or fallback), not the raw
+  // `solutions` state — that stays a stable empty array forever when the API
+  // fails, which used to skip this effect entirely and leave the fallback
+  // rows stuck at the base CSS's `opacity: 0` with no way to ever reach 1.
   useEffect(() => {
-    if (solutions.length === 0) return;
+    if (solutionRows.length === 0) return;
 
     const ctx = gsap.context(() => {
       gsap.fromTo('.sol-row',
@@ -376,10 +387,18 @@ const Home = () => {
       );
     }, containerRef);
 
+    // Recalculate ScrollTrigger metrics once other async content (fieldwork,
+    // testimonials) has settled and may have shifted this section's position —
+    // same fix already applied to the fieldwork reveal effect above.
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 100);
+
     return () => {
       ctx.revert();
+      clearTimeout(timer);
     };
-  }, [solutions]);
+  }, [solutions, solutionRows.length]);
 
   // Separate effect for testimonial card animations
   useEffect(() => {
@@ -461,6 +480,53 @@ const Home = () => {
     const firstOpen = list.querySelector('.edge-item.open') || items[0];
     if (firstOpen) openItem(firstOpen);
   }, []);
+
+  // Solutions row hover — floating image card that tracks the cursor,
+  // toggled via .on the same way #edgeVisual swaps images above. Skipped on
+  // touch/coarse pointers and under prefers-reduced-motion, where a fixed
+  // cursor-follower has no meaning.
+  useEffect(() => {
+    const list = solListRef.current;
+    const preview = solPreviewRef.current;
+    if (!list || !preview) return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const canHover = window.matchMedia('(hover: hover)').matches;
+    if (reduceMotion || !canHover) return;
+
+    const images = preview.querySelectorAll('img');
+    const rows = list.querySelectorAll('.sol-row');
+
+    const move = (e) => {
+      const maxX = window.innerWidth - preview.offsetWidth - 16;
+      const maxY = window.innerHeight - preview.offsetHeight - 16;
+      preview.style.left = `${Math.min(Math.max(e.clientX + 28, 16), maxX)}px`;
+      preview.style.top = `${Math.min(Math.max(e.clientY - 150, 16), maxY)}px`;
+    };
+
+    const onLeave = () => {
+      preview.classList.remove('on');
+    };
+
+    const enterHandlers = Array.from(rows).map((row) => {
+      const onEnter = (e) => {
+        move(e);
+        preview.classList.add('on');
+        images.forEach((img) => img.classList.toggle('on', img.dataset.preview === row.dataset.preview));
+      };
+      row.addEventListener('mouseenter', onEnter);
+      return { row, onEnter };
+    });
+
+    list.addEventListener('mousemove', move);
+    list.addEventListener('mouseleave', onLeave);
+
+    return () => {
+      enterHandlers.forEach(({ row, onEnter }) => row.removeEventListener('mouseenter', onEnter));
+      list.removeEventListener('mousemove', move);
+      list.removeEventListener('mouseleave', onLeave);
+    };
+  }, [solutionRows.length]);
 
   // Dotted world map base loader
   useEffect(() => {
@@ -654,14 +720,11 @@ const Home = () => {
           </div>
           <p className="lede side">{t('home.solutions.lede')}</p>
         </div>
-        <div className="sol-list" id="solList">
-          {solutions.map((sol, i) => (
-            <Link key={i} className="sol-row" to={`/solutions/${sol.slug}`}>
+        <div className="sol-list" id="solList" ref={solListRef}>
+          {solutionRows.map((sol, i) => (
+            <Link key={sol.slug || i} className="sol-row" to={`/solutions/${sol.slug}`} data-preview={i}>
               <span className="num">{(i + 1).toString().padStart(2, '0')}</span>
               <span className="sol-title">{sol.title}</span>
-              <div className="sol-img">
-                <img src={sol.image} alt={sol.title} loading="lazy" />
-              </div>
               <span className="sol-desc">{sol.desc}</span>
               <span className="sol-arrow">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
@@ -669,6 +732,11 @@ const Home = () => {
                 </svg>
               </span>
             </Link>
+          ))}
+        </div>
+        <div className="sol-preview" id="solPreview" ref={solPreviewRef} aria-hidden="true">
+          {solutionRows.map((sol, i) => (
+            sol.image && <img key={sol.slug || i} data-preview={i} src={sol.image} alt="" loading="lazy" />
           ))}
         </div>
       </section>
@@ -683,7 +751,7 @@ const Home = () => {
             <p className="desc">{t('home.stats.years_desc')}</p>
           </div>
           <div className="stat-cell reveal">
-            <div className="value"><span className="count" data-to="50">0</span><sup>+</sup></div>
+            <div className="value"><span className="count" data-to="49">0</span><sup>+</sup></div>
             <p className="desc">{t('home.stats.brands_desc')}</p>
           </div>
           <div className="stat-cell reveal">
@@ -691,7 +759,7 @@ const Home = () => {
             <p className="desc">{t('home.stats.ops_desc')}</p>
           </div>
           <div className="stat-cell reveal">
-            <div className="value"><span className="count" data-to="1000">0</span><sup>+</sup></div>
+            <div className="value"><span className="count" data-to="973">0</span><sup>+</sup></div>
             <p className="desc">{t('home.stats.installs_desc')}</p>
           </div>
         </div>
@@ -912,14 +980,14 @@ const Home = () => {
             ))
           )}
         </div>
-        {/* <div className="work-more reveal">
+        <div className="work-more reveal">
           <Button href="#contact" className="text-link">
             <span>{t('home.work.btn')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M5 12h14M13 6l6 6-6 6" />
             </svg>
           </Button>
-        </div> */}
+        </div>
       </section>
 
       <div className="rule"></div>
@@ -1013,7 +1081,7 @@ const Home = () => {
           </div>
           <div className="cta-contacts">
             <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
-            <div className="c-item"><span>{t('home.cta.email_label', 'Email')}</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
+            <div className="c-item"><span>{t('home.cta.global_label', 'Global enquiries')}</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
             <div className="c-item"><span>{t('contact_info.partner_label')}</span><a href={`mailto:${t('contact_info.partner_email')}`}>{t('contact_info.partner_email')}</a></div>
           </div>
         </div>

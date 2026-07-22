@@ -114,7 +114,7 @@ class Settings(BaseSettings):
     QDRANT_URL: str | None = None
     QDRANT_API_KEY: str | None = None
     QDRANT_COLLECTION_NAME: str = "mindstec_rag"
-    QDRANT_VECTOR_DIMENSION: int = 1536
+    QDRANT_VECTOR_DIMENSION: int = 384
     QDRANT_DISTANCE_METRIC: str = "Cosine"  # Options: Cosine, Dot, Euclid
 
 

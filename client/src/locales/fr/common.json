@@ -209,12 +209,7 @@
       "title_em": "dans la chambre.",
       "btn1": "Obtenez un devis",
       "btn2": "Devenez partenaire",
-      "email_label": "E-mail",
-      "contacts": {
-        "india": "Opérations en Inde",
-        "global": "+91 80 4525 6922",
-        "partnerships": "Demandes mondiales"
-      }
+      "global_label": "Demandes mondiales"
     },
     "testimonials": {
       "label": "Témoignages clients",

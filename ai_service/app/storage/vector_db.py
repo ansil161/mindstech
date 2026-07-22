@@ -28,28 +28,28 @@ class QdrantManager:
         return self._client
 
     def _ensure_collection_exists(self):
-        """Checks if the collection exists, otherwise creates it dynamically."""
+        """Checks if the collection exists, verifies vector dimension, and creates/recreates if needed."""
         try:
             collections = self._client.get_collections().collections
             collection_names = [col.name for col in collections]
             
+            # Decide vector dimension based on configuration and provider
+            dimension = 384
+            if settings.EMBEDDING_PROVIDER == "openai":
+                dimension = 1536
+            elif settings.QDRANT_VECTOR_DIMENSION:
+                dimension = settings.QDRANT_VECTOR_DIMENSION
+
+            distance = qmodels.Distance.COSINE
+            if settings.QDRANT_DISTANCE_METRIC.lower() == "euclid":
+                distance = qmodels.Distance.EUCLID
+            elif settings.QDRANT_DISTANCE_METRIC.lower() == "dot":
+                distance = qmodels.Distance.DOT
+
             if self.collection_name not in collection_names:
-                # Decide vector dimension based on the embedding provider
-                dimension = 384
-                if settings.EMBEDDING_PROVIDER == "openai":
-                    dimension = 1536
-                elif settings.QDRANT_VECTOR_DIMENSION:
-                    dimension = settings.QDRANT_VECTOR_DIMENSION
-
-                distance = qmodels.Distance.COSINE
-                if settings.QDRANT_DISTANCE_METRIC.lower() == "euclid":
-                    distance = qmodels.Distance.EUCLID
-                elif settings.QDRANT_DISTANCE_METRIC.lower() == "dot":
-                    distance = qmodels.Distance.DOT
-
                 logger.info(
-                    "Collection '%s' does not exist. Creating it now with dimension %d.",
-                    self.collection_name, dimension
+                    "Collection '%s' does not exist. Creating it now with dimension %d and distance %s.",
+                    self.collection_name, dimension, distance
                 )
                 self._client.create_collection(
                     collection_name=self.collection_name,
@@ -60,7 +60,35 @@ class QdrantManager:
                 )
                 logger.info("Successfully created Qdrant collection '%s'.", self.collection_name)
             else:
-                logger.debug("Qdrant collection '%s' already exists.", self.collection_name)
+                # Collection exists: verify the dimension
+                collection_info = self._client.get_collection(self.collection_name)
+                current_dim = None
+                if hasattr(collection_info.config.params.vectors, 'size'):
+                    current_dim = collection_info.config.params.vectors.size
+                elif isinstance(collection_info.config.params.vectors, dict):
+                    vec_params = collection_info.config.params.vectors.get("") or next(iter(collection_info.config.params.vectors.values()), None)
+                    if vec_params and hasattr(vec_params, 'size'):
+                        current_dim = vec_params.size
+
+                if current_dim and current_dim != dimension:
+                    logger.error(
+                        "Qdrant collection '%s' dimension mismatch! Expected: %d, Actual in Qdrant: %d. Recreating collection with size=%d...",
+                        self.collection_name, dimension, current_dim, dimension
+                    )
+                    self._client.delete_collection(self.collection_name)
+                    self._client.create_collection(
+                        collection_name=self.collection_name,
+                        vectors_config=qmodels.VectorParams(
+                            size=dimension,
+                            distance=distance
+                        )
+                    )
+                    logger.info(
+                        "Successfully recreated Qdrant collection '%s' with dimension %d.",
+                        self.collection_name, dimension
+                    )
+                else:
+                    logger.info("Qdrant collection '%s' verified with vector dimension %d.", self.collection_name, current_dim or dimension)
         except Exception as e:
             logger.exception("Error checking/creating Qdrant collection: %s", str(e))
 
@@ -86,6 +114,12 @@ class QdrantManager:
             )
             logger.info("Successfully upserted point ID %s to Qdrant.", document_id)
             return True
+        except UnexpectedResponse as e:
+            logger.error(
+                "Qdrant API UnexpectedResponse during upsert for point ID %s: %s (Vector dimension error: sent vector length %d)",
+                document_id, str(e), len(vector)
+            )
+            return False
         except Exception as e:
             logger.error("Failed to upsert point ID %s to Qdrant: %s", document_id, str(e))
             return False
