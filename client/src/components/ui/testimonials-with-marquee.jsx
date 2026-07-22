@@ -17,19 +17,19 @@ export function TestimonialsSection({
 
   return (
     <section className={cn(
-      "text-foreground py-16 sm:py-20 px-0 relative overflow-hidden",
+      "text-[var(--white)] py-16 sm:py-20 px-0 relative overflow-hidden",
       className
     )}>
       <div className="mx-auto flex max-w-[1380px] flex-col items-center gap-6 text-center sm:gap-12">
         {(title || description) && (
           <div data-testimonials-head className="flex flex-col items-center gap-3 px-4 sm:gap-4">
             {title && (
-              <h2 className="max-w-[750px] text-3xl font-bold leading-tight sm:text-4xl tracking-tight text-white font-[var(--display)]">
+              <h2 className="max-w-[750px] text-3xl font-bold leading-tight sm:text-4xl tracking-tight text-[var(--white)] font-display">
                 {title}
               </h2>
             )}
             {description && (
-              <p className="text-sm max-w-[620px] font-medium text-zinc-400 sm:text-base">
+              <p className="text-sm max-w-[620px] font-medium text-[var(--grey)] sm:text-base">
                 {description}
               </p>
             )}

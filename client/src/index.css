@@ -1319,7 +1319,20 @@ footer { border-top: 1px solid var(--line-soft); }
 .ov { display: grid; grid-template-columns: 1fr 2.2fr; gap: clamp(28px, 5vw, 90px); padding: clamp(80px, 11vw, 150px) var(--pad); }
 .ov-label { align-self: start; position: sticky; top: 110px; }
 .ov-state { font-size: clamp(26px, 3.2vw, 48px); line-height: 1.16; letter-spacing: -.02em; font-family: var(--display); font-weight: 600; }
-.ov-state em { color: var(--red); font-style: normal; }
+.ov-state em { position: relative; color: var(--red); font-style: normal; }
+.ov-state em::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -0.05em;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.7s var(--ease) 0.15s;
+}
+.ov-state.is-inview em::after { transform: scaleX(1); }
 .ov-copy { margin-top: 34px; display: grid; grid-template-columns: 1fr 1fr; gap: clamp(20px, 3vw, 44px); }
 .ov-copy p { font-size: 15.5px; color: var(--grey); line-height: 1.85; }
 
