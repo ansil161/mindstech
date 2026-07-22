@@ -10,22 +10,6 @@ export const updateRegion = (id, data) => axios.patch(`/admin/regions/${id}/`, d
 
 export const deleteRegion = (id) => axios.delete(`/admin/regions/${id}/`);
 
-// ── Admin: Team Members ──
-
-export const getTeamMembers = (regionId) => axios.get(`/admin/regions/${regionId}/team/`);
-
-export const addTeamMember = (regionId, formData) =>
-  axios.post(`/admin/regions/${regionId}/team/`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-
-export const updateTeamMember = (id, formData) =>
-  axios.patch(`/admin/team-members/${id}/`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-
-export const deleteTeamMember = (id) => axios.delete(`/admin/team-members/${id}/`);
-
 // ── Admin: Region Contact ──
 
 export const getRegionContact = (regionId) => axios.get(`/admin/regions/${regionId}/contact/`);

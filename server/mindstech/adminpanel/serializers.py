@@ -188,7 +188,6 @@ class GalleryItemSerializer(serializers.ModelSerializer):
 
 
 class RegionSerializer(serializers.ModelSerializer):
-    team_count = serializers.SerializerMethodField()
     has_contact = serializers.SerializerMethodField()
     sub_regions = serializers.SerializerMethodField()
 
@@ -196,17 +195,14 @@ class RegionSerializer(serializers.ModelSerializer):
         model = Region
         fields = [
             'id', 'name', 'slug', 'is_active', 'display_order',
-            'enabled_pages', 'created_at', 'team_count', 'has_contact', 'parent', 'sub_regions'
+            'enabled_pages', 'created_at', 'has_contact', 'parent', 'sub_regions'
         ]
-        read_only_fields = ['id', 'created_at', 'team_count', 'has_contact', 'sub_regions']
+        read_only_fields = ['id', 'created_at', 'has_contact', 'sub_regions']
 
     def get_sub_regions(self, obj):
         if obj.sub_regions.exists():
             return RegionSerializer(obj.sub_regions.all(), many=True).data
         return []
-
-    def get_team_count(self, obj):
-        return obj.team_members.filter(is_active=True).count()
 
     def get_has_contact(self, obj):
         return hasattr(obj, 'contact_info')
@@ -235,8 +231,8 @@ class TeamMemberSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = TeamMember
-        fields = ['id', 'region', 'name', 'role', 'photo', 'display_order', 'is_active', 'created_at']
-        read_only_fields = ['id', 'region', 'created_at']
+        fields = ['id', 'name', 'role', 'photo', 'display_order', 'is_active', 'created_at']
+        read_only_fields = ['id', 'created_at']
 
     def validate_name(self, value):
         return strip_tags(value).strip()
@@ -274,8 +270,7 @@ class TestimonialSerializer(serializers.ModelSerializer):
 
 
 class RegionDetailSerializer(serializers.ModelSerializer):
-    """Nested serializer for the public API — returns region + team + contact + brands + testimonials."""
-    team_members  = serializers.SerializerMethodField()
+    """Nested serializer for the public API — returns region + contact + brands + testimonials."""
     contact_info  = serializers.SerializerMethodField()
     brands        = serializers.SerializerMethodField()
     testimonials  = serializers.SerializerMethodField()
@@ -285,12 +280,8 @@ class RegionDetailSerializer(serializers.ModelSerializer):
         fields = [
             'id', 'name', 'slug',
             'enabled_pages',
-            'team_members', 'contact_info', 'brands', 'testimonials',
+            'contact_info', 'brands', 'testimonials',
         ]
-
-    def get_team_members(self, obj):
-        members = obj.team_members.all().order_by('display_order', 'created_at')
-        return TeamMemberSerializer(members, many=True, context=self.context).data
 
     def get_contact_info(self, obj):
         contacts = obj.contacts.all()

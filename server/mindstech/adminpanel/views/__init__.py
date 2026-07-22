@@ -16,12 +16,12 @@ from .events import (
 )
 from .region import (
     RegionListCreateView, RegionDetailView,
-    TeamMemberListCreateView, TeamMemberDetailView,
     RegionContactView, PublicRegionDataView, PublicRegionSolutionBrandsView, PublicRegionListView,
     RegionBrandListCreateView, RegionBrandDetailView,
     TestimonialListCreateView, TestimonialDetailView,
     RegionContactListCreateView, RegionContactDetailView,
 )
+from .team import TeamMemberListCreateView, TeamMemberDetailView, PublicTeamMembersView
 
 __all__ = [
     "DashboardStatsView",
@@ -46,8 +46,6 @@ __all__ = [
     "GalleryDetailView",
     "RegionListCreateView",
     "RegionDetailView",
-    "TeamMemberListCreateView",
-    "TeamMemberDetailView",
     "RegionContactView",
     "PublicRegionDataView",
     "PublicRegionListView",
@@ -58,4 +56,7 @@ __all__ = [
     "EventNewsDetailView",
     "PublicUpcomingEventsView",
     "PublicNewsView",
+    "TeamMemberListCreateView",
+    "TeamMemberDetailView",
+    "PublicTeamMembersView",
 ]
