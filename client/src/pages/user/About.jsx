@@ -156,19 +156,31 @@ const About = () => {
         ))}
       </div>
 
+      <div className="ahero-visual reveal-img" aria-hidden="true">
+        <img src="/assets/img/unsplash-1497366811353-6870744d04b2-w1400.jpg" alt="" loading="lazy" />
+      </div>
+
       {/* STORY */}
-      <section className="story story--single flex flex-col max-w-4xl mx-auto py-16 px-[var(--pad)]" aria-label="Our story">
-        <div className="story-text" id="storyText">
-          <p>{renderWords(t('about.story.p1'))}</p>
-          <p>{renderWords(t('about.story.p2'))}</p>
+      <section className="story" aria-label="Our story">
+        <div>
+          <div className="story-text" id="storyText">
+            <p>{renderWords(t('about.story.p1'))}</p>
+            <p>{renderWords(t('about.story.p2'))}</p>
+          </div>
+          <div className="story-more reveal">
+            <p>{t('about.story.more_p1')}</p>
+            <p>{t('about.story.more_p2')}</p>
+          </div>
         </div>
-        <div className="story-more reveal mt-10 pt-8 border-t border-white/10">
-          <p>{t('about.story.more_p1')}</p>
-          <p className="mt-4">{t('about.story.more_p2')}</p>
+        <div className="story-visual reveal-img" aria-hidden="true">
+          <figure className="sv1">
+            <img src="/assets/img/unsplash-1516035069371-29a1b244cc32-w1400.jpg" alt="" loading="lazy" />
+          </figure>
+          <figure className="sv2">
+            <img src="/assets/img/unsplash-1558494949-ef010cbdcc31-w1400.jpg" alt="" loading="lazy" />
+          </figure>
         </div>
       </section>
-
-      <div className="rule"></div>
 
       {/* PILLARS */}
       <section className="pillars" aria-label="What we do">
