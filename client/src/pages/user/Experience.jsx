@@ -50,6 +50,7 @@ const Experience = () => {
       if (reduceMotion) {
         gsap.set('.reveal', { opacity: 1, y: 0 });
         gsap.set('.reveal-img', { clipPath: 'inset(0 0 0% 0)' });
+        document.querySelectorAll('.ov-state').forEach(el => el.classList.add('is-inview'));
         return;
       }
 
@@ -85,6 +86,17 @@ const Experience = () => {
             start: 'top 86%',
             once: true,
           }
+        });
+      });
+
+      // Overview lede — underline draws in under the emphasized phrase
+      // once the paragraph has scrolled into view (paired with its .reveal fade).
+      gsap.utils.toArray('.ov-state').forEach(el => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 86%',
+          once: true,
+          onEnter: () => el.classList.add('is-inview'),
         });
       });
 
@@ -214,7 +226,7 @@ const Experience = () => {
       <section className="ov" aria-label="Overview">
         <div className="ov-label reveal"><span className="label label--red">{t('experience.ov.label')}</span></div>
         <div>
-          <p className="ov-state reveal">&gt;{t('experience.ov.lede')}&lt;</p>
+          <p className="ov-state reveal" dangerouslySetInnerHTML={{ __html: t('experience.ov.lede') }} />
           <div className="ov-copy reveal">
             <p>{t('experience.ov.p1')}</p>
             <p>{t('experience.ov.p2')}</p>
