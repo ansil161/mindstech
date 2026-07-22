@@ -839,6 +839,11 @@
     "input": {
       "placeholder": "Écrivez votre message..."
     },
+    "launcher": {
+      "label": "Demander à l'IA",
+      "placeholder": "Posez-moi une question...",
+      "panel_label": "Demander à l'IA"
+    },
     "quick_actions": {
       "company_info": {
         "title": "Informations entreprise",

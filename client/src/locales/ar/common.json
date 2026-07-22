@@ -839,6 +839,11 @@
     "input": {
       "placeholder": "اكتب رسالتك..."
     },
+    "launcher": {
+      "label": "اسأل الذكاء الاصطناعي",
+      "placeholder": "اسألني أي شيء...",
+      "panel_label": "اسأل الذكاء الاصطناعي"
+    },
     "quick_actions": {
       "company_info": {
         "title": "معلومات الشركة",

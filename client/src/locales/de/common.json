@@ -839,6 +839,11 @@
     "input": {
       "placeholder": "Schreiben Sie Ihre Nachricht..."
     },
+    "launcher": {
+      "label": "KI fragen",
+      "placeholder": "Fragen Sie mich etwas...",
+      "panel_label": "KI fragen"
+    },
     "quick_actions": {
       "company_info": {
         "title": "Unternehmensinfo",
