@@ -362,7 +362,7 @@ const Experience = () => {
             <span className="num">02</span>
             <div>
               <h4>{t('experience.visit.arr.1.title', 'Call ahead')}</h4>
-              <a href={`tel:${(activeContact?.phone_display || activeContact?.phone || t('contact_info.tel_href')).replace(/[^+\\d]/g, '')}`}>
+              <a href={`tel:${(activeContact?.phone_display || activeContact?.phone || t('contact_info.tel_href')).replace(/[^+\d]/g, '')}`}>
                 {activeContact?.phone_display || activeContact?.phone || t('contact_info.tel_label')}
               </a>
               <p className="sub-note">{t('experience.visit.arr.1.desc', 'Mon–Fri, business hours IST')}</p>
@@ -413,7 +413,7 @@ const Experience = () => {
             <div className="cta-contacts">
               <div className="c-item">
                 <span>{t('contact_info.label')}</span>
-                <a href={`tel:${(regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\\d]/g, '')}`}>
+                <a href={`tel:${(regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\d]/g, '')}`}>
                   {regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_label')}
                 </a>
               </div>
