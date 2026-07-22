@@ -1,13 +1,13 @@
+import os
 import logging
+import httpx
 from django.apps import apps
+from django.conf import settings
 from celery import shared_task
 from adminpanel.services.ai_client import AIClient, AIClientError
 
 logger = logging.getLogger(__name__)
 
-
-import httpx
-from django.conf import settings
 
 @shared_task(bind=True, max_retries=1, default_retry_delay=30)
 def parse_document_task(self, document_id: int):
@@ -39,10 +39,14 @@ def parse_document_task(self, document_id: int):
             doc.save(update_fields=['extracted_text', 'status'])
             
     except Exception as e:
-        logger.error("Failed to parse document %d: %s", document_id, str(e))
-        doc = Document.objects.get(pk=document_id)
-        doc.status = 'Failed'
-        doc.save(update_fields=['status'])
+        logger.exception("Failed to parse document %d: %s", document_id, str(e))
+        try:
+            doc = Document.objects.get(pk=document_id)
+            doc.status = 'Failed'
+            doc.save(update_fields=['status'])
+        except Exception:
+            pass
+        raise
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=60)
 def index_document_task(self, document_id: int):
@@ -66,10 +70,14 @@ def index_document_task(self, document_id: int):
         doc.save(update_fields=['status'])
         
     except Exception as e:
-        logger.error("Failed to index document %d: %s", document_id, str(e))
-        doc = Document.objects.get(pk=document_id)
-        doc.status = 'Failed'
-        doc.save(update_fields=['status'])
+        logger.exception("Failed to index document %d: %s", document_id, str(e))
+        try:
+            doc = Document.objects.get(pk=document_id)
+            doc.status = 'Failed'
+            doc.save(update_fields=['status'])
+        except Exception:
+            pass
+        raise
 
 @shared_task(bind=True, max_retries=3, default_retry_delay=60)
 def delete_document_task(self, document_id: str, category: str):
@@ -77,4 +85,5 @@ def delete_document_task(self, document_id: str, category: str):
         client = AIClient()
         client.delete_document(document_id=document_id, category=category)
     except Exception as e:
-        logger.error("Failed to delete document %s from Qdrant: %s", document_id, str(e))
+        logger.exception("Failed to delete document %s from Qdrant: %s", document_id, str(e))
+        raise
