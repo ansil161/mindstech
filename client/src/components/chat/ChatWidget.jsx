@@ -2,7 +2,7 @@ import React from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { ChatProvider } from '../../context/ChatContext';
 import useChat from '../../hooks/useChat';
-import FloatingButton from './FloatingButton';
+import AskAIPanel from './AskAIPanel';
 import ChatWindow from './ChatWindow';
 
 const ChatWidgetContent = () => {
@@ -10,8 +10,9 @@ const ChatWidgetContent = () => {
 
   return (
     <>
-      {/* Floating button */}
-      <FloatingButton />
+      {/* Launcher — hidden once the real chat window is open; ChatHeader
+          has its own close button, so no separate toggle control is needed. */}
+      {!isOpen && <AskAIPanel />}
 
       {/* Animate entrance and exit of the chat panel */}
       <AnimatePresence>

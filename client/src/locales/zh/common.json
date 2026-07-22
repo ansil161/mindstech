@@ -846,6 +846,11 @@
     "input": {
       "placeholder": "输入您的消息..."
     },
+    "launcher": {
+      "label": "咨询 AI",
+      "placeholder": "问我任何问题...",
+      "panel_label": "咨询 AI"
+    },
     "quick_actions": {
       "company_info": {
         "title": "公司信息",

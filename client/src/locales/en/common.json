@@ -910,6 +910,11 @@
     "input": {
       "placeholder": "Type your message..."
     },
+    "launcher": {
+      "label": "Ask AI",
+      "placeholder": "Ask me anything...",
+      "panel_label": "Ask AI"
+    },
     "quick_actions": {
       "company_info": {
         "title": "Company Info",
