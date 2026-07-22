@@ -262,8 +262,7 @@ const Partners = () => {
                     href={brand.website_url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="p-link"
-                    style={{ fontSize: '12px', color: 'var(--grey)', marginTop: '4px', display: 'inline-block' }}
+                    className="p-link p-cat"
                   >
                     Visit site ↗
                   </a>
