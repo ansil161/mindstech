@@ -270,6 +270,17 @@ class BaseModel(models.Model):
 
 
 
+from django.conf import settings
+from django.core.files.storage import default_storage
+
+
+def select_document_storage():
+    if getattr(settings, 'CLOUDINARY_CLOUD_NAME', None) or getattr(settings, 'CLOUDINARY_URL_ENV', None):
+        from cloudinary_storage.storage import RawMediaCloudinaryStorage
+        return RawMediaCloudinaryStorage()
+    return default_storage
+
+
 class Document(BaseModel):
     STATUS_CHOICES = (
         ('Uploaded', 'Uploaded'),
@@ -280,7 +291,7 @@ class Document(BaseModel):
     )
 
     title = models.CharField(max_length=255)
-    file = models.FileField(upload_to='documents/')
+    file = models.FileField(upload_to='documents/', storage=select_document_storage)
     category = models.CharField(max_length=100)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Uploaded')
     extracted_text = models.TextField(blank=True, null=True)
