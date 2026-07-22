@@ -79,6 +79,24 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
   const isSolutionsActive = location.pathname.startsWith('/solutions');
   const isAboutActive = location.pathname === '/about' || location.pathname === '/partners';
 
+  // Installations is an in-page anchor to the home "Recent field work" section,
+  // not a route. Mirrors the same handler in Footer.jsx — when already on home,
+  // scroll smoothly; otherwise let the Link navigate to /#work.
+  const handleInstallationsClick = (e) => {
+    setActiveDropdown(null);
+    if (location.pathname === '/') {
+      e.preventDefault();
+      const target = document.querySelector('#work');
+      if (target) {
+        if (window.lenis) {
+          window.lenis.scrollTo(target, { offset: -70 });
+        } else {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
+    }
+  };
+
   // Resources dropdown is active if the current path is any resource page
   const isResourcesActive =
     location.pathname === '/blogs' ||
@@ -165,7 +183,9 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
               </NavLink>
             </div>
           </li>
-
+          <li>
+            <Link to="/#work" onClick={handleInstallationsClick}>{t('navbar.installations')}</Link>
+          </li>
         </ul>
       </nav>
       <div className="nav-cta">
