@@ -10,13 +10,13 @@ from .views import (
     ChatBotView, ChatHistoryView,
     GalleryListCreateView, GalleryDetailView,
     RegionListCreateView, RegionDetailView,
-    TeamMemberListCreateView, TeamMemberDetailView,
     RegionContactView, PublicRegionDataView, PublicRegionSolutionBrandsView, PublicRegionListView,
     RegionBrandListCreateView, RegionBrandDetailView,
     TestimonialListCreateView, TestimonialDetailView,
     RegionContactListCreateView, RegionContactDetailView,
     EventNewsListCreateView, EventNewsDetailView,
     PublicUpcomingEventsView, PublicNewsView,
+    TeamMemberListCreateView, TeamMemberDetailView, PublicTeamMembersView,
 )
 
 urlpatterns = [
@@ -61,16 +61,19 @@ urlpatterns = [
     # Regions
     path('regions/', RegionListCreateView.as_view(), name='region-list-create'),
     path('regions/<int:pk>/', RegionDetailView.as_view(), name='region-detail'),
-    path('regions/<int:region_id>/team/', TeamMemberListCreateView.as_view(), name='region-team-list-create'),
-    path('team-members/<int:pk>/', TeamMemberDetailView.as_view(), name='team-member-detail'),
     path('regions/<int:region_id>/contact/', RegionContactView.as_view(), name='region-contact'),
     path('regions/<int:region_id>/contacts/', RegionContactListCreateView.as_view(), name='region-contact-list-create'),
     path('contacts/<int:pk>/', RegionContactDetailView.as_view(), name='region-contact-detail'),
+
+    # Team members (global, shared across all regions)
+    path('team-members/', TeamMemberListCreateView.as_view(), name='team-member-list-create'),
+    path('team-members/<int:pk>/', TeamMemberDetailView.as_view(), name='team-member-detail'),
 
     # Public region data (no auth)
     path('public/regions/', PublicRegionListView.as_view(), name='public-region-list'),
     path('public/region/<slug:slug>/', PublicRegionDataView.as_view(), name='public-region-data'),
     path('public/region/<slug:region_slug>/solution/<slug:solution_slug>/brands/', PublicRegionSolutionBrandsView.as_view(), name='public-region-solution-brands'),
+    path('public/team/', PublicTeamMembersView.as_view(), name='public-team-list'),
 
     # Brands
     path('regions/<int:region_id>/brands/', RegionBrandListCreateView.as_view(), name='region-brand-list-create'),

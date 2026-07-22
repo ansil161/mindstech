@@ -9,6 +9,7 @@ export const ADMIN_TABS = {
   EVENT_NEWS: 'event-news',
   REGIONS: 'regions',
   DOCUMENTS: 'documents',
+  TEAM: 'team',
 };
 
 export const TAB_TITLES = {
@@ -22,4 +23,5 @@ export const TAB_TITLES = {
   [ADMIN_TABS.EVENT_NEWS]: 'Event News',
   [ADMIN_TABS.REGIONS]: 'Region Management',
   [ADMIN_TABS.DOCUMENTS]: 'Documents',
+  [ADMIN_TABS.TEAM]: 'Team',
 };

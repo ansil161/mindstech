@@ -11,6 +11,7 @@ import GalleryTab from './tabs/GalleryTab';
 import EventsTab from './tabs/EventsTab';
 import RegionsTab from './tabs/RegionsTab';
 import DocumentsTab from './tabs/DocumentsTab';
+import TeamTab from './tabs/TeamTab';
 import { ADMIN_TABS } from './utils/constants';
 
 // Hooks for dashboard overview stats
@@ -63,6 +64,8 @@ export default function AdminDashboard() {
         return <RegionsTab />;
       case ADMIN_TABS.DOCUMENTS:
         return <DocumentsTab />;
+      case ADMIN_TABS.TEAM:
+        return <TeamTab />;
       case ADMIN_TABS.DASHBOARD:
       default:
         return (

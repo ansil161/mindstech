@@ -5,6 +5,7 @@ import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
+import { getPublicTeamMembers } from '../../api/teamApi.js';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -28,13 +29,13 @@ const About = () => {
   const containerRef = useRef(null);
 
   const [team, setTeam] = useState([]);
+  const [loadingTeam, setLoadingTeam] = useState(false);
   const [contactInfo, setContactInfo] = useState(null);
-  const [loadingRegion, setLoadingRegion] = useState(false);
 
   const { translatedData: translatedTeam } = useDynamicTranslation(
     team,
     ['name', 'role'],
-    `about_team_${regionSlug}`
+    'about_team'
   );
   const { translatedData: translatedContact } = useDynamicTranslation(
     contactInfo,
@@ -42,24 +43,38 @@ const About = () => {
     `about_contact_${regionSlug}`
   );
 
+  // Team members are shared across every region, so this fetches once on mount.
+  useEffect(() => {
+    let cancelled = false;
+    const fetchTeam = async () => {
+      setLoadingTeam(true);
+      try {
+        const res = await getPublicTeamMembers();
+        if (!cancelled) setTeam(res.data || []);
+      } catch (err) {
+        console.error('Failed to load team members:', err);
+        if (!cancelled) setTeam([]);
+      } finally {
+        if (!cancelled) setLoadingTeam(false);
+      }
+    };
+    fetchTeam();
+    return () => { cancelled = true; };
+  }, []);
+
   useEffect(() => {
     let cancelled = false;
     const fetchRegionData = async () => {
-      setLoadingRegion(true);
       try {
         const res = await getPublicRegionData(regionSlug);
         if (!cancelled) {
-          setTeam(res.data.team_members || []);
           setContactInfo(Array.isArray(res.data.contact_info) ? res.data.contact_info[0] : (res.data.contact_info || null));
         }
       } catch (err) {
         console.error('Failed to load region data:', err);
         if (!cancelled) {
-          setTeam([]);
           setContactInfo(null);
         }
-      } finally {
-        if (!cancelled) setLoadingRegion(false);
       }
     };
     fetchRegionData();
@@ -235,7 +250,7 @@ const About = () => {
           <p className="lede side">{t('about.team.lede')}</p>
         </div>
         <div className="team-grid" id="teamGrid">
-          {loadingRegion ? (
+          {loadingTeam ? (
             <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>Loading team...</p>
           ) : translatedTeam.length === 0 ? (
             <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>No team members listed for this region yet.</p>

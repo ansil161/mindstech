@@ -170,8 +170,7 @@ class Region(models.Model):
 
 
 class TeamMember(models.Model):
-    """A team member associated with a specific region."""
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='team_members')
+    """A team member shown on the public site, shared across all regions."""
     name = models.CharField(max_length=150)
     role = models.CharField(max_length=200)
     photo = models.ImageField(upload_to='team/')
@@ -183,7 +182,7 @@ class TeamMember(models.Model):
         ordering = ['display_order', 'created_at']
 
     def __str__(self):
-        return f"{self.name} — {self.role} ({self.region.name})"
+        return f"{self.name} — {self.role}"
 
 
 class RegionContact(models.Model):

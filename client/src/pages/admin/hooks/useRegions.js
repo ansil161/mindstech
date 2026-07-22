@@ -13,8 +13,6 @@ export function useRegions() {
   const [selectedRegion, setSelectedRegion] = useState(null);
 
   // Sub-data states
-  const [teamMembers, setTeamMembers] = useState([]);
-  const [loadingTeam, setLoadingTeam] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [loadingContacts, setLoadingContacts] = useState(false);
   const [brands, setBrands] = useState([]);
@@ -29,18 +27,6 @@ export function useRegions() {
   const [newRegionSlug, setNewRegionSlug] = useState('');
   const [newRegionParent, setNewRegionParent] = useState('');
   const [submittingRegion, setSubmittingRegion] = useState(false);
-
-  // Team Form & Edit
-  const [showAddTeamForm, setShowAddTeamForm] = useState(false);
-  const [newMemberName, setNewMemberName] = useState('');
-  const [newMemberRole, setNewMemberRole] = useState('');
-  const [newMemberPhoto, setNewMemberPhoto] = useState(null);
-  const [submittingTeam, setSubmittingTeam] = useState(false);
-  const [editingMemberId, setEditingMemberId] = useState(null);
-  const [editMemberName, setEditMemberName] = useState('');
-  const [editMemberRole, setEditMemberRole] = useState('');
-  const [editMemberPhoto, setEditMemberPhoto] = useState(null);
-  const [submittingMemberEdit, setSubmittingMemberEdit] = useState(false);
 
   // Brand Form
   const [showAddBrandForm, setShowAddBrandForm] = useState(false);
@@ -97,18 +83,15 @@ export function useRegions() {
 
   const loadRegionDetail = async (region) => {
     setSelectedRegion(region);
-    setLoadingTeam(true);
     setLoadingContacts(true);
     setLoadingBrands(true);
     setLoadingTestimonials(true);
     try {
-      const [teamRes, contactsRes, brandsRes, testiRes] = await Promise.all([
-        regionService.getTeamMembers(region.id),
+      const [contactsRes, brandsRes, testiRes] = await Promise.all([
         regionService.getRegionContacts(region.id),
         regionService.getBrands(region.id),
         regionService.getTestimonials(region.id),
       ]);
-      setTeamMembers(teamRes.data);
       setContacts(contactsRes.data || []);
       setBrands(brandsRes.data || []);
       setTestimonials(testiRes.data || []);
@@ -116,7 +99,6 @@ export function useRegions() {
       console.error(err);
       notify('Failed to load region details.');
     } finally {
-      setLoadingTeam(false);
       setLoadingContacts(false);
       setLoadingBrands(false);
       setLoadingTestimonials(false);
@@ -150,7 +132,7 @@ export function useRegions() {
   };
 
   const deleteRegion = async (id) => {
-    if (!window.confirm('Delete this region and all its team members and contact info?')) return;
+    if (!window.confirm('Delete this region and all its contact info, brands, and testimonials?')) return;
     try {
       await regionService.deleteRegion(id);
       setRegions((prev) => prev.filter((r) => r.id !== id));
@@ -170,73 +152,6 @@ export function useRegions() {
       notify('Region status updated.');
     } catch (err) {
       notify('Failed to toggle region status.');
-    }
-  };
-
-  // Team Member actions
-  const addTeamMember = async (e) => {
-    e.preventDefault();
-    if (!newMemberName.trim() || !newMemberRole.trim() || !newMemberPhoto) {
-      notify('Please fill out name, role, and upload a photo.');
-      return;
-    }
-    setSubmittingTeam(true);
-    const formData = new FormData();
-    formData.append('name', newMemberName.trim());
-    formData.append('role', newMemberRole.trim());
-    formData.append('photo', newMemberPhoto);
-    formData.append('display_order', teamMembers.length);
-    formData.append('is_active', 'true');
-    try {
-      const res = await regionService.addTeamMember(selectedRegion.id, formData);
-      setTeamMembers((prev) => [...prev, res.data]);
-      setNewMemberName('');
-      setNewMemberRole('');
-      setNewMemberPhoto(null);
-      setShowAddTeamForm(false);
-      setRegions((prev) => prev.map((r) => (r.id === selectedRegion.id ? { ...r, team_count: (r.team_count || 0) + 1 } : r)));
-      notify('Team member added successfully.');
-    } catch (err) {
-      console.error(err);
-      notify(`Failed to add team member: ${JSON.stringify(err.response?.data || err.message)}`);
-    } finally {
-      setSubmittingTeam(false);
-    }
-  };
-
-  const deleteTeamMember = async (id) => {
-    if (!window.confirm('Delete this team member?')) return;
-    try {
-      await regionService.deleteTeamMember(id);
-      setTeamMembers((prev) => prev.filter((m) => m.id !== id));
-      setRegions((prev) => prev.map((r) => (r.id === selectedRegion.id ? { ...r, team_count: Math.max(0, (r.team_count || 1) - 1) } : r)));
-      notify('Team member deleted successfully.');
-    } catch (err) {
-      console.error(err);
-      notify('Failed to delete team member.');
-    }
-  };
-
-  const editTeamMember = async (e, memberId) => {
-    e.preventDefault();
-    if (!editMemberName.trim() || !editMemberRole.trim()) {
-      notify('Name and role are required.');
-      return;
-    }
-    setSubmittingMemberEdit(true);
-    const fd = new FormData();
-    fd.append('name', editMemberName.trim());
-    fd.append('role', editMemberRole.trim());
-    if (editMemberPhoto) fd.append('photo', editMemberPhoto);
-    try {
-      const res = await regionService.updateTeamMember(memberId, fd);
-      setTeamMembers((prev) => prev.map((m) => (m.id === memberId ? res.data : m)));
-      setEditingMemberId(null);
-      notify('Team member updated successfully.');
-    } catch (err) {
-      notify(`Failed to update: ${JSON.stringify(err.response?.data || err.message)}`);
-    } finally {
-      setSubmittingMemberEdit(false);
     }
   };
 
@@ -431,29 +346,6 @@ export function useRegions() {
     newRegionParent,
     setNewRegionParent,
     submittingRegion,
-
-    // Team
-    teamMembers,
-    loadingTeam,
-    showAddTeamForm,
-    setShowAddTeamForm,
-    newMemberName,
-    setNewMemberName,
-    newMemberRole,
-    setNewMemberRole,
-    setNewMemberPhoto,
-    submittingTeam,
-    addTeamMember,
-    deleteTeamMember,
-    editingMemberId,
-    setEditingMemberId,
-    editMemberName,
-    setEditMemberName,
-    editMemberRole,
-    setEditMemberRole,
-    setEditMemberPhoto,
-    submittingMemberEdit,
-    editTeamMember,
 
     // Brands
     brands,

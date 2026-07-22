@@ -5,9 +5,9 @@ from rest_framework.permissions import IsAdminUser, AllowAny
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from ..models import Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial, Solution
+from ..models import Region, RegionContact, RegionBrand, ClientTestimonial, Solution
 from ..serializers import (
-    RegionSerializer, TeamMemberSerializer,
+    RegionSerializer,
     RegionContactSerializer, RegionDetailSerializer, RegionBrandSerializer,
     TestimonialSerializer,
 )
@@ -73,76 +73,6 @@ class RegionDetailView(APIView):
         if region is None:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
         region.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
-
-
-# ──────────────────────────────────────────────
-# Admin: Team Member CRUD
-# ──────────────────────────────────────────────
-
-class TeamMemberListCreateView(APIView):
-    """List team members for a region or add a new one (admin only)."""
-    permission_classes = [IsAdminUser]
-
-    def get(self, request, region_id):
-        members = TeamMember.objects.filter(region_id=region_id)
-        serializer = TeamMemberSerializer(members, many=True, context={'request': request})
-        return Response(serializer.data)
-
-    def post(self, request, region_id):
-        region = Region.objects.get(pk=region_id)
-        serializer = TeamMemberSerializer(data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save(region=region)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-class TeamMemberDetailView(APIView):
-    """Update or delete a specific team member (admin only)."""
-    permission_classes = [IsAdminUser]
-
-    def get_object(self, pk):
-        try:
-            return TeamMember.objects.get(pk=pk)
-        except TeamMember.DoesNotExist:
-            return None
-
-    def get(self, request, pk):
-        member = self.get_object(pk)
-        if member is None:
-            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TeamMemberSerializer(member, context={'request': request})
-        return Response(serializer.data)
-
-    def put(self, request, pk):
-        member = self.get_object(pk)
-        if member is None:
-            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TeamMemberSerializer(member, data=request.data, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-
-    def patch(self, request, pk):
-        member = self.get_object(pk)
-        if member is None:
-            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
-        serializer = TeamMemberSerializer(member, data=request.data, partial=True, context={'request': request})
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data)
-
-    def delete(self, request, pk):
-        member = self.get_object(pk)
-        if member is None:
-            return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
-        # Delete the photo file if present
-        if member.photo:
-            try:
-                member.photo.delete(save=False)
-            except Exception:
-                pass
-        member.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
@@ -335,14 +265,14 @@ class PublicRegionListView(APIView):
 
 class PublicRegionDataView(APIView):
     """
-    Public endpoint that returns a region's team members, contact info, and brands.
+    Public endpoint that returns a region's contact info, brands, and testimonials.
     Used by the About and Contact pages when the user switches region.
     """
     permission_classes = [AllowAny]
 
     def get(self, request, slug):
         try:
-            region = Region.objects.prefetch_related('team_members', 'contacts', 'brands', 'testimonials').get(slug=slug)
+            region = Region.objects.prefetch_related('contacts', 'brands', 'testimonials').get(slug=slug)
         except Region.DoesNotExist:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
         serializer = RegionDetailSerializer(region, context={'request': request})
