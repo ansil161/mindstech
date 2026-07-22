@@ -8,8 +8,8 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     gcc \
     libpq-dev \
+    supervisor \
     && rm -rf /var/lib/apt/lists/*
-
 COPY requirements.txt /app/
 RUN pip install --no-cache-dir -r requirements.txt
 
@@ -28,6 +28,6 @@ USER django-user
 
 EXPOSE 8000
 
-# Run both Gunicorn and Celery worker via Supervisor
-CMD ["gunicorn", "mindstech.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "1", "--threads", "2"]
+# Run both Gunicorn and Celery worker concurrently via Supervisor
+CMD ["supervisord", "-c", "/app/supervisord.conf"]
 
