@@ -170,6 +170,9 @@
       "title_main": "我们在哪里",
       "title_em": "操作",
       "lede": "库存、货币、保修和人员——全部在区域内处理。",
+      "hq_suffix": "(HQ)",
+      "office_hq": "全球总部",
+      "office_regional": "区域办事处",
       "contacts": {
         "india": "印度——南盟·班加罗尔总部",
         "africa": "非洲——商业中心·内罗毕",
@@ -224,15 +227,14 @@
       "title_em": "如是说"
     },
     "cities": {
-      "bangalore": "班加罗尔总部",
-      "delhi": "新德里",
-      "dhaka": "达卡",
-      "colombo": "科伦坡",
+      "bangalore": "班加罗尔",
+      "dubai": "迪拜",
+      "riyadh": "利雅得",
       "nairobi": "内罗毕",
-      "lagos": "拉各斯",
-      "joburg": "约翰内斯堡",
-      "warsaw": "华沙",
-      "prague": "布拉格"
+      "johannesburg": "约翰内斯堡",
+      "cairo": "开罗",
+      "bangkok": "曼谷",
+      "warsaw": "华沙"
     },
     "edgeItems": [
       {

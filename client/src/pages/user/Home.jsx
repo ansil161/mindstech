@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -10,32 +10,104 @@ import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee.jsx';
 import { safeFromTo } from '../../utils/gsapSafe';
-import { buildSolutionsFallback } from '../../constants/solutions.js';
 
 
 gsap.registerPlugin(ScrollTrigger);
 
 const CITIES = {
-  bangalore: { lat: 12.97, lng: 77.59, label: 'Bangalore HQ', chip: true },
-  delhi: { lat: 28.61, lng: 77.21, label: 'New Delhi' },
-  dhaka: { lat: 23.81, lng: 90.41, label: 'Dhaka' },
-  colombo: { lat: 6.93, lng: 79.86, label: 'Colombo' },
-  nairobi: { lat: -1.29, lng: 36.82, label: 'Nairobi', chip: true },
-  lagos: { lat: 6.52, lng: 3.38, label: 'Lagos' },
-  joburg: { lat: -26.20, lng: 28.05, label: 'Johannesburg' },
-  warsaw: { lat: 52.23, lng: 21.01, label: 'Warsaw', chip: true },
-  prague: { lat: 50.08, lng: 14.44, label: 'Prague' }
+  bangalore:    { city: 'Bangalore',    country: 'India',                lat: 12.9716,  lng: 77.5946,  isHQ: true },
+  dubai:        { city: 'Dubai',        country: 'United Arab Emirates', lat: 25.2048,  lng: 55.2708 },
+  riyadh:       { city: 'Riyadh',       country: 'Saudi Arabia',         lat: 24.7136,  lng: 46.6753 },
+  nairobi:      { city: 'Nairobi',      country: 'Kenya',                lat: -1.2921,  lng: 36.8219 },
+  johannesburg: { city: 'Johannesburg', country: 'South Africa',         lat: -26.2041, lng: 28.0473 },
+  cairo:        { city: 'Cairo',        country: 'Egypt',                lat: 30.0444,  lng: 31.2357 },
+  bangkok:      { city: 'Bangkok',      country: 'Thailand',             lat: 13.7563,  lng: 100.5018 },
+  warsaw:       { city: 'Warsaw',       country: 'Poland',               lat: 52.2297,  lng: 21.0122 },
 };
 
-const ROUTES = [
-  ['bangalore', 'nairobi'],
-  ['bangalore', 'warsaw']
-];
+const HQ_KEY = 'bangalore';
+
+// Bangalore is the hub — every other office connects back to it.
+const ROUTES = Object.keys(CITIES).filter((key) => key !== HQ_KEY).map((key) => [HQ_KEY, key]);
 
 const project = (lat, lng) => ({
   x: (lng + 180) * (800 / 360),
   y: (90 - lat) * (400 / 180),
 });
+
+// ── Map label layout ──
+// Several offices (Bangalore/Dubai/Riyadh/Cairo) sit close together on the
+// 800×400 map, so city-name labels are placed by searching a small ring of
+// candidate slots around each marker — closest and most natural (directly
+// above/below) first — skipping any slot that would overlap an
+// already-placed label, and clamping to the viewBox so a label can never
+// run off-canvas at any screen size.
+const MAP_W = 800;
+const MAP_H = 400;
+const LABEL_H = 16;
+const LABEL_GAP = 6;
+
+const estimateLabelWidth = (text) => text.length * 5.6 + 16;
+
+function layoutMapLabels(entries) {
+  const rectsOverlap = (a, b) => a.x1 < b.x2 && a.x2 > b.x1 && a.y1 < b.y2 && a.y2 > b.y1;
+  const toRect = (lx, ly, w) => ({ x1: lx - w / 2 - LABEL_GAP, x2: lx + w / 2 + LABEL_GAP, y1: ly - LABEL_H / 2, y2: ly + LABEL_H / 2 });
+  const clampX = (lx, w) => Math.min(Math.max(lx, w / 2 + 4), MAP_W - w / 2 - 4);
+  const clampY = (ly) => Math.min(Math.max(ly, LABEL_H), MAP_H - LABEL_H);
+
+  // Resolve the HQ label first so it stays put, then top-to-bottom for
+  // stable, repeatable placement of the rest.
+  const ordered = [...entries].sort((a, b) => (a.isHQ === b.isHQ ? a.y - b.y : a.isHQ ? -1 : 1));
+
+  const placedRects = [];
+  return ordered.map((c) => {
+    const w = estimateLabelWidth(c.text);
+    const nearTop = c.y < 60; // avoid the label running off the map's top edge
+    const near = LABEL_H + 8;
+    const far = near * 2;
+    const side = w / 2 + 10;
+
+    const candidates = nearTop
+      ? [
+          { dx: 0, dy: near }, { dx: 0, dy: -near },
+          { dx: 0, dy: far }, { dx: 0, dy: -far },
+          { dx: side, dy: near }, { dx: -side, dy: near },
+          { dx: side, dy: -near }, { dx: -side, dy: -near },
+          { dx: 0, dy: far + near },
+        ]
+      : [
+          { dx: 0, dy: -near }, { dx: 0, dy: near },
+          { dx: 0, dy: -far }, { dx: 0, dy: far },
+          { dx: side, dy: -near }, { dx: -side, dy: -near },
+          { dx: side, dy: near }, { dx: -side, dy: near },
+          { dx: 0, dy: -(far + near) },
+        ];
+
+    let chosen = candidates[0];
+    let chosenIndex = 0;
+    for (let i = 0; i < candidates.length; i++) {
+      const lx = clampX(c.x + candidates[i].dx, w);
+      const ly = clampY(c.y + candidates[i].dy);
+      if (!placedRects.some((r) => rectsOverlap(r, toRect(lx, ly, w)))) {
+        chosen = candidates[i];
+        chosenIndex = i;
+        break;
+      }
+    }
+
+    const lx = clampX(c.x + chosen.dx, w);
+    const ly = clampY(c.y + chosen.dy);
+    placedRects.push(toRect(lx, ly, w));
+
+    // A "leader" line is only drawn once a label has been pushed past the
+    // two natural above/below slots, so the common case stays line-free.
+    const displaced = chosenIndex >= 2;
+    const edgeY = ly > c.y ? ly - LABEL_H / 2 : ly + LABEL_H / 2;
+    const edgeX = Math.min(Math.max(c.x, lx - w / 2), lx + w / 2);
+
+    return { ...c, w, lx, ly, displaced, edgeX, edgeY };
+  });
+}
 
 
 
@@ -48,6 +120,7 @@ const Home = () => {
   const edgeListRef = useRef(null);
   const solListRef = useRef(null);
   const solPreviewRef = useRef(null);
+  const mapTooltipRef = useRef(null);
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
 
@@ -61,9 +134,7 @@ const Home = () => {
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
   const { translatedData: translatedTestimonials } = useDynamicTranslation(testimonials, ['name', 'designation', 'company', 'message'], `home_testimonials_${regionSlug}`);
 
-  // The section promises "six verticals" — if the API is unreachable or returns
-  // nothing, fall back to the canonical list in i18n so it never renders empty.
-  const solutionRows = solutions.length > 0 ? solutions : buildSolutionsFallback(t);
+  const solutionRows = solutions;
 
   const marqueeTestimonials = (translatedTestimonials || []).map((item) => ({
     author: {
@@ -80,7 +151,7 @@ const Home = () => {
     const fetchSolutions = async () => {
       try {
         const res = await axios.get('/admin/solutions/');
-        if (res.data && res.data.length > 0) {
+        if (res.data) {
           setRawSolutions(res.data);
         }
       } catch (err) {
@@ -624,6 +695,96 @@ const Home = () => {
     };
   }, []);
 
+  // Map pin tooltip — a small popover anchored directly above/below the
+  // marker (via getBoundingClientRect, so it tracks the map's actual
+  // rendered scale) with an arrow pointing at it. Desktop/tablet show it on
+  // hover; touch devices (no hover) show/hide it on tap instead, since
+  // permanent labels are hidden on mobile.
+  useEffect(() => {
+    const overlay = mapOverlayRef.current;
+    const tooltip = mapTooltipRef.current;
+    if (!overlay || !tooltip) return;
+
+    const cityEl = tooltip.querySelector('[data-role="city"]');
+    const countryEl = tooltip.querySelector('[data-role="country"]');
+    const typeEl = tooltip.querySelector('[data-role="type"]');
+    const hqLabel = t('home.regions.office_hq', 'Global Headquarters');
+    const regionalLabel = t('home.regions.office_regional', 'Regional Office');
+
+    const showTooltip = (pin) => {
+      const city = CITIES[pin.dataset.city];
+      const core = pin.querySelector('.pin-core');
+      const anchor = (core || pin).getBoundingClientRect();
+      const cx = anchor.left + anchor.width / 2;
+      const cy = anchor.top + anchor.height / 2;
+
+      cityEl.textContent = city.city;
+      countryEl.textContent = city.country;
+      typeEl.textContent = city.isHQ ? hqLabel : regionalLabel;
+
+      tooltip.classList.add('on');
+      const margin = 12;
+      const gap = 16;
+      const tw = tooltip.offsetWidth;
+      const th = tooltip.offsetHeight;
+      const above = cy - gap - th > margin;
+      tooltip.classList.toggle('tooltip-above', above);
+      tooltip.classList.toggle('tooltip-below', !above);
+
+      const left = Math.min(Math.max(cx, tw / 2 + margin), window.innerWidth - tw / 2 - margin);
+      const top = above ? cy - gap - th : cy + gap;
+      tooltip.style.left = `${left}px`;
+      tooltip.style.top = `${Math.min(Math.max(top, margin), window.innerHeight - th - margin)}px`;
+    };
+
+    const hideTooltip = () => tooltip.classList.remove('on');
+
+    const pins = Array.from(overlay.querySelectorAll('.map-pin'));
+    const canHover = window.matchMedia('(hover: hover)').matches;
+    const cleanups = [];
+
+    if (canHover) {
+      pins.forEach((pin) => {
+        const onEnter = () => showTooltip(pin);
+        pin.addEventListener('mouseenter', onEnter);
+        pin.addEventListener('mouseleave', hideTooltip);
+        cleanups.push(() => {
+          pin.removeEventListener('mouseenter', onEnter);
+          pin.removeEventListener('mouseleave', hideTooltip);
+        });
+      });
+    } else {
+      let openPin = null;
+      const onDocClick = (e) => {
+        if (openPin && !openPin.contains(e.target)) {
+          hideTooltip();
+          openPin = null;
+        }
+      };
+      pins.forEach((pin) => {
+        const onTap = (e) => {
+          e.stopPropagation();
+          if (openPin === pin) {
+            hideTooltip();
+            openPin = null;
+          } else {
+            showTooltip(pin);
+            openPin = pin;
+          }
+        };
+        pin.addEventListener('click', onTap);
+        cleanups.push(() => pin.removeEventListener('click', onTap));
+      });
+      document.addEventListener('click', onDocClick);
+      cleanups.push(() => document.removeEventListener('click', onDocClick));
+    }
+
+    return () => {
+      hideTooltip();
+      cleanups.forEach((cleanup) => cleanup());
+    };
+  }, [t]);
+
   const statementText = () => {
     const text = t('home.statement.text', 'A screen in a boardroom. A wall of pixels in a terminal. A voice that carries to the last row. ');
     const emText = t('home.statement.emText', 'Someone has to get that technology there');
@@ -651,6 +812,26 @@ const Home = () => {
     { title: t('home.edgeItems.2.title'), desc: t('home.edgeItems.2.desc'), visual: '/assets/img/unsplash-1522071820081-009f0129c71c-w1100.jpg', caption: t('home.edgeItems.2.caption') },
     { title: t('home.edgeItems.3.title'), desc: t('home.edgeItems.3.desc'), visual: '/assets/img/unsplash-1504384308090-c894fdcc538d-w1100.jpg', caption: t('home.edgeItems.3.caption') },
   ];
+
+  // City-only labels ("Bangalore (HQ)", "Dubai", ...) — country/office type
+  // live in the hover tooltip instead, to keep the map itself uncluttered.
+  const labeledPins = useMemo(() => {
+    const hqSuffix = t('home.regions.hq_suffix', '(HQ)');
+    return layoutMapLabels(
+      Object.entries(CITIES).map(([key, city]) => {
+        const p = project(city.lat, city.lng);
+        const label = t(`home.cities.${key}`, city.city);
+        return {
+          key,
+          city,
+          x: p.x,
+          y: p.y,
+          isHQ: !!city.isHQ,
+          text: city.isHQ ? `${label} ${hqSuffix}` : label,
+        };
+      })
+    );
+  }, [t]);
 
   return (
     <div ref={containerRef}>
@@ -825,7 +1006,7 @@ const Home = () => {
         </div>
         <div className="map-wrap reveal">
           <div className="map-base" id="mapBase" ref={mapBaseRef} aria-hidden="true"></div>
-          <svg className="map-overlay" id="mapOverlay" ref={mapOverlayRef} viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="World map showing Mindstec supply routes from Bangalore to New Delhi, Dhaka, Colombo, Nairobi, Lagos, Johannesburg, Warsaw and Prague">
+          <svg className="map-overlay" id="mapOverlay" ref={mapOverlayRef} viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="World map showing Mindstec supply routes from Bangalore HQ to Dubai, Riyadh, Nairobi, Johannesburg, Cairo, Bangkok and Warsaw">
             <defs>
               <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#CC0001" stopOpacity="0" />
@@ -867,55 +1048,64 @@ const Home = () => {
               );
             })}
 
-            {/* Pins with Pulsating Rings & Hub Chip Labels */}
-            {Object.entries(CITIES).filter(([key, city]) => city.chip).map(([key, city], idx) => {
-              const p = project(city.lat, city.lng);
-              const translatedLabel = t(`home.cities.${key}`, city.label);
-              const w = translatedLabel.length * 6.4 + 18;
-              const above = p.y > 60;
-              const ly = above ? p.y - 26 : p.y + 12;
-
+            {/* Pins with Pulsating Rings & City Labels — Bangalore (HQ) gets a
+                slightly larger core and a stronger, faster pulse. */}
+            {labeledPins.map((pin, idx) => {
+              const baseR = pin.isHQ ? 4 : 3;
+              const pulseTo = pin.isHQ ? 18 : 12;
+              const pulseOpacity = pin.isHQ ? 0.75 : 0.6;
+              const pulseDur = pin.isHQ ? '1.6s' : '2s';
               return (
-                <g key={key} className="map-pin">
-                  <title>{translatedLabel}</title>
+                <g key={pin.key} className={`map-pin${pin.isHQ ? ' map-pin--hq' : ''}`} data-city={pin.key}>
+                  <title>{`${pin.city.city}, ${pin.city.country} — ${pin.isHQ ? t('home.regions.office_hq', 'Global Headquarters') : t('home.regions.office_regional', 'Regional Office')}`}</title>
+                  <circle className="pin-halo" cx={pin.x} cy={pin.y} r={baseR + 3} fill="#CC0001" />
                   <circle
                     className="pin-core"
-                    cx={p.x}
-                    cy={p.y}
-                    r="3"
+                    cx={pin.x}
+                    cy={pin.y}
+                    r={baseR}
                     fill="#CC0001"
                     filter="url(#mapGlow)"
                   />
-                  <circle cx={p.x} cy={p.y} r="3" fill="#CC0001" opacity="0.5">
+                  <circle cx={pin.x} cy={pin.y} r={baseR} fill="#CC0001" opacity="0.5">
                     <animate
                       attributeName="r"
-                      from="3"
-                      to="12"
-                      dur="2s"
+                      from={baseR}
+                      to={pulseTo}
+                      dur={pulseDur}
                       begin={`${idx * 0.25}s`}
                       repeatCount="indefinite"
                     />
                     <animate
                       attributeName="opacity"
-                      from="0.6"
+                      from={pulseOpacity}
                       to="0"
-                      dur="2s"
+                      dur={pulseDur}
                       begin={`${idx * 0.25}s`}
                       repeatCount="indefinite"
                     />
                   </circle>
-                  {city.chip && (
-                    <g className="map-label">
-                      <rect x={p.x - w / 2} y={ly} width={w} height="19" rx="3" />
-                      <text x={p.x} y={ly + 13} textAnchor="middle">
-                        {translatedLabel}
-                      </text>
-                    </g>
+                  {pin.displaced && (
+                    <line className="map-leader" x1={pin.x} y1={pin.y} x2={pin.edgeX} y2={pin.edgeY} />
                   )}
+                  <g className="map-label">
+                    <rect x={pin.lx - pin.w / 2} y={pin.ly - LABEL_H / 2} width={pin.w} height={LABEL_H} rx="3" />
+                    <text x={pin.lx} y={pin.ly - LABEL_H / 2 + LABEL_H * 0.68} textAnchor="middle">
+                      {pin.text}
+                    </text>
+                  </g>
                 </g>
               );
             })}
           </svg>
+          <div className="map-tooltip" ref={mapTooltipRef} aria-hidden="true">
+            <div className="mt-city">
+              <span className="mt-pin" aria-hidden="true">📍</span>
+              <span data-role="city"></span>
+            </div>
+            <div className="mt-country" data-role="country"></div>
+            <div className="mt-type" data-role="type"></div>
+          </div>
         </div>
         <div className="map-contacts reveal">
           <div className="mc">

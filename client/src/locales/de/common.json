@@ -163,6 +163,9 @@
       "title_main": "Wo wir",
       "title_em": "arbeiten",
       "lede": "Lagerbestand, Währung, Garantie und Mitarbeiter – alles wird in der Region abgewickelt.",
+      "hq_suffix": "(HQ)",
+      "office_hq": "Globaler Hauptsitz",
+      "office_regional": "Regionalbüro",
       "contacts": {
         "india": "Indien – SAARC · Hauptsitz in Bangalore",
         "africa": "Afrika – Handelszentren · Nairobi",
@@ -217,15 +220,14 @@
       "title_em": "Kunden sagen"
     },
     "cities": {
-      "bangalore": "Bangalore Hauptsitz",
-      "delhi": "Neu-Delhi",
-      "dhaka": "Dhaka",
-      "colombo": "Colombo",
+      "bangalore": "Bangalore",
+      "dubai": "Dubai",
+      "riyadh": "Riad",
       "nairobi": "Nairobi",
-      "lagos": "Lagos",
-      "joburg": "Johannesburg",
-      "warsaw": "Warschau",
-      "prague": "Prag"
+      "johannesburg": "Johannesburg",
+      "cairo": "Kairo",
+      "bangkok": "Bangkok",
+      "warsaw": "Warschau"
     },
     "edgeItems": [
       {

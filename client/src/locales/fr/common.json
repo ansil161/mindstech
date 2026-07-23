@@ -163,6 +163,9 @@
       "title_main": "Où nous",
       "title_em": "fonctionner",
       "lede": "Stock, devises, garantie et personnel – tout est géré dans la région.",
+      "hq_suffix": "(HQ)",
+      "office_hq": "Siège social mondial",
+      "office_regional": "Bureau régional",
       "contacts": {
         "india": "Inde – SAARC · Siège de Bangalore",
         "africa": "Afrique – Plateformes commerciales · Nairobi",
@@ -217,15 +220,14 @@
       "title_em": "nos clients"
     },
     "cities": {
-      "bangalore": "Bangalore QG",
-      "delhi": "New Delhi",
-      "dhaka": "Dhaka",
-      "colombo": "Colombo",
+      "bangalore": "Bangalore",
+      "dubai": "Dubaï",
+      "riyadh": "Riyad",
       "nairobi": "Nairobi",
-      "lagos": "Lagos",
-      "joburg": "Johannesbourg",
-      "warsaw": "Varsovie",
-      "prague": "Prague"
+      "johannesburg": "Johannesburg",
+      "cairo": "Le Caire",
+      "bangkok": "Bangkok",
+      "warsaw": "Varsovie"
     },
     "edgeItems": [
       {
