@@ -18,7 +18,7 @@ from .region import (
     RegionListCreateView, RegionDetailView,
     RegionContactView, PublicRegionDataView, PublicRegionSolutionBrandsView, PublicRegionListView,
     RegionBrandListCreateView, RegionBrandDetailView,
-    TestimonialListCreateView, TestimonialDetailView,
+    TestimonialListCreateView, TestimonialDetailView, PublicTestimonialsView,
     RegionContactListCreateView, RegionContactDetailView,
 )
 from .team import TeamMemberListCreateView, TeamMemberDetailView, PublicTeamMembersView

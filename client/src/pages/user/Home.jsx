@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
+import { getPublicTestimonials } from '../../api/testimonialApi.js';
 import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee.jsx';
 import { safeFromTo } from '../../utils/gsapSafe';
 
@@ -131,7 +132,7 @@ const Home = () => {
 
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
-  const { translatedData: translatedTestimonials } = useDynamicTranslation(testimonials, ['name', 'designation', 'company', 'message'], `home_testimonials_${regionSlug}`);
+  const { translatedData: translatedTestimonials } = useDynamicTranslation(testimonials, ['name', 'designation', 'company', 'message'], 'home_testimonials');
 
   const solutionRows = solutions;
 
@@ -167,18 +168,31 @@ const Home = () => {
         const res = await getPublicRegionData(regionSlug);
         if (!cancelled) {
           setRegionContact(Array.isArray(res.data.contact_info) ? res.data.contact_info[0] : (res.data.contact_info || null));
-          setTestimonials(res.data.testimonials || []);
         }
       } catch {
         if (!cancelled) {
           setRegionContact(null);
-          setTestimonials([]);
         }
       }
     };
     fetchRegionContact();
     return () => { cancelled = true; };
   }, [regionSlug]);
+
+  // Testimonials are global — the same list is shown for every region.
+  useEffect(() => {
+    let cancelled = false;
+    const fetchTestimonials = async () => {
+      try {
+        const res = await getPublicTestimonials();
+        if (!cancelled) setTestimonials(res.data || []);
+      } catch {
+        if (!cancelled) setTestimonials([]);
+      }
+    };
+    fetchTestimonials();
+    return () => { cancelled = true; };
+  }, []);
 
   useEffect(() => {
     const fetchFieldwork = async () => {

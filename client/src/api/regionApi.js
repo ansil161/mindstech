@@ -49,14 +49,3 @@ export const getPublicRegionData = (slug) =>
 
 export const getPublicRegionSolutionBrands = (regionSlug, solutionSlug) =>
   axios.get(`/admin/public/region/${regionSlug}/solution/${solutionSlug}/brands/`, { withCredentials: false });
-
-// ── Admin: Testimonials ──
-
-export const getTestimonials = (regionId) => axios.get(`/admin/regions/${regionId}/testimonials/`);
-
-export const addTestimonial = (regionId, formData) =>
-  axios.post(`/admin/regions/${regionId}/testimonials/`, formData, {
-    headers: { 'Content-Type': 'multipart/form-data' },
-  });
-
-export const deleteTestimonial = (id) => axios.delete(`/admin/testimonials/${id}/`);

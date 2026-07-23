@@ -1,4 +1,5 @@
 import * as regionApi from '../../../api/regionApi';
+import * as testimonialApi from '../../../api/testimonialApi';
 
 export const regionService = {
   // Regions
@@ -18,10 +19,10 @@ export const regionService = {
   addBrand: (regionId, formData) => regionApi.addBrand(regionId, formData),
   deleteBrand: (id) => regionApi.deleteBrand(id),
 
-  // Testimonials
-  getTestimonials: (regionId) => regionApi.getTestimonials(regionId),
-  addTestimonial: (regionId, formData) => regionApi.addTestimonial(regionId, formData),
-  deleteTestimonial: (id) => regionApi.deleteTestimonial(id),
+  // Testimonials (global, shared across all regions)
+  getTestimonials: () => testimonialApi.getTestimonials(),
+  addTestimonial: (formData) => testimonialApi.addTestimonial(formData),
+  deleteTestimonial: (id) => testimonialApi.deleteTestimonial(id),
 };
 
 export default regionService;

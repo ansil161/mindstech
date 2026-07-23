@@ -225,8 +225,7 @@ class RegionBrand(models.Model):
   
 
 class ClientTestimonial(models.Model):
-    """A client testimonial associated with a specific region."""
-    region = models.ForeignKey(Region, on_delete=models.CASCADE, related_name='testimonials')
+    """A client testimonial. Global — the same list is shown for every region."""
     name = models.CharField(max_length=150)
     designation = models.CharField(max_length=200)
     company = models.CharField(max_length=200)
@@ -240,7 +239,7 @@ class ClientTestimonial(models.Model):
         ordering = ['display_order', 'created_at']
 
     def __str__(self):
-        return f"{self.name} — {self.company} ({self.region.name})"
+        return f"{self.name} — {self.company}"
 
 
 class BaseModel(models.Model):
