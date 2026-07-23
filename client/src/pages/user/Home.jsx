@@ -119,7 +119,7 @@ const Home = () => {
   const mapOverlayRef = useRef(null);
   const edgeListRef = useRef(null);
   const solListRef = useRef(null);
-  const solPreviewRef = useRef(null);
+  const solVisualRef = useRef(null);
   const mapTooltipRef = useRef(null);
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
@@ -552,75 +552,59 @@ const Home = () => {
     if (firstOpen) openItem(firstOpen);
   }, []);
 
-  // Solutions row hover — floating image card that magnetically eases toward
-  // the cursor (lerp + rAF, same smoothing pattern as the gallery's
-  // CursorFollower) and wipes the active image in via clip-path instead of a
-  // plain crossfade. Skipped on touch/coarse pointers and under
-  // prefers-reduced-motion, where a fixed cursor-follower has no meaning.
+  // Solutions row hover — a sticky image card that crossfades to the
+  // hovered row's image and tilts in 3D (perspective rotateX/rotateY) toward
+  // the cursor's position over the list, eased via lerp + rAF for a smooth
+  // "holographic" feel. Skipped on touch/coarse pointers and under
+  // prefers-reduced-motion, where a tilt effect has no meaning.
   useEffect(() => {
     const list = solListRef.current;
-    const preview = solPreviewRef.current;
-    if (!list || !preview) return;
+    const visual = solVisualRef.current;
+    if (!list || !visual) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const canHover = window.matchMedia('(hover: hover)').matches;
     if (reduceMotion || !canHover) return;
 
-    const images = preview.querySelectorAll('img');
+    const images = visual.querySelectorAll('img');
     const rows = list.querySelectorAll('.sol-row');
 
-    const ctx = gsap.context(() => {}, containerRef);
-
     const LERP = 0.12;
-    const target = { x: 0, y: 0 };
-    const current = { x: 0, y: 0 };
+    const MAX_TILT = 9; // degrees
+    const target = { rx: 0, ry: 0 };
+    const current = { rx: 0, ry: 0 };
     let rafId = null;
-    let started = false;
     let activeIndex = -1;
 
-    const hideImg = (img) => ctx.add(() => gsap.set(img, { clipPath: 'inset(0 100% 0 0)' }));
-    const revealImg = (img) => {
-      ctx.add(() => gsap.set(img, { clipPath: 'inset(0 100% 0 0)' }));
-      ctx.add(() => gsap.to(img, { clipPath: 'inset(0 0% 0 0)', duration: 0.6, ease: 'power3.out' }));
-    };
-
     const tick = () => {
-      current.x += (target.x - current.x) * LERP;
-      current.y += (target.y - current.y) * LERP;
-      preview.style.left = `${current.x}px`;
-      preview.style.top = `${current.y}px`;
+      current.rx += (target.rx - current.rx) * LERP;
+      current.ry += (target.ry - current.ry) * LERP;
+      visual.style.transform = `perspective(900px) rotateX(${current.rx}deg) rotateY(${current.ry}deg)`;
       rafId = requestAnimationFrame(tick);
     };
     rafId = requestAnimationFrame(tick);
 
     const move = (e) => {
-      const maxX = window.innerWidth - preview.offsetWidth - 16;
-      const maxY = window.innerHeight - preview.offsetHeight - 16;
-      target.x = Math.min(Math.max(e.clientX + 28, 16), maxX);
-      target.y = Math.min(Math.max(e.clientY - 150, 16), maxY);
-      if (!started) {
-        current.x = target.x;
-        current.y = target.y;
-        started = true;
-      }
+      const rect = visual.getBoundingClientRect();
+      const cx = rect.left + rect.width / 2;
+      const cy = rect.top + rect.height / 2;
+      target.ry = Math.min(Math.max((e.clientX - cx) / (rect.width / 2), -1), 1) * MAX_TILT;
+      target.rx = Math.min(Math.max(-(e.clientY - cy) / (rect.height / 2), -1), 1) * MAX_TILT;
     };
 
     const onLeave = () => {
-      preview.classList.remove('on');
-      if (activeIndex !== -1) {
-        images.forEach((img) => hideImg(img));
-        activeIndex = -1;
-      }
+      visual.classList.remove('on');
+      target.rx = 0;
+      target.ry = 0;
     };
 
     const enterHandlers = Array.from(rows).map((row) => {
-      const onEnter = (e) => {
-        move(e);
-        preview.classList.add('on');
+      const onEnter = () => {
+        visual.classList.add('on');
         const i = Number(row.dataset.preview);
         if (i === activeIndex) return;
-        if (activeIndex !== -1) hideImg(images[activeIndex]);
-        revealImg(images[i]);
+        if (activeIndex !== -1) images[activeIndex]?.classList.remove('on');
+        images[i]?.classList.add('on');
         activeIndex = i;
       };
       row.addEventListener('mouseenter', onEnter);
@@ -635,7 +619,6 @@ const Home = () => {
       list.removeEventListener('mousemove', move);
       list.removeEventListener('mouseleave', onLeave);
       if (rafId != null) cancelAnimationFrame(rafId);
-      ctx.revert();
     };
   }, [solutionRows.length]);
 
@@ -941,24 +924,28 @@ const Home = () => {
           </div>
           <p className="lede side">{t('home.solutions.lede')}</p>
         </div>
-        <div className="sol-list" id="solList" ref={solListRef}>
-          {solutionRows.map((sol, i) => (
-            <Link key={sol.slug || i} className="sol-row" to={`/solutions/${sol.slug}`} data-preview={i}>
-              <span className="num">{(i + 1).toString().padStart(2, '0')}</span>
-              <span className="sol-title">{sol.title}</span>
-              <span className="sol-desc">{sol.desc}</span>
-              <span className="sol-arrow">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M7 17L17 7M9 7h8v8" />
-                </svg>
-              </span>
-            </Link>
-          ))}
-        </div>
-        <div className="sol-preview" id="solPreview" ref={solPreviewRef} aria-hidden="true">
-          {solutionRows.map((sol, i) => (
-            sol.image && <img key={sol.slug || i} data-preview={i} src={sol.image} alt="" loading="lazy" />
-          ))}
+        <div className="sol-layout">
+          <div className="sol-list" id="solList" ref={solListRef}>
+            {solutionRows.map((sol, i) => (
+              <Link key={sol.slug || i} className="sol-row" to={`/solutions/${sol.slug}`} data-preview={i}>
+                <span className="num">{(i + 1).toString().padStart(2, '0')}</span>
+                <span className="sol-text">
+                  <span className="sol-title">{sol.title}</span>
+                  <span className="sol-desc">{sol.desc}</span>
+                </span>
+                <span className="sol-arrow">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M7 17L17 7M9 7h8v8" />
+                  </svg>
+                </span>
+              </Link>
+            ))}
+          </div>
+          <div className="sol-visual" id="solVisual" ref={solVisualRef} aria-hidden="true">
+            {solutionRows.map((sol, i) => (
+              sol.image && <img key={sol.slug || i} data-preview={i} src={sol.image} alt="" loading="lazy" />
+            ))}
+          </div>
         </div>
       </section>
 
