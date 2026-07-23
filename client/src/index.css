@@ -376,7 +376,7 @@ img { display: block; max-width: 100%; }
 .sol-row-top {
   position: relative;
   display: grid;
-  grid-template-columns: 56px 1fr auto auto;
+  grid-template-columns: 56px 1fr 88px auto auto;
   gap: 0 20px;
   align-items: center;
   padding: 30px 0;
@@ -447,24 +447,26 @@ img { display: block; max-width: 100%; }
 }
 .sol-arrow svg { width: 15px; height: 15px; }
 
-/* Inline image reveal — the row itself grows to fit the image, imperatively
-   driven (max-height set from scrollHeight on open/close, mirroring
-   #edgeList's .edge-a convention) rather than a fixed height so it adapts to
-   the image's aspect ratio. Padding lives on the inner wrapper, not on this
-   element, so it collapses to truly zero height when closed. */
-.sol-row-media { max-height: 0; overflow: hidden; transition: max-height .6s var(--ease); }
-.sol-row-media-inner { padding-bottom: 28px; }
-.sol-row-media img {
-  width: 100%;
-  aspect-ratio: 16 / 9;
-  object-fit: cover;
+/* Small thumbnail that fades in within the row's own reserved column — the
+   grid column is always 88px wide (reserved whether visible or not), so
+   showing/hiding it is a pure opacity+scale fade with zero effect on row
+   height or layout elsewhere on the page. */
+.sol-thumb {
+  width: 88px;
+  height: 56px;
   border-radius: 4px;
-  display: block;
+  overflow: hidden;
   opacity: 0;
-  transform: scale(1.04);
-  transition: opacity .6s var(--ease), transform .7s var(--ease);
+  transform: scale(.9);
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
 }
-.sol-row.open .sol-row-media img { opacity: 1; transform: scale(1); }
+.sol-row.open .sol-thumb { opacity: 1; transform: scale(1); }
+.sol-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 /* ── STATS ── */
 .stats { padding: clamp(48px, 6vw, 84px) var(--pad); }
@@ -1556,6 +1558,7 @@ footer { border-top: 1px solid var(--line-soft); }
   .sol-row-top { grid-template-columns: 32px 1fr auto auto; gap: 0 12px; padding: 24px 0; }
   .sol-arrow { width: 36px; height: 36px; }
   .sol-arrow svg { width: 13px; height: 13px; }
+  .sol-thumb { display: none; }
   .pgrid { grid-template-columns: 1fr; }
   .p-logo { aspect-ratio: 2/1; }
   .phero { padding-top: 110px; }
