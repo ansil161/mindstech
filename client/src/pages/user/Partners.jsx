@@ -76,19 +76,23 @@ const Partners = () => {
           { opacity: 1, y: 0, duration: 0.6, stagger: 0.05 }, 
           '-=.5');
 
-      // Generic reveals
+      // Generic reveals. fromTo, not to: nothing supplies a hidden start state
+      // in CSS, so a `to` tween animated 1 -> 1 and produced no motion.
       gsap.utils.toArray('.reveal').forEach(el => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            once: true,
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+            }
           }
-        });
+        );
       });
 
       gsap.utils.toArray('.section-head').forEach(head => {
@@ -182,13 +186,13 @@ const Partners = () => {
           <span className="line-mask"><span className="w">{t('partners.hero.line1')}</span></span>
           <span className="line-mask"><span className="w"><em>{t('partners.hero.line2')}</em></span></span>
         </h1>
-        <div className="phero-side reveal" id="pheroSide">
+        <div className="phero-side" id="pheroSide">
           <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>{t('partners.hero.label')}</span>
           <p>{t('partners.hero.brief')}</p>
         </div>
       </section>
 
-      <div className="phero-meta reveal">
+      <div className="phero-meta">
         <div className="fact"><b>{t('partners.meta.fact1_b')}</b><span>{t('partners.meta.fact1_s')}</span></div>
         <div className="fact"><b>{t('partners.meta.fact2_b')}</b><span>{t('partners.meta.fact2_s')}</span></div>
         <div className="fact"><b>{t('partners.meta.fact3_b')}</b><span>{t('partners.meta.fact3_s')}</span></div>

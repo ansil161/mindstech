@@ -75,11 +75,16 @@ const Blogs = () => {
         scrollTrigger: { trigger: '.bfeat', start: 'top 86%', once: true },
       });
 
+      // fromTo, not to: no CSS hidden start state exists, so a `to` tween
+      // animated 1 -> 1 and the grid cards never moved.
       gsap.utils.toArray('.reveal').forEach(el => {
-        gsap.to(el, {
-          opacity: 1, y: 0, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 86%', once: true },
-        });
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 86%', once: true },
+          }
+        );
       });
 
       gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
@@ -106,7 +111,7 @@ const Blogs = () => {
           <span className="line-mask"><span className="w">{t('blogs.hero.line1')}</span></span>
           <span className="line-mask"><span className="w">{t('blogs.hero.line2', 'the AV floor.')}</span></span>
         </h1>
-        <div className="shero-side reveal" id="sheroSide">
+        <div className="shero-side" id="sheroSide">
           <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>
             {t('blogs.hero.label')}
           </span>

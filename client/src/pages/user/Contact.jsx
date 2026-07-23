@@ -159,9 +159,12 @@ const Contact = () => {
           }
         });
       });
-      ScrollTrigger.refresh();
     }, containerRef);
-    return () => ctx.revert();
+    // Deferred, not synchronous: called inline it measured before the map
+    // <iframe> elements had laid out, so band positions were computed against a
+    // shorter page.
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
   }, [contacts]);
 
   const handleSubmit = async (e) => {
