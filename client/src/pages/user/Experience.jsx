@@ -74,19 +74,23 @@ const Experience = () => {
         }
       });
 
-      // Generic reveals
+      // Generic reveals. fromTo, not to: no CSS supplies a hidden start state,
+      // so a `to` tween animated 1 -> 1 and produced no motion.
       gsap.utils.toArray('.reveal').forEach(el => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 86%',
-            once: true,
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 86%',
+              once: true,
+            }
           }
-        });
+        );
       });
 
       // Overview lede — underline draws in under the emphasized phrase
@@ -101,6 +105,9 @@ const Experience = () => {
       });
 
       gsap.utils.toArray('.reveal-img').forEach(el => {
+        // clip-path has no CSS start value and `none` cannot interpolate to an
+        // inset, so establish the closed state first.
+        gsap.set(el, { clipPath: 'inset(0 0 100% 0)' });
         gsap.to(el, {
           clipPath: 'inset(0 0 0% 0)',
           duration: 1.2,
@@ -138,8 +145,16 @@ const Experience = () => {
       });
     }, containerRef);
 
-    return () => ctx.revert();
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
   }, []);
+
+  // The visit rows render a multi-line address once the region fetch resolves,
+  // which grows the column and shifts every trigger below it. Re-measure only.
+  useEffect(() => {
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => clearTimeout(timer);
+  }, [activeContact]);
 
   // Video scroll pause detector
   useEffect(() => {
@@ -191,12 +206,12 @@ const Experience = () => {
           <img src="/assets/img/unsplash-1605810230434-7631ac76ec81-w2000.jpg" alt="" id="xheroImg" />
         </div>
         <div className="xhero-inner">
-          <span className="label label--red reveal" id="xheroLabel">{t('experience.hero.label')}</span>
+          <span className="label label--red" id="xheroLabel">{t('experience.hero.label')}</span>
           <h1 className="display" id="xheroH">
             <span className="line-mask"><span className="w">{t('experience.hero.line1')}</span></span>
             <span className="line-mask"><span className="w"><em>{t('experience.hero.line2')}</em></span></span>
           </h1>
-          <div className="xhero-foot reveal" id="xheroFoot">
+          <div className="xhero-foot" id="xheroFoot">
             <p className="lede">{t('experience.hero.desc')}</p>
             <div className="xhero-actions">
               <Button to="/contact?s=visit" className="btn btn--solid">
@@ -215,7 +230,7 @@ const Experience = () => {
           </div>
         </div>
       </section>
-      <div className="xhero-meta reveal">
+      <div className="xhero-meta">
         <div className="fact"><b>{t('experience.meta.zones_b')}</b><span>{t('experience.meta.zones_s')}</span></div>
         <div className="fact"><b>{t('experience.meta.brands_b')}</b><span>{t('experience.meta.brands_s')}</span></div>
         <div className="fact"><b>{t('experience.meta.loc_b')}</b><span>{t('experience.meta.loc_s')}</span></div>

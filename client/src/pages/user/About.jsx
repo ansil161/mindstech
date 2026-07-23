@@ -86,6 +86,10 @@ const About = () => {
   const telLabel = contact?.phone_display || contact?.phone || '';
   const email = contact?.email || '';
 
+  // Read once so the ink-in effect below and the markup stay in sync.
+  const storyP1 = t('about.story.p1');
+  const storyP2 = t('about.story.p2');
+
   useEffect(() => {
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -109,22 +113,41 @@ const About = () => {
           { opacity: 1, y: 0, duration: 0.8 }, 
           '-=.6');
 
-      // Scroll reveals for sections
+      // Hero image parallax
+      gsap.fromTo('#aheroImg', { yPercent: -8 }, {
+        yPercent: 8,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.ahero-visual',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
+
+      // Scroll reveals for sections. fromTo, not to: no CSS supplies a hidden
+      // start state, so a `to` tween animated 1 -> 1 and never moved anything.
       gsap.utils.toArray('.reveal').forEach((el) => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            once: true,
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+            }
           }
-        });
+        );
       });
 
       gsap.utils.toArray('.reveal-img').forEach((el) => {
+        // clip-path has no CSS start value, and `none` cannot interpolate to an
+        // inset — so establish the closed state before the tween.
+        gsap.set(el, { clipPath: 'inset(0 0 100% 0)' });
         gsap.to(el, {
           clipPath: 'inset(0 0 0% 0)',
           duration: 1.2,
@@ -136,10 +159,119 @@ const About = () => {
           }
         });
       });
+
+      // Section-head cascade — every other page has this; About was the only
+      // one missing it.
+      gsap.utils.toArray('.section-head').forEach((head) => {
+        gsap.fromTo(head.querySelectorAll('h2, .label, .side'),
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.9,
+            stagger: 0.08,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: head,
+              start: 'top 84%',
+              once: true,
+            }
+          }
+        );
+      });
+
+      // CTA masked headline — the .line-mask/.w spans already existed in the
+      // markup with no tween driving them.
+      gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
+        yPercent: 0,
+        duration: 1.1,
+        stagger: 0.1,
+        ease: 'power4.out',
+        scrollTrigger: {
+          trigger: '#contact',
+          start: 'top 72%',
+          once: true,
+        }
+      });
+
+      // CTA background parallax
+      gsap.fromTo('.cta-bg img', { yPercent: -6 }, {
+        yPercent: 6,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: '.cta',
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: true,
+        }
+      });
     }, containerRef);
 
     return () => ctx.revert();
   }, []);
+
+  // The team grid grows from a one-line placeholder to a full grid after the
+  // async fetch, which shifts every trigger below it. Re-measure without
+  // replaying anything.
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Team grid stagger. The reference ran this at mount because the roster
+      // was static markup; it is fetched now, so it binds here instead — at
+      // mount .member does not exist yet.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      gsap.fromTo('.member', { opacity: 0, y: 44 }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        stagger: 0.09,
+        ease: 'power2.out',
+        scrollTrigger: {
+          trigger: '#teamGrid',
+          start: 'top 82%',
+          once: true,
+        }
+      });
+    }, containerRef);
+
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
+  }, [translatedTeam]);
+
+  // Story word ink-in. The .st-w spans render at #3A3A3A (index.css:1181) and
+  // depend on this tween to reach readable contrast — same treatment as the
+  // statement paragraph on Home. It lives in its own effect because renderWords
+  // rebuilds those spans on every language change, so the tween has to rebind to
+  // the new nodes; keeping it out of the main effect avoids replaying the hero
+  // intro at the same time.
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set('#storyText .st-w', { opacity: 1, color: '#FAFAFA' });
+        return;
+      }
+
+      gsap.fromTo('#storyText .st-w',
+        { opacity: 0.18 },
+        {
+          opacity: 1,
+          color: (i, el) => (el.parentElement && el.parentElement.tagName === 'EM') ? '#CC0001' : '#FAFAFA',
+          stagger: 0.4,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '#storyText',
+            start: 'top 78%',
+            end: 'bottom 60%',
+            scrub: true,
+          }
+        }
+      );
+    }, containerRef);
+
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
+  }, [storyP1, storyP2]);
 
   return (
     <main id="top" ref={containerRef}>
@@ -150,7 +282,7 @@ const About = () => {
           <span className="line-mask"><span className="w">{t('about.hero.line2')}</span></span>
           <span className="line-mask"><span className="w"><em>{t('about.hero.line3')}</em></span></span>
         </h1>
-        <div className="ahero-side reveal" id="aheroSide">
+        <div className="ahero-side" id="aheroSide">
           <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>{t('about.hero.label')}</span>
           <p>{t('about.hero.brief')}</p>
           <Button href="#team" className="btn">
@@ -162,7 +294,7 @@ const About = () => {
         </div>
       </section>
 
-      <div className="ahero-meta reveal">
+      <div className="ahero-meta">
         {(t(`about.hero_facts.${regionSlug}`, { returnObjects: true, defaultValue: t('about.hero_facts.default', { returnObjects: true }) }) || []).map((fact, i) => (
           <div className="fact" key={i}>
             <b>{fact.bold}</b>
@@ -172,15 +304,15 @@ const About = () => {
       </div>
 
       <div className="ahero-visual reveal-img" aria-hidden="true">
-        <img src="/assets/img/unsplash-1497366811353-6870744d04b2-w1400.jpg" alt="" loading="lazy" />
+        <img src="/assets/img/unsplash-1497366811353-6870744d04b2-w1400.jpg" alt="" id="aheroImg" loading="lazy" />
       </div>
 
       {/* STORY */}
       <section className="story" aria-label="Our story">
         <div>
           <div className="story-text" id="storyText">
-            <p>{renderWords(t('about.story.p1'))}</p>
-            <p>{renderWords(t('about.story.p2'))}</p>
+            <p>{renderWords(storyP1)}</p>
+            <p>{renderWords(storyP2)}</p>
           </div>
           <div className="story-more reveal">
             <p>{t('about.story.more_p1')}</p>

@@ -586,22 +586,13 @@ img { display: block; max-width: 100%; }
   overflow: hidden;
   transition: all .4s var(--ease);
   cursor: pointer;
-  opacity: 0;
-  transform: translateY(40px);
 }
 
-/* Staggered reveal animation */
-.work-card[data-reveal] {
-  animation: workCardReveal 0.8s var(--ease) forwards;
-  animation-delay: var(--delay, 0s);
-}
-
-@keyframes workCardReveal {
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
+/* The entrance is scroll-triggered in Home.jsx, matching every other reveal on
+   the site. It used to be a time-based CSS keyframe with animation-delay, which
+   fired on mount regardless of scroll position — so cards below the fold had
+   already finished animating by the time they were scrolled into view. The
+   hidden start state now comes from the shared [data-reveal] rule. */
 
 /* Hover lift effect */
 .work-card:hover {
@@ -1136,6 +1127,12 @@ footer { border-top: 1px solid var(--line-soft); }
 .map-tag a:hover { gap: 10px; }
 .map-tag a svg { width: 12px; height: 12px; }
 
+/* Phone/email links inside .map-tag carry an inline `color` from the JSX, which
+   no selector can outrank — hence !important on the hover state alone. */
+.hover-red-text { transition: color .25s var(--ease); }
+.hover-red-text:hover,
+.hover-red-text:focus-visible { color: var(--red) !important; }
+
 /* ── Contact responsive ── */
 @media (max-width: 900px) {
   .contact-layout { grid-template-columns: 1fr; }
@@ -1506,9 +1503,6 @@ footer { border-top: 1px solid var(--line-soft); }
 
 @media(max-width:900px) {
   .story { grid-template-columns: 1fr; gap: 40px; }
-  .about-story-visuals { position: relative !important; top: 0 !important; width: 100% !important; gap: 24px !important; }
-  .about-card-back { width: 100% !important; transform: none !important; }
-  .about-card-front { width: 100% !important; margin-top: 0 !important; transform: none !important; }
   .nav-links, .nav-region { display: none; }
   .burger { display: flex; }
   .stats-grid { grid-template-columns: 1fr 1fr; }

@@ -72,57 +72,48 @@ const Solutions = () => {
     return { cat, tags };
   };
 
+  // Mount-time animations: everything targeting markup that exists on first
+  // paint. Previously this whole block sat behind `if (solutions.length === 0)
+  // return`, which held the hero intro hostage to the solutions fetch.
   useEffect(() => {
-    if (solutions.length === 0) return;
-
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
         gsap.set('.reveal', { opacity: 1, y: 0 });
-        gsap.set('.reveal-img', { clipPath: 'inset(0 0 0% 0)' });
         return;
       }
 
       // Hero Entrance Timeline
       const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      intro.fromTo('#sheroH .w', 
-          { yPercent: 115, rotate: 2 }, 
+      intro.fromTo('#sheroH .w',
+          { yPercent: 115, rotate: 2 },
           { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
-        .fromTo('#sheroSide', 
-          { opacity: 0, y: 30 }, 
-          { opacity: 1, y: 0, duration: 1.0 }, 
+        .fromTo('#sheroSide',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1.0 },
           '-=.8')
-        .fromTo('.shero-meta', 
-          { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 0.8 }, 
+        .fromTo('.shero-meta',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
           '-=.6');
 
-      // Generic reveals
+      // Static reveals (the CTA row). Solution rows are handled below, once
+      // they exist. fromTo, not to: no CSS supplies a hidden start state.
       gsap.utils.toArray('.reveal').forEach(el => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            once: true,
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+            }
           }
-        });
-      });
-
-      gsap.utils.toArray('.reveal-img').forEach(el => {
-        gsap.to(el, {
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 1.4,
-          ease: 'power4.inOut',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 84%',
-            once: true,
-          }
-        });
+        );
       });
 
       // CTA masked headline
@@ -150,6 +141,57 @@ const Solutions = () => {
       });
     }, containerRef);
 
+    return () => ctx.revert();
+  }, []);
+
+  // Solution-row animations: bound only once the fetch has rendered the rows,
+  // and targeted by their own selectors so they never double-bind with the
+  // mount-time .reveal pass above.
+  useEffect(() => {
+    if (solutions.length === 0) return;
+
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set('.srow-body', { opacity: 1, y: 0 });
+        gsap.set('.srow-media', { clipPath: 'inset(0 0 0% 0)' });
+        return;
+      }
+
+      gsap.utils.toArray('.srow-body').forEach(el => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+            }
+          }
+        );
+      });
+
+      gsap.utils.toArray('.srow-media').forEach(el => {
+        // clip-path has no CSS start value and `none` cannot interpolate to an
+        // inset, so establish the closed state first.
+        gsap.set(el, { clipPath: 'inset(0 0 100% 0)' });
+        gsap.to(el, {
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 1.4,
+          ease: 'power4.inOut',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 84%',
+            once: true,
+          }
+        });
+      });
+    }, containerRef);
+
     const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
     return () => { ctx.revert(); clearTimeout(timer); };
   }, [solutions]);
@@ -162,13 +204,13 @@ const Solutions = () => {
           <span className="line-mask"><span className="w">{t('solutions.hero.line1')}</span></span>
           <span className="line-mask"><span className="w"><em>{t('solutions.hero.line2')}</em></span></span>
         </h1>
-        <div className="shero-side reveal" id="sheroSide">
+        <div className="shero-side" id="sheroSide">
           <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>{t('solutions.hero.label')}</span>
           <p>{t('solutions.hero.desc')}</p>
         </div>
       </section>
       
-      <div className="shero-meta reveal">
+      <div className="shero-meta">
         <div className="fact"><b>{t('solutions.meta.vert_b')}</b><span>{t('solutions.meta.vert_s')}</span></div>
         <div className="fact"><b>{t('solutions.meta.brands_b')}</b><span>{t('solutions.meta.brands_s')}</span></div>
         <div className="fact"><b>{t('solutions.meta.installs_b')}</b><span>{t('solutions.meta.installs_s')}</span></div>
@@ -181,14 +223,14 @@ const Solutions = () => {
           return (
             <article className="srow" key={sol.id || idx}>
               <Link
-                className="srow-media reveal-img"
+                className="srow-media"
                 to={`/solutions/${sol.slug}`}
                 aria-label={`Explore ${sol.title}`}
               >
                 <img src={sol.image} alt={sol.title} loading="lazy" />
                 {meta?.cat && <span className="srow-cat">{meta.cat}</span>}
               </Link>
-              <div className="srow-body reveal">
+              <div className="srow-body">
                 <span className="num">{String(idx + 1).padStart(2, '0')}</span>
                 <h2 className="display">
                   <Link to={`/solutions/${sol.slug}`}>{sol.title}</Link>

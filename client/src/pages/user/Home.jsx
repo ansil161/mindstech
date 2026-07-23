@@ -211,39 +211,45 @@ const Home = () => {
   }, []);
 
   // Separate effect for reveal-img GSAP animations triggered when fieldwork items render
+  // Fieldwork arrives asynchronously and changes the work-grid height, shifting
+  // every trigger below it — so re-measure. This effect used to also own the
+  // .reveal-img animation, but those two elements (.thumb and .edge-visual) are
+  // static markup unrelated to fieldwork: binding them here meant a slow or
+  // failed /admin/fieldwork/ call left them unrevealed. They are bound at mount
+  // now, and this effect only re-measures.
   useEffect(() => {
-    if (fieldwork.length === 0) return;
-
-    // Clear any existing ScrollTriggers on these elements to prevent duplicates
-    const triggers = ScrollTrigger.getAll().filter(t =>
-      t.trigger && t.trigger.classList.contains('reveal-img')
-    );
-    triggers.forEach(t => t.kill());
-
     const ctx = gsap.context(() => {
-      gsap.utils.toArray('.reveal-img').forEach((el) => {
-        gsap.to(el, {
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 1.2,
-          ease: 'power4.inOut',
+      const cards = gsap.utils.toArray('.work-card[data-reveal]');
+      if (cards.length === 0) return;
+
+      // [data-reveal] hides these in CSS, so reduced-motion must restore them.
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set(cards, { opacity: 1, y: 0 });
+        return;
+      }
+
+      // One trigger for the grid rather than one per card: the cards enter
+      // together, so a single staggered batch reads as one deliberate movement
+      // instead of four independent ones.
+      gsap.fromTo(cards,
+        { opacity: 0, y: 28 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          stagger: 0.1,
+          ease: 'power3.out',
           scrollTrigger: {
-            trigger: el,
-            start: 'top 82%',
+            trigger: '.work-grid-premium',
+            start: 'top 85%',
             once: true,
           }
-        });
-      });
+        }
+      );
     }, containerRef);
 
-    // Refresh ScrollTrigger to recalculate metrics since card list height changed
-    const timer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 100);
-
-    return () => {
-      ctx.revert();
-      clearTimeout(timer);
-    };
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
   }, [fieldwork]);
 
   // preloader and entrance animation
@@ -300,6 +306,9 @@ const Home = () => {
       }
 
       if (reduceMotion) {
+        // The statement .st-w spans sit at #3a3a3a (index.css:359) until the
+        // ink-in tween below lifts them; restore them before bailing out.
+        gsap.set('#stText .st-w', { opacity: 1, color: '#FAFAFA' });
         runIntro();
         return;
       }
@@ -333,16 +342,37 @@ const Home = () => {
         }
       );
 
-      // 4. Reveal triggers
+      // 4. Reveal triggers. fromTo, not to: no CSS supplies a hidden start
+      // state for .reveal, so a `to` tween animated 1 -> 1 and produced no
+      // motion on any of the twelve elements carrying the class.
       gsap.utils.toArray('.reveal').forEach((el) => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+            }
+          }
+        );
+      });
+
+      // 4b. Image wipes. clip-path has no CSS start value and `none` cannot
+      // interpolate to an inset, so establish the closed state first.
+      gsap.utils.toArray('.reveal-img').forEach((el) => {
+        gsap.set(el, { clipPath: 'inset(0 0 100% 0)' });
         gsap.to(el, {
-          opacity: 1,
-          y: 0,
+          clipPath: 'inset(0 0 0% 0)',
           duration: 1.2,
-          ease: 'power3.out',
+          ease: 'power4.inOut',
           scrollTrigger: {
             trigger: el,
-            start: 'top 88%',
+            start: 'top 82%',
             once: true,
           }
         });
@@ -524,8 +554,13 @@ const Home = () => {
       );
     }, containerRef);
 
+    // The testimonials section is the largest late-arriving height change on the
+    // page; without this the journal and CTA triggers below it stay measured
+    // against a document that no longer exists.
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
     return () => {
       ctx.revert();
+      clearTimeout(timer);
     };
   }, [translatedTestimonials]);
 
@@ -608,37 +643,76 @@ const Home = () => {
     };
   }, [solutionRows.length]);
 
-  // Dotted world map base loader
+  // Dotted world map base loader.
+  //
+  // This used to run on mount. Two costs landed during first paint even though
+  // the map sits far below the fold: a runtime import of a ~900KB module over
+  // the network, and DottedMap.getSVG() synthesising several thousand <circle>
+  // nodes which are then parsed in one synchronous innerHTML write. Together
+  // they blocked the main thread long enough to stall the whole page.
+  //
+  // The work is identical, just deferred until the region section is within a
+  // screen and a half of the viewport, and started in idle time. By the time
+  // the map is actually scrolled to, it is already painted — so nothing about
+  // the result changes, only when the cost is paid.
   useEffect(() => {
     let active = true;
     const base = mapBaseRef.current;
     if (!base) return;
 
-    (async () => {
+    const buildMap = async () => {
       try {
         const mod = await import('https://cdn.jsdelivr.net/npm/dotted-map@2.2.3/+esm');
         if (!active) return;
         const DottedMap = mod.default?.default || mod.default || mod.DottedMap;
         const map = new DottedMap({ height: 100, grid: 'diagonal' });
-        base.innerHTML = map.getSVG({
+        const svg = map.getSVG({
           radius: 0.22,
           color: '#FFFFFF38',
           shape: 'circle',
           backgroundColor: 'transparent',
         });
+        if (!active) return;
+        base.innerHTML = svg;
         const s = base.querySelector('svg');
         if (s) {
           s.removeAttribute('width');
           s.removeAttribute('height');
           s.setAttribute('preserveAspectRatio', 'xMidYMid meet');
         }
+        ScrollTrigger.refresh();
       } catch (e) {
         if (active) base.classList.add('map-base--fallback');
       }
-    })();
+    };
+
+    const start = () => {
+      if (!active) return;
+      if ('requestIdleCallback' in window) {
+        window.requestIdleCallback(buildMap, { timeout: 2000 });
+      } else {
+        setTimeout(buildMap, 0);
+      }
+    };
+
+    // No IntersectionObserver (very old browsers): fall back to the previous
+    // behaviour rather than never rendering the map.
+    if (!('IntersectionObserver' in window)) {
+      start();
+      return () => { active = false; base.innerHTML = ''; };
+    }
+
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((en) => en.isIntersecting)) {
+        io.disconnect();
+        start();
+      }
+    }, { rootMargin: '150% 0px' });
+    io.observe(base);
 
     return () => {
       active = false;
+      io.disconnect();
       base.innerHTML = '';
     };
   }, []);
@@ -1172,8 +1246,8 @@ const Home = () => {
           ) : fieldwork.length === 0 ? (
             <p className="work-empty">{t('home.work.empty', 'No field work projects available yet.')}</p>
           ) : (
-            fieldwork.map((project, index) => (
-              <div key={project.id} className="work-card" data-reveal style={{ '--delay': `${index * 0.1}s` }}>
+            fieldwork.map((project) => (
+              <div key={project.id} className="work-card" data-reveal>
                 <div className="work-card-image">
                   <img src={project.image} alt={project.title} loading="lazy" />
                   <div className="work-card-overlay"></div>

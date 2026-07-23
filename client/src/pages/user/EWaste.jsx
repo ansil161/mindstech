@@ -41,6 +41,11 @@ const EWaste = () => {
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
+        // [data-reveal] is hidden by a real CSS rule (index.css:1949), so returning
+        // early without restoring it leaves these sections permanently blank.
+        gsap.set('[data-reveal], .reveal', { opacity: 1, y: 0 });
+        gsap.set('[data-reveal-img]', { clipPath: 'inset(0 0 0% 0)' });
+        document.querySelectorAll('.ov-state').forEach(el => el.classList.add('is-inview'));
         return;
       }
 
@@ -58,18 +63,60 @@ const EWaste = () => {
           { opacity: 1, y: 0, duration: 0.8 }, 
           '-=.6');
 
-      // Generic reveals - use data-reveal attribute
-      gsap.utils.toArray('[data-reveal]').forEach(el => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 86%',
-            once: true,
+      // Generic reveals. [data-reveal] gets its hidden start state from CSS
+      // (index.css:1949); the three .reveal-only nodes in the collection-centres
+      // header have no such rule, so the start state is stated here and both
+      // mechanisms animate identically.
+      gsap.utils.toArray('[data-reveal], .reveal').forEach(el => {
+        gsap.fromTo(el,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 86%',
+              once: true,
+            }
           }
+        );
+      });
+
+      // Benefit cells stagger as one group. The four sit on the same row, so a
+      // per-element trigger would fire them simultaneously — the grid is the
+      // trigger and the cells are staggered, which reads as one deliberate
+      // movement. Their hidden state is set here rather than in CSS, so
+      // reduced-motion simply leaves them visible.
+      const benCells = gsap.utils.toArray('.ben-cell');
+      if (benCells.length) {
+        gsap.fromTo(benCells,
+          { opacity: 0, y: 28 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: '.ben-grid',
+              start: 'top 84%',
+              once: true,
+            }
+          }
+        );
+      }
+
+      // Overview underline sweep. The .ov-state em::after rule already exists
+      // (index.css:1373-1385) and is gated on .is-inview, but nothing on this
+      // page ever added the class — the same treatment Experience uses.
+      gsap.utils.toArray('.ov-state').forEach(el => {
+        ScrollTrigger.create({
+          trigger: el,
+          start: 'top 86%',
+          once: true,
+          onEnter: () => el.classList.add('is-inview'),
         });
       });
 
@@ -128,19 +175,31 @@ const EWaste = () => {
       }
     }, containerRef);
 
-    return () => ctx.revert();
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
   }, []);
 
-  // Filter change transition
+  // Card entrance on filter change — and on first load. Previously this keyed on
+  // [filter] alone, so the initial set (which arrives after the fetch, with
+  // filter unchanged) never animated, and the grid growing from a one-line
+  // placeholder left every trigger below it measured against a shorter page.
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
 
-    gsap.fromTo('.cc-card',
-      { opacity: 0, y: 18 },
-      { opacity: 1, y: 0, duration: 0.55, stagger: 0.03, ease: 'power3.out', overwrite: 'auto' }
-    );
-  }, [filter]);
+    const ctx = gsap.context(() => {
+      if (reduceMotion) {
+        gsap.set('.cc-card', { opacity: 1, y: 0 });
+        return;
+      }
+      gsap.fromTo('.cc-card',
+        { opacity: 0, y: 18 },
+        { opacity: 1, y: 0, duration: 0.55, stagger: 0.03, ease: 'power3.out', overwrite: 'auto' }
+      );
+    }, containerRef);
+
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
+  }, [filter, translatedCentres]);
 
   const operators = [...new Set(translatedCentres.map(centre => centre.operator))];
   const filteredCentres = translatedCentres.filter(centre => filter === 'all' || centre.operator === filter);
@@ -185,7 +244,7 @@ const EWaste = () => {
           <span className="label label--red">{t('ewaste.recyclers.why_recycle', 'Why recycle')}</span>
           <h2 className="display">{t('ewaste.recyclers.gives_back_main', 'What responsible recycling')} <em>{t('ewaste.recyclers.gives_back_em', 'gives back.')}</em></h2>
         </div>
-        <div className="ben-grid" data-reveal>
+        <div className="ben-grid">
           <div className="ben-cell">
             <span className="num">01</span>
             <h3>{t('ewaste.recyclers.b1_title', 'Conserves natural resources')}</h3>

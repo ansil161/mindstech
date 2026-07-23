@@ -190,15 +190,10 @@ const Events = () => {
           { opacity: 0, y: 16 },
           { opacity: 1, y: 0, duration: 0.7 }, '-=.5');
 
-      // Section heads
-      gsap.utils.toArray('.section-head').forEach(head => {
-        gsap.fromTo(head.querySelectorAll('h2, .label'),
-          { opacity: 0, y: 30 },
-          {
-            opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out',
-            scrollTrigger: { trigger: head, start: 'top 84%', once: true },
-          });
-      });
+      // NOTE: the .section-head stagger lives in the data-dependent effect
+      // below. Both section heads render inside `!loading && showEvents/showNews`
+      // blocks, so at mount they do not exist yet and binding here matched
+      // nothing — the animation had never once run.
 
       // CTA
       gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
@@ -221,12 +216,30 @@ const Events = () => {
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+      // Section heads — bound here, not at mount, because these nodes only
+      // exist once the events/news fetch has resolved.
+      gsap.utils.toArray('.section-head').forEach(head => {
+        const parts = head.querySelectorAll('h2, .label');
+        if (reduceMotion) { gsap.set(parts, { opacity: 1, y: 0 }); return; }
+        gsap.fromTo(parts,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out',
+            scrollTrigger: { trigger: head, start: 'top 84%', once: true },
+          });
+      });
+
+      // fromTo, not to: no CSS hidden start state exists, so a `to` tween
+      // animated 1 -> 1 and the cards never moved.
       gsap.utils.toArray('.reveal').forEach(el => {
         if (reduceMotion) { gsap.set(el, { opacity: 1, y: 0 }); return; }
-        gsap.to(el, {
-          opacity: 1, y: 0, duration: 1, ease: 'power3.out',
-          scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-        });
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          }
+        );
       });
     }, containerRef);
 
@@ -246,7 +259,7 @@ const Events = () => {
           <span className="line-mask"><span className="w">{t('events.hero.title_main', 'Events &')}</span></span>
           <span className="line-mask"><span className="w"><em>{t('events.hero.title_em', 'News')}</em></span></span>
         </h1>
-        <div className="shero-side reveal" id="evheroSide">
+        <div className="shero-side" id="evheroSide">
           <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>
             {t('events.hero.label', "What's happening")}
           </span>

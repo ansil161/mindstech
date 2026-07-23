@@ -193,8 +193,9 @@ const SolutionDetails = () => {
         return;
       }
 
-      // Reset scroll trigger coordinates
-      ScrollTrigger.refresh();
+      // NOTE: ScrollTrigger.refresh() used to sit here, before any of this
+      // effect's triggers existed — so it only ever re-measured the previous
+      // route's triggers. It now runs deferred, after the context is built.
 
       // Entrance timeline
       const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
@@ -222,22 +223,29 @@ const SolutionDetails = () => {
         }
       });
 
-      // Generic reveals
+      // Generic reveals. fromTo, not to: no CSS supplies a hidden start state,
+      // so a `to` tween animated 1 -> 1 and produced no motion.
       gsap.utils.toArray('.reveal').forEach(el => {
-        gsap.to(el, {
-          opacity: 1,
-          y: 0,
-          duration: 1.2,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 88%',
-            once: true,
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 1.2,
+            ease: 'power3.out',
+            scrollTrigger: {
+              trigger: el,
+              start: 'top 88%',
+              once: true,
+            }
           }
-        });
+        );
       });
 
       gsap.utils.toArray('.reveal-img').forEach(el => {
+        // clip-path has no CSS start value and `none` cannot interpolate to an
+        // inset, so establish the closed state first.
+        gsap.set(el, { clipPath: 'inset(0 0 100% 0)' });
         gsap.to(el, {
           clipPath: 'inset(0 0 0% 0)',
           duration: 1.4,
@@ -263,8 +271,16 @@ const SolutionDetails = () => {
       });
     }, containerRef);
 
-    return () => ctx.revert();
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(timer); };
   }, [slug, data.name]);
+
+  // The brand row fills in after its own fetch, changing page height and
+  // invalidating the trigger positions below it. Re-measure only.
+  useEffect(() => {
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => clearTimeout(timer);
+  }, [translatedBrands]);
 
   const renderTitle = (titleHtml) => {
     const emIdx = titleHtml.indexOf('<em>');
