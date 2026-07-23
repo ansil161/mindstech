@@ -169,7 +169,7 @@ const EWaste = () => {
       <section className="ov" aria-label="Overview">
         <div className="ov-label" data-reveal><span className="label label--red">{t('ewaste.ov.label', 'Overview')}</span></div>
         <div>
-          <p className="ov-state" data-reveal>{t('ewaste.ov.lede_main', 'Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of it')} <em>{t('ewaste.ov.lede_em', 'gets a second life.')}</em></p>
+          <p className="ov-state" data-reveal>{t('ewaste.ov.lede_main', 'Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of them')} <em>{t('ewaste.ov.lede_em', 'get a second life.')}</em></p>
           <div className="ov-copy" data-reveal>
             <p>{t('ewaste.ov.p1', 'E-waste is the informal name for electronic products nearing the end of their useful life — computers, televisions, displays, copiers, phones, audio equipment and batteries. Many of their components contain hazardous materials that pose a real threat to human health and the environment when disposed of improperly.')}</p>
             <p>{t('ewaste.ov.p2', 'Most of these products can be reused, refurbished or recycled in an environmentally sound manner. Under India\'s E-Waste (Management & Handling) Rules, Mindstec runs a compliant take-back programme so the hardware we distribute never ends up where it shouldn\'t.')}</p>

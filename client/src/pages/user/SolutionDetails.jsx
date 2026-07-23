@@ -101,7 +101,7 @@ const SOLUTIONS_RAW = {
     caps: [
       ['Studio & PTZ cameras', 'Broadcast-grade imaging from fixed studio chains to remotely operated PTZ fleets.'],
       ['Vision mixing & switching', 'Production switchers and routing for live programmes, sport and events.'],
-      ['Live graphics & virtual sets', 'Real-time graphics, augmented reality and virtual studio tools used by the world’s broadcasters.'],
+      ['Live graphics & virtual sets', "Real-time graphics, augmented reality and virtual studio tools used by the world's broadcasters."],
       ['Streaming & delivery', 'Encoders, IPTV and OTT delivery that get the programme to every screen, reliably.'],
     ],
     brands: ['Vizrt', 'SalrayWorks', 'Telycam', 'Amino', 'RDL'],
