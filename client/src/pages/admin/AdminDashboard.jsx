@@ -12,6 +12,7 @@ import EventsTab from './tabs/EventsTab';
 import RegionsTab from './tabs/RegionsTab';
 import DocumentsTab from './tabs/DocumentsTab';
 import TeamTab from './tabs/TeamTab';
+import AdminsTab from './tabs/AdminsTab';
 import { ADMIN_TABS } from './utils/constants';
 
 // Hooks for dashboard overview stats
@@ -66,6 +67,8 @@ export default function AdminDashboard() {
         return <DocumentsTab />;
       case ADMIN_TABS.TEAM:
         return <TeamTab />;
+      case ADMIN_TABS.ADMINS:
+        return user?.is_superuser ? <AdminsTab /> : null;
       case ADMIN_TABS.DASHBOARD:
       default:
         return (

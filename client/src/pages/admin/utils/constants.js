@@ -10,6 +10,7 @@ export const ADMIN_TABS = {
   REGIONS: 'regions',
   DOCUMENTS: 'documents',
   TEAM: 'team',
+  ADMINS: 'admins',
 };
 
 export const TAB_TITLES = {
@@ -24,4 +25,5 @@ export const TAB_TITLES = {
   [ADMIN_TABS.REGIONS]: 'Region Management',
   [ADMIN_TABS.DOCUMENTS]: 'Documents',
   [ADMIN_TABS.TEAM]: 'Team',
+  [ADMIN_TABS.ADMINS]: 'Admin Access',
 };
