@@ -90,7 +90,7 @@ export function useRegions() {
       const [contactsRes, brandsRes, testiRes] = await Promise.all([
         regionService.getRegionContacts(region.id),
         regionService.getBrands(region.id),
-        regionService.getTestimonials(region.id),
+        regionService.getTestimonials(),
       ]);
       setContacts(contactsRes.data || []);
       setBrands(brandsRes.data || []);
@@ -132,7 +132,7 @@ export function useRegions() {
   };
 
   const deleteRegion = async (id) => {
-    if (!window.confirm('Delete this region and all its contact info, brands, and testimonials?')) return;
+    if (!window.confirm('Delete this region and all its contact info and brands?')) return;
     try {
       await regionService.deleteRegion(id);
       setRegions((prev) => prev.filter((r) => r.id !== id));
@@ -299,7 +299,7 @@ export function useRegions() {
     fd.append('is_active', 'true');
     if (newTestiPhoto) fd.append('photo', newTestiPhoto);
     try {
-      const res = await regionService.addTestimonial(selectedRegion.id, fd);
+      const res = await regionService.addTestimonial(fd);
       setTestimonials((prev) => [...prev, res.data]);
       setNewTestiName('');
       setNewTestiDesignation('');

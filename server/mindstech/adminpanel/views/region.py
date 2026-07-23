@@ -182,19 +182,18 @@ class RegionBrandDetailView(APIView):
 # ──────────────────────────────────────────────
 
 class TestimonialListCreateView(APIView):
-    """List testimonials for a region or add a new one (admin only)."""
+    """List all testimonials or add a new one (admin only)."""
     permission_classes = [IsAdminUser]
 
-    def get(self, request, region_id):
-        testimonials = ClientTestimonial.objects.filter(region_id=region_id)
+    def get(self, request):
+        testimonials = ClientTestimonial.objects.all()
         serializer = TestimonialSerializer(testimonials, many=True, context={'request': request})
         return Response(serializer.data)
 
-    def post(self, request, region_id):
-        region = Region.objects.get(pk=region_id)
+    def post(self, request):
         serializer = TestimonialSerializer(data=request.data, context={'request': request})
         serializer.is_valid(raise_exception=True)
-        serializer.save(region=region)
+        serializer.save()
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
@@ -265,17 +264,30 @@ class PublicRegionListView(APIView):
 
 class PublicRegionDataView(APIView):
     """
-    Public endpoint that returns a region's contact info, brands, and testimonials.
+    Public endpoint that returns a region's contact info and brands.
     Used by the About and Contact pages when the user switches region.
     """
     permission_classes = [AllowAny]
 
     def get(self, request, slug):
         try:
-            region = Region.objects.prefetch_related('contacts', 'brands', 'testimonials').get(slug=slug)
+            region = Region.objects.prefetch_related('contacts', 'brands').get(slug=slug)
         except Region.DoesNotExist:
             return Response({'detail': 'Not found.'}, status=status.HTTP_404_NOT_FOUND)
         serializer = RegionDetailSerializer(region, context={'request': request})
+        return Response(serializer.data)
+
+
+class PublicTestimonialsView(APIView):
+    """
+    Public endpoint that returns the shared client testimonial list shown on the Home page,
+    identical for every region.
+    """
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        testimonials = ClientTestimonial.objects.filter(is_active=True).order_by('display_order', 'created_at')
+        serializer = TestimonialSerializer(testimonials, many=True, context={'request': request})
         return Response(serializer.data)
 
 

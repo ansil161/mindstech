@@ -260,8 +260,8 @@ class TestimonialSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = ClientTestimonial
-        fields = ['id', 'region', 'name', 'designation', 'company', 'message', 'photo', 'display_order', 'is_active', 'created_at']
-        read_only_fields = ['id', 'region', 'created_at']
+        fields = ['id', 'name', 'designation', 'company', 'message', 'photo', 'display_order', 'is_active', 'created_at']
+        read_only_fields = ['id', 'created_at']
 
     def validate_name(self, value):        return strip_tags(value).strip()
     def validate_designation(self, value): return strip_tags(value).strip()
@@ -270,17 +270,16 @@ class TestimonialSerializer(serializers.ModelSerializer):
 
 
 class RegionDetailSerializer(serializers.ModelSerializer):
-    """Nested serializer for the public API — returns region + contact + brands + testimonials."""
+    """Nested serializer for the public API — returns region + contact + brands."""
     contact_info  = serializers.SerializerMethodField()
     brands        = serializers.SerializerMethodField()
-    testimonials  = serializers.SerializerMethodField()
 
     class Meta:
         model = Region
         fields = [
             'id', 'name', 'slug',
             'enabled_pages',
-            'contact_info', 'brands', 'testimonials',
+            'contact_info', 'brands',
         ]
 
     def get_contact_info(self, obj):
@@ -290,10 +289,6 @@ class RegionDetailSerializer(serializers.ModelSerializer):
     def get_brands(self, obj):
         brands = obj.brands.all().order_by('display_order', 'created_at')
         return RegionBrandSerializer(brands, many=True, context=self.context).data
-
-    def get_testimonials(self, obj):
-        items = obj.testimonials.all().order_by('display_order', 'created_at')
-        return TestimonialSerializer(items, many=True, context=self.context).data
 
 
 class RegionBrandSerializer(serializers.ModelSerializer):

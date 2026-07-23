@@ -12,7 +12,7 @@ from .views import (
     RegionListCreateView, RegionDetailView,
     RegionContactView, PublicRegionDataView, PublicRegionSolutionBrandsView, PublicRegionListView,
     RegionBrandListCreateView, RegionBrandDetailView,
-    TestimonialListCreateView, TestimonialDetailView,
+    TestimonialListCreateView, TestimonialDetailView, PublicTestimonialsView,
     RegionContactListCreateView, RegionContactDetailView,
     EventNewsListCreateView, EventNewsDetailView,
     PublicUpcomingEventsView, PublicNewsView,
@@ -74,13 +74,14 @@ urlpatterns = [
     path('public/region/<slug:slug>/', PublicRegionDataView.as_view(), name='public-region-data'),
     path('public/region/<slug:region_slug>/solution/<slug:solution_slug>/brands/', PublicRegionSolutionBrandsView.as_view(), name='public-region-solution-brands'),
     path('public/team/', PublicTeamMembersView.as_view(), name='public-team-list'),
+    path('public/testimonials/', PublicTestimonialsView.as_view(), name='public-testimonial-list'),
 
     # Brands
     path('regions/<int:region_id>/brands/', RegionBrandListCreateView.as_view(), name='region-brand-list-create'),
     path('brands/<int:pk>/', RegionBrandDetailView.as_view(), name='brand-detail'),
 
-    # Testimonials
-    path('regions/<int:region_id>/testimonials/', TestimonialListCreateView.as_view(), name='region-testimonial-list-create'),
+    # Testimonials (global, shared across all regions)
+    path('testimonials/', TestimonialListCreateView.as_view(), name='testimonial-list-create'),
     path('testimonials/<int:pk>/', TestimonialDetailView.as_view(), name='testimonial-detail'),
 
     # Events & News (admin CRUD)
