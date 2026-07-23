@@ -551,16 +551,12 @@ const Home = () => {
     if (firstOpen) openItem(firstOpen);
   }, []);
 
-  // Solutions row expand — clicking OR hovering a row reveals its image
-  // inline inside that same row, growing the row to fit it (same accordion
-  // convention as #edgeList below: single row open at a time, imperative
-  // max-height set from scrollHeight for a smooth grow/collapse).
-  // On hover-capable devices, hover alone drives it (opens on enter, stays
-  // open — never auto-closes on leave — until another row is hovered);
-  // click is deliberately a no-op there, since a click always lands after a
-  // hover on a mouse, and letting both trigger the SAME toggle would mean
-  // every click immediately re-closes what the hover just opened. On touch
-  // devices (no hover), click/tap is the only trigger and toggles open/closed.
+  // Solutions row thumbnail — a small image fades in next to the row's text,
+  // in the row's own reserved space (no height growth). On hover-capable
+  // devices it's a pure show-while-hovering/hide-on-leave preview, driven
+  // independently per row (no coordination needed — a mouse can only be over
+  // one row at a time anyway). On touch devices (no hover), tap toggles a
+  // single row open/closed at a time, since there's no hover to leave.
   useEffect(() => {
     const list = solListRef.current;
     if (!list) return;
@@ -568,40 +564,32 @@ const Home = () => {
     const rows = Array.from(list.querySelectorAll('.sol-row'));
     const canHover = window.matchMedia('(hover: hover)').matches;
 
-    const setOpen = (row, on) => {
-      row.classList.toggle('open', on);
-      const media = row.querySelector('.sol-row-media');
-      if (media) media.style.maxHeight = on ? `${media.scrollHeight}px` : '0px';
-    };
-
-    const openRow = (row) => {
-      rows.forEach((r) => setOpen(r, r === row));
-    };
-
     const handlers = rows.map((row) => {
       const top = row.querySelector('.sol-row-top');
       if (!top) return null;
 
+      if (canHover) {
+        const onEnter = () => row.classList.add('open');
+        const onLeave = () => row.classList.remove('open');
+        top.addEventListener('mouseenter', onEnter);
+        top.addEventListener('mouseleave', onLeave);
+        return { top, onEnter, onLeave };
+      }
+
       const onClick = () => {
-        if (canHover) return;
-        if (row.classList.contains('open')) {
-          setOpen(row, false);
-        } else {
-          openRow(row);
-        }
-      };
-      const onEnter = () => {
-        if (canHover && !row.classList.contains('open')) openRow(row);
+        const isOpen = row.classList.contains('open');
+        rows.forEach((r) => r.classList.remove('open'));
+        if (!isOpen) row.classList.add('open');
       };
       top.addEventListener('click', onClick);
-      top.addEventListener('mouseenter', onEnter);
-      return { top, onClick, onEnter };
+      return { top, onClick };
     }).filter(Boolean);
 
     return () => {
-      handlers.forEach(({ top, onClick, onEnter }) => {
-        top.removeEventListener('click', onClick);
-        top.removeEventListener('mouseenter', onEnter);
+      handlers.forEach(({ top, onEnter, onLeave, onClick }) => {
+        if (onEnter) top.removeEventListener('mouseenter', onEnter);
+        if (onLeave) top.removeEventListener('mouseleave', onLeave);
+        if (onClick) top.removeEventListener('click', onClick);
       });
     };
   }, [solutionRows.length]);
@@ -917,6 +905,9 @@ const Home = () => {
                   <span className="sol-title">{sol.title}</span>
                   <span className="sol-desc">{sol.desc}</span>
                 </span>
+                <span className="sol-thumb">
+                  {sol.image && <img src={sol.image} alt="" loading="lazy" />}
+                </span>
                 <span className="sol-ind" aria-hidden="true"></span>
                 <Link
                   className="sol-arrow"
@@ -928,11 +919,6 @@ const Home = () => {
                     <path d="M7 17L17 7M9 7h8v8" />
                   </svg>
                 </Link>
-              </div>
-              <div className="sol-row-media">
-                <div className="sol-row-media-inner">
-                  {sol.image && <img src={sol.image} alt="" loading="lazy" />}
-                </div>
               </div>
             </div>
           ))}
