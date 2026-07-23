@@ -3,22 +3,34 @@ import teamService from '../services/teamService';
 import notify from '../utils/notify';
 
 export function useTeam() {
+  // Team members
   const [teamMembers, setTeamMembers] = useState([]);
   const [loadingTeam, setLoadingTeam] = useState(false);
 
-  // Add form
+  // Team Add form
   const [showAddTeamForm, setShowAddTeamForm] = useState(false);
   const [newMemberName, setNewMemberName] = useState('');
   const [newMemberRole, setNewMemberRole] = useState('');
   const [newMemberPhoto, setNewMemberPhoto] = useState(null);
   const [submittingTeam, setSubmittingTeam] = useState(false);
 
-  // Edit form
+  // Team Edit form
   const [editingMemberId, setEditingMemberId] = useState(null);
   const [editMemberName, setEditMemberName] = useState('');
   const [editMemberRole, setEditMemberRole] = useState('');
   const [editMemberPhoto, setEditMemberPhoto] = useState(null);
   const [submittingMemberEdit, setSubmittingMemberEdit] = useState(false);
+
+  // Testimonials
+  const [testimonials, setTestimonials] = useState([]);
+  const [loadingTestimonials, setLoadingTestimonials] = useState(false);
+  const [showAddTestimonialForm, setShowAddTestimonialForm] = useState(false);
+  const [newTestiName, setNewTestiName] = useState('');
+  const [newTestiDesignation, setNewTestiDesignation] = useState('');
+  const [newTestiCompany, setNewTestiCompany] = useState('');
+  const [newTestiMessage, setNewTestiMessage] = useState('');
+  const [newTestiPhoto, setNewTestiPhoto] = useState(null);
+  const [submittingTestimonial, setSubmittingTestimonial] = useState(false);
 
   const fetchTeamMembers = useCallback(async () => {
     setLoadingTeam(true);
@@ -33,9 +45,23 @@ export function useTeam() {
     }
   }, []);
 
+  const fetchTestimonials = useCallback(async () => {
+    setLoadingTestimonials(true);
+    try {
+      const res = await teamService.getTestimonials();
+      setTestimonials(res.data || []);
+    } catch (err) {
+      console.error(err);
+      notify('Failed to load testimonials.');
+    } finally {
+      setLoadingTestimonials(false);
+    }
+  }, []);
+
   useEffect(() => {
     fetchTeamMembers();
-  }, [fetchTeamMembers]);
+    fetchTestimonials();
+  }, [fetchTeamMembers, fetchTestimonials]);
 
   const addTeamMember = async (e) => {
     e.preventDefault();
@@ -101,6 +127,50 @@ export function useTeam() {
     }
   };
 
+  // Testimonial actions
+  const addTestimonial = async (e) => {
+    e.preventDefault();
+    if (!newTestiName.trim() || !newTestiDesignation.trim() || !newTestiCompany.trim() || !newTestiMessage.trim()) {
+      notify('Name, designation, company and message are required.');
+      return;
+    }
+    setSubmittingTestimonial(true);
+    const fd = new FormData();
+    fd.append('name', newTestiName.trim());
+    fd.append('designation', newTestiDesignation.trim());
+    fd.append('company', newTestiCompany.trim());
+    fd.append('message', newTestiMessage.trim());
+    fd.append('display_order', testimonials.length);
+    fd.append('is_active', 'true');
+    if (newTestiPhoto) fd.append('photo', newTestiPhoto);
+    try {
+      const res = await teamService.addTestimonial(fd);
+      setTestimonials((prev) => [...prev, res.data]);
+      setNewTestiName('');
+      setNewTestiDesignation('');
+      setNewTestiCompany('');
+      setNewTestiMessage('');
+      setNewTestiPhoto(null);
+      setShowAddTestimonialForm(false);
+      notify('Testimonial added successfully.');
+    } catch (err) {
+      notify(`Failed to add testimonial: ${JSON.stringify(err.response?.data || err.message)}`);
+    } finally {
+      setSubmittingTestimonial(false);
+    }
+  };
+
+  const deleteTestimonial = async (id) => {
+    if (!window.confirm('Delete this testimonial?')) return;
+    try {
+      await teamService.deleteTestimonial(id);
+      setTestimonials((prev) => prev.filter((t) => t.id !== id));
+      notify('Testimonial deleted successfully.');
+    } catch (err) {
+      notify('Failed to delete testimonial.');
+    }
+  };
+
   return {
     teamMembers,
     loadingTeam,
@@ -124,8 +194,30 @@ export function useTeam() {
     submittingMemberEdit,
     editTeamMember,
 
-    refresh: fetchTeamMembers,
+    // Testimonials
+    testimonials,
+    loadingTestimonials,
+    showAddTestimonialForm,
+    setShowAddTestimonialForm,
+    newTestiName,
+    setNewTestiName,
+    newTestiDesignation,
+    setNewTestiDesignation,
+    newTestiCompany,
+    setNewTestiCompany,
+    newTestiMessage,
+    setNewTestiMessage,
+    setNewTestiPhoto,
+    submittingTestimonial,
+    addTestimonial,
+    deleteTestimonial,
+
+    refresh: () => {
+      fetchTeamMembers();
+      fetchTestimonials();
+    },
   };
 }
 
 export default useTeam;
+

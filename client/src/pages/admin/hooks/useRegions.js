@@ -17,8 +17,6 @@ export function useRegions() {
   const [loadingContacts, setLoadingContacts] = useState(false);
   const [brands, setBrands] = useState([]);
   const [loadingBrands, setLoadingBrands] = useState(false);
-  const [testimonials, setTestimonials] = useState([]);
-  const [loadingTestimonials, setLoadingTestimonials] = useState(false);
   const [allSolutions, setAllSolutions] = useState([]);
 
   // Form states
@@ -53,15 +51,6 @@ export function useRegions() {
   const [editContactMapEmbed, setEditContactMapEmbed] = useState('');
   const [editContactMapLink, setEditContactMapLink] = useState('');
 
-  // Testimonial Form
-  const [showAddTestimonialForm, setShowAddTestimonialForm] = useState(false);
-  const [newTestiName, setNewTestiName] = useState('');
-  const [newTestiDesignation, setNewTestiDesignation] = useState('');
-  const [newTestiCompany, setNewTestiCompany] = useState('');
-  const [newTestiMessage, setNewTestiMessage] = useState('');
-  const [newTestiPhoto, setNewTestiPhoto] = useState(null);
-  const [submittingTestimonial, setSubmittingTestimonial] = useState(false);
-
   const fetchRegions = useCallback(async () => {
     setLoading(true);
     setError('');
@@ -85,23 +74,19 @@ export function useRegions() {
     setSelectedRegion(region);
     setLoadingContacts(true);
     setLoadingBrands(true);
-    setLoadingTestimonials(true);
     try {
-      const [contactsRes, brandsRes, testiRes] = await Promise.all([
+      const [contactsRes, brandsRes] = await Promise.all([
         regionService.getRegionContacts(region.id),
         regionService.getBrands(region.id),
-        regionService.getTestimonials(),
       ]);
       setContacts(contactsRes.data || []);
       setBrands(brandsRes.data || []);
-      setTestimonials(testiRes.data || []);
     } catch (err) {
       console.error(err);
       notify('Failed to load region details.');
     } finally {
       setLoadingContacts(false);
       setLoadingBrands(false);
-      setLoadingTestimonials(false);
     }
   };
 
@@ -282,50 +267,6 @@ export function useRegions() {
     }
   };
 
-  // Testimonial actions
-  const addTestimonial = async (e) => {
-    e.preventDefault();
-    if (!newTestiName.trim() || !newTestiDesignation.trim() || !newTestiCompany.trim() || !newTestiMessage.trim()) {
-      notify('Name, designation, company and message are required.');
-      return;
-    }
-    setSubmittingTestimonial(true);
-    const fd = new FormData();
-    fd.append('name', newTestiName.trim());
-    fd.append('designation', newTestiDesignation.trim());
-    fd.append('company', newTestiCompany.trim());
-    fd.append('message', newTestiMessage.trim());
-    fd.append('display_order', testimonials.length);
-    fd.append('is_active', 'true');
-    if (newTestiPhoto) fd.append('photo', newTestiPhoto);
-    try {
-      const res = await regionService.addTestimonial(fd);
-      setTestimonials((prev) => [...prev, res.data]);
-      setNewTestiName('');
-      setNewTestiDesignation('');
-      setNewTestiCompany('');
-      setNewTestiMessage('');
-      setNewTestiPhoto(null);
-      setShowAddTestimonialForm(false);
-      notify('Testimonial added successfully.');
-    } catch (err) {
-      notify(`Failed to add testimonial: ${JSON.stringify(err.response?.data || err.message)}`);
-    } finally {
-      setSubmittingTestimonial(false);
-    }
-  };
-
-  const deleteTestimonial = async (id) => {
-    if (!window.confirm('Delete this testimonial?')) return;
-    try {
-      await regionService.deleteTestimonial(id);
-      setTestimonials((prev) => prev.filter((t) => t.id !== id));
-      notify('Testimonial deleted successfully.');
-    } catch (err) {
-      notify('Failed to delete testimonial.');
-    }
-  };
-
   return {
     regions,
     loading,
@@ -400,26 +341,9 @@ export function useRegions() {
     setEditContactMapLink,
     editContact,
 
-    // Testimonials
-    testimonials,
-    loadingTestimonials,
-    showAddTestimonialForm,
-    setShowAddTestimonialForm,
-    newTestiName,
-    setNewTestiName,
-    newTestiDesignation,
-    setNewTestiDesignation,
-    newTestiCompany,
-    setNewTestiCompany,
-    newTestiMessage,
-    setNewTestiMessage,
-    setNewTestiPhoto,
-    submittingTestimonial,
-    addTestimonial,
-    deleteTestimonial,
-
     refresh: fetchRegions,
   };
 }
 
 export default useRegions;
+

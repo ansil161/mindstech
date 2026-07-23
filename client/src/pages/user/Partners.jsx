@@ -3,72 +3,52 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
-import { useRegion } from '../../context/RegionContext.jsx';
-import { getPublicRegionData } from '../../api/regionApi.js';
-import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 
 gsap.registerPlugin(ScrollTrigger);
 
+// The partner portfolio is global — the same 25 brands are represented in every
+// region. (Region + solution specific brands stay on the solution detail pages.)
+const BRANDS = [
+  { id: '01', name: 'Avocor',     cat: 'displays',  descKey: 'partners.brands.b1',  img: '/assets/uploads/2019/03/1.png' },
+  { id: '02', name: 'Christie',   cat: 'displays',  descKey: 'partners.brands.b2',  img: '/assets/uploads/2025/04/christie_250x250.png' },
+  { id: '03', name: 'Datapath',   cat: 'displays',  descKey: 'partners.brands.b3',  img: '/assets/uploads/2025/04/datapath-1.png' },
+  { id: '04', name: 'Polywall',   cat: 'displays',  descKey: 'partners.brands.b4',  img: '/assets/uploads/2025/04/polywall_250x250.png' },
+  { id: '05', name: 'Magnum',     cat: 'displays',  descKey: 'partners.brands.b5',  img: '/assets/uploads/2025/04/magnum-2-1.png' },
+  { id: '06', name: 'Sonance',    cat: 'audio',     descKey: 'partners.brands.b6',  img: '/assets/uploads/2026/03/Screenshot-2026-03-24-124551.png' },
+  { id: '07', name: 'RDL',        cat: 'audio',     descKey: 'partners.brands.b7',  img: '/assets/uploads/2025/04/RDL-1.png' },
+  { id: '08', name: 'Amino',      cat: 'broadcast', descKey: 'partners.brands.b8',  img: '/assets/uploads/2026/04/Untitled-design-27.png' },
+  { id: '09', name: 'SalrayWorks',cat: 'broadcast', descKey: 'partners.brands.b9',  img: '/assets/uploads/2026/04/a1966c_b6188e7c73814b5fa62a8a2fdb076fe5mv2.jpeg' },
+  { id: '10', name: 'Telycam',    cat: 'broadcast', descKey: 'partners.brands.b10', img: '/assets/uploads/2025/04/telycam_250x250.png' },
+  { id: '11', name: 'Humelab',    cat: 'collab',    descKey: 'partners.brands.b11', img: '/assets/uploads/2026/04/Untitled-design-19.png' },
+  { id: '12', name: 'Vizrt',      cat: 'broadcast', descKey: 'partners.brands.b12', img: '/assets/uploads/2025/06/7-1.png' },
+  { id: '13', name: 'Lemco',      cat: 'broadcast', descKey: 'partners.brands.b13', img: '/assets/uploads/2026/04/Untitled-design-26-1.png' },
+  { id: '14', name: 'T1V',        cat: 'collab',    descKey: 'partners.brands.b14', img: '/assets/uploads/2025/04/T1V-Orange-Standard-Logo-1.png' },
+  { id: '15', name: 'GoGet',      cat: 'collab',    descKey: 'partners.brands.b15', img: '/assets/uploads/2025/04/GoGet_Filled_RGB_Black-1.png' },
+  { id: '16', name: 'iPort',      cat: 'collab',    descKey: 'partners.brands.b16', img: '/assets/uploads/2025/04/iPort_Logo_250x250.png' },
+  { id: '17', name: 'RTI',        cat: 'collab',    descKey: 'partners.brands.b17', img: '/assets/uploads/2025/04/logo-300x300-1.png' },
+  { id: '18', name: 'SCT',        cat: 'collab',    descKey: 'partners.brands.b18', img: '/assets/uploads/2025/04/SCT_250W.png' },
+  { id: '19', name: 'Blustream',  cat: 'infra',     descKey: 'partners.brands.b19', img: '/assets/uploads/2025/04/Blustream_Logo-3-1.png' },
+  { id: '20', name: 'NETGEAR AV', cat: 'infra',     descKey: 'partners.brands.b20', img: '/assets/uploads/2025/04/netgearav_250x250.png' },
+  { id: '21', name: 'Kordz',      cat: 'infra',     descKey: 'partners.brands.b21', img: '/assets/uploads/2025/04/kordz_250x250.png' },
+  { id: '22', name: 'B-Tech',     cat: 'infra',     descKey: 'partners.brands.b22', img: '/assets/uploads/2025/04/btech_250x250.png' },
+  { id: '23', name: 'MTC',        cat: 'infra',     descKey: 'partners.brands.b23', img: '/assets/uploads/2025/04/MTC_new-1.png' },
+  { id: '24', name: 'Sapling',    cat: 'infra',     descKey: 'partners.brands.b24', img: '/assets/uploads/2025/04/sapling-1.png' },
+  { id: '25', name: 'Wavex',      cat: 'infra',     descKey: 'partners.brands.b25', img: '/assets/uploads/2025/04/Wavex-Transparent-Logo-Source_1024-1.png' },
+];
+
+const CATEGORY_CODES = ['all', 'displays', 'audio', 'broadcast', 'collab', 'infra'];
+
 const Partners = () => {
   const { t } = useTranslation();
-  const { regionSlug } = useRegion();
   const [filter, setFilter] = useState('all');
-  const [rawBrands, setRawBrands] = useState([]);
-  const [brandsLoading, setBrandsLoading] = useState(true);
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
 
-  const { translatedData: brands } = useDynamicTranslation(rawBrands, ['name'], `partners_brands_${regionSlug}`);
-
-  // Fetch brands from the backend (region-specific)
-  useEffect(() => {
-    let cancelled = false;
-    setBrandsLoading(true);
-    const fetchBrands = async () => {
-      try {
-        const res = await getPublicRegionData(regionSlug);
-        if (!cancelled) {
-          setRawBrands(res.data.brands || []);
-        }
-      } catch (err) {
-        console.error('Failed to load brands:', err);
-        if (!cancelled) setRawBrands([]);
-      } finally {
-        if (!cancelled) setBrandsLoading(false);
-      }
-    };
-    fetchBrands();
-    return () => { cancelled = true; };
-  }, [regionSlug]);
-
-  // Build unique category list from brand solutions data
-  // Since brands from backend have solutions as array of IDs, we'll use a flat all/active approach
-  // The backend brands don't have 'cat' field natively — we'll derive categories from solutions slugs if available
-  // Otherwise fall back to "all" only filter
-  const categories = React.useMemo(() => {
-    const cats = new Set();
-    brands.forEach(b => {
-      if (b.cat) cats.add(b.cat);
-    });
-    const result = [{ code: 'all', label: t('partners.categories.all') }];
-    const catMap = {
-      displays: t('partners.categories.displays'),
-      audio: t('partners.categories.audio'),
-      broadcast: t('partners.categories.broadcast'),
-      collab: t('partners.categories.collab'),
-      infra: t('partners.categories.infra'),
-    };
-    cats.forEach(cat => {
-      result.push({ code: cat, label: catMap[cat] || cat });
-    });
-    return result;
-  }, [brands, t]);
-
-  const filteredBrands = filter === 'all' ? brands : brands.filter(b => b.cat === filter);
+  const categories = CATEGORY_CODES.map(code => ({ code, label: t(`partners.categories.${code}`) }));
 
   useEffect(() => {
-    cardsRef.current = cardsRef.current.slice(0, brands.length);
+    cardsRef.current = cardsRef.current.slice(0, BRANDS.length);
 
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -176,8 +156,7 @@ const Partners = () => {
     }, containerRef);
 
     return () => ctx.revert();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [brands]);
+  }, []);
 
   // Animate cards on filter change
   useEffect(() => {
@@ -215,58 +194,38 @@ const Partners = () => {
         <div className="fact"><b>{t('partners.meta.fact3_b')}</b><span>{t('partners.meta.fact3_s')}</span></div>
       </div>
 
-      {/* FILTERS — only show if there are extra categories */}
-      {categories.length > 1 && (
-        <div className="filters" id="filters" role="group" aria-label="Filter partners by category">
-          {categories.map(cat => (
-            <button
-              key={cat.code}
-              className={`filter-btn ${filter === cat.code ? 'on' : ''}`}
-              onClick={() => setFilter(cat.code)}
-            >
-              {cat.label}
-              {cat.code === 'all' && <span className="filter-count">{brands.length}</span>}
-            </button>
-          ))}
-        </div>
-      )}
+      {/* FILTERS */}
+      <div className="filters" id="filters" role="group" aria-label="Filter partners by category">
+        {categories.map(cat => (
+          <button
+            key={cat.code}
+            className={`filter-btn ${filter === cat.code ? 'on' : ''}`}
+            onClick={() => setFilter(cat.code)}
+          >
+            {cat.label}
+            {cat.code === 'all' && <span className="filter-count">{BRANDS.length}</span>}
+          </button>
+        ))}
+      </div>
 
       {/* PARTNER GRID */}
       <div className="pgrid" id="pgrid">
-        {brandsLoading && (
-          <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>Loading partners...</p>
-        )}
-        {!brandsLoading && filteredBrands.length === 0 && (
-          <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>No partner brands listed for this region yet.</p>
-        )}
-        {filteredBrands.map((brand, i) => {
+        {BRANDS.map((brand, i) => {
           const isVisible = filter === 'all' || brand.cat === filter;
           return (
             <div
               key={brand.id}
               className={`p-card ${isVisible ? '' : 'is-hidden'}`}
-              data-cat={brand.cat || 'all'}
+              data-cat={brand.cat}
               ref={el => (cardsRef.current[i] = el)}
             >
               <div className="p-logo">
-                <span className="p-index">{String(i + 1).padStart(2, '0')}</span>
-                {brand.logo
-                  ? <img src={brand.logo} alt={`${brand.name} logo`} loading="lazy" />
-                  : <span className="p-logo-text">{brand.name}</span>
-                }
+                <span className="p-index">{brand.id}</span>
+                <img src={brand.img} alt={`${brand.name} logo`} loading="lazy" />
               </div>
               <div className="p-body">
                 <h3>{brand.name}</h3>
-                {brand.website_url && (
-                  <a
-                    href={brand.website_url}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="p-link p-cat"
-                  >
-                    Visit site ↗
-                  </a>
-                )}
+                <span className="p-cat">{t(brand.descKey)}</span>
               </div>
             </div>
           );
