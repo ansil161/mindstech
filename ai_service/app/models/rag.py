@@ -114,3 +114,7 @@ class RAGContextResponse(BaseModel):
         description="The source documents that compose the context block."
     )
     token_count: int = Field(..., description="Estimated token count of the compiled context block.")
+    top_score: Optional[float] = Field(
+        default=None,
+        description="Highest post-rerank relevance score among the included chunks, used internally to decide whether to hedge in the prompt. Not part of any public API response."
+    )

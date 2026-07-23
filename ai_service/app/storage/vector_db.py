@@ -23,6 +23,7 @@ class QdrantManager:
             self._client = QdrantClient(
                 url=os.getenv("QDRANT_URL"),
                 api_key=os.getenv("QDRANT_API_KEY"),
+                timeout=settings.VECTOR_DB_TIMEOUT_SECONDS,
             )
             self._ensure_collection_exists()
         return self._client

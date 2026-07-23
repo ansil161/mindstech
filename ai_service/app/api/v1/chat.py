@@ -7,6 +7,7 @@ from pydantic import BaseModel, Field
 from app.services.rag import rag_orchestrator
 from app.models.llm import ChatMessage, MessageRole
 from app.core.security import verify_api_key
+from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -71,7 +72,7 @@ def append_to_history(conversation_id: str, message: ChatMessage):
 
 
 class InternalChatPayload(BaseModel):
-    message: str
+    message: str = Field(..., min_length=1, max_length=settings.CHAT_MESSAGE_MAX_LENGTH)
     conversation_id: str = "default"
     stream: bool = False
     category: Optional[str] = None
@@ -86,7 +87,7 @@ async def chat_interaction(payload: InternalChatPayload):
     logger.info("Chat Query Endpoint called for conversation: %s", payload.conversation_id)
     try:
         full_history = get_history(payload.conversation_id)
-        recent_history = full_history[-6:]
+        recent_history = full_history[-settings.HISTORY_WINDOW_MESSAGES:] if settings.HISTORY_WINDOW_MESSAGES > 0 else []
 
         rag_response = rag_orchestrator.query(
             question=payload.message,

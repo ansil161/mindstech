@@ -10,12 +10,20 @@ from app.services.embedder import embedder
 from app.storage.vector_db import vector_db_manager
 from app.storage.document_store import document_store
 from app.core.security import verify_api_key
+from app.core.config import settings
 from app.services.parser import parse_file
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["ingestion"], dependencies=[Depends(verify_api_key)])
+
+
+def _approx_token_len(text: str) -> int:
+    """Same chars/4 heuristic used throughout this codebase for token
+    estimation (see app/services/context_builder.py) — deliberately not a
+    real tokenizer, to avoid adding a new dependency just for chunking."""
+    return max(1, len(text) // 4)
 
 class InternalIngestionPayload(BaseModel):
     document_id: str
@@ -58,11 +66,16 @@ async def ingest_document(payload: InternalIngestionPayload):
     """
     logger.info("Internal Ingest Endpoint triggered for document ID: %s", payload.document_id)
     try:
+        # Chunk size/overlap come from settings (approximate tokens, not raw
+        # characters — see _approx_token_len) instead of being hardcoded, and
+        # the separator list is ordered to prefer paragraph and sentence
+        # boundaries before ever falling back to a mid-sentence character cut.
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=1000,
-            chunk_overlap=200,
-            length_function=len,
+            chunk_size=settings.CHUNK_SIZE,
+            chunk_overlap=settings.CHUNK_OVERLAP,
+            length_function=_approx_token_len,
             is_separator_regex=False,
+            separators=["\n\n", "\n", ". ", "! ", "? ", "; ", ", ", " ", ""],
         )
         chunks = text_splitter.split_text(payload.content)
         

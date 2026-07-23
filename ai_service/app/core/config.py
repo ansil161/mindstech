@@ -40,8 +40,7 @@ class Settings(BaseSettings):
 
     # LLM Settings
     LLM_PROVIDER: str = "openai"  # Supported values: openai, gemini, groq
-    LLM_MODEL: str = "gpt-4o"
-    
+
     OPENAI_API_KEY: str | None = None
     GEMINI_API_KEY: str | None = None
     GROQ_API_KEY: str | None = None
@@ -53,12 +52,23 @@ class Settings(BaseSettings):
     
     API_KEY_COOLDOWN_SECONDS: int = 60
     
-    # Query Router Settings
+    # Query Router / Classifier Settings
     QUERY_ALIAS_MAPPING: dict = {
         "AV": "Audio Visual",
         "UC": "Unified Communications"
     }
-    
+
+    # Whether the classifier stage (scope detection + query rewriting) runs at
+    # all. When disabled, the raw user question is used for retrieval
+    # directly and scope-checking is skipped entirely.
+    ENABLE_QUERY_REWRITING: bool = True
+    # Attempts before the classifier gives up and the pipeline falls back to
+    # the raw question rather than aborting the request.
+    CLASSIFIER_MAX_RETRIES: int = 2
+    # How many of the most recent chat turns are shown to the classifier so it
+    # can resolve follow-ups like "what about that?" into a standalone query.
+    HISTORY_WINDOW_MESSAGES: int = 6
+
     # A/B Testing Flag for Generation Mode
     USE_QUERY_REPLACEMENT: bool = False
 
@@ -87,8 +97,9 @@ class Settings(BaseSettings):
         return self
 
     # RAG Validation Messages
-    SCOPE_REJECTION_MESSAGE: str = "Hai ,I specialize in assisting with Mindstec's professional AV and IT solutions, products, and services. How can I help you with our offerings today?"
+    SCOPE_REJECTION_MESSAGE: str = "Hi, I specialize in assisting with Mindstec's professional AV and IT solutions, products, and services. How can I help you with our offerings today?"
     LOW_SIMILARITY_MESSAGE: str = "I don't have details on that specific request at the moment. Would you like to explore our AV/IT products, solutions, or connect with our support team?"
+    LLM_UNAVAILABLE_MESSAGE: str = "I'm having a temporary issue generating a response right now. Please try again in a moment, or reach out to our support team if this keeps happening."
 
 
     # Embedding Settings
@@ -97,18 +108,49 @@ class Settings(BaseSettings):
     EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
     EMBEDDING_BATCH_SIZE: int = 32
     EMBEDDING_MAX_TOKENS: int = 512
+    # In-process cache for repeated embedding calls (per worker, not shared
+    # across processes). Set MAX_SIZE to 0 to disable caching entirely.
+    EMBEDDING_CACHE_MAX_SIZE: int = 256
+    EMBEDDING_CACHE_TTL_SECONDS: int = 300
 
     # Document Chunking Settings
-    CHUNK_SIZE: int = 500
-    CHUNK_OVERLAP: int = 100
+    # NOTE: these are approximate TOKENS, not characters — estimated via the
+    # same chars/4 heuristic already used elsewhere in this codebase for
+    # context token-counting, to avoid adding a tokenizer dependency. Defaults
+    # sized with headroom under the ~512-token limit of the default embedding
+    # model (see app/core/embedding_config.py).
+    CHUNK_SIZE: int = 400
+    CHUNK_OVERLAP: int = 50
 
     # Semantic Retrieval Settings
     RETRIEVAL_TOP_K: int = 5
     RETRIEVAL_MIN_SCORE: float = 0.30
-    RETRIEVAL_ENABLE_RERANK: bool = False
+    # A stricter threshold than RETRIEVAL_MIN_SCORE: below this, retrieved
+    # context is treated as "weak" — still used, but the model is explicitly
+    # instructed to hedge rather than state things confidently.
+    RETRIEVAL_CONFIDENT_SCORE: float = 0.55
+    # How many extra candidates to over-fetch from Qdrant beyond top_k, so
+    # dedup/diversity/rerank have real material to work with before the final
+    # top_k is selected (i.e. "dynamic" top-k — the final included count can
+    # be less than top_k if fewer chunks are actually distinct/relevant).
+    RETRIEVAL_OVERFETCH_MULTIPLIER: float = 3.0
+    # Hard cap on how many chunks are ever included in one prompt's context,
+    # independent of top_k.
+    RETRIEVAL_MAX_CONTEXT_CHUNKS: int = 6
+    # Diversity guard: at most this many chunks from any single source
+    # document, so one long document can't crowd out everything else.
+    RETRIEVAL_MAX_CHUNKS_PER_DOCUMENT: int = 2
+    # Two chunks whose normalized-text similarity is >= this value are
+    # treated as near-duplicates; the lower-scoring one is dropped.
+    RETRIEVAL_DEDUP_SIMILARITY_THRESHOLD: float = 0.90
+    # Total context budget passed to the LLM, in approximate tokens (same
+    # chars/4 heuristic as chunking above).
+    RETRIEVAL_MAX_CONTEXT_TOKENS: int = 3000
 
-
-
+    RETRIEVAL_ENABLE_RERANK: bool = True
+    # Blend weight for the lexical term-overlap signal in the hybrid
+    # re-ranker (0 = pure vector score, 1 = pure lexical overlap).
+    RERANK_LEXICAL_WEIGHT: float = 0.3
 
     # Vector Database Settings
     QDRANT_URL: str | None = None
@@ -116,9 +158,15 @@ class Settings(BaseSettings):
     QDRANT_COLLECTION_NAME: str = "mindstec_rag"
     QDRANT_VECTOR_DIMENSION: int = 384
     QDRANT_DISTANCE_METRIC: str = "Cosine"  # Options: Cosine, Dot, Euclid
+    VECTOR_DB_TIMEOUT_SECONDS: float = 10.0
 
+    # LLM call limits
+    LLM_REQUEST_TIMEOUT_SECONDS: float = 20.0
+    LLM_MAX_OUTPUT_TOKENS: int = 700
 
-
+    # Inbound chat message size cap (characters). A validation tightening,
+    # not a contract change — legitimate messages are far under this.
+    CHAT_MESSAGE_MAX_LENGTH: int = 4000
 
 
     # Celery & Redis Settings (Optional for async indexing tasks)
