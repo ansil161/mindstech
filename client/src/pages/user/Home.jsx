@@ -119,7 +119,6 @@ const Home = () => {
   const mapOverlayRef = useRef(null);
   const edgeListRef = useRef(null);
   const solListRef = useRef(null);
-  const solVisualRef = useRef(null);
   const mapTooltipRef = useRef(null);
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
@@ -552,73 +551,58 @@ const Home = () => {
     if (firstOpen) openItem(firstOpen);
   }, []);
 
-  // Solutions row hover — a sticky image card that crossfades to the
-  // hovered row's image and tilts in 3D (perspective rotateX/rotateY) toward
-  // the cursor's position over the list, eased via lerp + rAF for a smooth
-  // "holographic" feel. Skipped on touch/coarse pointers and under
-  // prefers-reduced-motion, where a tilt effect has no meaning.
+  // Solutions row expand — clicking OR hovering a row reveals its image
+  // inline inside that same row, growing the row to fit it (same accordion
+  // convention as #edgeList below: single row open at a time, imperative
+  // max-height set from scrollHeight for a smooth grow/collapse).
+  // On hover-capable devices, hover alone drives it (opens on enter, stays
+  // open — never auto-closes on leave — until another row is hovered);
+  // click is deliberately a no-op there, since a click always lands after a
+  // hover on a mouse, and letting both trigger the SAME toggle would mean
+  // every click immediately re-closes what the hover just opened. On touch
+  // devices (no hover), click/tap is the only trigger and toggles open/closed.
   useEffect(() => {
     const list = solListRef.current;
-    const visual = solVisualRef.current;
-    if (!list || !visual) return;
+    if (!list) return;
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const rows = Array.from(list.querySelectorAll('.sol-row'));
     const canHover = window.matchMedia('(hover: hover)').matches;
-    if (reduceMotion || !canHover) return;
 
-    const images = visual.querySelectorAll('img');
-    const rows = list.querySelectorAll('.sol-row');
-
-    const LERP = 0.12;
-    const MAX_TILT = 9; // degrees
-    const target = { rx: 0, ry: 0 };
-    const current = { rx: 0, ry: 0 };
-    let rafId = null;
-    let activeIndex = -1;
-
-    const tick = () => {
-      current.rx += (target.rx - current.rx) * LERP;
-      current.ry += (target.ry - current.ry) * LERP;
-      visual.style.transform = `perspective(900px) rotateX(${current.rx}deg) rotateY(${current.ry}deg)`;
-      rafId = requestAnimationFrame(tick);
-    };
-    rafId = requestAnimationFrame(tick);
-
-    const move = (e) => {
-      const rect = visual.getBoundingClientRect();
-      const cx = rect.left + rect.width / 2;
-      const cy = rect.top + rect.height / 2;
-      target.ry = Math.min(Math.max((e.clientX - cx) / (rect.width / 2), -1), 1) * MAX_TILT;
-      target.rx = Math.min(Math.max(-(e.clientY - cy) / (rect.height / 2), -1), 1) * MAX_TILT;
+    const setOpen = (row, on) => {
+      row.classList.toggle('open', on);
+      const media = row.querySelector('.sol-row-media');
+      if (media) media.style.maxHeight = on ? `${media.scrollHeight}px` : '0px';
     };
 
-    const onLeave = () => {
-      visual.classList.remove('on');
-      target.rx = 0;
-      target.ry = 0;
+    const openRow = (row) => {
+      rows.forEach((r) => setOpen(r, r === row));
     };
 
-    const enterHandlers = Array.from(rows).map((row) => {
-      const onEnter = () => {
-        visual.classList.add('on');
-        const i = Number(row.dataset.preview);
-        if (i === activeIndex) return;
-        if (activeIndex !== -1) images[activeIndex]?.classList.remove('on');
-        images[i]?.classList.add('on');
-        activeIndex = i;
+    const handlers = rows.map((row) => {
+      const top = row.querySelector('.sol-row-top');
+      if (!top) return null;
+
+      const onClick = () => {
+        if (canHover) return;
+        if (row.classList.contains('open')) {
+          setOpen(row, false);
+        } else {
+          openRow(row);
+        }
       };
-      row.addEventListener('mouseenter', onEnter);
-      return { row, onEnter };
-    });
-
-    list.addEventListener('mousemove', move);
-    list.addEventListener('mouseleave', onLeave);
+      const onEnter = () => {
+        if (canHover && !row.classList.contains('open')) openRow(row);
+      };
+      top.addEventListener('click', onClick);
+      top.addEventListener('mouseenter', onEnter);
+      return { top, onClick, onEnter };
+    }).filter(Boolean);
 
     return () => {
-      enterHandlers.forEach(({ row, onEnter }) => row.removeEventListener('mouseenter', onEnter));
-      list.removeEventListener('mousemove', move);
-      list.removeEventListener('mouseleave', onLeave);
-      if (rafId != null) cancelAnimationFrame(rafId);
+      handlers.forEach(({ top, onClick, onEnter }) => {
+        top.removeEventListener('click', onClick);
+        top.removeEventListener('mouseenter', onEnter);
+      });
     };
   }, [solutionRows.length]);
 
@@ -924,28 +908,34 @@ const Home = () => {
           </div>
           <p className="lede side">{t('home.solutions.lede')}</p>
         </div>
-        <div className="sol-layout">
-          <div className="sol-list" id="solList" ref={solListRef}>
-            {solutionRows.map((sol, i) => (
-              <Link key={sol.slug || i} className="sol-row" to={`/solutions/${sol.slug}`} data-preview={i}>
+        <div className="sol-list" id="solList" ref={solListRef}>
+          {solutionRows.map((sol, i) => (
+            <div key={sol.slug || i} className="sol-row" data-index={i}>
+              <div className="sol-row-top">
                 <span className="num">{(i + 1).toString().padStart(2, '0')}</span>
                 <span className="sol-text">
                   <span className="sol-title">{sol.title}</span>
                   <span className="sol-desc">{sol.desc}</span>
                 </span>
-                <span className="sol-arrow">
+                <span className="sol-ind" aria-hidden="true"></span>
+                <Link
+                  className="sol-arrow"
+                  to={`/solutions/${sol.slug}`}
+                  onClick={(e) => e.stopPropagation()}
+                  aria-label={`View ${sol.title} details`}
+                >
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M7 17L17 7M9 7h8v8" />
                   </svg>
-                </span>
-              </Link>
-            ))}
-          </div>
-          <div className="sol-visual" id="solVisual" ref={solVisualRef} aria-hidden="true">
-            {solutionRows.map((sol, i) => (
-              sol.image && <img key={sol.slug || i} data-preview={i} src={sol.image} alt="" loading="lazy" />
-            ))}
-          </div>
+                </Link>
+              </div>
+              <div className="sol-row-media">
+                <div className="sol-row-media-inner">
+                  {sol.image && <img src={sol.image} alt="" loading="lazy" />}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
 

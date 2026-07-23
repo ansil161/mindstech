@@ -365,23 +365,25 @@ img { display: block; max-width: 100%; }
 
 /* ── SOLUTIONS LIST ── */
 .solutions { padding: clamp(80px, 10vw, 140px) 0; }
-.sol-layout { display: grid; grid-template-columns: 1fr 380px; gap: clamp(28px, 4.5vw, 64px); padding: 0 var(--pad); align-items: start; }
-.sol-list { border-top: 1px solid var(--line-soft); }
+.sol-list { border-top: 1px solid var(--line-soft); padding: 0 var(--pad); }
 
 .sol-row {
   position: relative;
+  border-bottom: 1px solid var(--line-soft);
+  opacity: 0;
+}
+
+.sol-row-top {
+  position: relative;
   display: grid;
-  grid-template-columns: 56px 1fr auto;
-  grid-template-rows: 1fr;
+  grid-template-columns: 56px 1fr auto auto;
   gap: 0 20px;
   align-items: center;
   padding: 30px 0;
-  border-bottom: 1px solid var(--line-soft);
+  cursor: pointer;
   transition: background .4s var(--ease);
-  overflow: hidden;
-  opacity: 0;
 }
-.sol-row:hover { background: var(--ink-2); z-index: 2; }
+.sol-row-top:hover, .sol-row.open .sol-row-top { background: var(--ink-2); }
 
 /* Red sweep line on the left edge */
 .sol-row::before {
@@ -393,8 +395,9 @@ img { display: block; max-width: 100%; }
   transform: scaleY(0);
   transform-origin: bottom;
   transition: transform .45s var(--ease);
+  z-index: 1;
 }
-.sol-row:hover::before { transform: scaleY(1); }
+.sol-row.open::before { transform: scaleY(1); }
 
 .sol-text { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
 
@@ -405,7 +408,7 @@ img { display: block; max-width: 100%; }
   letter-spacing: -.02em;
   transition: transform .4s var(--ease), color .3s;
 }
-.sol-row:hover .sol-title { transform: translateX(12px); }
+.sol-row-top:hover .sol-title, .sol-row.open .sol-title { transform: translateX(12px); }
 
 .sol-desc {
   font-size: 13.5px;
@@ -414,7 +417,17 @@ img { display: block; max-width: 100%; }
   max-width: 46ch;
   transition: color .3s;
 }
-.sol-row:hover .sol-desc { color: rgba(163,163,163,.9); }
+.sol-row-top:hover .sol-desc, .sol-row.open .sol-desc { color: rgba(163,163,163,.9); }
+
+/* Expand indicator — plus that rotates into a minus when the row opens,
+   same construction as .edge-q .ind. Sits before the arrow-link so the two
+   affordances ("expand inline" vs "view full details") read as distinct. */
+.sol-ind { position: relative; width: 14px; height: 14px; flex-shrink: 0; }
+.sol-ind::before, .sol-ind::after { content: ''; position: absolute; background: var(--grey); transition: transform .35s var(--ease), background .3s; }
+.sol-ind::before { left: 0; top: 6px; width: 14px; height: 1.5px; }
+.sol-ind::after { left: 6px; top: 0; width: 1.5px; height: 14px; }
+.sol-row.open .sol-ind::after { transform: scaleY(0); }
+.sol-row.open .sol-ind::before { background: var(--red); }
 
 .sol-arrow {
   width: 44px; height: 44px;
@@ -423,9 +436,9 @@ img { display: block; max-width: 100%; }
   display: flex; align-items: center; justify-content: center;
   color: var(--grey);
   flex-shrink: 0;
-  transition: background .3s, border-color .3s, color .3s, transform .45s var(--ease), box-shadow .3s;
+  transition: background .3s, border-color .3s, color .3s, transform .3s var(--ease), box-shadow .3s;
 }
-.sol-row:hover .sol-arrow {
+.sol-arrow:hover {
   background: var(--red);
   border-color: var(--red);
   color: #fff;
@@ -434,35 +447,24 @@ img { display: block; max-width: 100%; }
 }
 .sol-arrow svg { width: 15px; height: 15px; }
 
-/* Sticky 3D tilt card — stays in place beside the list (no cursor-tracking
-   position), crossfades to the hovered row's image via img.on (same
-   convention #edgeVisual uses for its accordion), and tilts toward the
-   cursor's position over the list via a JS-driven rotateX/rotateY transform
-   applied every frame, so no CSS transition is declared on `transform` here
-   (it would fight the per-frame updates). */
-.sol-visual {
-  position: sticky;
-  top: 96px;
-  aspect-ratio: 4 / 5;
-  overflow: hidden;
-  border-radius: 4px;
-  opacity: 0;
-  pointer-events: none;
-  box-shadow: 0 30px 60px rgba(0,0,0,.5);
-  transition: opacity .35s var(--ease);
-  will-change: transform;
-}
-.sol-visual.on { opacity: 1; }
-.sol-visual img {
-  position: absolute;
-  inset: 0;
+/* Inline image reveal — the row itself grows to fit the image, imperatively
+   driven (max-height set from scrollHeight on open/close, mirroring
+   #edgeList's .edge-a convention) rather than a fixed height so it adapts to
+   the image's aspect ratio. Padding lives on the inner wrapper, not on this
+   element, so it collapses to truly zero height when closed. */
+.sol-row-media { max-height: 0; overflow: hidden; transition: max-height .6s var(--ease); }
+.sol-row-media-inner { padding-bottom: 28px; }
+.sol-row-media img {
   width: 100%;
-  height: 100%;
+  aspect-ratio: 16 / 9;
   object-fit: cover;
+  border-radius: 4px;
+  display: block;
   opacity: 0;
-  transition: opacity .5s var(--ease);
+  transform: scale(1.04);
+  transition: opacity .6s var(--ease), transform .7s var(--ease);
 }
-.sol-visual img.on { opacity: 1; }
+.sol-row.open .sol-row-media img { opacity: 1; transform: scale(1); }
 
 /* ── STATS ── */
 .stats { padding: clamp(48px, 6vw, 84px) var(--pad); }
@@ -1476,9 +1478,6 @@ footer { border-top: 1px solid var(--line-soft); }
 
 /* ── RESPONSIVE ── */
 @media(max-width:1100px) {
-  .sol-layout { grid-template-columns: 1fr; }
-  .sol-visual { display: none; }
-  .sol-desc { display: none; }
   .statement { grid-template-columns: 1fr; }
   .statement-side { flex-direction: row; align-items: flex-end; max-width: 420px; }
   .statement-side .thumb { width: 180px; }
@@ -1554,6 +1553,9 @@ footer { border-top: 1px solid var(--line-soft); }
   .stats-grid { grid-template-columns: 1fr; }
   .foot-grid { grid-template-columns: 1fr; }
   .cta .cta-row { flex-direction: column; align-items: flex-start; }
+  .sol-row-top { grid-template-columns: 32px 1fr auto auto; gap: 0 12px; padding: 24px 0; }
+  .sol-arrow { width: 36px; height: 36px; }
+  .sol-arrow svg { width: 13px; height: 13px; }
   .pgrid { grid-template-columns: 1fr; }
   .p-logo { aspect-ratio: 2/1; }
   .phero { padding-top: 110px; }
