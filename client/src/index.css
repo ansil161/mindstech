@@ -376,7 +376,7 @@ img { display: block; max-width: 100%; }
 .sol-row-top {
   position: relative;
   display: grid;
-  grid-template-columns: 56px 1fr 88px auto auto;
+  grid-template-columns: 56px 1fr 116px auto auto;
   gap: 0 20px;
   align-items: center;
   padding: 30px 0;
@@ -448,12 +448,12 @@ img { display: block; max-width: 100%; }
 .sol-arrow svg { width: 15px; height: 15px; }
 
 /* Small thumbnail that fades in within the row's own reserved column — the
-   grid column is always 88px wide (reserved whether visible or not), so
+   grid column is always 116px wide (reserved whether visible or not), so
    showing/hiding it is a pure opacity+scale fade with zero effect on row
    height or layout elsewhere on the page. */
 .sol-thumb {
-  width: 88px;
-  height: 56px;
+  width: 116px;
+  height: 72px;
   border-radius: 4px;
   overflow: hidden;
   opacity: 0;
