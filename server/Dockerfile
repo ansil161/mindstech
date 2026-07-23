@@ -28,6 +28,7 @@ USER django-user
 
 EXPOSE 8000
 
-# Run both Gunicorn and Celery worker concurrently via Supervisor
-CMD ["supervisord", "-c", "/app/supervisord.conf"]
+# Run migrations then start Gunicorn and Celery concurrently via Supervisor
+CMD ["/bin/sh", "-c", "python manage.py migrate --noinput && supervisord -c /app/supervisord.conf"]
+
 

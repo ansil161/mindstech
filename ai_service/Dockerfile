@@ -37,5 +37,11 @@ USER appuser
 
 EXPOSE 8001
 
-# Run with Gunicorn using Uvicorn workers for production scalability
-CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT app.main:app"]
+# Run with Gunicorn using Uvicorn workers for production scalability.
+# WEB_CONCURRENCY controls the worker count (defaults to 2 — previously this
+# had no --workers flag at all, which meant Gunicorn silently ran a single
+# worker regardless of load). Each worker still handles requests one at a
+# time internally since the RAG pipeline makes blocking calls, so raising
+# this is the primary lever for concurrent chat capacity; size it to the
+# host's available CPU/RAM.
+CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker --workers ${WEB_CONCURRENCY:-2} --timeout 90 --bind 0.0.0.0:$PORT app.main:app"]

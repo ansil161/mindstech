@@ -38,6 +38,8 @@ class LLMService:
         provider = provider.lower()
         instances = []
         
+        timeout = settings.LLM_REQUEST_TIMEOUT_SECONDS
+
         if provider == "groq":
             actual_model = model_name or "llama-3.3-70b-versatile"
             keys = settings.GROQ_API_KEYS
@@ -48,12 +50,13 @@ class LLMService:
                     model=actual_model,
                     groq_api_key=key,
                     temperature=temperature,
-                    max_tokens=max_tokens
+                    max_tokens=max_tokens,
+                    timeout=timeout,
                 )
                 if require_json:
                     model = model.bind(response_format={"type": "json_object"})
                 instances.append((model, key))
-                
+
         elif provider == "openai":
             actual_model = model_name or "gpt-4o-mini"
             keys = settings.OPENAI_API_KEYS
@@ -64,12 +67,13 @@ class LLMService:
                     model=actual_model,
                     api_key=key,
                     temperature=temperature,
-                    max_tokens=max_tokens
+                    max_tokens=max_tokens,
+                    timeout=timeout,
                 )
                 if require_json:
                     model = model.bind(response_format={"type": "json_object"})
                 instances.append((model, key))
-                
+
         elif provider == "gemini":
             actual_model = model_name or "gemini-1.5-flash"
             keys = settings.GEMINI_API_KEYS
@@ -80,13 +84,14 @@ class LLMService:
                     model=actual_model,
                     google_api_key=key,
                     temperature=temperature,
-                    max_tokens=max_tokens
+                    max_tokens=max_tokens,
+                    timeout=timeout,
                 )
                 instances.append((model, key))
-                
+
         else:
             raise ValueError(f"Unsupported LLM provider: {provider}")
-            
+
         return instances
 
     def generate_response(
@@ -102,7 +107,8 @@ class LLMService:
         Executes chat generation with LangChain's failover mechanism across all providers and keys.
         """
         selected_temp = temperature if temperature is not None else 0.2
-        
+        selected_max_tokens = max_tokens if max_tokens is not None else settings.LLM_MAX_OUTPUT_TOKENS
+
         # 1. Determine priority sequence
         primary_provider = (provider or settings.LLM_PROVIDER or "openai").lower()
         
@@ -119,7 +125,7 @@ class LLMService:
         for p in providers_order:
             try:
                 m_name = model if p == primary_provider else None
-                provider_instances = self._get_model_instances(p, model_name=m_name, temperature=selected_temp, max_tokens=max_tokens, require_json=require_json)
+                provider_instances = self._get_model_instances(p, model_name=m_name, temperature=selected_temp, max_tokens=selected_max_tokens, require_json=require_json)
                 for inst in provider_instances:
                     model_instances.append((p, inst))
             except Exception as e:
