@@ -10,7 +10,6 @@ import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee.jsx';
 import { safeFromTo } from '../../utils/gsapSafe';
-import { buildSolutionsFallback } from '../../constants/solutions.js';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -135,9 +134,7 @@ const Home = () => {
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
   const { translatedData: translatedTestimonials } = useDynamicTranslation(testimonials, ['name', 'designation', 'company', 'message'], `home_testimonials_${regionSlug}`);
 
-  // The section promises "six verticals" — if the API is unreachable or returns
-  // nothing, fall back to the canonical list in i18n so it never renders empty.
-  const solutionRows = solutions.length > 0 ? solutions : buildSolutionsFallback(t);
+  const solutionRows = solutions;
 
   const marqueeTestimonials = (translatedTestimonials || []).map((item) => ({
     author: {
@@ -154,7 +151,7 @@ const Home = () => {
     const fetchSolutions = async () => {
       try {
         const res = await axios.get('/admin/solutions/');
-        if (res.data && res.data.length > 0) {
+        if (res.data) {
           setRawSolutions(res.data);
         }
       } catch (err) {
