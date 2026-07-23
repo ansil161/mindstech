@@ -1,4 +1,5 @@
 import React from 'react';
+import AdminsTab from './AdminsTab';
 
 export default function OverviewTab({ user, solutionsCount = 0, blogsCount = 0, enquiries = [] }) {
   const pendingCount = enquiries.filter(e => e.status === 'Pending').length;
@@ -31,7 +32,7 @@ export default function OverviewTab({ user, solutionsCount = 0, blogsCount = 0, 
         <div className="admin-stat-card">
           <p className="admin-stat-label">Admin Status</p>
           <p className="admin-stat-value" style={{ fontSize: '20px', color: 'var(--red)', marginTop: '8px' }}>
-            {user?.is_staff ? 'Super Admin' : 'Staff'}
+            {user?.is_superuser ? 'Super Admin' : 'Staff'}
           </p>
           <p className="admin-stat-subtext">Read/write privileges</p>
         </div>
@@ -48,11 +49,17 @@ export default function OverviewTab({ user, solutionsCount = 0, blogsCount = 0, 
             This is your portal control center. From here you can manage solutions descriptions, edit blogs and news, view incoming customer query forms, and configure website settings.
           </p>
           <div className="admin-welcome-meta">
-          
-            <span className="admin-welcome-chip">Role: {user?.is_staff ? 'STAFF_MEMBER' : 'USER'}</span>
+            <span className="admin-welcome-chip">Role: {user?.is_superuser ? 'SUPERUSER' : 'STAFF_MEMBER'}</span>
           </div>
         </div>
       </div>
+
+      {/* Admin Management Section on Main Dashboard (Superuser only) */}
+      {user?.is_superuser && (
+        <div style={{ marginTop: '32px' }}>
+          <AdminsTab />
+        </div>
+      )}
     </>
   );
 }
