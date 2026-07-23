@@ -533,11 +533,11 @@
     },
     "offices": {
       "title": "Offices",
-      "desc": "Our network spans key markets in the Middle East, Africa, and Asia, ensuring we’re always within reach to support your projects."
+      "desc": "Our network spans key markets in the Middle East, Africa, and Asia, ensuring we're always within reach to support your projects."
     },
     "general": {
       "title": "General",
-      "desc": "Drop us a line and we’ll route it to the right person."
+      "desc": "Drop us a line and we'll route it to the right person."
     }
   },
   "experience": {
@@ -784,7 +784,7 @@
           },
           {
             "title": "Live graphics & virtual sets",
-            "desc": "Real-time graphics, augmented reality and virtual studio tools used by the world’s broadcasters."
+            "desc": "Real-time graphics, augmented reality and virtual studio tools used by the world's broadcasters."
           },
           {
             "title": "Streaming & delivery",
