@@ -86,7 +86,7 @@ export const RegionProvider = ({ children }) => {
 
   return (
     <RegionContext.Provider
-      value={{ region, setRegion, regionSlug, enabledPages, regionLoading, isPageEnabled, allRegions }}
+      value={{ region, setRegion, regionSlug, enabledPages, regionLoading, isPageEnabled, allRegions, currentRegionObj }}
     >
       {children}
     </RegionContext.Provider>

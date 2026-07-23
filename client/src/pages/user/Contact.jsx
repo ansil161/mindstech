@@ -22,14 +22,6 @@ const slugSubject = {
   'visit': 'Visit the Experience Centre'
 };
 
-const ALL_REGION_SLUGS = [
-  { slug: 'india', label: 'India' },
-  { slug: 'middle-east', label: 'Middle East' },
-  { slug: 'africa', label: 'Africa' },
-  { slug: 'south-asia', label: 'South Asia' },
-  { slug: 'hong-kong-china', label: 'Hong Kong / China' },
-];
-
 const FALLBACK_CONTACT = {
   phone: '+918045256922',
   phone_display: '+91 80 4525 6922',
@@ -42,7 +34,7 @@ const FALLBACK_CONTACT = {
 
 const Contact = () => {
   const { t } = useTranslation();
-  const { region, regionSlug } = useRegion();
+  const { region, regionSlug, currentRegionObj } = useRegion();
   const [searchParams] = useSearchParams();
   const containerRef = useRef(null);
 
@@ -58,7 +50,10 @@ const Contact = () => {
 
   const [contacts, setContacts] = useState([]);
   const contactInfo = contacts[0] || null;
-  const [allRegionContacts, setAllRegionContacts] = useState([]);
+
+  // A region with sub_regions is a container/umbrella (e.g. "Global"), not an
+  // office itself — show every sub-region's contacts instead of its own.
+  const isAggregateRegion = Array.isArray(currentRegionObj?.sub_regions) && currentRegionObj.sub_regions.length > 0;
 
   const { translatedData: translatedContacts } = useDynamicTranslation(
     contacts,
@@ -75,44 +70,41 @@ const Contact = () => {
 
   useEffect(() => {
     let cancelled = false;
-    const fetchRegionContact = async () => {
+    const fetchContacts = async () => {
       try {
-        const res = await getPublicRegionData(regionSlug);
-        if (!cancelled) setContacts(res.data.contact_info || []);
+        const subRegions = currentRegionObj?.sub_regions || [];
+        if (subRegions.length > 0) {
+          // Aggregate region (e.g. "Global") — fetch its own contacts (it may
+          // have none) plus every sub-region's, tagging each contact with
+          // which region it came from since RegionContact rows don't carry
+          // their parent region's name.
+          const targets = [
+            { slug: currentRegionObj.slug, name: currentRegionObj.name },
+            ...subRegions.map((r) => ({ slug: r.slug, name: r.name })),
+          ];
+          const results = await Promise.all(
+            targets.map(async ({ slug, name }) => {
+              try {
+                const res = await getPublicRegionData(slug);
+                return (res.data.contact_info || []).map((c) => ({ ...c, region_name: name }));
+              } catch {
+                return [];
+              }
+            })
+          );
+          if (!cancelled) setContacts(results.flat());
+        } else {
+          const res = await getPublicRegionData(regionSlug);
+          if (!cancelled) setContacts(res.data.contact_info || []);
+        }
       } catch (err) {
         console.error('Failed to load region contact:', err);
         if (!cancelled) setContacts([]);
       }
     };
-    fetchRegionContact();
+    fetchContacts();
     return () => { cancelled = true; };
-  }, [regionSlug]);
-
-  useEffect(() => {
-    let cancelled = false;
-    const fetchAllContacts = async () => {
-      try {
-        const results = await Promise.all(
-          ALL_REGION_SLUGS.map(async ({ slug, label }) => {
-            try {
-              const res = await getPublicRegionData(slug);
-              const infoList = res.data.contact_info;
-              const info = Array.isArray(infoList) ? infoList[0] : infoList;
-              if (info?.email) return { label, email: info.email };
-            } catch { /* skip unavailable regions */ }
-            return null;
-          })
-        );
-        if (!cancelled) {
-          setAllRegionContacts(results.filter(Boolean));
-        }
-      } catch (err) {
-        console.error('Failed to load regional desks:', err);
-      }
-    };
-    fetchAllContacts();
-    return () => { cancelled = true; };
-  }, []);
+  }, [regionSlug, currentRegionObj]);
 
   useEffect(() => {
     document.title = 'Contact us — Mindstec Distribution';
@@ -224,7 +216,20 @@ const Contact = () => {
 
   const displayContacts = translatedContacts && translatedContacts.length > 0 ? translatedContacts : contacts;
 
-  const regionalDesks = allRegionContacts;
+  // In aggregate mode (e.g. "Global"), prefix each contact's label with its
+  // region name since RegionContact rows don't carry that themselves.
+  const contactLabel = (contact) =>
+    contact.region_name
+      ? (contact.office_name ? `${contact.region_name} — ${contact.office_name}` : contact.region_name)
+      : contact.office_name;
+
+  const regionalDesks = isAggregateRegion
+    ? Array.from(
+        new Map(
+          contacts.filter((c) => c.email && c.region_name).map((c) => [c.region_name, c])
+        ).values()
+      ).map((c) => ({ label: c.region_name, email: c.email }))
+    : [];
 
   return (
     <main id="top" ref={containerRef}>
@@ -351,7 +356,7 @@ const Contact = () => {
                 if (!phoneVal) return null;
                 return (
                   <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '6px' : '0' }}>
-                    {displayContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contact.office_name}:</span>}
+                    {displayContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contactLabel(contact)}:</span>}
                     <a href={`tel:${phoneHref}`}>{phoneVal}</a>
                   </div>
                 );
@@ -364,7 +369,7 @@ const Contact = () => {
               <b>Visit us</b>
               {displayContacts.map((contact, idx) => {
                 const addr = contact.address;
-                const office = contact.office_name;
+                const office = contactLabel(contact);
                 if (!addr) return null;
                 return (
                   <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '12px' : '0', borderTop: idx > 0 ? '1px solid rgba(255,255,255,0.06)' : 'none', paddingTop: idx > 0 ? '8px' : '0' }}>
@@ -384,7 +389,7 @@ const Contact = () => {
                 if (!emailVal) return null;
                 return (
                   <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '6px' : '0' }}>
-                    {displayContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contact.office_name}:</span>}
+                    {displayContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contactLabel(contact)}:</span>}
                     <a href={`mailto:${emailVal}`}>{emailVal}</a>
                   </div>
                 );
@@ -393,7 +398,7 @@ const Contact = () => {
           </div>
           <div className="regions-mini">
             <b>Regional desks</b>
-            {regionalDesks.map((desk) => (
+            {isAggregateRegion && regionalDesks.map((desk) => (
               <div className="rm" key={desk.label}>
                 <span>{desk.label}</span>
                 <a href={`mailto:${desk.email}`}>{desk.email}</a>
@@ -429,7 +434,7 @@ const Contact = () => {
 
       {displayContacts.map((contact, index) => {
         const address = contact.address;
-        const name = contact.office_name || `Office ${index + 1}`;
+        const name = contactLabel(contact) || `Office ${index + 1}`;
         const embedUrl = contact.map_embed_url;
         const mapsLink = contact.map_link;
         const phoneVal = contact.phone_display || contact.phone;
