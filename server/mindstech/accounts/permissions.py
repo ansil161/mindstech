@@ -13,6 +13,22 @@ class IsAdminUserOnly(BasePermission):
         )
 
 
+class IsSuperAdminUser(BasePermission):
+    """
+    Allows access only to authenticated, active superusers — used to gate
+    admin-account management (create/block/delete other admins) so that
+    regular staff admins can't escalate privileges or lock each other out.
+    """
+    def has_permission(self, request, view):
+        return bool(
+            request.user and
+            request.user.is_authenticated and
+            request.user.is_active and
+            request.user.is_staff and
+            request.user.is_superuser
+        )
+
+
 class AdminOrReadOnly(BasePermission):
     """
     Allows read-only access to anyone, but restricts write operations
