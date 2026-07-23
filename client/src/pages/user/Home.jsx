@@ -552,10 +552,11 @@ const Home = () => {
     if (firstOpen) openItem(firstOpen);
   }, []);
 
-  // Solutions row hover — floating image card that tracks the cursor,
-  // toggled via .on the same way #edgeVisual swaps images above. Skipped on
-  // touch/coarse pointers and under prefers-reduced-motion, where a fixed
-  // cursor-follower has no meaning.
+  // Solutions row hover — floating image card that magnetically eases toward
+  // the cursor (lerp + rAF, same smoothing pattern as the gallery's
+  // CursorFollower) and wipes the active image in via clip-path instead of a
+  // plain crossfade. Skipped on touch/coarse pointers and under
+  // prefers-reduced-motion, where a fixed cursor-follower has no meaning.
   useEffect(() => {
     const list = solListRef.current;
     const preview = solPreviewRef.current;
@@ -568,22 +569,59 @@ const Home = () => {
     const images = preview.querySelectorAll('img');
     const rows = list.querySelectorAll('.sol-row');
 
+    const ctx = gsap.context(() => {}, containerRef);
+
+    const LERP = 0.12;
+    const target = { x: 0, y: 0 };
+    const current = { x: 0, y: 0 };
+    let rafId = null;
+    let started = false;
+    let activeIndex = -1;
+
+    const hideImg = (img) => ctx.add(() => gsap.set(img, { clipPath: 'inset(0 100% 0 0)' }));
+    const revealImg = (img) => {
+      ctx.add(() => gsap.set(img, { clipPath: 'inset(0 100% 0 0)' }));
+      ctx.add(() => gsap.to(img, { clipPath: 'inset(0 0% 0 0)', duration: 0.6, ease: 'power3.out' }));
+    };
+
+    const tick = () => {
+      current.x += (target.x - current.x) * LERP;
+      current.y += (target.y - current.y) * LERP;
+      preview.style.left = `${current.x}px`;
+      preview.style.top = `${current.y}px`;
+      rafId = requestAnimationFrame(tick);
+    };
+    rafId = requestAnimationFrame(tick);
+
     const move = (e) => {
       const maxX = window.innerWidth - preview.offsetWidth - 16;
       const maxY = window.innerHeight - preview.offsetHeight - 16;
-      preview.style.left = `${Math.min(Math.max(e.clientX + 28, 16), maxX)}px`;
-      preview.style.top = `${Math.min(Math.max(e.clientY - 150, 16), maxY)}px`;
+      target.x = Math.min(Math.max(e.clientX + 28, 16), maxX);
+      target.y = Math.min(Math.max(e.clientY - 150, 16), maxY);
+      if (!started) {
+        current.x = target.x;
+        current.y = target.y;
+        started = true;
+      }
     };
 
     const onLeave = () => {
       preview.classList.remove('on');
+      if (activeIndex !== -1) {
+        images.forEach((img) => hideImg(img));
+        activeIndex = -1;
+      }
     };
 
     const enterHandlers = Array.from(rows).map((row) => {
       const onEnter = (e) => {
         move(e);
         preview.classList.add('on');
-        images.forEach((img) => img.classList.toggle('on', img.dataset.preview === row.dataset.preview));
+        const i = Number(row.dataset.preview);
+        if (i === activeIndex) return;
+        if (activeIndex !== -1) hideImg(images[activeIndex]);
+        revealImg(images[i]);
+        activeIndex = i;
       };
       row.addEventListener('mouseenter', onEnter);
       return { row, onEnter };
@@ -596,6 +634,8 @@ const Home = () => {
       enterHandlers.forEach(({ row, onEnter }) => row.removeEventListener('mouseenter', onEnter));
       list.removeEventListener('mousemove', move);
       list.removeEventListener('mouseleave', onLeave);
+      if (rafId != null) cancelAnimationFrame(rafId);
+      ctx.revert();
     };
   }, [solutionRows.length]);
 
