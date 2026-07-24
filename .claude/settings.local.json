@@ -12,7 +12,9 @@
       "Bash(python .claude/skills/ui-ux-pro-max/scripts/search.py \"premium AV technology distribution global enterprise dark luxury\" --design-system -p \"Mindstec\")",
       "Bash(dir \"D:\\\\Digital Vint\\\\mindstec\")",
       "Bash(npm create *)",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "Bash(where ffmpeg *)",
+      "Bash(powershell -NoProfile -Command \"Get-Command ffmpeg -ErrorAction SilentlyContinue\")"
     ]
   }
 }

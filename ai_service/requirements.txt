@@ -1,25 +1,52 @@
+# --- web framework -----------------------------------------------------
 fastapi>=0.111.0
 uvicorn[standard]>=0.30.1
+gunicorn>=22.0.0
+python-multipart>=0.0.9
 pydantic>=2.7.4
 pydantic-settings>=2.3.3
-qdrant-client>=1.9.1
-requests>=2.31.0
-huggingface-hub>=0.23.0
-openai>=1.35.3
-google-generativeai>=0.7.0
-groq>=0.9.0
-celery>=5.4.0
-redis>=5.0.7
-python-multipart>=0.0.9
-pyyaml>=6.0.1
-gunicorn>=22.0.0
-pytest>=8.2.2
+
+# --- async HTTP --------------------------------------------------------
+# httpx replaces `requests` on the hot path: the embedding client is now
+# async, so a blocking call can no longer stall the event loop.
 httpx>=0.27.0
+
+# --- vector store ------------------------------------------------------
+qdrant-client>=1.9.1
+
+# --- session store -----------------------------------------------------
+# redis[hiredis] supplies the asyncio client used for conversation memory.
+redis[hiredis]>=5.0.7
+celery>=5.4.0
+
+# --- LLM providers -----------------------------------------------------
 langchain-core>=0.2.0
 langchain-openai>=0.1.0
 langchain-groq>=0.1.0
 langchain-google-genai>=1.0.0
+openai>=1.35.3
+
+# --- document parsing --------------------------------------------------
 pypdf>=4.0.0
 python-docx>=1.1.0
-markdown>=3.6
-langchain-text-splitters>=0.2.0
+
+# --- config / prompts --------------------------------------------------
+pyyaml>=6.0.1
+
+# --- testing -----------------------------------------------------------
+pytest>=8.2.2
+pytest-asyncio>=0.23.0
+
+# Removed in v2:
+#   requests                 - replaced by httpx (async)
+#   huggingface-hub          - the InferenceClient path was blocking; embeddings
+#                              now call the HF REST endpoints directly over httpx
+#   google-generativeai/groq - unused directly; reached via langchain adapters
+#   markdown                 - never imported
+#   langchain-text-splitters - its package __init__ imports the entire
+#                              `transformers` library (~27s cold import, plus
+#                              hundreds of MB of wheels) purely to split
+#                              strings. Replaced by app/services/chunker.py,
+#                              which implements the same recursive algorithm in
+#                              ~150 lines with no dependencies. Measured effect:
+#                              app import 33s -> 2.6s.
