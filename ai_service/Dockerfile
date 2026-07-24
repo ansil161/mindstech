@@ -1,47 +1,72 @@
-# Stage 1: Build dependencies
+# syntax=docker/dockerfile:1
+
+# ---------------------------------------------------------------------------
+# Stage 1: build dependencies
+# ---------------------------------------------------------------------------
 FROM python:3.12-slim-bookworm AS builder
 
 WORKDIR /build
 
-# Install system compilation dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
-# Install python dependencies to a temporary folder
 COPY requirements.txt .
 RUN pip install --no-cache-dir --user -r requirements.txt
 
-# Stage 2: Final minimal runtime image
+
+# ---------------------------------------------------------------------------
+# Stage 2: minimal runtime image
+# ---------------------------------------------------------------------------
 FROM python:3.12-slim-bookworm AS runner
 
 WORKDIR /app
 
-# Set production environment variables
+# PORT is defaulted here so the CMD below cannot bind to an empty address when
+# the variable is unset — the v1 CMD used a bare `$PORT` with no default.
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1 \
+    PORT=8000 \
     PATH=/home/appuser/.local/bin:$PATH
 
-# Create a non-privileged user to run the service
 RUN groupadd -g 10001 appuser && \
     useradd -u 10001 -g appuser -m -s /sbin/nologin appuser
 
-# Copy installed dependencies from builder
 COPY --from=builder --chown=appuser:appuser /root/.local /home/appuser/.local
 
-# Copy application source code
 COPY --chown=appuser:appuser app/ ./app/
+# config/ holds prompts.yaml and faq.yaml. These are runtime assets, not
+# optional extras — the service loads them at startup and logs a warning
+# (then falls back to terse built-ins) if they are missing.
 COPY --chown=appuser:appuser config/ ./config/
 
 USER appuser
 
-EXPOSE 8001
+EXPOSE 8000
 
-# Run with Gunicorn using Uvicorn workers for production scalability.
-# WEB_CONCURRENCY controls the worker count (defaults to 2 — previously this
-# had no --workers flag at all, which meant Gunicorn silently ran a single
-# worker regardless of load). Each worker still handles requests one at a
-# time internally since the RAG pipeline makes blocking calls, so raising
-# this is the primary lever for concurrent chat capacity; size it to the
-# host's available CPU/RAM.
-CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker --workers ${WEB_CONCURRENCY:-2} --timeout 90 --bind 0.0.0.0:$PORT app.main:app"]
+# Container health check so the orchestrator can restart a wedged process.
+# Deliberately /health (liveness) and not /health/ready: readiness fails when a
+# dependency is down, and restarting the process would not fix that — it would
+# just produce a crash loop during someone else's outage.
+HEALTHCHECK --interval=30s --timeout=5s --start-period=20s --retries=3 \
+    CMD python -c "import os,sys,urllib.request; sys.exit(0 if urllib.request.urlopen('http://127.0.0.1:'+os.getenv('PORT','8000')+'/health', timeout=4).status==200 else 1)"
+
+# Gunicorn with Uvicorn workers.
+#
+# WEB_CONCURRENCY sets the process count. Unlike v1, the request path is now
+# fully async — no worker blocks its event loop on embedding, vector search or
+# LLM calls — so each worker serves many concurrent chats. Size workers to CPU
+# cores, not to expected concurrent conversations.
+#
+# --timeout 120 sits above the worst-case turn (classification + retrieval +
+# generation, each individually bounded by its own setting) so Gunicorn never
+# kills a request that is still legitimately in flight.
+CMD ["sh", "-c", "exec gunicorn app.main:app \
+    -k uvicorn.workers.UvicornWorker \
+    --workers ${WEB_CONCURRENCY:-2} \
+    --timeout 120 \
+    --graceful-timeout 30 \
+    --keep-alive 15 \
+    --access-logfile - \
+    --error-logfile - \
+    --bind 0.0.0.0:${PORT:-8000}"]

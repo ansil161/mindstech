@@ -1,0 +1,137 @@
+# ---------------------------------------------------------------------------
+# Structured company FAQ layer.
+#
+# WHY THIS EXISTS
+# Questions like "what is your email?" or "who runs the company?" have exactly
+# one correct answer. Routing them through vector search makes that answer
+# depend on whether somebody happened to ingest a document containing the
+# phrasing — so the same question can succeed today and fail tomorrow. These
+# entries are matched deterministically and answered verbatim, before any
+# retrieval happens.
+#
+# HOW MATCHING WORKS
+#   patterns  - regular expressions (case-insensitive, matched against the
+#               normalised message). A pattern hit is a strong signal.
+#   keywords  - individual terms; the fraction present contributes to the score.
+#   answer    - returned verbatim. It is NOT passed through the LLM, so it can
+#               never be embellished or hallucinated around.
+#
+# An entry only fires when its score clears FAQ_MIN_CONFIDENCE; otherwise the
+# turn falls through to normal retrieval. Deleting an entry is always safe —
+# the question simply reverts to being answered from indexed documents.
+#
+# MAINTENANCE: every fact below must be verifiable against the public site.
+# Do not add an entry you cannot source. An absent entry degrades gracefully;
+# a wrong entry is served with full confidence.
+# ---------------------------------------------------------------------------
+
+entries:
+  - id: company_identity
+    topic: Mindstec as a company
+    patterns:
+      - '\b(who|what)\s+(are|r)\s+(you|u)\b'
+      - '\bwhat\s+is\s+(your|the)\s+(company|business|organisation|organization)\s*(name)?\b'
+      - '\bwho\s+is\s+mindste[ck]\b'
+      - '\btell\s+me\s+about\s+(your\s+)?(the\s+)?company\b'
+      - '\babout\s+mindste[ck]\b'
+    keywords: [company, name, about, who, mindstec]
+    answer: >-
+      Mindstec Distribution India is a value-added distributor of professional Audio
+      Visual and IT technology. We represent global manufacturer brands and supply
+      integrators, consultants and enterprises across India and SAARC, Africa, and
+      Central & Eastern Europe.
+
+  - id: contact_details
+    topic: contacting Mindstec
+    patterns:
+      - '\b(contact|reach|get\s+in\s+touch|talk\s+to)\b'
+      - '\b(email|e-mail|mail\s+id|phone|telephone|call|number)\b'
+      - '\bhow\s+(do|can)\s+i\s+(contact|reach|call)\b'
+    keywords: [contact, email, phone, number, call, reach, touch, enquiry]
+    answer: >-
+      You can reach our India operations on +91 80 4525 6922 or at india@mindstec.com.
+      For manufacturer and channel partnerships, use partners@mindstec.com. You can also
+      submit an enquiry through the contact form on our website and the right person will
+      follow up.
+
+  - id: locations
+    topic: our office locations
+    patterns:
+      - '\bwhere\s+(are|is)\s+(you|your\s+office|the\s+company|mindste[ck])\b'
+      - '\b(office|offices|located|location|headquarter|head\s+office|hq|address|branch)\b'
+      - '\bwhich\s+(countries|regions|markets)\b'
+    keywords: [where, office, location, address, headquarters, hq, based, country, region]
+    answer: >-
+      We run three regional operations: India and SAARC out of our Bangalore headquarters,
+      Africa through our commercial hub in Nairobi, and Central & Eastern Europe from
+      Warsaw. Our Experience Centre — a working demo floor — is in Bengaluru, and visits
+      are by appointment.
+
+  - id: leadership
+    topic: our leadership team
+    patterns:
+      - '\bwho\s+(is|are)\s+(the\s+)?(ceo|founder|chairman|md|managing\s+director|owner|head|boss|leader)\b'
+      - '\b(ceo|founder|chairman|managing\s+director|leadership|management\s+team)\b'
+      - '\bwho\s+(runs|leads|owns)\b'
+    keywords: [ceo, founder, chairman, managing, director, leadership, owner, runs, leads]
+    answer: >-
+      Syed Abdul Wahab is our Founder & Chairman, and Sabarishan N. is Managing Director
+      for India & SAARC. Karthikeyan Selvaraj serves as Country Head for India. You can
+      see the wider leadership team on the About page of our website.
+
+  - id: what_we_do
+    topic: what Mindstec does
+    # Anchored to the *general* "what does this company do" question only.
+    # An earlier draft matched a bare `\b(services|solutions)\b` anywhere,
+    # which hijacked specific product questions like "what solutions do you
+    # offer for control rooms?" — the FAQ answered with a generic overview and
+    # retrieval never ran. A trailing `\??$` on the open-ended forms is what
+    # keeps a qualified question ("... for control rooms") out of this entry.
+    patterns:
+      - '\bwhat\s+(do|does)\s+(you|mindste[ck]|your\s+company)\s+(do|sell|offer|distribute|provide)\s*\??$'
+      - '^\s*(so\s+)?(what\s+)?(are\s+)?your\s+(services|solutions|offerings|product\s+range)\s*\??$'
+      - '\bwhat\s+(kind|sort|type)s?\s+of\s+(company|business)\b'
+      - '\b(business\s+model|what\s+you\s+do)\b'
+      - '^\s*what\s+(do|does)\s+(you|mindste[ck])\s+do\b'
+    keywords: [business, model, company, distribute, offerings]
+    answer: >-
+      We distribute professional AV and IT technology across six verticals — digital
+      signage, control rooms, conferencing and collaboration, hospitality AV, broadcast
+      and production, and live events. Beyond logistics we provide product specialists,
+      demo stock, pre-sales design support and after-sales engineering for the integrators
+      and consultants we supply.
+
+  - id: brands
+    topic: the brands we distribute
+    patterns:
+      - '\b(which|what)\s+(brands|manufacturers|vendors|partners)\b'
+      - '\bbrands\s+(do\s+you|you)\s+(carry|distribute|represent|stock)\b'
+      - '\bwho\s+(do\s+you|you)\s+(represent|partner\s+with)\b'
+    keywords: [brands, manufacturers, vendors, represent, carry, distribute, partner]
+    answer: >-
+      We represent fifty-plus global manufacturers across the AV and IT space. Which
+      vertical are you working in — signage, control rooms, conferencing, hospitality,
+      broadcast, or live events? I can point you at the relevant brands for that.
+
+  - id: ewaste
+    topic: our e-waste programme
+    patterns:
+      - '\b(e-?waste|recycl|dispose|disposal|take.?back|end.of.life)\b'
+    keywords: [ewaste, waste, recycle, recycling, disposal, dispose, environment]
+    answer: >-
+      We run an authorised e-waste take-back programme in partnership with Deshwal Waste
+      Management, covering end-of-life electronics anywhere in India under the E-Waste
+      (Management & Handling) Rules. Around 90% of electronic equipment is recyclable, and
+      there are collection points listed on our E-Waste page.
+
+  - id: capabilities
+    topic: what I can help with
+    patterns:
+      - '\bwhat\s+can\s+(you|u)\s+(do|help)\b'
+      - '\bhow\s+(do|does)\s+(you|this)\s+work\b'
+      - '\b(help|assist)\s+me\s+with\s+what\b'
+    keywords: [help, can, do, capabilities, assist, work]
+    answer: >-
+      I can walk you through our AV and IT solution verticals, the manufacturer brands we
+      distribute, our regional operations and support model, our Experience Centre, and
+      how to reach the right team. What would be most useful?

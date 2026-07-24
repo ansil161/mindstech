@@ -1,133 +1,214 @@
+"""
+Chat API.
+
+**The request and response contracts are unchanged from v1.** Django's
+`AIClient.chat_query` posts the same fields and reads the same keys, and the
+React widget still reads `answer` and `citations`. Everything added here is
+additive:
+
+* `stream: true` — already part of the v1 payload schema but silently ignored —
+  now returns Server-Sent Events. The default (`false`) path is byte-compatible
+  with v1.
+* Response gains optional `intent` and `trace` fields. Additive keys are safe:
+  the frontend reads specific keys and ignores the rest.
+"""
+from __future__ import annotations
+
 import json
 import logging
-from typing import List, Optional
-from fastapi import APIRouter, HTTPException, status, Depends
-from pydantic import BaseModel, Field
+from typing import Any, AsyncIterator, Dict, List, Optional
 
-from app.services.rag import rag_orchestrator
-from app.models.llm import ChatMessage, MessageRole
-from app.core.security import verify_api_key
+from fastapi import APIRouter, Depends, HTTPException, Request, status
+from fastapi.responses import StreamingResponse
+from pydantic import BaseModel, Field, field_validator
+
+from app.conversation.dialogue import dialogue_manager
+from app.conversation.memory import conversation_memory
 from app.core.config import settings
+from app.core.observability import TurnTrace, bind_request
+from app.core.security import enforce_rate_limit, verify_api_key
+from app.models.rag import RAGCitation
 
 logger = logging.getLogger(__name__)
 
 router = APIRouter(tags=["chat"], dependencies=[Depends(verify_api_key)])
 
-# In-memory history fallback
-_in_memory_history = {}
-
-# Lazy Redis client setup
-_redis_client = None
-
-def _get_redis_client():
-    global _redis_client
-    if _redis_client is None:
-        try:
-            import redis
-            from app.core.config import settings
-            logger.info("Initializing Redis connection for chat history...")
-            _redis_client = redis.from_url(settings.CELERY_BROKER_URL, decode_responses=True)
-            _redis_client.ping()
-            logger.info("Successfully connected to Redis.")
-        except Exception as e:
-            logger.warning("Could not connect to Redis for chat history: %s. Using in-memory fallback.", str(e))
-            _redis_client = False
-    return _redis_client
-
-def get_history(conversation_id: str) -> List[ChatMessage]:
-    """Retrieve chat history from Redis or local memory."""
-    redis_client = _get_redis_client()
-    if redis_client:
-        try:
-            key = f"chat_history:{conversation_id}"
-            records = redis_client.lrange(key, 0, -1)
-            history = []
-            for r in records:
-                data = json.loads(r)
-                history.append(ChatMessage(role=data["role"], content=data["content"]))
-            return history
-        except Exception as e:
-            logger.error("Failed to read history from Redis: %s", str(e))
-            
-    if conversation_id not in _in_memory_history:
-        _in_memory_history[conversation_id] = []
-    return _in_memory_history[conversation_id]
-
-def append_to_history(conversation_id: str, message: ChatMessage):
-    """Save message to chat history in Redis or local memory."""
-    redis_client = _get_redis_client()
-    if redis_client:
-        try:
-            key = f"chat_history:{conversation_id}"
-            payload = json.dumps({"role": message.role.value if hasattr(message.role, "value") else str(message.role), "content": message.content})
-            redis_client.rpush(key, payload)
-            redis_client.expire(key, 604800)
-            return
-        except Exception as e:
-            logger.error("Failed to append history to Redis: %s", str(e))
-
-    if conversation_id not in _in_memory_history:
-        _in_memory_history[conversation_id] = []
-    _in_memory_history[conversation_id].append(message)
-
 
 class InternalChatPayload(BaseModel):
+    """Inbound chat request. Field names and defaults match v1 exactly."""
+
     message: str = Field(..., min_length=1, max_length=settings.CHAT_MESSAGE_MAX_LENGTH)
-    conversation_id: str = "default"
+    conversation_id: str = Field(default="default", max_length=128)
     stream: bool = False
-    category: Optional[str] = None
-    tenant_id: str = "default"
+    category: Optional[str] = Field(default=None, max_length=64)
+    tenant_id: str = Field(default="default", max_length=64)
+
+    @field_validator("message")
+    @classmethod
+    def message_not_blank(cls, value: str) -> str:
+        if not value.strip():
+            raise ValueError("Message cannot be empty or whitespace only.")
+        return value
+
+    @field_validator("conversation_id", "tenant_id")
+    @classmethod
+    def identifier_is_safe(cls, value: str) -> str:
+        """
+        Constrains identifiers to a safe character set.
+
+        These become Redis key components and Qdrant filter values, so
+        rejecting control characters and separators here prevents both key
+        injection and unbounded key cardinality from odd input.
+        """
+        cleaned = value.strip()
+        if not cleaned:
+            return "default"
+        if any(ch.isspace() or ch in {"\n", "\r", "\x00"} for ch in cleaned):
+            raise ValueError("Identifier must not contain whitespace or control characters.")
+        return cleaned
 
 
-@router.post("/chat")
-async def chat_interaction(payload: InternalChatPayload):
+class ChatResponse(BaseModel):
     """
-    RAG chat endpoint: retrieves grounding documents and answers user queries.
-    """
-    logger.info("Chat Query Endpoint called for conversation: %s", payload.conversation_id)
-    try:
-        full_history = get_history(payload.conversation_id)
-        recent_history = full_history[-settings.HISTORY_WINDOW_MESSAGES:] if settings.HISTORY_WINDOW_MESSAGES > 0 else []
+    Outbound chat response.
 
-        rag_response = rag_orchestrator.query(
-            question=payload.message,
-            history=recent_history,
-            category=payload.category,
-            tenant_id=payload.tenant_id
+    `answer`, `citations`, `confidence_score` and `duration_seconds` are the v1
+    contract and must not change shape. `intent` and `trace` are additive.
+    """
+
+    answer: str
+    citations: List[RAGCitation] = Field(default_factory=list)
+    confidence_score: Optional[float] = None
+    duration_seconds: float
+    intent: Optional[str] = None
+    trace: Optional[Dict[str, Any]] = None
+
+
+@router.post("/chat", response_model=ChatResponse, response_model_exclude_none=True)
+async def chat_interaction(payload: InternalChatPayload, request: Request):
+    """
+    Conversational endpoint.
+
+    Every message is routed through the conversation engine, which decides
+    whether it needs the knowledge base at all. Returns SSE when
+    `stream: true` and streaming is enabled.
+    """
+    request_id = bind_request(
+        request_id=request.headers.get("X-Request-ID"),
+        conversation_id=payload.conversation_id,
+    )
+    enforce_rate_limit(payload.conversation_id)
+
+    trace = TurnTrace(request_id=request_id, conversation_id=payload.conversation_id)
+
+    if payload.stream and settings.ENABLE_STREAMING:
+        return StreamingResponse(
+            _sse_events(payload, trace),
+            media_type="text/event-stream",
+            headers={
+                "Cache-Control": "no-cache",
+                "Connection": "keep-alive",
+                # Nginx buffers proxied responses by default, which would
+                # defeat streaming entirely through the gateway.
+                "X-Accel-Buffering": "no",
+                "X-Request-ID": request_id,
+            },
         )
 
-        append_to_history(payload.conversation_id, ChatMessage(role=MessageRole.USER, content=payload.message))
-        append_to_history(payload.conversation_id, ChatMessage(role=MessageRole.ASSISTANT, content=rag_response.answer))
-
-        return rag_response
-    except Exception as e:
-        logger.exception("Chat execution failed: %s", str(e))
+    try:
+        result = await dialogue_manager.handle(
+            message=payload.message,
+            conversation_id=payload.conversation_id,
+            category=payload.category,
+            tenant_id=payload.tenant_id,
+            trace=trace,
+        )
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Chat turn failed unexpectedly: %s", exc)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="An error occurred while processing your request. Please try again later."
-        )
+            detail="An error occurred while processing your request. Please try again later.",
+        ) from exc
+
+    return ChatResponse(
+        answer=result.answer,
+        citations=result.citations,
+        confidence_score=result.confidence,
+        duration_seconds=result.duration_seconds,
+        intent=result.intent.value,
+        trace=trace.to_log_fields() if not settings.is_production else None,
+    )
+
+
+async def _sse_events(payload: InternalChatPayload, trace: TurnTrace) -> AsyncIterator[str]:
+    """
+    Renders dialogue events as Server-Sent Events.
+
+    Event types mirror the dialogue manager's own stream: `citations` once up
+    front, then `delta` per token, then `done`. Errors are delivered as a
+    terminal `error` event rather than by tearing the connection down, so the
+    client can render something useful.
+    """
+    try:
+        async for event in dialogue_manager.astream(
+            message=payload.message,
+            conversation_id=payload.conversation_id,
+            category=payload.category,
+            tenant_id=payload.tenant_id,
+            trace=trace,
+        ):
+            yield f"event: {event['type']}\ndata: {json.dumps(event)}\n\n"
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("Streaming chat turn failed: %s", exc)
+        error_event = {"type": "error", "message": settings.LLM_UNAVAILABLE_MESSAGE}
+        yield f"event: error\ndata: {json.dumps(error_event)}\n\n"
+    finally:
+        # A sentinel lets EventSource clients close cleanly instead of
+        # treating end-of-stream as a dropped connection and reconnecting.
+        yield "event: end\ndata: {}\n\n"
 
 
 @router.get("/chat/history/{conversation_id}")
-async def fetch_chat_history(conversation_id: str):
+async def fetch_chat_history(conversation_id: str, request: Request) -> List[Dict[str, Any]]:
     """
-    Returns the chat logs for the specified conversation session.
+    Returns the transcript for a conversation.
+
+    Response shape is unchanged from v1: a list of
+    `{id, role, content, timestamp}` objects, which is what the React widget
+    renders directly.
     """
-    logger.info("Fetch History Endpoint called for session: %s", conversation_id)
+    bind_request(
+        request_id=request.headers.get("X-Request-ID"),
+        conversation_id=conversation_id,
+    )
     try:
-        history = get_history(conversation_id)
-        formatted_history = []
-        for idx, m in enumerate(history):
-            formatted_history.append({
-                "id": f"msg-{conversation_id}-{idx}",
-                "role": m.role.value if hasattr(m.role, "value") else str(m.role),
-                "content": m.content,
-                "timestamp": ""
-            })
-        return formatted_history
-    except Exception as e:
-        logger.exception("History retrieval failed: %s", str(e))
+        history = await conversation_memory.get_history(conversation_id)
+    except Exception as exc:  # noqa: BLE001
+        logger.exception("History retrieval failed: %s", exc)
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-            detail="Failed to retrieve conversation history. Please try again later."
-        )
+            detail="Failed to retrieve conversation history. Please try again later.",
+        ) from exc
+
+    return [
+        {
+            "id": f"msg-{conversation_id}-{index}",
+            "role": message.role.value if hasattr(message.role, "value") else str(message.role),
+            "content": message.content,
+            "timestamp": "",
+        }
+        for index, message in enumerate(history)
+    ]
+
+
+@router.delete("/chat/history/{conversation_id}", status_code=status.HTTP_200_OK)
+async def clear_chat_history(conversation_id: str) -> Dict[str, str]:
+    """
+    Clears a conversation's transcript and state.
+
+    New in v2. Additive endpoint — nothing existing calls it — but a session
+    store with no eviction path is an operational liability, and support needs
+    a way to reset a wedged conversation.
+    """
+    await conversation_memory.clear(conversation_id)
+    return {"status": "success", "message": "Conversation cleared."}
