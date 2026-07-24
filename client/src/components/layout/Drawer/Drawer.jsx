@@ -50,7 +50,7 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
       {/* Region Switcher inside Mobile Drawer */}
       <div className="drawer-region-section" style={{ marginTop: '20px', paddingTop: '15px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
         <span className="label" style={{ display: 'block', marginBottom: '10px', fontSize: '0.85em', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1px' }}>
-          {t('navbar.select_region', 'Region:')} <strong style={{ color: '#fff' }}>{region}</strong>
+          {t('navbar.select_region', 'Region:')} <strong style={{ color: '#fff' }}>{t(`navbar.regions.${region.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, region)}</strong>
         </span>
         <div className="drawer-region-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
           {allRegions && allRegions.length > 0 ? (
