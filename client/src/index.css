@@ -1303,27 +1303,113 @@ footer { border-top: 1px solid var(--line-soft); }
   margin: clamp(48px, 7vh, 80px) var(--pad) 0;
   border: 1px solid var(--line-soft);
   border-radius: 2px;
-  padding: clamp(28px, 4vw, 56px);
+  padding: clamp(32px, 4.2vw, 60px) clamp(28px, 4vw, 56px);
   position: relative;
   overflow: hidden;
-  transition: border-color .3s, background .3s;
+  /* transform/box-shadow only — no layout properties animate, so the hover
+     stays on the compositor and cannot thrash layout. */
+  transition:
+    border-color .45s cubic-bezier(.22, 1, .36, 1),
+    background .45s cubic-bezier(.22, 1, .36, 1),
+    transform .55s cubic-bezier(.22, 1, .36, 1),
+    box-shadow .55s cubic-bezier(.22, 1, .36, 1);
 }
-.bfeat:hover { border-color: var(--line); background: var(--ink-2); }
+.bfeat:hover {
+  border-color: var(--line);
+  background: var(--ink-2);
+  transform: translateY(-3px);
+  /* Deliberately near-black rather than a glow: the card sits on #0c0c0c, so
+     depth has to come from occlusion, not light. */
+  box-shadow: 0 18px 44px -28px rgba(0, 0, 0, .9);
+}
 
 /* Two-column layout inside featured */
 .bfeat-layout { display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: start; }
 .bfeat-content { display: flex; flex-direction: column; }
-.bfeat-badge { display: flex; align-items: flex-start; padding-top: 4px; }
+/* 7px optically centres the 11px tag against the 25px-tall `.cat` chip
+   opposite it (6px padding + 11px text + 1px border, each side). */
+.bfeat-badge { display: flex; align-items: flex-start; padding-top: 7px; }
 
-.bfeat .bf-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 20px; }
+.bfeat .bf-meta { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; margin-bottom: 24px; }
 .bfeat .bf-meta .cat { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); border: 1px solid rgba(204,0,1,0.35); padding: 6px 10px; border-radius: 2px; }
 .bfeat .bf-meta time { font-size: 13px; color: var(--grey); letter-spacing: .04em; }
-.bfeat h2 { font-size: clamp(28px, 3.8vw, 56px); max-width: 22ch; line-height: 1.08; letter-spacing: -.025em; transition: color 0.3s var(--ease); }
+
+.bfeat h2 {
+  font-size: clamp(28px, 3.8vw, 56px);
+  max-width: 22ch;
+  line-height: 1.1;
+  letter-spacing: -.025em;
+  /* `anywhere` (not `break-word`) also shrinks min-content, so an unbroken
+     token — a slug, a URL, pasted test data — cannot force the grid column
+     wider than its track and blow out the card. */
+  overflow-wrap: anywhere;
+  /* Evens out ragged line lengths so a 3-line headline doesn't end on one word. */
+  text-wrap: balance;
+  transition: color .45s cubic-bezier(.22, 1, .36, 1);
+}
 .bfeat:hover h2 { color: var(--red); }
-.bfeat p { font-size: 15.5px; color: var(--grey); line-height: 1.8; margin-top: 18px; max-width: 64ch; }
-.bfeat .bf-go { display: inline-flex; align-items: center; gap: 10px; margin-top: 28px; font-size: 14px; font-weight: 500; color: var(--white); padding: 6px 0; border-bottom: 1px solid var(--line); transition: color 0.3s var(--ease), border-color 0.3s var(--ease), gap 0.3s var(--ease); width: fit-content; }
-.bfeat:hover .bf-go { color: var(--red); border-color: rgba(204,0,1,0.5); gap: 16px; }
-.bfeat .bf-go svg { width: 15px; height: 15px; flex-shrink: 0; }
+
+/* Single source of truth for the featured excerpt.
+   Previously split between `.bfeat p` (0,1,1) and `.bfeat-desc` (0,1,0): the
+   element-qualified rule silently won on every shared property, so the
+   `-webkit-line-clamp` was the only part of `.bfeat-desc` taking effect and
+   its font-size/max-width were dead declarations. */
+.bfeat .bfeat-desc {
+  font-size: 15.5px;
+  color: var(--grey);
+  line-height: 1.8;
+  margin-top: 20px;
+  max-width: 64ch;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+.bfeat .bf-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 32px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white);
+  padding: 6px 0;
+  width: fit-content;
+  position: relative;
+  border-bottom: 1px solid var(--line);
+  /* `gap` is no longer animated — it was the one layout-affecting property in
+     this hover and forced a reflow of the flex line on every frame. The arrow
+     now moves on its own transform instead. */
+  transition: color .45s cubic-bezier(.22, 1, .36, 1);
+}
+/* Underline wipes in from the left over the resting hairline. */
+.bfeat .bf-go::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform .55s cubic-bezier(.22, 1, .36, 1);
+}
+.bfeat:hover .bf-go { color: var(--red); }
+.bfeat:hover .bf-go::after { transform: scaleX(1); }
+.bfeat .bf-go svg {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+/* Travels along the glyph's own diagonal, so the motion reads as the arrow
+   leaving rather than drifting sideways. */
+.bfeat:hover .bf-go svg { transform: translate(4px, -4px); }
 .bfeat .bf-tag { font-size: 11px; letter-spacing: .18em; text-transform: uppercase; color: var(--grey-dark); white-space: nowrap; }
 
 /* Grid section header */
@@ -1340,20 +1426,60 @@ footer { border-top: 1px solid var(--line-soft); }
   border-radius: 2px;
   padding: 26px 28px;
   text-align: left;
-  transition: border-color .3s, background .3s, transform .4s var(--ease);
+  /* Matched to the featured card so both surfaces settle on the same curve. */
+  transition:
+    border-color .45s cubic-bezier(.22, 1, .36, 1),
+    background .45s cubic-bezier(.22, 1, .36, 1),
+    transform .55s cubic-bezier(.22, 1, .36, 1),
+    box-shadow .55s cubic-bezier(.22, 1, .36, 1);
   position: relative;
   overflow: hidden;
 }
-.bcard:hover { border-color: var(--line); background: var(--ink-2); transform: translateY(-4px); }
+.bcard:hover {
+  border-color: var(--line);
+  background: var(--ink-2);
+  transform: translateY(-3px);
+  box-shadow: 0 14px 34px -24px rgba(0, 0, 0, .9);
+}
 .bcard .bc-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .bcard .bc-meta .cat { font-size: 10.5px; letter-spacing: .14em; text-transform: uppercase; color: var(--red); }
 .bcard .bc-meta time { font-size: 12px; color: var(--grey-dark); letter-spacing: .03em; }
-.bcard h3 { font-family: var(--display); font-size: clamp(18px, 1.6vw, 22px); font-weight: 600; letter-spacing: -.015em; line-height: 1.25; transition: color 0.3s var(--ease); color: var(--white); }
+.bcard h3 {
+  font-family: var(--display);
+  font-size: clamp(18px, 1.6vw, 22px);
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.3;
+  color: var(--white);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+  /* Two lines reserved so every card's excerpt and CTA start on the same
+     baseline regardless of title length — the grid stretches rows, but only
+     `margin-top:auto` on the CTA was keeping the *bottom* aligned before. */
+  min-height: calc(2 * 1.3em);
+  transition: color .45s cubic-bezier(.22, 1, .36, 1);
+}
 .bcard:hover h3 { color: var(--red); }
-.bcard p { font-size: 13.5px; color: var(--grey); line-height: 1.7; flex: 1; }
-.bcard .bc-go { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--grey); padding-top: 14px; border-top: 1px solid var(--line-soft); margin-top: auto; transition: color 0.3s var(--ease), gap 0.3s var(--ease); }
-.bcard:hover .bc-go { color: var(--white); gap: 13px; }
-.bcard .bc-go svg { width: 13px; height: 13px; flex-shrink: 0; }
+.bcard .bc-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--grey);
+  padding-top: 14px;
+  border-top: 1px solid var(--line-soft);
+  margin-top: auto;
+  transition: color .45s cubic-bezier(.22, 1, .36, 1);
+}
+.bcard:hover .bc-go { color: var(--white); }
+.bcard .bc-go svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  transition: transform .45s cubic-bezier(.22, 1, .36, 1);
+}
+.bcard:hover .bc-go svg { transform: translate(3px, -3px); }
 .ball { display: flex; justify-content: center; margin-top: clamp(28px, 4vw, 48px); }
 
 /* ── EXPERIENCE: OV, ZONES, FILM, WHO, VISIT ── */
@@ -2267,16 +2393,25 @@ footer { border-top: 1px solid var(--line-soft); }
    BLOG DETAIL MODAL
 ══════════════════════════════════════ */
 
-/* bfeat as a button — resets browser button styles */
+/* bfeat as a button — neutralises browser button chrome ONLY.
+   This rule has the same specificity as `.bfeat` but sits ~970 lines later,
+   so anything it declares silently wins. It must therefore not touch the
+   box model: `padding: 0; margin: 0` here previously overrode `.bfeat`'s
+   own padding/margin, collapsing the featured card to full-bleed with its
+   badge and headline clipped at x=0. Likewise the border override made the
+   hairline fainter (0.04) than the design token (--line-soft, 0.07).
+   Layout belongs to `.bfeat`; only UA button resets belong here.
+   `width` is needed because a <button> shrink-to-fits even at display:block,
+   so it will not honour `.bfeat`'s horizontal margins on its own. */
 .bfeat--btn {
-  display: block;
+  width: calc(100% - var(--pad) - var(--pad));
   background: none;
   font-family: inherit;
   color: inherit;
   text-align: left;
-  padding: 0;
-  margin: 0;
-  border: 1px solid rgba(255,255,255,0.04);
+  -webkit-appearance: none;
+  appearance: none;
+  cursor: pointer;
 }
 
 /* Root: fixed full-screen container */
@@ -2522,28 +2657,54 @@ footer { border-top: 1px solid var(--line-soft); }
 }
 
 /* ── BLOG LISTING: truncate previews ── */
-/* Featured card — show max 3 lines of desc */
-.bfeat-desc {
-  font-size: 14px;
-  color: var(--grey);
-  line-height: 1.8;
-  max-width: 62ch;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
+/* `.bfeat-desc` now lives with the rest of the featured-card rules in the
+   BLOGS: FEATURED block above, so its font-size/max-width are no longer
+   silently outranked by `.bfeat p`. Do not redeclare it here. */
 
-/* Grid cards — show max 2 lines */
-.bcard-desc {
-  font-size: 13px;
+/* Grid cards — show max 2 lines.
+   Element-qualified to beat `.bcard p` (0,1,1), which previously won on
+   font-size/line-height and left only the clamp active from this rule. */
+.bcard p.bcard-desc {
+  font-size: 13.5px;
   color: var(--grey);
   line-height: 1.7;
   flex: 1;
   display: -webkit-box;
-  -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
   overflow: hidden;
+  overflow-wrap: anywhere;
+  text-wrap: pretty;
+}
+
+/* ── BLOG LISTING: responsive + touch ──
+   Placed after every other blog rule so these win without !important. */
+
+/* Tablet: the headline is still large but the column is much narrower, so
+   `balance` starts producing very short final lines. Let it wrap naturally. */
+@media (max-width: 900px) {
+  .bfeat h2 { text-wrap: pretty; }
+}
+
+@media (max-width: 640px) {
+  /* 1.1 is a display line-height tuned for 56px. At 28px on a ~320px column a
+     headline wraps to 3-4 lines and needs more room to stay readable. */
+  .bfeat h2 { line-height: 1.18; }
+  .bfeat .bfeat-desc { margin-top: 16px; }
+  .bfeat .bf-go { margin-top: 26px; }
+  /* The grid is single-column here, so there is no neighbour to align to —
+     reserving a second title line would only add dead space. */
+  .bcard h3 { min-height: 0; }
+}
+
+/* Touch devices latch :hover after a tap, which would leave a card stuck in
+   its lifted/shadowed state until the next tap elsewhere. Keep the colour
+   changes (harmless, and they read as selection feedback); drop the motion. */
+@media (hover: none) {
+  .bfeat:hover, .bcard:hover { transform: none; box-shadow: none; }
+  .bfeat:hover .bf-go svg, .bcard:hover .bc-go svg { transform: none; }
+  .bfeat:hover .bf-go::after { transform: scaleX(0); }
 }
 
 /* Custom premium testimonials and homepage height adjustments */
@@ -3057,6 +3218,17 @@ footer { border-top: 1px solid var(--line-soft); }
 
 @media (prefers-reduced-motion: reduce) {
   .color-orb::before { animation: none; }
+
+  /* Blog cards: keep every hover *state* (colour, border, background) so the
+     affordance survives, but drop the motion — lift, arrow travel and the
+     underline wipe. The wipe is set to its end state rather than removed, or
+     the underline would never appear for these users. */
+  .bfeat, .bcard { transition: border-color .01ms, background .01ms; }
+  .bfeat:hover, .bcard:hover { transform: none; box-shadow: none; }
+  .bfeat .bf-go svg, .bcard .bc-go svg { transition: none; }
+  .bfeat:hover .bf-go svg, .bcard:hover .bc-go svg { transform: none; }
+  .bfeat .bf-go::after { transition: none; }
+  .bfeat:hover .bf-go::after { transform: scaleX(1); }
 }
 
 /* Isolate the floating launcher from two global page-chrome rules that
