@@ -37,12 +37,25 @@ export function TestimonialsSection({
         )}
 
         <div data-testimonials-track className="relative flex w-full flex-col items-center justify-center overflow-hidden">
-          <div className="group flex overflow-hidden p-2 [--gap:1.75rem] [gap:var(--gap)] flex-row [--duration:48s]">
+          <div className="group flex overflow-hidden p-2 [--gap:1.75rem] [gap:var(--gap)] flex-row [--duration:45s]">
+            {/* First track */}
             <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]">
               {[...Array(repeatCount)].map((_, setIndex) => (
                 testimonials.map((testimonial, i) => (
                   <TestimonialCard 
-                    key={`${setIndex}-${i}-${testimonial.author?.name || i}`}
+                    key={`t1-${setIndex}-${i}-${testimonial.author?.name || i}`}
+                    {...testimonial}
+                  />
+                ))
+              ))}
+            </div>
+
+            {/* Second identical track for seamless infinite continuous loop */}
+            <div className="flex shrink-0 justify-around [gap:var(--gap)] animate-marquee flex-row group-hover:[animation-play-state:paused]" aria-hidden="true">
+              {[...Array(repeatCount)].map((_, setIndex) => (
+                testimonials.map((testimonial, i) => (
+                  <TestimonialCard 
+                    key={`t2-${setIndex}-${i}-${testimonial.author?.name || i}`}
                     {...testimonial}
                   />
                 ))

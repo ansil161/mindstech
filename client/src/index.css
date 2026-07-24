@@ -6883,7 +6883,7 @@ footer {
   }
 
   to {
-    transform: translateX(calc(-100% - var(--gap, 1rem)));
+    transform: translateX(calc(-100% - var(--gap, 1.75rem)));
   }
 }
 
