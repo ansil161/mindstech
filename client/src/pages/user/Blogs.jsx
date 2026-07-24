@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import BlogModal from '../../components/common/BlogModal/BlogModal.jsx';
 import axios from '../../api/axios';
@@ -40,20 +41,24 @@ const Blogs = () => {
 
   // Hero entrance
   useEffect(() => {
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         gsap.set('.reveal', { opacity: 1, y: 0 });
         return;
       }
-      gsap.timeline({ defaults: { ease: 'power3.out' } })
+      // paused: fromTo applies the hidden state immediately (no flash) but the
+      // intro only plays once the active loader has revealed the page.
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
         .fromTo('#sheroH .w',
           { yPercent: 115, rotate: 2 },
           { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
         .fromTo('#sheroSide',
           { opacity: 0, y: 30 },
           { opacity: 1, y: 0, duration: 1.0 }, '-=.8');
+      stopIntro = whenReady(() => intro.play());
     }, containerRef);
-    return () => ctx.revert();
+    return () => { stopIntro(); ctx.revert(); };
   }, []);
 
   // Scroll reveals
@@ -229,20 +234,20 @@ const Blogs = () => {
           <img src="/assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy" />
         </div>
         <div className="cta-inner">
-          <span className="label label--red">Talk shop with us</span>
+          <span className="label label--red">{t('blogs.cta.label')}</span>
           <h2 className="display" id="ctaH" style={{ marginTop: '20px' }}>
-            <span className="line-mask"><span className="w">Questions the blog</span></span>
-            <span className="line-mask"><span className="w"><em>didn't answer?</em></span></span>
+            <span className="line-mask"><span className="w">{t('blogs.cta.title1')}</span></span>
+            <span className="line-mask"><span className="w"><em>{t('blogs.cta.title2_em')}</em></span></span>
           </h2>
           <div className="cta-row reveal">
             <div className="cta-actions">
               <Button to="/contact" className="btn btn--solid">
-                <span>Ask a specialist</span>
+                <span>{t('blogs.cta.btn_ask')}</span>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M9 7h8v8" />
                 </svg>
               </Button>
-              <Button to="/solutions" className="btn"><span>See our solutions</span></Button>
+              <Button to="/solutions" className="btn"><span>{t('blogs.cta.btn_solutions')}</span></Button>
             </div>
             <div className="cta-contacts">
               <div className="c-item">

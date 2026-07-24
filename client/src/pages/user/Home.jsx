@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import axios from '../../api/axios';
 import { useTranslation } from 'react-i18next';
@@ -254,7 +255,7 @@ const Home = () => {
 
   // preloader and entrance animation
   useEffect(() => {
-    let runIntroHandler = null;
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -293,17 +294,12 @@ const Home = () => {
           { scaleX: 1, duration: 0.6 },
           '-=0.5');
 
-      const runIntro = () => {
-        intro.play();
-      };
-      runIntroHandler = runIntro;
-
-      if (!document.getElementById('preloader') || window.__preloaderExited) {
-        runIntro();
-      } else {
-        window.addEventListener('preloaderExited', runIntro);
-        setTimeout(() => runIntro(), 300);
-      }
+      const runIntro = () => intro.play();
+      // Gate the intro on the active loader — the route overlay on client
+      // navigation, the #preloader on hard refresh — so it plays fresh on reveal
+      // rather than hidden underneath. whenReady falls back to the next frame
+      // when no loader is present.
+      stopIntro = whenReady(runIntro);
 
       if (reduceMotion) {
         // The statement .st-w spans sit at #3a3a3a (index.css:359) until the
@@ -469,9 +465,7 @@ const Home = () => {
 
     return () => {
       ctx.revert();
-      if (runIntroHandler) {
-        window.removeEventListener('preloaderExited', runIntroHandler);
-      }
+      stopIntro();
     };
   }, []);
 

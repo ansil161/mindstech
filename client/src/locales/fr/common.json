@@ -101,7 +101,9 @@
         "country_head": "Karthikeyan Selvaraj",
         "finance_mgr": "Flavia Robert",
         "sales_mgr": "Sajid Ali Kazi"
-      }
+      },
+      "loading": "Chargement de l'équipe...",
+      "empty": "Aucun membre de l'équipe listé pour cette région pour le moment."
     },
     "cta": {
       "label": "Devenez revendeur",
@@ -113,6 +115,92 @@
         "india": "Opérations en Inde",
         "email": "+91 80 4525 6922"
       }
+    },
+    "hero_facts": {
+      "india": [
+        {
+          "bold": "Inde · SAARC",
+          "sub": "Régions desservies"
+        },
+        {
+          "bold": "Réseau de partenaires mondial",
+          "sub": "Des fabricants aux revendeurs"
+        },
+        {
+          "bold": "Siège de Bangalore",
+          "sub": "Opérations Inde — SAARC"
+        }
+      ],
+      "middle-east": [
+        {
+          "bold": "Moyen-Orient",
+          "sub": "Région desservie"
+        },
+        {
+          "bold": "Réseau de partenaires mondial",
+          "sub": "Des fabricants aux revendeurs"
+        },
+        {
+          "bold": "Hub de Dubaï",
+          "sub": "Opérations Moyen-Orient"
+        }
+      ],
+      "africa": [
+        {
+          "bold": "Afrique",
+          "sub": "Région desservie"
+        },
+        {
+          "bold": "Réseau de partenaires mondial",
+          "sub": "Des fabricants aux revendeurs"
+        },
+        {
+          "bold": "Hub de Nairobi",
+          "sub": "Opérations Afrique"
+        }
+      ],
+      "south-asia": [
+        {
+          "bold": "Asie du Sud",
+          "sub": "Région desservie"
+        },
+        {
+          "bold": "Réseau de partenaires mondial",
+          "sub": "Des fabricants aux revendeurs"
+        },
+        {
+          "bold": "Siège de Bangalore",
+          "sub": "Opérations SAARC"
+        }
+      ],
+      "hong-kong-china": [
+        {
+          "bold": "Hong Kong · Chine",
+          "sub": "Région desservie"
+        },
+        {
+          "bold": "Réseau de partenaires mondial",
+          "sub": "Des fabricants aux revendeurs"
+        },
+        {
+          "bold": "Hub de Hong Kong",
+          "sub": "Opérations Asie-Pacifique"
+        }
+      ],
+      "default": [
+        {
+          "bold": "Moyen-Orient · Afrique · Asie",
+          "sub": "Régions desservies"
+        },
+        {
+          "bold": "Réseau de partenaires mondial",
+          "sub": "Des fabricants aux revendeurs"
+        },
+        {
+          "bold": "Siège de Bangalore",
+          "sub": "Opérations Inde — SAARC"
+        }
+      ]
     }
   },
   "home": {
@@ -354,7 +442,9 @@
       "label": "Points de dépôt",
       "title_main": "Centres de collecte",
       "title_em": "partout en Inde.",
-      "pickup_label": "Numéro vert"
+      "pickup_label": "Numéro vert",
+      "loading": "Chargement des points de collecte...",
+      "empty": "Aucun point de collecte n'est disponible pour cet opérateur."
     },
     "filter": {
       "all": "Tous les centres"
@@ -454,7 +544,8 @@
         "hospitality": "Hôtellerie AV",
         "broadcast": "Diffusion et production",
         "live": "Événements en direct et immersifs"
-      }
+      },
+      "error_generic": "Une erreur s'est produite. Veuillez réessayer."
     },
     "offices": {
       "title": "Bureaux",
@@ -463,6 +554,17 @@
     "general": {
       "title": "Général",
       "desc": "Écrivez-nous et nous l'acheminerons à la bonne personne."
+    },
+    "info": {
+      "call": "Appelez-nous",
+      "visit": "Rendez-nous visite",
+      "write": "Écrivez-nous",
+      "regional_desks": "Bureaux régionaux",
+      "partnerships": "Partenariats",
+      "phone_label": "Téléphone",
+      "email_label": "E-mail",
+      "open_maps": "Ouvrir dans Google Maps",
+      "note": "Votre demande est transmise en toute sécurité à notre bureau {{region}}{{office}}."
     }
   },
   "experience": {
@@ -818,7 +920,8 @@
           }
         ]
       }
-    }
+    },
+    "brands_empty": "Aucune marque listée pour cette région pour le moment."
   },
   "blogs": {
     "hero": {
@@ -830,7 +933,20 @@
     "featured": "En vedette",
     "read_article": "Lire l'article",
     "read_article_short": "Lire l'article",
-    "browse_all": "Parcourir tous les articles sur mindstec.com"
+    "browse_all": "Parcourir tous les articles sur mindstec.com",
+    "cta": {
+      "label": "Parlons métier",
+      "title1": "Des questions que le blog",
+      "title2_em": "n'a pas abordées ?",
+      "btn_ask": "Demander à un spécialiste",
+      "btn_solutions": "Voir nos solutions"
+    },
+    "modal": {
+      "tag": "Article",
+      "back": "Retour aux articles",
+      "retry": "Réessayer",
+      "error": "Impossible de charger cet article. Veuillez réessayer."
+    }
   },
   "chat": {
     "header": {
@@ -875,7 +991,8 @@
     "email": "africa@mindstec.com",
     "label": "Opérations en Afrique",
     "partner_email": "partners@mindstec.com",
-    "partner_label": "Partenariats"
+    "partner_label": "Partenariats",
+    "email_label": "E-mail"
   },
   "events": {
     "hero": {

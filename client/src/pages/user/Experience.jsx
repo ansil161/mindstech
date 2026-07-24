@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import { useRegion } from '../../context/RegionContext.jsx';
@@ -45,6 +46,7 @@ const Experience = () => {
   }, [regionSlug]);
 
   useEffect(() => {
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -54,13 +56,16 @@ const Experience = () => {
         return;
       }
 
-      // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power4.out' } });
+      // Hero Entrance Timeline. paused: fromTo applies the hidden state
+      // immediately (no flash) but the intro only plays once the active loader
+      // has revealed the page — see whenReady().
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power4.out' } });
       intro.fromTo('#xheroImg', { scale: 1.08 }, { scale: 1, duration: 1.6, ease: 'power2.out' }, 0)
         .fromTo('#xheroLabel', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.7 }, 0.1)
         .fromTo('#xheroH .w', { yPercent: 110 }, { yPercent: 0, duration: 1.1, stagger: 0.12 }, 0.2)
         .fromTo('#xheroFoot', { opacity: 0, y: 24 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.55')
         .fromTo('.xhero-meta', { opacity: 0, y: 16 }, { opacity: 1, y: 0, duration: 0.7 }, '-=.5');
+      stopIntro = whenReady(() => intro.play());
 
       // Hero parallax
       gsap.fromTo('#xheroImg', { yPercent: 0 }, {
@@ -146,7 +151,7 @@ const Experience = () => {
     }, containerRef);
 
     const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
-    return () => { ctx.revert(); clearTimeout(timer); };
+    return () => { stopIntro(); ctx.revert(); clearTimeout(timer); };
   }, []);
 
   // The visit rows render a multi-line address once the region fetch resolves,

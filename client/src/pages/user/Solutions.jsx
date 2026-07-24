@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
@@ -76,6 +77,7 @@ const Solutions = () => {
   // paint. Previously this whole block sat behind `if (solutions.length === 0)
   // return`, which held the hero intro hostage to the solutions fetch.
   useEffect(() => {
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -83,8 +85,10 @@ const Solutions = () => {
         return;
       }
 
-      // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      // Hero Entrance Timeline. paused: fromTo applies the hidden state
+      // immediately (no flash) but the intro only plays once the active loader
+      // has revealed the page — see whenReady().
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
       intro.fromTo('#sheroH .w',
           { yPercent: 115, rotate: 2 },
           { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
@@ -96,6 +100,7 @@ const Solutions = () => {
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.8 },
           '-=.6');
+      stopIntro = whenReady(() => intro.play());
 
       // Static reveals (the CTA row). Solution rows are handled below, once
       // they exist. fromTo, not to: no CSS supplies a hidden start state.
@@ -141,7 +146,7 @@ const Solutions = () => {
       });
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => { stopIntro(); ctx.revert(); };
   }, []);
 
   // Solution-row animations: bound only once the fetch has rendered the rows,
@@ -276,7 +281,7 @@ const Solutions = () => {
             </div>
             <div className="cta-contacts">
               <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${telHref}`}>{telLabel}</a></div>
-              <div className="c-item"><span>Email</span><a href={`mailto:${email}`}>{email}</a></div>
+              <div className="c-item"><span>{t('contact_info.email_label')}</span><a href={`mailto:${email}`}>{email}</a></div>
             </div>
           </div>
         </div>

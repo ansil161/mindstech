@@ -95,7 +95,9 @@
         "country_head": "Karthikeyan Selvaraj",
         "finance_mgr": "Flavia Robert",
         "sales_mgr": "Sajid Ali Kazi"
-      }
+      },
+      "loading": "Loading team...",
+      "empty": "No team members listed for this region yet."
     },
     "cta": {
       "label": "Become a reseller",
@@ -486,7 +488,9 @@
       "label": "Drop points",
       "title_main": "Collection centres",
       "title_em": "across India.",
-      "pickup_label": "Toll-free pickup"
+      "pickup_label": "Toll-free pickup",
+      "loading": "Loading collection centres...",
+      "empty": "No collection centres are available for this operator."
     },
     "filter": {
       "all": "All centres"
@@ -529,7 +533,8 @@
         "hospitality": "Hospitality AV",
         "broadcast": "Broadcast & Production",
         "live": "Live Events & Immersive"
-      }
+      },
+      "error_generic": "Something went wrong. Please try again."
     },
     "offices": {
       "title": "Offices",
@@ -538,6 +543,17 @@
     "general": {
       "title": "General",
       "desc": "Drop us a line and we'll route it to the right person."
+    },
+    "info": {
+      "call": "Call us",
+      "visit": "Visit us",
+      "write": "Write to us",
+      "regional_desks": "Regional desks",
+      "partnerships": "Partnerships",
+      "phone_label": "Phone",
+      "email_label": "Email",
+      "open_maps": "Open in Google Maps",
+      "note": "Your inquiry is transmitted securely to our {{region}} office{{office}}."
     }
   },
   "experience": {
@@ -889,7 +905,8 @@
       }
     ],
     "explore": "Explore",
-    "next": "Next solution"
+    "next": "Next solution",
+    "brands_empty": "No brands listed for this region yet."
   },
   "blogs": {
     "hero": {
@@ -901,7 +918,20 @@
     "featured": "Featured",
     "read_article": "Read the article",
     "read_article_short": "Read article",
-    "browse_all": "Browse all articles on mindstec.com"
+    "browse_all": "Browse all articles on mindstec.com",
+    "cta": {
+      "label": "Talk shop with us",
+      "title1": "Questions the blog",
+      "title2_em": "didn't answer?",
+      "btn_ask": "Ask a specialist",
+      "btn_solutions": "See our solutions"
+    },
+    "modal": {
+      "tag": "Article",
+      "back": "Back to Blogs",
+      "retry": "Retry",
+      "error": "Could not load this article. Please try again."
+    }
   },
   "chat": {
     "header": {
@@ -946,7 +976,8 @@
     "email": "india@mindstec.com",
     "label": "India operations",
     "partner_email": "partners@mindstec.com",
-    "partner_label": "Partnerships"
+    "partner_label": "Partnerships",
+    "email_label": "Email"
   },
   "events": {
     "hero": {

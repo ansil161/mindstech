@@ -101,7 +101,9 @@
         "country_head": "Karthikeyan Selvaraj",
         "finance_mgr": "Flavia Robert",
         "sales_mgr": "Sajid Ali Kazi"
-      }
+      },
+      "loading": "Team wird geladen...",
+      "empty": "Für diese Region sind noch keine Teammitglieder aufgeführt."
     },
     "cta": {
       "label": "Werden Sie Wiederverkäufer",
@@ -113,6 +115,92 @@
         "india": "Indien-Operationen",
         "email": "+91 80 4525 6922"
       }
+    },
+    "hero_facts": {
+      "india": [
+        {
+          "bold": "Indien · SAARC",
+          "sub": "Betreute Regionen"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Zentrale Bangalore",
+          "sub": "Betrieb Indien — SAARC"
+        }
+      ],
+      "middle-east": [
+        {
+          "bold": "Naher Osten",
+          "sub": "Betreute Region"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Drehkreuz Dubai",
+          "sub": "Betrieb Naher Osten"
+        }
+      ],
+      "africa": [
+        {
+          "bold": "Afrika",
+          "sub": "Betreute Region"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Drehkreuz Nairobi",
+          "sub": "Betrieb Afrika"
+        }
+      ],
+      "south-asia": [
+        {
+          "bold": "Südasien",
+          "sub": "Betreute Region"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Zentrale Bangalore",
+          "sub": "Betrieb SAARC"
+        }
+      ],
+      "hong-kong-china": [
+        {
+          "bold": "Hongkong · China",
+          "sub": "Betreute Region"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Drehkreuz Hongkong",
+          "sub": "Betrieb Asien-Pazifik"
+        }
+      ],
+      "default": [
+        {
+          "bold": "Naher Osten · Afrika · Asien",
+          "sub": "Betreute Regionen"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Zentrale Bangalore",
+          "sub": "Betrieb Indien — SAARC"
+        }
+      ]
     }
   },
   "home": {
@@ -354,7 +442,9 @@
       "label": "Annahmestellen",
       "title_main": "Sammelstellen",
       "title_em": "in ganz Indien.",
-      "pickup_label": "Hotline"
+      "pickup_label": "Hotline",
+      "loading": "Sammelstellen werden geladen...",
+      "empty": "Für diesen Betreiber sind keine Sammelstellen verfügbar."
     },
     "filter": {
       "all": "Alle Sammelstellen"
@@ -454,7 +544,8 @@
         "hospitality": "Gastgewerbe AV",
         "broadcast": "Rundfunk und Produktion",
         "live": "Live-Events und Immersive"
-      }
+      },
+      "error_generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
     },
     "offices": {
       "title": "Büros",
@@ -463,6 +554,17 @@
     "general": {
       "title": "Allgemein",
       "desc": "Schreiben Sie uns und wir leiten es an die richtige Person weiter."
+    },
+    "info": {
+      "call": "Rufen Sie uns an",
+      "visit": "Besuchen Sie uns",
+      "write": "Schreiben Sie uns",
+      "regional_desks": "Regionale Kontakte",
+      "partnerships": "Partnerschaften",
+      "phone_label": "Telefon",
+      "email_label": "E-Mail",
+      "open_maps": "In Google Maps öffnen",
+      "note": "Ihre Anfrage wird sicher an unser {{region}}-Büro{{office}} übermittelt."
     }
   },
   "experience": {
@@ -818,7 +920,8 @@
           }
         ]
       }
-    }
+    },
+    "brands_empty": "Für diese Region sind noch keine Marken aufgeführt."
   },
   "blogs": {
     "hero": {
@@ -830,7 +933,20 @@
     "featured": "Hervorgehoben",
     "read_article": "Artikel lesen",
     "read_article_short": "Artikel lesen",
-    "browse_all": "Alle Artikel auf mindstec.com durchsuchen"
+    "browse_all": "Alle Artikel auf mindstec.com durchsuchen",
+    "cta": {
+      "label": "Sprechen wir Fachliches",
+      "title1": "Fragen, die der Blog",
+      "title2_em": "nicht beantwortet hat?",
+      "btn_ask": "Einen Spezialisten fragen",
+      "btn_solutions": "Unsere Lösungen ansehen"
+    },
+    "modal": {
+      "tag": "Artikel",
+      "back": "Zurück zum Blog",
+      "retry": "Erneut versuchen",
+      "error": "Dieser Artikel konnte nicht geladen werden. Bitte versuchen Sie es erneut."
+    }
   },
   "chat": {
     "header": {
@@ -875,7 +991,8 @@
     "email": "poland@mindstec.com",
     "label": "Europa-Aktivitäten",
     "partner_email": "partners@mindstec.com",
-    "partner_label": "Partnerschaften"
+    "partner_label": "Partnerschaften",
+    "email_label": "E-Mail"
   },
   "events": {
     "hero": {
