@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
@@ -38,6 +39,7 @@ const EWaste = () => {
     document.title = 'E-Waste Management — Mindstec Distribution';
     window.scrollTo(0, 0);
 
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -49,19 +51,22 @@ const EWaste = () => {
         return;
       }
 
-      // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      intro.fromTo('#sheroH .w', 
-          { yPercent: 115, rotate: 2 }, 
+      // Hero Entrance Timeline. paused: fromTo applies the hidden state
+      // immediately (no flash) but the intro only plays once the active loader
+      // has revealed the page — see whenReady().
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+      intro.fromTo('#sheroH .w',
+          { yPercent: 115, rotate: 2 },
           { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
-        .fromTo('#sheroSide', 
-          { opacity: 0, y: 30 }, 
-          { opacity: 1, y: 0, duration: 1.0 }, 
+        .fromTo('#sheroSide',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1.0 },
           '-=.8')
-        .fromTo('.shero-meta', 
-          { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 0.8 }, 
+        .fromTo('.shero-meta',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
           '-=.6');
+      stopIntro = whenReady(() => intro.play());
 
       // Generic reveals. [data-reveal] gets its hidden start state from CSS
       // (index.css:1949); the three .reveal-only nodes in the collection-centres
@@ -176,7 +181,7 @@ const EWaste = () => {
     }, containerRef);
 
     const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
-    return () => { ctx.revert(); clearTimeout(timer); };
+    return () => { stopIntro(); ctx.revert(); clearTimeout(timer); };
   }, []);
 
   // Card entrance on filter change — and on first load. Previously this keyed on
@@ -391,9 +396,9 @@ const EWaste = () => {
         </div>
 
         <div className="cc-grid" id="ccGrid">
-          {centresLoading && <p>Loading collection centres...</p>}
+          {centresLoading && <p>{t('ewaste.centres.loading')}</p>}
           {centresError && <p>{centresError}</p>}
-          {!centresLoading && !centresError && filteredCentres.length === 0 && <p>No collection centres are available for this operator.</p>}
+          {!centresLoading && !centresError && filteredCentres.length === 0 && <p>{t('ewaste.centres.empty')}</p>}
           {filteredCentres.map(c => (
             <div className="cc-card" key={c.id}>
               <div className="cc-top">
@@ -433,7 +438,7 @@ const EWaste = () => {
             </div>
             <div className="cta-row-info">
               <div className="c-item"><span>{t('contact_info.label')}</span><a href={`tel:${t('contact_info.tel_href')}`}>{t('contact_info.tel_label')}</a></div>
-              <div className="c-item"><span>Email</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
+              <div className="c-item"><span>{t('contact_info.email_label')}</span><a href={`mailto:${t('contact_info.email')}`}>{t('contact_info.email')}</a></div>
             </div>
           </div>
         </div>

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
@@ -185,6 +186,7 @@ const SolutionDetails = () => {
     // Scroll window back to top immediately on route changes
     window.scrollTo(0, 0);
 
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -197,19 +199,22 @@ const SolutionDetails = () => {
       // effect's triggers existed — so it only ever re-measured the previous
       // route's triggers. It now runs deferred, after the context is built.
 
-      // Entrance timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      intro.fromTo('#dTitle .w', 
-          { yPercent: 115, rotate: 2 }, 
+      // Entrance timeline. paused: fromTo applies the hidden state immediately
+      // (no flash) but the intro only plays once the active loader has revealed
+      // the page — see whenReady().
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+      intro.fromTo('#dTitle .w',
+          { yPercent: 115, rotate: 2 },
           { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
-        .fromTo('#dIntro', 
-          { opacity: 0, y: 30 }, 
-          { opacity: 1, y: 0, duration: 1.0 }, 
+        .fromTo('#dIntro',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1.0 },
           '-=.9')
-        .fromTo('.dhero-row .fact', 
-          { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 0.8 }, 
+        .fromTo('.dhero-row .fact',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
           '-=.7');
+      stopIntro = whenReady(() => intro.play());
 
       // Hero image parallax
       gsap.fromTo('#dHeroImg', { yPercent: -12 }, {
@@ -272,7 +277,7 @@ const SolutionDetails = () => {
     }, containerRef);
 
     const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
-    return () => { ctx.revert(); clearTimeout(timer); };
+    return () => { stopIntro(); ctx.revert(); clearTimeout(timer); };
   }, [slug, data.name]);
 
   // The brand row fills in after its own fetch, changing page height and
@@ -388,7 +393,7 @@ const SolutionDetails = () => {
                   <div className="bl-name">{brand.name}</div>
                 </a>
               ))
-            : <p style={{ color: 'var(--grey)', fontSize: '14px' }}>No brands listed for this region yet.</p>
+            : <p style={{ color: 'var(--grey)', fontSize: '14px' }}>{t('solutions.brands_empty')}</p>
           }
         </div>
       </section>

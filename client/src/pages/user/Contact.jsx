@@ -4,6 +4,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
+import { whenReady } from '../../utils/pageReveal';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
@@ -110,6 +111,7 @@ const Contact = () => {
     document.title = 'Contact us — Mindstec Distribution';
     window.scrollTo(0, 0);
 
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -117,7 +119,9 @@ const Contact = () => {
         return;
       }
 
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
+      // paused: fromTo applies the hidden state immediately (no flash) but the
+      // intro only plays once the active loader has revealed the page.
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
       intro.fromTo('.chero .label', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 })
         .fromTo('#cheroH .w',
           { yPercent: 115, rotate: 2 },
@@ -131,10 +135,11 @@ const Contact = () => {
           { opacity: 0, y: 20 },
           { opacity: 1, y: 0, duration: 0.9 },
           '-=.9');
+      stopIntro = whenReady(() => intro.play());
 
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => { stopIntro(); ctx.revert(); };
   }, []);
 
   useEffect(() => {
@@ -190,7 +195,7 @@ const Contact = () => {
     } catch (err) {
       console.error(err);
       const errorData = err.response?.data;
-      let errorMsg = 'Something went wrong. Please try again.';
+      let errorMsg = t('contact.form.error_generic');
       if (errorData) {
         if (typeof errorData === 'object') {
           const firstKey = Object.keys(errorData)[0];
@@ -320,7 +325,7 @@ const Contact = () => {
               <svg style={{ width: '20px', height: '20px', flexShrink: 0 }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>Thank you! Your enquiry has been submitted successfully. Our team will get back to you shortly.</span>
+              <span>{t('contact.form.success')}</span>
             </div>
           )}
 
@@ -339,13 +344,13 @@ const Contact = () => {
 
           <div className="fsubmit">
             <button type="submit" className="btn btn--solid" disabled={isSubmitting} style={{ cursor: isSubmitting ? 'not-allowed' : 'pointer' }}>
-              <span>{isSubmitting ? 'Sending inquiry...' : 'Send message'}</span>
+              <span>{isSubmitting ? t('contact.form.submitting') : t('contact.form.submit')}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                 <path d="M7 17L17 7M9 7h8v8" />
               </svg>
             </button>
             <p className="fnote">
-              Your inquiry is transmitted securely to our {region} office{officeName ? ` — ${officeName}` : ''}.
+              {t('contact.info.note', { region, office: officeName ? ` — ${officeName}` : '' })}
             </p>
           </div>
         </form>
@@ -354,7 +359,7 @@ const Contact = () => {
           <div className="ci">
             <span className="num">01</span>
             <div>
-              <b>Call us</b>
+              <b>{t('contact.info.call')}</b>
               {primaryContacts.map((contact, idx) => {
                 const phoneVal = contact.phone_display || contact.phone;
                 const phoneHref = (phoneVal || '').replace(/[^+\d]/g, '');
@@ -371,7 +376,7 @@ const Contact = () => {
           <div className="ci">
             <span className="num">02</span>
             <div>
-              <b>Visit us</b>
+              <b>{t('contact.info.visit')}</b>
               {primaryContacts.map((contact, idx) => {
                 const addr = contact.address;
                 const office = contactLabel(contact);
@@ -388,7 +393,7 @@ const Contact = () => {
           <div className="ci">
             <span className="num">03</span>
             <div>
-              <b>Write to us</b>
+              <b>{t('contact.info.write')}</b>
               {primaryContacts.map((contact, idx) => {
                 const emailVal = contact.email;
                 if (!emailVal) return null;
@@ -402,7 +407,7 @@ const Contact = () => {
             </div>
           </div>
           <div className="regions-mini">
-            <b>Regional desks</b>
+            <b>{t('contact.info.regional_desks')}</b>
             {deskContacts.map((contact, idx) => {
               const deskPhone = contact.phone_display || contact.phone;
               const deskPhoneHref = (deskPhone || '').replace(/[^+\d]/g, '');
@@ -419,7 +424,7 @@ const Contact = () => {
               );
             })}
             <div className="rm">
-              <span>Partnerships</span>
+              <span>{t('contact.info.partnerships')}</span>
               <a href="mailto:partners@mindstec.com">partners@mindstec.com</a>
             </div>
           </div>
@@ -481,13 +486,13 @@ const Contact = () => {
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', marginTop: '8px', borderTop: '1px solid rgba(255,255,255,0.06)', paddingTop: '8px' }}>
                     {phoneVal && (
                       <div style={{ fontSize: '11px', display: 'flex', gap: '4px' }}>
-                        <span style={{ color: 'var(--grey-dark)' }}>Phone:</span>
+                        <span style={{ color: 'var(--grey-dark)' }}>{t('contact.info.phone_label')}:</span>
                         <a href={`tel:${phoneHref}`} style={{ color: 'var(--grey)', textDecoration: 'none' }} className="hover-red-text">{phoneVal}</a>
                       </div>
                     )}
                     {emailVal && (
                       <div style={{ fontSize: '11px', display: 'flex', gap: '4px' }}>
-                        <span style={{ color: 'var(--grey-dark)' }}>Email:</span>
+                        <span style={{ color: 'var(--grey-dark)' }}>{t('contact.info.email_label')}:</span>
                         <a href={`mailto:${emailVal}`} style={{ color: 'var(--grey)', textDecoration: 'none' }} className="hover-red-text">{emailVal}</a>
                       </div>
                     )}
@@ -495,7 +500,7 @@ const Contact = () => {
                 )}
                 {mapsLink && (
                   <a href={mapsLink} target="_blank" rel="noopener noreferrer" style={{ marginTop: '12px' }}>
-                    Open in Google Maps
+                    {t('contact.info.open_maps')}
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                       <path d="M7 17L17 7M9 7h8v8" />
                     </svg>

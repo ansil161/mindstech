@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 
@@ -50,6 +51,7 @@ const Partners = () => {
   useEffect(() => {
     cardsRef.current = cardsRef.current.slice(0, BRANDS.length);
 
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -58,23 +60,26 @@ const Partners = () => {
         return;
       }
 
-      // Hero Entrance Timeline
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      intro.fromTo('#pheroH .w', 
-          { yPercent: 115, rotate: 2 }, 
+      // Hero Entrance Timeline. paused: fromTo applies the hidden state
+      // immediately (no flash) but the intro only plays once the active loader
+      // has revealed the page — see whenReady().
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+      intro.fromTo('#pheroH .w',
+          { yPercent: 115, rotate: 2 },
           { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
-        .fromTo('#pheroSide', 
-          { opacity: 0, y: 30 }, 
-          { opacity: 1, y: 0, duration: 1.0 }, 
+        .fromTo('#pheroSide',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1.0 },
           '-=.8')
-        .fromTo('.phero-meta', 
-          { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 0.8 }, 
+        .fromTo('.phero-meta',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
           '-=.6')
-        .fromTo('.filter-btn', 
-          { opacity: 0, y: 14 }, 
-          { opacity: 1, y: 0, duration: 0.6, stagger: 0.05 }, 
+        .fromTo('.filter-btn',
+          { opacity: 0, y: 14 },
+          { opacity: 1, y: 0, duration: 0.6, stagger: 0.05 },
           '-=.5');
+      stopIntro = whenReady(() => intro.play());
 
       // Generic reveals. fromTo, not to: nothing supplies a hidden start state
       // in CSS, so a `to` tween animated 1 -> 1 and produced no motion.
@@ -159,7 +164,7 @@ const Partners = () => {
       }
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => { stopIntro(); ctx.revert(); };
   }, []);
 
   // Animate cards on filter change

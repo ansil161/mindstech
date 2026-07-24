@@ -126,7 +126,7 @@ const BlogModal = ({ postId, onClose }) => {
                 <circle cx="12" cy="12" r="10" /><path d="M12 8v4M12 16h.01" />
               </svg>
               <p>{t('blogs.modal.error', 'Could not load this article. Please try again.')}</p>
-              <button className="btn" onClick={retry}><span>Retry</span></button>
+              <button className="btn" onClick={retry}><span>{t('blogs.modal.retry')}</span></button>
             </div>
           )}
 
@@ -169,7 +169,7 @@ const BlogModal = ({ postId, onClose }) => {
               {/* Tags */}
               <div className="bmodal-tags bm-animate">
                 <span className="bmodal-tag">{post.cat}</span>
-                <span className="bmodal-tag">Article</span>
+                <span className="bmodal-tag">{t('blogs.modal.tag')}</span>
                 {dateLabel && <span className="bmodal-tag">{dateLabel.split(' ').pop()}</span>}
               </div>
 
@@ -179,7 +179,7 @@ const BlogModal = ({ postId, onClose }) => {
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                     <path d="M19 12H5M12 5l-7 7 7 7" />
                   </svg>
-                  <span>Back to Blogs</span>
+                  <span>{t('blogs.modal.back')}</span>
                 </button>
               </div>
             </>

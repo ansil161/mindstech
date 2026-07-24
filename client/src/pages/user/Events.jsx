@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import axios from '../../api/axios';
@@ -171,6 +172,7 @@ const Events = () => {
 
   // ── GSAP entrance ──────────────────────────────────────────────────────────
   useEffect(() => {
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -178,8 +180,9 @@ const Events = () => {
         return;
       }
 
-      // Hero
-      gsap.timeline({ defaults: { ease: 'power3.out' } })
+      // Hero. paused: fromTo applies the hidden state immediately (no flash) but
+      // the intro only plays once the active loader has revealed the page.
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
         .fromTo('#evheroH .w',
           { yPercent: 115, rotate: 2 },
           { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
@@ -189,6 +192,7 @@ const Events = () => {
         .fromTo('.ev-tabs',
           { opacity: 0, y: 16 },
           { opacity: 1, y: 0, duration: 0.7 }, '-=.5');
+      stopIntro = whenReady(() => intro.play());
 
       // NOTE: the .section-head stagger lives in the data-dependent effect
       // below. Both section heads render inside `!loading && showEvents/showNews`
@@ -206,7 +210,7 @@ const Events = () => {
       });
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => { stopIntro(); ctx.revert(); };
   }, []);
 
   // ── card entrance when data loads ─────────────────────────────────────────
@@ -382,7 +386,7 @@ const Events = () => {
                 <a href={`tel:${telHref}`}>{telLabel}</a>
               </div>
               <div className="c-item">
-                <span>Email</span>
+                <span>{t('contact_info.email_label')}</span>
                 <a href={`mailto:${email}`}>{email}</a>
               </div>
             </div>

@@ -108,7 +108,9 @@
         "country_head": "卡尔蒂基扬·塞尔瓦拉杰",
         "finance_mgr": "弗拉维亚·罗伯特",
         "sales_mgr": "萨吉德·阿里·卡齐"
-      }
+      },
+      "loading": "正在加载团队...",
+      "empty": "该地区暂无团队成员。"
     },
     "cta": {
       "label": "成为经销商",
@@ -120,6 +122,92 @@
         "india": "印度业务",
         "email": "+91 80 4525 6922"
       }
+    },
+    "hero_facts": {
+      "india": [
+        {
+          "bold": "印度 · 南盟",
+          "sub": "服务地区"
+        },
+        {
+          "bold": "全球合作伙伴网络",
+          "sub": "从制造商到经销商"
+        },
+        {
+          "bold": "班加罗尔总部",
+          "sub": "印度—南盟业务"
+        }
+      ],
+      "middle-east": [
+        {
+          "bold": "中东",
+          "sub": "服务地区"
+        },
+        {
+          "bold": "全球合作伙伴网络",
+          "sub": "从制造商到经销商"
+        },
+        {
+          "bold": "迪拜中心",
+          "sub": "中东业务"
+        }
+      ],
+      "africa": [
+        {
+          "bold": "非洲",
+          "sub": "服务地区"
+        },
+        {
+          "bold": "全球合作伙伴网络",
+          "sub": "从制造商到经销商"
+        },
+        {
+          "bold": "内罗毕中心",
+          "sub": "非洲业务"
+        }
+      ],
+      "south-asia": [
+        {
+          "bold": "南亚",
+          "sub": "服务地区"
+        },
+        {
+          "bold": "全球合作伙伴网络",
+          "sub": "从制造商到经销商"
+        },
+        {
+          "bold": "班加罗尔总部",
+          "sub": "南盟业务"
+        }
+      ],
+      "hong-kong-china": [
+        {
+          "bold": "香港 · 中国",
+          "sub": "服务地区"
+        },
+        {
+          "bold": "全球合作伙伴网络",
+          "sub": "从制造商到经销商"
+        },
+        {
+          "bold": "香港中心",
+          "sub": "亚太业务"
+        }
+      ],
+      "default": [
+        {
+          "bold": "中东 · 非洲 · 亚洲",
+          "sub": "服务地区"
+        },
+        {
+          "bold": "全球合作伙伴网络",
+          "sub": "从制造商到经销商"
+        },
+        {
+          "bold": "班加罗尔总部",
+          "sub": "印度—南盟业务"
+        }
+      ]
     }
   },
   "home": {
@@ -361,7 +449,9 @@
       "label": "回收网点",
       "title_main": "电子垃圾收集中心",
       "title_em": "覆盖印度全境。",
-      "pickup_label": "免费热线"
+      "pickup_label": "免费热线",
+      "loading": "正在加载收集中心...",
+      "empty": "该运营商暂无可用的收集中心。"
     },
     "filter": {
       "all": "所有中心"
@@ -461,7 +551,8 @@
         "hospitality": "酒店视听",
         "broadcast": "广播与制作",
         "live": "现场活动和沉浸式体验"
-      }
+      },
+      "error_generic": "出了点问题，请重试。"
     },
     "offices": {
       "title": "办事处",
@@ -470,6 +561,17 @@
     "general": {
       "title": "一般的",
       "desc": "请给我们留言，我们会将其发送给合适的人。"
+    },
+    "info": {
+      "call": "致电我们",
+      "visit": "拜访我们",
+      "write": "写信给我们",
+      "regional_desks": "区域办事处",
+      "partnerships": "合作伙伴",
+      "phone_label": "电话",
+      "email_label": "电子邮件",
+      "open_maps": "在谷歌地图中打开",
+      "note": "您的咨询将安全地发送至我们的{{region}}办公室{{office}}。"
     }
   },
   "experience": {
@@ -825,7 +927,8 @@
           }
         ]
       }
-    }
+    },
+    "brands_empty": "该地区暂无品牌。"
   },
   "blogs": {
     "hero": {
@@ -837,7 +940,20 @@
     "featured": "精选",
     "read_article": "阅读文章",
     "read_article_short": "阅读文章",
-    "browse_all": "浏览 mindstec.com 上的所有文章"
+    "browse_all": "浏览 mindstec.com 上的所有文章",
+    "cta": {
+      "label": "与我们畅谈",
+      "title1": "博客未能解答的",
+      "title2_em": "问题？",
+      "btn_ask": "咨询专家",
+      "btn_solutions": "查看我们的解决方案"
+    },
+    "modal": {
+      "tag": "文章",
+      "back": "返回博客",
+      "retry": "重试",
+      "error": "无法加载这篇文章，请重试。"
+    }
   },
   "chat": {
     "header": {
@@ -882,7 +998,8 @@
     "email": "asia@mindstec.com",
     "label": "亚洲业务",
     "partner_email": "partners@mindstec.com",
-    "partner_label": "合作伙伴关系"
+    "partner_label": "合作伙伴关系",
+    "email_label": "电子邮件"
   },
   "events": {
     "hero": {

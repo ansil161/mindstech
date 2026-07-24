@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import { useRegion } from '../../context/RegionContext.jsx';
@@ -91,6 +92,7 @@ const About = () => {
   const storyP2 = t('about.story.p2');
 
   useEffect(() => {
+    let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
@@ -99,19 +101,22 @@ const About = () => {
         return;
       }
 
-      // Hero Intro Timeline Animation
-      const intro = gsap.timeline({ defaults: { ease: 'power3.out' } });
-      intro.fromTo('#aheroH .w', 
-          { yPercent: 115, rotate: 2 }, 
+      // Hero Intro Timeline Animation. paused: fromTo applies the hidden state
+      // immediately (no flash) but the intro only plays once the active loader
+      // has revealed the page — see whenReady().
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
+      intro.fromTo('#aheroH .w',
+          { yPercent: 115, rotate: 2 },
           { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
-        .fromTo('#aheroSide', 
-          { opacity: 0, y: 30 }, 
-          { opacity: 1, y: 0, duration: 1.0 }, 
+        .fromTo('#aheroSide',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1.0 },
           '-=.8')
-        .fromTo('.ahero-meta', 
-          { opacity: 0, y: 20 }, 
-          { opacity: 1, y: 0, duration: 0.8 }, 
+        .fromTo('.ahero-meta',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
           '-=.6');
+      stopIntro = whenReady(() => intro.play());
 
       // Hero image parallax
       gsap.fromTo('#aheroImg', { yPercent: -8 }, {
@@ -207,7 +212,7 @@ const About = () => {
       });
     }, containerRef);
 
-    return () => ctx.revert();
+    return () => { stopIntro(); ctx.revert(); };
   }, []);
 
   // The team grid grows from a one-line placeholder to a full grid after the
@@ -383,9 +388,9 @@ const About = () => {
         </div>
         <div className="team-grid" id="teamGrid">
           {loadingTeam ? (
-            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>Loading team...</p>
+            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>{t('about.team.loading')}</p>
           ) : translatedTeam.length === 0 ? (
-            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>No team members listed for this region yet.</p>
+            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>{t('about.team.empty')}</p>
           ) : (
             translatedTeam.map((member, i) => (
               <div className="member" key={member.id || i}>
@@ -429,7 +434,7 @@ const About = () => {
                 <a href={`tel:${telHref}`}>{telLabel}</a>
               </div>
               <div className="c-item">
-                <span>Email</span>
+                <span>{t('contact_info.email_label')}</span>
                 <a href={`mailto:${email}`}>{email}</a>
               </div>
             </div>
