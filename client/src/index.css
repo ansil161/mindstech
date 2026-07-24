@@ -348,12 +348,19 @@ img {
   left: 0;
   right: 0;
   z-index: 90;
-  display: flex;
-  align-items: center;
   height: 80px;
-  padding: 0 var(--pad);
   border-bottom: 1px solid transparent;
   transition: transform .5s var(--ease), background .4s, border-color .4s;
+}
+
+/* Background/blur bar stays edge-to-edge (unchanged); its content row is
+   capped to the same content column as the rest of the page so the logo
+   and CTA cluster stop drifting apart from page content past 1440px. */
+.nav-inner {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 var(--pad);
 }
 
 .nav.is-solid {
@@ -371,12 +378,12 @@ img {
    them sits at the true viewport centre regardless of how wide either side
    grows (long region names, de/ar labels). The <nav> keeps its natural width,
    so when .nav-links is hidden on mobile it collapses to zero. */
-.nav>.logo {
+.nav-inner>.logo {
   flex: 1 1 0;
   min-width: 0;
 }
 
-.nav>nav {
+.nav-inner>nav {
   flex: 0 0 auto;
 }
 
@@ -632,6 +639,9 @@ img {
 }
 
 /* ── HOME HERO ── */
+/* No horizontal sizing here on purpose: <main> is unconstrained (see
+   Layout.jsx), so this is naturally full-bleed as a plain block child.
+   .hero-inner re-applies the page's 1440px content column below. */
 .hero {
   position: relative;
   min-height: 100svh;
@@ -670,15 +680,15 @@ img {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(100px, 14vh, 150px) var(--pad) clamp(28px, 4vh, 48px);
+  padding: clamp(90px, 12vh, 130px) var(--pad) clamp(24px, 3.5vh, 42px);
 }
 
 .hero-top {
   display: flex;
   justify-content: space-between;
   align-items: flex-end;
-  gap: 40px;
-  margin-bottom: clamp(24px, 3.5vh, 40px);
+  gap: 36px;
+  margin-bottom: clamp(20px, 3vh, 32px);
 }
 
 .line-mask {
@@ -687,7 +697,7 @@ img {
 }
 
 .hero h1 {
-  font-size: clamp(38px, 6.2vw, 98px);
+  font-size: clamp(34px, 5.2vw, 82px);
   max-width: 14ch;
   line-height: 1.06;
   letter-spacing: -.03em;
@@ -699,16 +709,16 @@ img {
 }
 
 .hero-brief {
-  max-width: 300px;
-  padding-bottom: 8px;
+  max-width: 280px;
+  padding-bottom: 6px;
   opacity: 0;
   transform: translateY(20px);
 }
 
 .hero-brief p {
-  font-size: 13.5px;
+  font-size: 13px;
   color: #D1D1D6;
-  line-height: 1.7;
+  line-height: 1.65;
   letter-spacing: 0.01em;
 }
 
@@ -2811,13 +2821,19 @@ footer {
 }
 
 /* Experience */
+/* No horizontal sizing/padding here: <main> is unconstrained, so this is
+   naturally full-bleed for .xhero-bg. .xhero-container below (a plain
+   wrapper around the pre-existing .xhero-inner) carries the page's 1440px
+   content column instead, the same way .hero-inner/.band-inner do for
+   their sections. */
 .xhero {
   position: relative;
   min-height: 96svh;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 140px var(--pad) clamp(44px, 7vh, 84px);
+  padding-top: 140px;
+  padding-bottom: clamp(44px, 7vh, 84px);
   overflow: hidden;
 }
 
@@ -2825,6 +2841,17 @@ footer {
   position: absolute;
   inset: 0;
   z-index: 0;
+}
+
+/* Takes over the positioning role .xhero-inner used to play directly
+   against .xhero (z-index above .xhero-bg, horizontal inset via padding).
+   .xhero-inner is unchanged: it still just carries its own narrower
+   max-width:1280px with no auto margins, so it sits flush-left inside
+   this box's content column exactly as it always did. */
+.xhero-container {
+  position: relative;
+  z-index: 2;
+  padding: 0 var(--pad);
 }
 
 .xhero-bg img {
@@ -3678,7 +3705,9 @@ footer {
 /* ── BLOGS: FEATURED, GRID ── */
 .bfeat {
   display: block;
-  margin: clamp(48px, 7vh, 80px) var(--pad) 0;
+  margin: clamp(48px, 7vh, 80px) auto 0;
+  width: calc(100% - 2 * var(--pad));
+  max-width: calc(1440px - 2 * var(--pad));
   border: 1px solid var(--line-soft);
   border-radius: 2px;
   padding: clamp(32px, 4.2vw, 60px) clamp(28px, 4vw, 56px);
@@ -5996,17 +6025,19 @@ footer {
 ══════════════════════════════════════ */
 
 /* bfeat as a button — neutralises browser button chrome ONLY.
-   This rule has the same specificity as `.bfeat` but sits ~970 lines later,
-   so anything it declares silently wins. It must therefore not touch the
+   This rule has the same specificity as `.bfeat` but sits later, so
+   anything it declares silently wins. It must therefore not touch the
    box model: `padding: 0; margin: 0` here previously overrode `.bfeat`'s
    own padding/margin, collapsing the featured card to full-bleed with its
    badge and headline clipped at x=0. Likewise the border override made the
    hairline fainter (0.04) than the design token (--line-soft, 0.07).
    Layout belongs to `.bfeat`; only UA button resets belong here.
    `width` is needed because a <button> shrink-to-fits even at display:block,
-   so it will not honour `.bfeat`'s horizontal margins on its own. */
+   so it will not honour `.bfeat`'s own width/max-width on its own — this
+   reproduces the identical formula (min of "100% minus the pad inset" and
+   "1440px minus the pad inset") as an explicit width instead. */
 .bfeat--btn {
-  width: calc(100% - var(--pad) - var(--pad));
+  width: min(calc(100% - 2 * var(--pad)), calc(1440px - 2 * var(--pad)));
   background: none;
   font-family: inherit;
   color: inherit;
@@ -6992,4 +7023,106 @@ footer {
 .ask-ai-panel :focus-visible {
   outline: 1px solid var(--line-soft);
   outline-offset: -2px;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CONTENT CONTAINER — single source of truth for the page's 1440px
+   column, pure CSS, no viewport-width math.
+
+   <main> (Layout.jsx) is intentionally unconstrained — it's just a plain
+   full-width block. Full-bleed sections (.hero, .band, .next-sol, .xhero's
+   background layer) need zero special CSS as a result: they're naturally
+   edge-to-edge, being ordinary children of an unconstrained parent.
+
+   Every other section opts into the shared 1440px column by being listed
+   in one of the two groups below. This is the ONLY place that cap is
+   declared — it intentionally sits after every individual section rule in
+   this file, so it wins on the properties it sets (source order, equal
+   specificity) without needing !important anywhere.
+
+   Group 1 — sections that already pad themselves inward from their own
+   edges (`padding: ... var(--pad)`). Their padding is untouched; this only
+   adds the outer cap + centering.
+   Group 2 — sections that instead use `margin: ... var(--pad) ...` to sit
+   inset from the page edge (no padding of their own). A plain max-width
+   would leave them flush-left once <main> is uncapped, so these also get
+   an explicit width — `calc(100% - 2 * var(--pad))` reproduces the exact
+   pre-existing look below 1440px (no visual change), and correctly caps at
+   `1440px - 2 * var(--pad)` above it. `.bfeat` needs the same formula but
+   is handled next to `.bfeat--btn` instead, since that button variant
+   already overrides its own width and the two must stay in the same
+   cascade order relative to each other. */
+
+.section-head,
+.nav-inner,
+.hero-inner,
+.statement,
+.sol-list,
+.stats,
+.edge-layout,
+.band-inner,
+.work-grid-premium,
+.work-more,
+.journal-grid,
+.cta,
+.foot-grid,
+.foot-bottom,
+.foot-mark,
+.ahero,
+.phero,
+.shero,
+.chero,
+.contact-layout,
+.map-band,
+.dhero,
+.story,
+.pillar,
+.vm,
+.team-grid,
+.filters,
+.pgrid,
+.why-row,
+.srow,
+.cap,
+.duo,
+.dbrands,
+.next-inner,
+.bwrap,
+.ov,
+.zones,
+.film,
+.who,
+.visit,
+.ben,
+.dd,
+.plan,
+.cc,
+.ev-tabs,
+.ev-section,
+.xhero-container {
+  /* width:100% is a no-op for the plain block sections in this list, but is
+     required for the flex-child cases (.hero-inner/.band-inner/.next-inner/
+     .xhero-container, each a column-flex child of its full-bleed parent):
+     cross-axis auto margins suppress flexbox's default stretch sizing per
+     spec, so without an explicit width they'd shrink to fit their content
+     instead of filling the section. */
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.rule,
+.map-wrap,
+.map-contacts,
+.ahero-meta,
+.ahero-visual,
+.phero-meta,
+.shero-meta,
+.dhero-visual,
+.xhero-meta {
+  width: calc(100% - 2 * var(--pad));
+  max-width: calc(1440px - 2 * var(--pad));
+  margin-left: auto;
+  margin-right: auto;
 }

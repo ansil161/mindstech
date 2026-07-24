@@ -271,8 +271,8 @@ const Home = () => {
       // Snappier Hero intro timeline
       const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
       intro.fromTo('#heroImg',
-        { scale: 1.12, filter: 'brightness(.2) saturate(.8)' },
-        { scale: 1, filter: 'brightness(.58) saturate(1)', duration: 1.8, ease: 'power2.out' })
+        { scale: 1.12, filter: 'brightness(.22) saturate(.85)' },
+        { scale: 1, filter: 'brightness(.62) saturate(1.05)', duration: 1.8, ease: 'power2.out' })
         .fromTo('#heroH .w',
           { yPercent: 80, opacity: 0 },
           { yPercent: 0, opacity: 1, duration: 1.3, stagger: 0.12, ease: 'power4.out' },
@@ -904,8 +904,8 @@ const Home = () => {
         <div className="hero-media">
           <img
             id="heroImg"
-            src="/assets/img/pexels-7513419-w1920.jpg"
-            alt="A technician silhouetted on a dark stage while installing a large glowing LED video wall"
+            src="/assets/img/hero-exhibition.jpg"
+            alt="Immersive neon LED video wall exhibition displays with visitors"
             fetchPriority="high"
           />
         </div>

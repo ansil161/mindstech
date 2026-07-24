@@ -210,6 +210,7 @@ const Experience = () => {
         <div className="xhero-bg" aria-hidden="true">
           <img src="/assets/img/unsplash-1605810230434-7631ac76ec81-w2000.jpg" alt="" id="xheroImg" />
         </div>
+        <div className="xhero-container">
         <div className="xhero-inner">
           <span className="label label--red" id="xheroLabel">{t('experience.hero.label')}</span>
           <h1 className="display" id="xheroH">
@@ -233,6 +234,7 @@ const Experience = () => {
               </Button>
             </div>
           </div>
+        </div>
         </div>
       </section>
       <div className="xhero-meta">

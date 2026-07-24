@@ -110,6 +110,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
 
   return (
     <header ref={navRef} className="nav" id="nav">
+      <div className="nav-inner">
       <Link to="/" className="logo" aria-label="Mindstec home" onClick={() => setActiveDropdown(null)}>
         <img src="/mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today" />
       </Link>
@@ -275,6 +276,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
         >
           <span></span><span></span><span></span>
         </button>
+      </div>
       </div>
     </header>
   );
