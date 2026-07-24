@@ -194,6 +194,19 @@ img { display: block; max-width: 100%; }
 .pre-bar { width: 180px; height: 2px; background: rgba(255,255,255,.12); overflow: hidden; }
 .pre-bar i { display: block; height: 100%; width: 100%; background: var(--red); transform: scaleX(0); transform-origin: left; }
 
+/* Route-change loader — same visual language as #preloader, driven by GSAP in
+   RouteTransition.jsx. Starts hidden; autoAlpha toggles visibility+opacity. */
+.route-loader {
+  position: fixed; inset: 0; z-index: 300;
+  background: var(--ink);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  gap: 28px;
+  visibility: hidden; opacity: 0;
+  pointer-events: none;
+}
+.route-loader img { height: 52px; width: auto; }
+
 /* ── NAV ── */
 .nav {
   position: fixed; top: 0; left: 0; right: 0; z-index: 90;

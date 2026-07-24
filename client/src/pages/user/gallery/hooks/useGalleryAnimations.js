@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../../../utils/pageReveal';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -19,20 +20,20 @@ export function usePageEntrance() {
     if (!laser) return;
 
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    if (reduceMotion) return;
+    if (reduceMotion) return undefined;
 
-    // Laser sweep: starts off-screen left, sweeps right, exits right
-    const tl = gsap.timeline({ defaults: { ease: 'power4.inOut' } });
-
-    gsap.set(laser, {
-      xPercent: -105,
-      autoAlpha: 1,
+    // The laser sits at opacity:0 (inline) until the active loader reveals the
+    // page, so it never sweeps over the preloader / route overlay. It plays once
+    // whenReady fires — i.e. AFTER the loader ends.
+    let tl;
+    const stopWaiting = whenReady(() => {
+      tl = gsap.timeline({ defaults: { ease: 'power4.inOut' } });
+      gsap.set(laser, { xPercent: -105, autoAlpha: 1 });
+      tl.to(laser, { xPercent: 0, duration: 0.55, ease: 'power4.out' }, 0.1)
+        .to(laser, { xPercent: 105, duration: 0.55, ease: 'power4.in' }, '+=0.05');
     });
 
-    tl.to(laser, { xPercent: 0, duration: 0.55, ease: 'power4.out' }, 0.1)
-      .to(laser, { xPercent: 105, duration: 0.55, ease: 'power4.in' }, '+=0.05');
-
-    return () => tl.kill();
+    return () => { stopWaiting(); if (tl) tl.kill(); };
   }, []);
 
   return { laserRef };
@@ -62,29 +63,33 @@ export function useHeroAnimations(containerRef) {
       return;
     }
 
+    let stopWaiting = () => {};
     const ctx = gsap.context(() => {
       const words = el.querySelectorAll('.gallery-hero-word');
       const sub = el.querySelectorAll('.gallery-hero-sub');
       const meta = el.querySelectorAll('.gallery-hero-meta');
 
-      // Reset
+      // Hide immediately so nothing flashes when the loader clears.
       gsap.set(words, { yPercent: 110, opacity: 0 });
       gsap.set(sub, { opacity: 0, y: 22 });
       gsap.set(meta, { opacity: 0, y: 16 });
 
-      const tl = gsap.timeline({ defaults: { ease: 'power4.out' }, delay: 0.15 });
+      // Play in only once the active loader has revealed the page.
+      stopWaiting = whenReady(() => {
+        const tl = gsap.timeline({ defaults: { ease: 'power4.out' }, delay: 0.15 });
 
-      tl.to(words, {
-        yPercent: 0,
-        opacity: 1,
-        duration: 1.0,
-        stagger: 0.06,
-      })
-        .to(sub, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.6')
-        .to(meta, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08 }, '-=0.5');
+        tl.to(words, {
+          yPercent: 0,
+          opacity: 1,
+          duration: 1.0,
+          stagger: 0.06,
+        })
+          .to(sub, { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.6')
+          .to(meta, { opacity: 1, y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.08 }, '-=0.5');
+      });
     });
 
-    return () => ctx.revert();
+    return () => { stopWaiting(); ctx.revert(); };
   }, [containerRef]);
 }
 

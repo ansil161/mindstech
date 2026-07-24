@@ -6,6 +6,7 @@ import Lenis from 'lenis';
 import Navbar from './Navbar/Navbar.jsx';
 import Drawer from './Drawer/Drawer.jsx';
 import Footer from './Footer/Footer.jsx';
+import RouteTransition from './RouteTransition.jsx';
 import ChatWidget from '../chat/ChatWidget.jsx';
 import { useRegion } from '../../context/RegionContext.jsx';
 
@@ -165,7 +166,7 @@ const Layout = ({ children }) => {
           horizontal bleed without creating a scroll box, and keeps position:
           sticky children anchored to the viewport. */}
       <main id="top" style={{ maxWidth: '1440px', margin: '0 auto', overflowX: 'clip' }}>
-        {children}
+        <RouteTransition>{children}</RouteTransition>
       </main>
 
       {/* Footer component */}
