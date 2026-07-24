@@ -70,14 +70,48 @@ const Blogs = () => {
         return;
       }
 
+      // clearProps is load-bearing here, not tidiness. GSAP writes tweened
+      // values to inline styles (verified on this page: revealed elements carry
+      // `transform: translate(...)` inline), and an inline transform outranks
+      // any stylesheet rule. Left in place at translate(0,0) it would silently
+      // block `.bfeat:hover { transform: translateY(-3px) }`, because that
+      // hover lift can only ever come from CSS. Clearing hands the property
+      // back and drops the compositor layer the tween promoted.
       gsap.fromTo('.bfeat', { opacity: 0, y: 30 }, {
-        opacity: 1, y: 0, duration: 0.8, ease: 'power4.out',
+        opacity: 1, y: 0, duration: 0.9, ease: 'power4.out',
+        clearProps: 'transform',
         scrollTrigger: { trigger: '.bfeat', start: 'top 86%', once: true },
       });
 
+      // Grid cards animate as a batch rather than one trigger each. Previously
+      // every `.bcard` also carried `.reveal`, so each got an independent
+      // ScrollTrigger and they fired one-by-one as they crossed the line —
+      // whichever cards were already on screen all popped at once, with no
+      // relationship between them. `batch` groups whatever enters together and
+      // staggers that group, so a row reads left-to-right.
+      const cards = gsap.utils.toArray('.bcard');
+      if (cards.length) {
+        gsap.set(cards, { opacity: 0, y: 36 });
+        ScrollTrigger.batch(cards, {
+          start: 'top 88%',
+          once: true,
+          onEnter: batch => gsap.to(batch, {
+            opacity: 1, y: 0, duration: 0.9, ease: 'power3.out',
+            stagger: { each: 0.08, from: 'start' },
+            overwrite: true,
+            // Required: the `gsap.set` above writes an inline transform to
+            // every card, which would otherwise outrank `.bcard:hover`'s lift.
+            clearProps: 'transform',
+          }),
+        });
+      }
+
       // fromTo, not to: no CSS hidden start state exists, so a `to` tween
-      // animated 1 -> 1 and the grid cards never moved.
+      // animated 1 -> 1 and the elements never moved.
+      // `.bcard` is excluded — it is handled by the batch above and would
+      // otherwise be animated twice by two competing ScrollTriggers.
       gsap.utils.toArray('.reveal').forEach(el => {
+        if (el.classList.contains('bcard')) return;
         gsap.fromTo(el,
           { opacity: 0, y: 36 },
           {
@@ -124,7 +158,10 @@ const Blogs = () => {
         <button
           className={`bfeat bfeat--btn ${isTranslatingFeatured ? 'opacity-50' : ''}`}
           onClick={() => setActivePostId(translatedFeatured.id)}
-          style={{ transition: 'opacity 0.3s', textAlign: 'left', width: '100%', cursor: 'pointer' }}
+          // width/textAlign/cursor live in `.bfeat--btn`. They were inline here,
+          // and an inline width:100% outranks any stylesheet rule — which is what
+          // made the card ignore `.bfeat`'s horizontal margins and run full-bleed.
+          style={{ transition: 'opacity 0.3s' }}
           aria-label={`Read more about: ${translatedFeatured.title}`}
         >
           <div className="bfeat-layout">
