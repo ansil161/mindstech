@@ -1048,6 +1048,50 @@ footer { border-top: 1px solid var(--line-soft); }
 }
 .rm a:hover { color: var(--red); }
 
+/* Full-detail desk entry — only rendered for aggregate regions ("Global"),
+   where every office beyond the lead one lives here instead of in blocks 01-03. */
+.rm-card {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 16px 0;
+  border-top: 1px solid var(--line-soft);
+}
+.rm-card:first-of-type { border-top: none; padding-top: 0; }
+.rm-card > b {
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--white);
+  margin-bottom: 2px;
+}
+.rm-card .rm-office {
+  font-size: 12px;
+  color: var(--grey-dark);
+}
+.rm-card address {
+  font-style: normal;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--grey);
+  white-space: pre-line;
+  margin-bottom: 4px;
+}
+.rm-card a {
+  font-size: 13px;
+  color: var(--grey);
+  width: fit-content;
+  transition: color .25s;
+}
+.rm-card a:hover { color: var(--red); }
+.rm-card + .rm {
+  border-top: 1px solid var(--line-soft);
+  padding-top: 16px;
+  margin-top: 4px;
+}
+
 /* Social icons */
 .socials {
   display: flex;
