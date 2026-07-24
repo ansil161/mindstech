@@ -9,10 +9,10 @@ operational lever for latency/cost/quality trade-offs in production.
 """
 import json
 import logging
-from typing import Dict, List, Union
+from typing import Annotated, Dict, List, Union
 
 from pydantic import field_validator, model_validator
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import BaseSettings, NoDecode, SettingsConfigDict
 
 logger = logging.getLogger(__name__)
 
@@ -241,7 +241,37 @@ class Settings(BaseSettings):
     # Embeddings
     # ------------------------------------------------------------------
     EMBEDDING_PROVIDER: str = "huggingface"  # huggingface | sentence_transformer | openai
-    EMBEDDING_MODEL: str = "sentence-transformers/all-MiniLM-L6-v2"
+
+    # BAAI/bge-base-en-v1.5, verified served by the HF Inference API on
+    # 2026-07-24 (768-dim, L2-normalised, batching supported).
+    #
+    # It replaces sentence-transformers/all-MiniLM-L6-v2, which HF no longer
+    # serves for feature-extraction: the repo still resolves but hf-inference
+    # only exposes it under the sentence-similarity task, which returns
+    # similarity scores rather than vectors. Because retrieval degrades
+    # gracefully to an empty result, the only symptom was every answer becoming
+    # "I don't have that specific detail" while every health check stayed green.
+    EMBEDDING_MODEL: str = "BAAI/bge-base-en-v1.5"
+
+    # Ordered failover ladder used when the active model stops being served.
+    # Walked in order, skipping any candidate whose vector width differs from
+    # the live index (see EMBEDDING_STRICT_DIMENSION_FAILOVER).
+    # `NoDecode` disables pydantic-settings' JSON pre-parse for this field, so
+    # the plain comma-separated form documented in .env.example
+    # ("a,b,c") reaches the validator below instead of raising a
+    # SettingsError before any validator runs.
+    EMBEDDING_MODEL_FALLBACKS: Annotated[List[str], NoDecode] = [
+        "BAAI/bge-small-en-v1.5",
+        "intfloat/e5-base-v2",
+        "intfloat/e5-small-v2",
+    ]
+    EMBEDDING_ENABLE_MODEL_FAILOVER: bool = True
+    # Refuse to fail over to a model of a different vector width. Switching
+    # width does not degrade retrieval, it breaks it: Qdrant rejects the query,
+    # or returns confident nonsense from an incomparable vector space. Only
+    # disable this during a supervised re-index.
+    EMBEDDING_STRICT_DIMENSION_FAILOVER: bool = True
+
     EMBEDDING_BATCH_SIZE: int = 32
     EMBEDDING_MAX_TOKENS: int = 512
     EMBEDDING_REQUEST_TIMEOUT_SECONDS: float = 20.0
@@ -251,6 +281,21 @@ class Settings(BaseSettings):
     # critical path, and vectors are only a few KB each.
     EMBEDDING_CACHE_MAX_SIZE: int = 2048
     EMBEDDING_CACHE_TTL_SECONDS: int = 3600
+
+    @field_validator("EMBEDDING_MODEL_FALLBACKS", mode="before")
+    @classmethod
+    def parse_embedding_fallbacks(cls, v: Union[str, List[str], None]) -> List[str]:
+        """Accepts a JSON list or a comma-separated string, like the API key lists."""
+        if not v:
+            return []
+        if isinstance(v, str):
+            if v.startswith("["):
+                try:
+                    return json.loads(v)
+                except json.JSONDecodeError:
+                    pass
+            return [i.strip() for i in v.split(",") if i.strip()]
+        return v
 
     # ------------------------------------------------------------------
     # Chunking (approximate tokens via the chars/4 heuristic used throughout)
@@ -304,7 +349,11 @@ class Settings(BaseSettings):
     QDRANT_URL: str | None = None
     QDRANT_API_KEY: str | None = None
     QDRANT_COLLECTION_NAME: str = "mindstec_rag"
-    QDRANT_VECTOR_DIMENSION: int = 384
+    # Must equal the active embedding model's output width. 768 matches the
+    # default EMBEDDING_MODEL (BAAI/bge-base-en-v1.5). Changing the model
+    # without re-indexing at the matching width makes retrieval fail closed —
+    # the service refuses to serve rather than corrupting the collection.
+    QDRANT_VECTOR_DIMENSION: int = 768
     QDRANT_DISTANCE_METRIC: str = "Cosine"  # Cosine | Dot | Euclid
     VECTOR_DB_TIMEOUT_SECONDS: float = 10.0
     # Guard rail: when the live collection's dimension disagrees with config,

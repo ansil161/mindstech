@@ -23,29 +23,47 @@ import httpx
 
 from app.core.cache import TTLCache
 from app.core.config import settings
-from app.core.embedding_config import MODEL_DIMENSIONS, MODEL_TOKEN_LIMITS
+from app.core.embedding_config import MODEL_TOKEN_LIMITS, known_dimension, reindex_plan
+from app.core.observability import metrics
 from app.core.resilience import breakers, is_transient_error, retry_async
 
 logger = logging.getLogger(__name__)
 
-# Ordered most- to least-specific.
+# Ordered by verified likelihood of success, not by specificity.
 #
-# The explicit `pipeline/feature-extraction` route comes first because the
-# bare `models/` route resolves to whatever pipeline the model declares by
-# default — for sentence-transformers models that is *sentence-similarity*,
-# which rejects a plain string input with
-#   "SentenceSimilarityPipeline.__call__() missing 1 required positional
-#    argument: 'sentences'"
-# v1 avoided this by going through huggingface_hub's InferenceClient, which
-# sets the task for you; that client is blocking, so the task now has to be
-# named explicitly in the URL.
+# The bare `models/{model}` route is now FIRST. Measured against the live API
+# on 2026-07-24 with a real token:
+#
+#   pipeline/feature-extraction/BAAI/bge-base-en-v1.5
+#       -> 400 {"error":"Model not supported by provider hf-inference"}
+#   models/BAAI/bge-base-en-v1.5
+#       -> 200, 768-dim float vector
+#
+# The explicit-task route used to come first because the bare route resolves
+# to whatever pipeline a model declares by default, and for the old
+# sentence-transformers models that was *sentence-similarity* (which rejects a
+# plain string with "SentenceSimilarityPipeline.__call__() missing 1 required
+# positional argument: 'sentences'"). The BGE models declare feature-extraction
+# as their default pipeline, so the bare route returns vectors directly while
+# the explicit-task route is no longer routed at all by hf-inference. Leading
+# with the working route removes a guaranteed wasted 400 round-trip from every
+# single embedding call; the other route is retained as a fallback so a future
+# routing change on HF's side degrades to a slower call rather than an outage.
 #
 # `api-inference.huggingface.co` is deliberately absent: the host no longer
 # resolves, so including it cost a DNS timeout on every embedding call.
 _HF_ENDPOINTS = (
-    "https://router.huggingface.co/hf-inference/pipeline/feature-extraction/{model}",
     "https://router.huggingface.co/hf-inference/models/{model}",
+    "https://router.huggingface.co/hf-inference/pipeline/feature-extraction/{model}",
 )
+
+# HTTP statuses that mean "this route/model is wrong" — worth trying another
+# endpoint shape, then another model.
+_ROUTE_MISS_STATUSES = frozenset({400, 404, 410})
+# Statuses that will fail identically for every model on the account, so
+# walking the failover ladder only multiplies latency. 401/403 are token
+# problems and 429 is an account-wide rate limit — none are model-specific.
+_ACCOUNT_LEVEL_STATUSES = frozenset({401, 403, 429})
 
 
 class EmbeddingError(RuntimeError):
@@ -61,10 +79,14 @@ class Embedder:
 
     def __init__(self) -> None:
         self.provider = settings.EMBEDDING_PROVIDER.lower()
-        model_name = settings.EMBEDDING_MODEL
-        if self.provider in ("huggingface", "hf", "sentence_transformer") and "/" not in model_name:
-            model_name = f"sentence-transformers/{model_name}"
-        self.model_name = model_name
+        self.configured_model = self._qualify(settings.EMBEDDING_MODEL)
+        # The model currently being used. Starts as the configured primary and
+        # only moves down the ladder when a model stops being served.
+        self._active_model = self.configured_model
+        self._candidates = self._build_candidates()
+        # Vector width observed from a real provider response. Authoritative
+        # once set — see the `dimension` property.
+        self._observed_dimension: Optional[int] = None
         self._cache = TTLCache(
             max_size=settings.EMBEDDING_CACHE_MAX_SIZE,
             ttl_seconds=settings.EMBEDDING_CACHE_TTL_SECONDS,
@@ -74,35 +96,164 @@ class Embedder:
         self._openai_client: Any = None
         self._warn_on_config_mismatch()
 
+    @staticmethod
+    def _qualify(model_name: str) -> str:
+        """
+        Expands a bare model id to a fully-qualified repo id.
+
+        Retained for backward compatibility: existing deployments have
+        `EMBEDDING_MODEL=all-MiniLM-L6-v2` in `.env` and must keep resolving to
+        the same repository they always did.
+        """
+        provider = settings.EMBEDDING_PROVIDER.lower()
+        if provider in ("huggingface", "hf", "sentence_transformer") and "/" not in model_name:
+            return f"sentence-transformers/{model_name}"
+        return model_name
+
+    def _build_candidates(self) -> List[str]:
+        """
+        Ordered failover ladder: the configured model first, then each declared
+        fallback that isn't already in the list.
+
+        OpenAI is excluded — its models are a different provider with different
+        auth and pricing, so silently switching to one is a billing surprise,
+        not a graceful degradation.
+        """
+        candidates = [self.configured_model]
+        if self.provider == "openai" or not settings.EMBEDDING_ENABLE_MODEL_FAILOVER:
+            return candidates
+        for fallback in settings.EMBEDDING_MODEL_FALLBACKS:
+            qualified = self._qualify(fallback.strip())
+            if qualified and qualified not in candidates:
+                candidates.append(qualified)
+        return candidates
+
+    @property
+    def model_name(self) -> str:
+        """The model actually serving embeddings right now."""
+        return self._active_model
+
     # -- configuration sanity ---------------------------------------------
     def _warn_on_config_mismatch(self) -> None:
         """
         Cross-checks the configured model against known dimension/token tables
         so a misconfiguration surfaces as a loud startup warning rather than as
         silently truncated chunks or a Qdrant dimension error much later.
+
+        This is deliberately an offline check — it reads tables, it never calls
+        the provider — so importing this module stays free of network I/O. The
+        live equivalent runs in `health()` and in `scripts/bootstrap.py`.
         """
-        known_dim = MODEL_DIMENSIONS.get(self.model_name)
+        known_dim = known_dimension(self._active_model)
         if known_dim is not None and known_dim != settings.QDRANT_VECTOR_DIMENSION:
-            logger.warning(
+            logger.critical(
                 "Embedding model '%s' produces %d-dim vectors but "
-                "QDRANT_VECTOR_DIMENSION is %d. Fix one of them before deploying.",
-                self.model_name, known_dim, settings.QDRANT_VECTOR_DIMENSION,
+                "QDRANT_VECTOR_DIMENSION is %d.%s",
+                self._active_model,
+                known_dim,
+                settings.QDRANT_VECTOR_DIMENSION,
+                reindex_plan(
+                    collection=settings.QDRANT_COLLECTION_NAME,
+                    current_dimension=settings.QDRANT_VECTOR_DIMENSION,
+                    required_dimension=known_dim,
+                    model_name=self._active_model,
+                ),
             )
 
-        known_limit = MODEL_TOKEN_LIMITS.get(self.model_name)
+        known_limit = MODEL_TOKEN_LIMITS.get(self._active_model)
         if known_limit is not None and settings.CHUNK_SIZE > known_limit:
             logger.warning(
                 "CHUNK_SIZE (%d approx. tokens) exceeds the ~%d-token input limit of "
                 "'%s'; long chunks will be truncated by the provider before vectorisation.",
-                settings.CHUNK_SIZE, known_limit, self.model_name,
+                settings.CHUNK_SIZE, known_limit, self._active_model,
             )
+
+        # A fallback of a different width can never be used without a full
+        # re-index, so say so once at startup rather than letting an operator
+        # discover it during an outage.
+        if settings.EMBEDDING_STRICT_DIMENSION_FAILOVER and len(self._candidates) > 1:
+            target = known_dimension(self.configured_model) or settings.QDRANT_VECTOR_DIMENSION
+            unusable = [
+                candidate
+                for candidate in self._candidates[1:]
+                if (known_dimension(candidate) or target) != target
+            ]
+            if unusable:
+                logger.warning(
+                    "Embedding fallbacks %s produce a different vector width than the "
+                    "primary (%d-dim) and will be SKIPPED during failover: switching to "
+                    "them would write vectors the '%s' collection cannot search. Only "
+                    "same-width fallbacks can be used without a re-index.",
+                    unusable, target, settings.QDRANT_COLLECTION_NAME,
+                )
 
     @property
     def dimension(self) -> int:
-        known = MODEL_DIMENSIONS.get(self.model_name)
+        """
+        Vector width, most-trustworthy source first.
+
+        1. A width actually observed from a provider response this process has
+           seen. Never guessed, never stale.
+        2. The known-dimension table for the active model.
+        3. Provider/config default.
+        """
+        if self._observed_dimension:
+            return self._observed_dimension
+        known = known_dimension(self._active_model)
         if known:
             return known
         return 1536 if self.provider == "openai" else settings.QDRANT_VECTOR_DIMENSION
+
+    def _record_dimension(self, vector_length: int) -> None:
+        """
+        Latches the first real vector width seen and flags any later change.
+
+        A silent width change mid-process means two incompatible vector spaces
+        are being written to one collection, which corrupts retrieval in a way
+        that is very hard to diagnose after the fact.
+        """
+        if not vector_length:
+            return
+        if self._observed_dimension is None:
+            self._observed_dimension = vector_length
+            logger.info(
+                "Embedding dimension detected from live response",
+                extra={"model": self._active_model, "dimension": vector_length},
+            )
+            if vector_length != settings.QDRANT_VECTOR_DIMENSION:
+                logger.critical(
+                    "Live embedding width (%d) disagrees with QDRANT_VECTOR_DIMENSION (%d).%s",
+                    vector_length,
+                    settings.QDRANT_VECTOR_DIMENSION,
+                    reindex_plan(
+                        collection=settings.QDRANT_COLLECTION_NAME,
+                        current_dimension=settings.QDRANT_VECTOR_DIMENSION,
+                        required_dimension=vector_length,
+                        model_name=self._active_model,
+                    ),
+                )
+        elif vector_length != self._observed_dimension:
+            metrics.increment("embedding.dimension_change")
+            logger.critical(
+                "Embedding width changed mid-process from %d to %d (model '%s'). "
+                "Vectors written from here on are NOT comparable with those already "
+                "indexed.",
+                self._observed_dimension, vector_length, self._active_model,
+            )
+
+    async def probe_dimension(self) -> Optional[int]:
+        """
+        Determines the true vector width with one live call.
+
+        Used by the pre-flight script and the readiness probe so operators get
+        the measured width rather than a table lookup.
+        """
+        try:
+            vector = await self.aembed("dimension probe")
+        except Exception as exc:  # noqa: BLE001
+            logger.warning("Embedding dimension probe failed: %s", exc)
+            return None
+        return len(vector) or None
 
     # -- clients -----------------------------------------------------------
     async def _client(self) -> httpx.AsyncClient:
@@ -156,6 +307,7 @@ class Embedder:
                 "status": "error",
                 "provider": self.provider,
                 "model": self.model_name,
+                "configured_model": self.configured_model,
                 "detail": str(exc)[:300],
             }
 
@@ -164,15 +316,30 @@ class Embedder:
                 "status": "error",
                 "provider": self.provider,
                 "model": self.model_name,
+                "configured_model": self.configured_model,
                 "detail": "Provider returned an empty or all-zero vector.",
             }
 
-        return {
+        report: dict = {
             "status": "ok",
             "provider": self.provider,
             "model": self.model_name,
+            "configured_model": self.configured_model,
+            "failed_over": self._active_model != self.configured_model,
             "dimension": len(vector),
         }
+
+        # A working embedder that disagrees with the index is still a broken
+        # RAG pipeline, so readiness must not report it as healthy.
+        if len(vector) != settings.QDRANT_VECTOR_DIMENSION:
+            report["status"] = "error"
+            report["detail"] = (
+                f"Model '{self.model_name}' returns {len(vector)}-dim vectors but "
+                f"QDRANT_VECTOR_DIMENSION is {settings.QDRANT_VECTOR_DIMENSION}. "
+                f"Retrieval cannot work until the collection is re-indexed at "
+                f"{len(vector)} dimensions."
+            )
+        return report
 
     # -- cache -------------------------------------------------------------
     @staticmethod
@@ -185,49 +352,128 @@ class Embedder:
         return {"hits": self._cache.hits, "misses": self._cache.misses}
 
     # -- provider calls ----------------------------------------------------
+    def _failover_allowed(self, candidate: str) -> bool:
+        """
+        Gate on the one thing that makes a failover unsafe: vector width.
+
+        Switching to a model of a different width does not degrade retrieval,
+        it *breaks* it — Qdrant rejects the query outright, or (if the widths
+        happen to match by luck across different model families) returns
+        confident nonsense from an incomparable vector space. Staying down and
+        loud beats silently answering from a corrupted index, so a
+        differently-sized candidate is skipped rather than used.
+        """
+        if not settings.EMBEDDING_STRICT_DIMENSION_FAILOVER:
+            return True
+        target = self.dimension
+        candidate_dimension = known_dimension(candidate)
+        if candidate_dimension is None:
+            # Unknown width: allow the attempt, but the response is still
+            # validated against `target` before it is returned.
+            return True
+        return candidate_dimension == target
+
     async def _hf_feature_extraction(self, payload: Any) -> Any:
         """
-        Calls the HF Inference API, trying each known endpoint shape in turn.
+        Calls the HF Inference API, walking the model failover ladder.
 
-        HF has moved this endpoint more than once; keeping the list means a
-        routing change on their side degrades to a slower first call rather
-        than a hard outage.
+        Two nested loops: for each candidate model, each known endpoint shape.
+        HF has moved this endpoint more than once and has retired serverless
+        support for individual models without notice, so both a routing change
+        and a model retirement degrade to a slower call rather than an outage.
+
+        The active model is *sticky*: once a candidate succeeds it becomes the
+        model for subsequent calls, so the ladder is walked once rather than on
+        every request.
         """
         client = await self._client()
         breaker = breakers.get("embedding:huggingface")
         if not breaker.allows_request():
             raise EmbeddingError("Embedding provider circuit breaker is open.")
 
-        last_error: Optional[str] = None
-        for template in _HF_ENDPOINTS:
-            url = template.format(model=self.model_name)
-            try:
-                response = await retry_async(
-                    lambda u=url: client.post(
-                        u,
-                        json={"inputs": payload, "options": {"wait_for_model": True}},
-                    ),
-                    attempts=settings.EMBEDDING_MAX_RETRIES,
-                    label="embedding.huggingface",
-                    retry_on=is_transient_error,
-                )
-                if response.status_code == 200:
-                    breaker.record_success()
-                    return response.json()
+        # Start from whichever model is currently active, then continue down
+        # the ladder past it.
+        try:
+            start = self._candidates.index(self._active_model)
+        except ValueError:
+            start = 0
+        ordered = self._candidates[start:] + self._candidates[:start]
 
-                last_error = f"HTTP {response.status_code}: {response.text[:200]}"
-                # 400/404/410 mean "this route or task shape is wrong here" —
-                # keep trying the remaining endpoints. Anything else (401/403
-                # auth, 429 rate limit, 5xx) will fail identically on every
-                # route, so stop rather than multiplying the latency.
-                if response.status_code not in (400, 404, 410):
-                    break
-            except Exception as exc:  # noqa: BLE001
-                last_error = str(exc)
+        last_error: Optional[str] = None
+        for candidate in ordered:
+            if candidate != self._active_model and not self._failover_allowed(candidate):
+                logger.warning(
+                    "Skipping embedding fallback '%s': it produces %s-dim vectors but the "
+                    "active index requires %d-dim. A re-index is required before this "
+                    "model can be used.",
+                    candidate, known_dimension(candidate), self.dimension,
+                )
+                continue
+
+            for template in _HF_ENDPOINTS:
+                url = template.format(model=candidate)
+                try:
+                    response = await retry_async(
+                        lambda u=url: client.post(
+                            u,
+                            json={"inputs": payload, "options": {"wait_for_model": True}},
+                        ),
+                        attempts=settings.EMBEDDING_MAX_RETRIES,
+                        label="embedding.huggingface",
+                        retry_on=is_transient_error,
+                    )
+                    if response.status_code == 200:
+                        self._activate(candidate)
+                        breaker.record_success()
+                        return response.json()
+
+                    last_error = (
+                        f"{candidate}: HTTP {response.status_code}: {response.text[:200]}"
+                    )
+                    # Account-level failures (bad token, rate limit) fail
+                    # identically for every model and every route, so walking
+                    # the rest of the ladder only multiplies the latency.
+                    if response.status_code in _ACCOUNT_LEVEL_STATUSES:
+                        breaker.record_failure()
+                        raise EmbeddingError(
+                            f"Hugging Face embedding failed: {last_error}"
+                        )
+                    if response.status_code not in _ROUTE_MISS_STATUSES:
+                        # 5xx / unknown: this route is not the problem, so stop
+                        # trying route shapes and move to the next model.
+                        break
+                except EmbeddingError:
+                    raise
+                except Exception as exc:  # noqa: BLE001
+                    last_error = f"{candidate}: {exc}"
 
         breaker.record_failure()
         raise EmbeddingError(
-            f"Hugging Face embedding failed for '{self.model_name}': {last_error}"
+            f"Hugging Face embedding failed for all candidates {ordered}: {last_error}"
+        )
+
+    def _activate(self, model: str) -> None:
+        """
+        Promotes `model` to the active model, logging and instrumenting the
+        switch when it is a genuine failover.
+
+        The cache is dropped on a switch: entries were produced by a different
+        model, and serving them alongside new vectors would silently mix two
+        embedding spaces in the same query — the exact failure this class is
+        supposed to prevent.
+        """
+        if model == self._active_model:
+            return
+
+        previous = self._active_model
+        self._active_model = model
+        self._cache.clear()
+        self._observed_dimension = None
+        metrics.increment("embedding.model_failover")
+        logger.warning(
+            "Embedding model failover: '%s' is no longer served, switched to '%s'. "
+            "Embedding cache cleared. Set EMBEDDING_MODEL=%s to make this permanent.",
+            previous, model, model,
         )
 
     @staticmethod
@@ -276,6 +522,7 @@ class Embedder:
             raw = await self._hf_feature_extraction(text)
             vector = self._normalize_single(raw)
 
+        self._record_dimension(len(vector))
         self._cache.set(cache_key, vector)
         return vector
 
@@ -325,13 +572,16 @@ class Embedder:
                 label="embedding.openai.batch",
                 retry_on=is_transient_error,
             )
-            return [[float(x) for x in item.embedding] for item in response.data]
+            vectors = [[float(x) for x in item.embedding] for item in response.data]
+            if vectors:
+                self._record_dimension(len(vectors[0]))
+            return vectors
 
         raw = await self._hf_feature_extraction(texts)
         if not isinstance(raw, list):
             raise EmbeddingError("Batch embedding returned a non-list payload.")
 
-        vectors: List[List[float]] = []
+        vectors = []
         for item in raw:
             if isinstance(item, list) and item and isinstance(item[0], list):
                 vectors.append([float(x) for x in self._pool_tokens(item)])
@@ -339,6 +589,9 @@ class Embedder:
                 vectors.append([float(x) for x in item])
             else:
                 raise EmbeddingError("Batch embedding returned an unrecognised element.")
+
+        if vectors:
+            self._record_dimension(len(vectors[0]))
         return vectors
 
     # -- sync compatibility ------------------------------------------------
