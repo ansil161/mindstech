@@ -157,15 +157,15 @@ const Layout = ({ children }) => {
         setDrawerOpen={setDrawerOpen}
       />
 
-      {/* Main page content area.
-          overflow-x must be `clip`, not `hidden`: `hidden` blockifies overflow-y
-          into `auto`, turning this <main> into its own scroll container. Any
-          child sitting on a pre-animation transform (e.g. Contact's .map-band
-          starts at translateY(36px)) then counts as vertical overflow and paints
-          a second scrollbar until the GSAP tween lands. `clip` clips the same
-          horizontal bleed without creating a scroll box, and keeps position:
-          sticky children anchored to the viewport. */}
-      <main id="top" style={{ maxWidth: '1440px', margin: '0 auto', overflowX: 'clip' }}>
+      {/* Main page content area — deliberately unconstrained. The 1440px
+          content column lives entirely in CSS now (see the "CONTENT
+          CONTAINER" rules at the end of index.css): every section that
+          needs it caps itself individually via max-width:1440px, and
+          full-bleed sections (.hero, .band, .next-sol, .xhero) simply don't,
+          so they're edge-to-edge as plain children of this unconstrained
+          <main>. <body> already carries an unconditional overflow-x: hidden,
+          which is what guards against a page-level horizontal scrollbar. */}
+      <main id="top">
         <RouteTransition>{children}</RouteTransition>
       </main>
 
