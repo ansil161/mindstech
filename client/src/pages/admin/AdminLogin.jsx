@@ -14,6 +14,21 @@ export default function AdminLogin() {
   useEffect(() => {
     const pre = document.getElementById('preloader');
     if (pre) pre.remove();
+
+    // The login card is only min-height:100vh, but index.html paints the root
+    // dark with `html, body { background-color:#060608 !important }`. On scroll
+    // or overscroll the area outside the light card exposes that dark root,
+    // causing the black screen. The `!important` there beats a normal inline
+    // style, so we must set the override with `important` priority too (inline
+    // important then wins by specificity). Restore on unmount by removing our
+    // property, which lets the stylesheet rule reapply for every other route.
+    const { body, documentElement: html } = document;
+    body.style.setProperty('background-color', '#f8fafc', 'important');
+    html.style.setProperty('background-color', '#f8fafc', 'important');
+    return () => {
+      body.style.removeProperty('background-color');
+      html.style.removeProperty('background-color');
+    };
   }, []);
 
   const from = location.state?.from?.pathname || '/admin/dashboard';
