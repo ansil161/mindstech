@@ -662,24 +662,11 @@ const Home = () => {
 
     const buildMap = async () => {
       try {
-        const mod = await import('https://cdn.jsdelivr.net/npm/dotted-map@2.2.3/+esm');
-        if (!active) return;
-        const DottedMap = mod.default?.default || mod.default || mod.DottedMap;
-        const map = new DottedMap({ height: 100, grid: 'diagonal' });
-        const svg = map.getSVG({
-          radius: 0.22,
-          color: '#FFFFFF38',
-          shape: 'circle',
-          backgroundColor: 'transparent',
-        });
+        const res = await fetch('/assets/img/world-map.svg');
+        if (!res.ok) throw new Error('Failed to load map asset');
+        const svg = await res.text();
         if (!active) return;
         base.innerHTML = svg;
-        const s = base.querySelector('svg');
-        if (s) {
-          s.removeAttribute('width');
-          s.removeAttribute('height');
-          s.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-        }
         ScrollTrigger.refresh();
       } catch (e) {
         if (active) base.classList.add('map-base--fallback');
