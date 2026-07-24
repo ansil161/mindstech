@@ -50,10 +50,21 @@ class QdrantManager:
     # -- lifecycle ---------------------------------------------------------
     @property
     def expected_dimension(self) -> int:
-        # OpenAI's small/ada models are 1536-dim; otherwise trust config.
-        if settings.EMBEDDING_PROVIDER.lower() == "openai":
-            return 1536 if settings.QDRANT_VECTOR_DIMENSION == 384 else settings.QDRANT_VECTOR_DIMENSION
-        return settings.QDRANT_VECTOR_DIMENSION
+        """
+        Vector width a newly created collection should use.
+
+        Sourced from the embedder, which knows the width it actually observed
+        from a live response and falls back to its model table and then to
+        config. Config alone was not enough: it is the value most likely to be
+        stale after a model change, and creating a collection at the wrong
+        width is only discoverable after a full re-ingest.
+
+        Imported lazily to keep the storage layer free of an import-time
+        dependency on the services layer.
+        """
+        from app.services.embedder import embedder
+
+        return embedder.dimension or settings.QDRANT_VECTOR_DIMENSION
 
     @property
     def _distance(self) -> qmodels.Distance:
@@ -113,10 +124,18 @@ class QdrantManager:
                 f"vectors. Refusing to touch existing data."
             )
             if not settings.QDRANT_ALLOW_DESTRUCTIVE_RECREATE:
+                from app.core.embedding_config import reindex_plan
+                from app.services.embedder import embedder
+
                 logger.critical(
-                    "%s Set QDRANT_VECTOR_DIMENSION/EMBEDDING_MODEL to match, or run a "
-                    "supervised re-index with QDRANT_ALLOW_DESTRUCTIVE_RECREATE=true.",
+                    "%s%s",
                     message,
+                    reindex_plan(
+                        collection=self.collection_name,
+                        current_dimension=current_dimension,
+                        required_dimension=dimension,
+                        model_name=embedder.model_name,
+                    ),
                 )
                 raise VectorStoreMisconfigured(message)
 
