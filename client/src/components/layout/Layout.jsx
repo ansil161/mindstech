@@ -156,8 +156,15 @@ const Layout = ({ children }) => {
         setDrawerOpen={setDrawerOpen}
       />
 
-      {/* Main page content area */}
-      <main id="top" style={{ maxWidth: '1440px', margin: '0 auto', overflowX: 'hidden' }}>
+      {/* Main page content area.
+          overflow-x must be `clip`, not `hidden`: `hidden` blockifies overflow-y
+          into `auto`, turning this <main> into its own scroll container. Any
+          child sitting on a pre-animation transform (e.g. Contact's .map-band
+          starts at translateY(36px)) then counts as vertical overflow and paints
+          a second scrollbar until the GSAP tween lands. `clip` clips the same
+          horizontal bleed without creating a scroll box, and keeps position:
+          sticky children anchored to the viewport. */}
+      <main id="top" style={{ maxWidth: '1440px', margin: '0 auto', overflowX: 'clip' }}>
         {children}
       </main>
 
