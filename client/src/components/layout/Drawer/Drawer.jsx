@@ -102,7 +102,7 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
               </React.Fragment>
             ))
           ) : (
-            ['India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => (
+            ['Global', 'India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => (
               <button
                 key={r}
                 type="button"

@@ -241,7 +241,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
                 </React.Fragment>
               ))
             ) : (
-              ['India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => {
+              ['Global', 'India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => {
                 const regKey = `navbar.regions.${r.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`;
                 return (
                   <a
