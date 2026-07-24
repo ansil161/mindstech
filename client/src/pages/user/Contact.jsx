@@ -226,13 +226,15 @@ const Contact = () => {
       ? (contact.office_name ? `${contact.region_name} — ${contact.office_name}` : contact.region_name)
       : contact.office_name;
 
-  const regionalDesks = isAggregateRegion
-    ? Array.from(
-        new Map(
-          contacts.filter((c) => c.email && c.region_name).map((c) => [c.region_name, c])
-        ).values()
-      ).map((c) => ({ label: c.region_name, email: c.email }))
-    : [];
+  // The Global view holds many offices — either as an aggregate container
+  // (sub_regions) or as one region whose own contact_info lists every office.
+  // Both cases must collapse blocks 01/02/03 to a single lead office and move the
+  // complete list (lead included) into "Regional desks". Keying off the region
+  // name catches the flat-list case that isAggregateRegion misses. Every other
+  // region keeps its normal 01/02/03 listing and renders no desk cards.
+  const isGlobalView = isAggregateRegion || region === 'Global';
+  const primaryContacts = isGlobalView ? displayContacts.slice(0, 1) : displayContacts;
+  const deskContacts = isGlobalView ? displayContacts : [];
 
   return (
     <main id="top" ref={containerRef}>
@@ -353,13 +355,13 @@ const Contact = () => {
             <span className="num">01</span>
             <div>
               <b>Call us</b>
-              {displayContacts.map((contact, idx) => {
+              {primaryContacts.map((contact, idx) => {
                 const phoneVal = contact.phone_display || contact.phone;
                 const phoneHref = (phoneVal || '').replace(/[^+\d]/g, '');
                 if (!phoneVal) return null;
                 return (
                   <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '6px' : '0' }}>
-                    {displayContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contactLabel(contact)}:</span>}
+                    {primaryContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contactLabel(contact)}:</span>}
                     <a href={`tel:${phoneHref}`}>{phoneVal}</a>
                   </div>
                 );
@@ -370,7 +372,7 @@ const Contact = () => {
             <span className="num">02</span>
             <div>
               <b>Visit us</b>
-              {displayContacts.map((contact, idx) => {
+              {primaryContacts.map((contact, idx) => {
                 const addr = contact.address;
                 const office = contactLabel(contact);
                 if (!addr) return null;
@@ -387,12 +389,12 @@ const Contact = () => {
             <span className="num">03</span>
             <div>
               <b>Write to us</b>
-              {displayContacts.map((contact, idx) => {
+              {primaryContacts.map((contact, idx) => {
                 const emailVal = contact.email;
                 if (!emailVal) return null;
                 return (
                   <div key={contact.id || idx} style={{ marginTop: idx > 0 ? '6px' : '0' }}>
-                    {displayContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contactLabel(contact)}:</span>}
+                    {primaryContacts.length > 1 && <span style={{ fontSize: '11px', color: 'var(--grey-dark)', display: 'block', marginBottom: '2px' }}>{contactLabel(contact)}:</span>}
                     <a href={`mailto:${emailVal}`}>{emailVal}</a>
                   </div>
                 );
@@ -401,12 +403,21 @@ const Contact = () => {
           </div>
           <div className="regions-mini">
             <b>Regional desks</b>
-            {isAggregateRegion && regionalDesks.map((desk) => (
-              <div className="rm" key={desk.label}>
-                <span>{desk.label}</span>
-                <a href={`mailto:${desk.email}`}>{desk.email}</a>
-              </div>
-            ))}
+            {deskContacts.map((contact, idx) => {
+              const deskPhone = contact.phone_display || contact.phone;
+              const deskPhoneHref = (deskPhone || '').replace(/[^+\d]/g, '');
+              return (
+                <div className="rm-card" key={contact.id || `desk-${idx}`}>
+                  <b>{contact.region_name || contact.office_name}</b>
+                  {contact.region_name && contact.office_name && (
+                    <span className="rm-office">{contact.office_name}</span>
+                  )}
+                  {contact.address && <address>{contact.address}</address>}
+                  {deskPhone && <a href={`tel:${deskPhoneHref}`}>{deskPhone}</a>}
+                  {contact.email && <a href={`mailto:${contact.email}`}>{contact.email}</a>}
+                </div>
+              );
+            })}
             <div className="rm">
               <span>Partnerships</span>
               <a href="mailto:partners@mindstec.com">partners@mindstec.com</a>
