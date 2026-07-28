@@ -126,6 +126,22 @@ const Home = () => {
   const mapTooltipRef = useRef(null);
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
+  const heroVideoRef = useRef(null);
+
+  // Read once at first render, not in an effect: it decides `autoPlay` and
+  // `preload` on the very first paint, so a reduced-motion visitor never starts
+  // a download and then has it cancelled.
+  const [prefersReducedMotion] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  );
+
+  // Phones get a 960-wide encode instead of the 1600 one — roughly a third of
+  // the bytes for a background nobody resolves detail in. Chosen once at mount
+  // rather than via <source media>, which browsers only honour inconsistently
+  // and never re-evaluate after load anyway.
+  const [videoVariant] = useState(
+    () => (typeof window !== 'undefined' && window.matchMedia('(max-width: 700px)').matches ? '-mobile' : '')
+  );
 
   const [rawFieldwork, setRawFieldwork] = useState([]);
   const [fieldworkLoading, setFieldworkLoading] = useState(true);
@@ -259,6 +275,42 @@ const Home = () => {
     const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
     return () => { ctx.revert(); clearTimeout(timer); };
   }, [fieldwork]);
+
+  // Hero video playback.
+  useEffect(() => {
+    const video = heroVideoRef.current;
+    if (!video) return undefined;
+
+    // React does not reliably reflect the `muted` prop onto the DOM property,
+    // and an unmuted <video> is refused autoplay outright — so set it directly.
+    // This is also what makes the element silent regardless of markup.
+    video.muted = true;
+    video.defaultMuted = true;
+
+    if (prefersReducedMotion) {
+      video.pause();
+      return undefined;
+    }
+
+    // The hero is ~100vh at the top of a very long page, so without this the
+    // decoder keeps running for the entire scroll. Browsers throttle offscreen
+    // video inconsistently; pausing explicitly does not depend on that.
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Rejects when the browser blocks playback (e.g. data-saver mode).
+          // The poster stays up, which is a fine outcome.
+          video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.01 }
+    );
+    io.observe(video);
+
+    return () => io.disconnect();
+  }, [prefersReducedMotion]);
 
   // preloader and entrance animation
   useEffect(() => {
@@ -834,13 +886,31 @@ const Home = () => {
     <div ref={containerRef}>
       {/* HERO SECTION */}
       <section className="hero" aria-label="Introduction">
+        {/* The element keeps id="heroImg" from the still it replaced, so the
+            existing intro tween (scale + brightness ramp) and the scroll
+            parallax bind to it untouched — a <video> animates identically.
+
+            aria-hidden: it is a background behind the headline, carrying no
+            information the copy does not already state. tabIndex={-1} keeps it
+            out of the tab order, since a <video> is focusable by default even
+            without controls. */}
         <div className="hero-media">
-          <img
+          <video
             id="heroImg"
-            src="/assets/img/hero-exhibition.jpg"
-            alt="Immersive neon LED video wall exhibition displays with visitors"
-            fetchPriority="high"
-          />
+            ref={heroVideoRef}
+            poster="/assets/videos/hero-poster.jpg"
+            autoPlay={!prefersReducedMotion}
+            preload={prefersReducedMotion ? 'none' : 'auto'}
+            muted
+            loop
+            playsInline
+            aria-hidden="true"
+            tabIndex={-1}
+          >
+            <source src={`/assets/videos/hero-video${videoVariant}.webm`} type="video/webm" />
+            {/* H.264 fallback for Safari versions without VP9-in-WebM. */}
+            <source src={`/assets/videos/hero-video${videoVariant}.mp4`} type="video/mp4" />
+          </video>
         </div>
         <div className="hero-inner">
           <div className="hero-top">
