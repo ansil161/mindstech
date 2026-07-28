@@ -1,76 +1,39 @@
 import React from 'react';
 
+/**
+ * The support assistant's avatar, used in the chat header, the empty-state
+ * greeting, every assistant message bubble and the typing indicator.
+ *
+ * Two notes on the framing:
+ *
+ * The artwork is a self-contained rounded-square icon that carries its own red
+ * background, so it does not sit on a white plate the way the previous inline
+ * SVG headset glyph did — the plate would just be a white ring around a red
+ * square. It fills the circle instead.
+ *
+ * `scale(1.35)` is not arbitrary. The source is 2160×2700 with transparent
+ * margins on all four sides; object-cover alone crops it to a square but leaves
+ * the icon occupying only ~76% of that square, so the circle would show
+ * transparent corners. 1.35 pushes the red past the circle's edge — including
+ * at the 45° diagonals, where the icon's own corner radius is the limiting
+ * factor — while keeping the antenna and both eyes inside the visible area.
+ */
 const SupportAvatar = ({ size = 48, showOnlineBadge = true, className = '' }) => (
   <div
-    className={`relative flex-shrink-0 overflow-visible rounded-full ${className}`}
+    className={`relative flex-shrink-0 rounded-full ${className}`}
     style={{ width: size, height: size }}
   >
-    <div className="h-full w-full rounded-full bg-white border border-black/10 p-1 shadow-md text-[#0F0F12] flex items-center justify-center overflow-hidden">
-      <svg
-        viewBox="0 0 100 100"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-        className="w-full h-full text-[#0F0F12]"
-        aria-hidden="true"
-      >
-        {/* Headband */}
-        <path
-          d="M 20 42 A 32 32 0 0 1 80 42"
-          stroke="currentColor"
-          strokeWidth="6"
-          strokeLinecap="round"
-          fill="none"
-        />
-
-        {/* Left Ear Pad */}
-        <rect x="10" y="34" width="10" height="24" rx="5" fill="currentColor" />
-
-        {/* Right Ear Pad */}
-        <rect x="80" y="34" width="10" height="24" rx="5" fill="currentColor" />
-
-        {/* Head contour */}
-        <path
-          d="M 23 38 C 23 21 77 21 77 38 V 52 C 77 71 23 71 23 52 Z"
-          stroke="currentColor"
-          strokeWidth="6"
-          fill="#FFFFFF"
-          strokeLinejoin="round"
-        />
-
-        {/* Hair boundary line */}
-        <path
-          d="M 23 38 H 77"
-          stroke="currentColor"
-          strokeWidth="6"
-          strokeLinecap="round"
-        />
-
-        {/* Eyes */}
-        <circle cx="37" cy="51" r="4.5" fill="currentColor" />
-        <circle cx="63" cy="51" r="4.5" fill="currentColor" />
-
-        {/* Microphone Boom */}
-        <path
-          d="M 83 52 C 86 73 66 74 54 74"
-          stroke="currentColor"
-          strokeWidth="5"
-          strokeLinecap="round"
-          fill="none"
-        />
-
-        {/* Microphone Capsule */}
-        <rect x="43" y="70" width="16" height="8" rx="4" fill="currentColor" />
-        <ellipse cx="51" cy="74" rx="4.5" ry="2" fill="#FFFFFF" />
-
-        {/* Shoulders */}
-        <path
-          d="M 24 95 C 24 84 76 84 76 95"
-          stroke="currentColor"
-          strokeWidth="6"
-          strokeLinecap="round"
-          fill="none"
-        />
-      </svg>
+    <div className="h-full w-full overflow-hidden rounded-full bg-[#0d0d0f] ring-1 ring-white/10">
+      {/* alt="" on purpose: every call site pairs this with visible text — the
+          "Mindstec Support" heading, or the message it belongs to — so a name
+          here is announced twice. */}
+      <img
+        src="/mindstec-ai-chatbot-logo.png"
+        alt=""
+        className="h-full w-full object-cover"
+        style={{ transform: 'scale(1.35)' }}
+        draggable="false"
+      />
     </div>
     {showOnlineBadge && (
       <span
