@@ -1,8 +1,39 @@
 import { useRef, lazy, Suspense } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHeroAnimations } from '../hooks/useGalleryAnimations';
+import { useCanRender3D } from '../hooks/useCanRender3D';
 
+// three + @react-three/* land in their own chunk (~900 kB) via this boundary,
+// and useCanRender3D decides whether it is ever requested. Do not import
+// anything from './GalleryBackground' statically or the split collapses.
 const GalleryBackground = lazy(() => import('./GalleryBackground'));
+
+/**
+ * Shown wherever the 3D scene is skipped — reduced motion, mobile, low core
+ * count, save-data, or no WebGL. Pure CSS, no extra bytes.
+ */
+function StaticBackdrop() {
+  return (
+    <div aria-hidden="true" className="absolute inset-0 overflow-hidden">
+      <div
+        className="absolute"
+        style={{
+          top: '12%', left: '-8%', width: '46vw', height: '46vw',
+          background: 'radial-gradient(circle, rgba(204,0,1,0.10) 0%, transparent 65%)',
+          filter: 'blur(20px)',
+        }}
+      />
+      <div
+        className="absolute"
+        style={{
+          bottom: '4%', right: '-6%', width: '40vw', height: '40vw',
+          background: 'radial-gradient(circle, rgba(68,102,255,0.07) 0%, transparent 65%)',
+          filter: 'blur(20px)',
+        }}
+      />
+    </div>
+  );
+}
 
 function SplitWords({ text }) {
   return (
@@ -24,6 +55,7 @@ function SplitWords({ text }) {
 export default function GalleryHero() {
   const { t } = useTranslation();
   const containerRef = useRef(null);
+  const canRender3D = useCanRender3D();
   useHeroAnimations(containerRef);
 
   return (
@@ -53,11 +85,15 @@ export default function GalleryHero() {
         }}
       />
 
-      {/* ── 3D scene ── */}
+      {/* ── 3D scene (capability-gated; StaticBackdrop everywhere else) ── */}
       <div className="absolute inset-0 z-[2]">
-        <Suspense fallback={null}>
-          <GalleryBackground />
-        </Suspense>
+        {canRender3D ? (
+          <Suspense fallback={<StaticBackdrop />}>
+            <GalleryBackground />
+          </Suspense>
+        ) : (
+          <StaticBackdrop />
+        )}
       </div>
 
       {/* ── Bottom gradient ── */}

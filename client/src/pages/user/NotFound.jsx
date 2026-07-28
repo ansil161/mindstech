@@ -7,6 +7,12 @@ const NotFound = () => {
 
   useEffect(() => {
     document.title = 'Page not found — Mindstec Distribution';
+
+    // This route sits outside Layout, which is the only place that runs the
+    // #preloader exit animation. Without this, a direct hit on an unknown URL
+    // renders the 404 underneath a black, full-screen, z-300 overlay that never
+    // goes away — the page looks dead rather than "not found".
+    document.getElementById('preloader')?.remove();
   }, []);
 
   return (

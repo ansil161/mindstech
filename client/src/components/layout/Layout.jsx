@@ -130,6 +130,42 @@ const Layout = ({ children }) => {
     };
   }, []);
 
+  // Route in-page anchor jumps through Lenis.
+  //
+  // `href="#solutions"`, `#contact`, `#team` and `#film` were plain anchors, so
+  // the browser teleported to them instantly — a hard cut in the middle of an
+  // otherwise smoothly-scrolled site, and the one place the smoothing visibly
+  // wasn't applied. Delegated from the document so it covers <Button href> and
+  // any raw <a> alike, rather than being reimplemented per call site.
+  useEffect(() => {
+    const onClick = (event) => {
+      // Let modified clicks (new tab, download, etc.) behave natively.
+      if (event.defaultPrevented || event.metaKey || event.ctrlKey || event.shiftKey || event.button !== 0) return;
+
+      const anchor = event.target.closest?.('a[href^="#"]');
+      if (!anchor) return;
+
+      const hash = anchor.getAttribute('href');
+      // `href="#"` is used as a placeholder for the not-yet-built legal pages;
+      // hijacking those would scroll to the top on every click.
+      if (!hash || hash === '#') return;
+
+      const target = document.querySelector(hash);
+      if (!target) return;
+
+      event.preventDefault();
+
+      // Clear the fixed navbar so the target isn't parked underneath it.
+      const options = { offset: -90, immediate: window.matchMedia('(prefers-reduced-motion: reduce)').matches };
+
+      if (window.lenis) window.lenis.scrollTo(target, options);
+      else target.scrollIntoView({ behavior: options.immediate ? 'auto' : 'smooth' });
+    };
+
+    document.addEventListener('click', onClick);
+    return () => document.removeEventListener('click', onClick);
+  }, []);
+
   // Sync drawer state with Lenis scrolling
   useEffect(() => {
     if (window.lenis) {

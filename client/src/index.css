@@ -28,6 +28,23 @@
   --body: 'Inter', sans-serif;
   --pad: clamp(20px, 5vw, 72px);
   --ease: cubic-bezier(0.22, 1, 0.36, 1);
+
+  /* Vertical rhythm.
+
+     Sections used to carry six different paddings — 84, 128, 136, 140, 180 and
+     a `!important` 200 — chosen section by section. Irregular gaps are read as
+     unconsidered even by people who can't name what's wrong, and the 200px
+     variant alone put ~460px of empty black between the field-work and journal
+     content. Three steps, applied by role:
+
+       sm  punctuation bands (stats) — a beat, not a section
+       md  the default for any section with a heading and content
+       lg  moments that earn air: the opening statement, the closing CTA */
+  --section-y-sm: clamp(48px, 6vw, 84px);
+  --section-y: clamp(72px, 8vw, 120px);
+  --section-y-lg: clamp(96px, 10vw, 152px);
+  /* Page heroes all clear the same fixed navbar — 220 vs 200 was arbitrary. */
+  --hero-y: clamp(140px, 18vh, 200px);
 }
 
 /* ── RESETS ── */
@@ -159,11 +176,6 @@ img {
   color: var(--grey);
   line-height: 1.7;
   font-weight: 400;
-}
-
-.line-mask {
-  display: block;
-  overflow: hidden;
 }
 
 .w {
@@ -807,6 +819,11 @@ img {
   border-bottom: 1px solid var(--line-soft);
   padding: 18px 0;
   overflow: hidden;
+  /* Fade both ends instead of hard-cutting names at the viewport edge. A
+     marquee that clips mid-letterform is the detail that makes an otherwise
+     fine strip look unfinished. */
+  -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
 
 .strip-track {
@@ -847,9 +864,24 @@ img {
   flex-shrink: 0;
 }
 
+/* The track already pauses on hover; lifting the names out of --grey-dark at
+   the same time makes that pause feel deliberate rather than like a stall. */
+.strip:hover span {
+  color: var(--grey);
+}
+
+/* A permanently-scrolling strip is exactly what reduced-motion is for. Holding
+   it still keeps every name readable — the marquee is decoration, and the same
+   twelve manufacturers are listed twice in the markup for the seamless loop. */
+@media (prefers-reduced-motion: reduce) {
+  .strip-track {
+    animation: none;
+  }
+}
+
 /* ── STATEMENT ── */
 .statement {
-  padding: clamp(90px, 13vw, 180px) var(--pad);
+  padding: var(--section-y-lg) var(--pad);
   display: grid;
   grid-template-columns: 1fr minmax(0, 200px);
   gap: 48px;
@@ -902,174 +934,371 @@ img {
   letter-spacing: .04em;
 }
 
-/* ── SOLUTIONS LIST ── */
+/* ── SOLUTIONS GRID ──
+   One implementation shared by Home's "What we distribute" section and the
+   /solutions listing (see components/common/SolutionGrid). Three columns at
+   desktop so the six verticals land as a clean 3×2, but nothing here assumes
+   six — the list is API-driven, and a shorter or longer set still fills rows.
+
+   Every tile is a single <Link>. The hover reveal is layered on top of that as
+   decoration, never as the only affordance: the `hover: none` block below hands
+   touch users the revealed state from the start.
+
+   The card treatment — gradient hairline border, inner glow, glass chips, a
+   fading divider between media and body — follows the schema-card reference,
+   restated in this site's palette: `--ink-2` panels, `--red` accents and
+   Archivo headings rather than the source's indigo-on-black. */
 .solutions {
-  padding: clamp(80px, 10vw, 140px) 0;
+  position: relative;
+  padding: var(--section-y) 0;
+  /* Contains the wave canvas, which is absolutely positioned to this box. */
+  isolation: isolate;
 }
 
-.sol-list {
-  border-top: 1px solid var(--line-soft);
+.sol-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(22px, 2.4vw, 34px) clamp(16px, 1.8vw, 26px);
   padding: 0 var(--pad);
 }
 
-.sol-row {
+/* Vertical rhythm for the standalone /solutions listing, where the grid is the
+   page rather than a section inside one. */
+.sol-grid--page {
+  padding-top: clamp(60px, 9vw, 120px);
+  padding-bottom: clamp(80px, 10vw, 140px);
+}
+
+/* Positioning context for the wave canvas on that listing page, which has no
+   .solutions section wrapping the grid. Spacing stays on .sol-grid--page. */
+.sol-section {
   position: relative;
-  border-bottom: 1px solid var(--line-soft);
-  opacity: 0;
+  isolation: isolate;
 }
 
-.sol-row-top {
+/* ── The card ────────────────────────────────────────────────────────────── */
+
+.sol-card {
   position: relative;
-  display: grid;
-  grid-template-columns: 56px 1fr 116px auto auto;
-  gap: 0 20px;
-  align-items: center;
-  padding: 30px 24px;
-  margin: 0 -24px;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: background .4s var(--ease), box-shadow .4s var(--ease);
-}
-
-.sol-row-top:hover,
-.sol-row.open .sol-row-top {
-  background: var(--ink-2);
-  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
-}
-
-.sol-row-top:hover .num,
-.sol-row.open .num {
-  color: var(--white);
-}
-
-.sol-text {
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  min-width: 0;
+  color: inherit;
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(22, 22, 22, .92) 0%, rgba(12, 12, 12, .92) 100%);
+  /* Hairline that brightens toward the top-left, so the card reads as lit from
+     above rather than outlined. A gradient border needs a real border-image or
+     a pseudo-element; the pseudo keeps the radius and lets us animate it. */
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  transition: transform .5s var(--ease), box-shadow .5s var(--ease);
 }
 
-.sol-title {
-  font-family: var(--display);
-  font-size: clamp(22px, 2.4vw, 34px);
-  font-weight: 600;
-  letter-spacing: -.02em;
-  transition: transform .4s var(--ease), color .3s;
-}
-
-.sol-row-top:hover .sol-title,
-.sol-row.open .sol-title {
-  transform: translateX(12px);
-}
-
-.sol-desc {
-  font-size: 13.5px;
-  color: var(--grey);
-  line-height: 1.65;
-  max-width: 46ch;
-  transition: color .3s;
-}
-
-.sol-row-top:hover .sol-desc,
-.sol-row.open .sol-desc {
-  color: rgba(163, 163, 163, .9);
-}
-
-/* Expand indicator — plus that rotates into a minus when the row opens,
-   same construction as .edge-q .ind. Sits before the arrow-link so the two
-   affordances ("expand inline" vs "view full details") read as distinct. */
-.sol-ind {
-  position: relative;
-  width: 14px;
-  height: 14px;
-  flex-shrink: 0;
-}
-
-.sol-ind::before,
-.sol-ind::after {
+.sol-card::before {
   content: '';
   position: absolute;
-  background: var(--grey);
-  transition: transform .35s var(--ease), background .3s;
-}
-
-.sol-ind::before {
-  left: 0;
-  top: 6px;
-  width: 14px;
-  height: 1.5px;
-}
-
-.sol-ind::after {
-  left: 6px;
-  top: 0;
-  width: 1.5px;
-  height: 14px;
-}
-
-.sol-row.open .sol-ind::after {
-  transform: scaleY(0);
-}
-
-.sol-row.open .sol-ind::before {
-  background: var(--red);
-}
-
-.sol-arrow {
-  width: 44px;
-  height: 44px;
-  border: 1px solid var(--line);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--grey);
-  flex-shrink: 0;
-  transition: background .3s, border-color .3s, color .3s, transform .3s var(--ease), box-shadow .3s;
-}
-
-.sol-arrow:hover {
-  background: var(--red);
-  border-color: var(--red);
-  color: #fff;
-  transform: rotate(45deg);
-  box-shadow: 0 0 18px rgba(204, 0, 1, .45);
-}
-
-.sol-arrow svg {
-  width: 15px;
-  height: 15px;
-}
-
-/* Small thumbnail that fades in within the row's own reserved column — the
-   grid column is always 116px wide (reserved whether visible or not), so
-   showing/hiding it is a pure opacity+scale fade with zero effect on row
-   height or layout elsewhere on the page. */
-.sol-thumb {
-  width: 116px;
-  height: 72px;
-  border-radius: 4px;
-  overflow: hidden;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(150deg, rgba(204, 0, 1, .55), rgba(255, 255, 255, .10) 38%, transparent 70%);
+  /* Border-only fill: paint the gradient, then knock out everything but the
+     1px padding ring. */
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
   opacity: 0;
-  transform: scale(.9);
-  transition: opacity .3s var(--ease), transform .3s var(--ease);
+  transition: opacity .5s var(--ease);
+  pointer-events: none;
+  z-index: 2;
 }
 
-.sol-row.open .sol-thumb {
+.sol-card:hover,
+.sol-card:focus-visible {
+  transform: translateY(-6px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, .10),
+    0 18px 40px -18px rgba(0, 0, 0, .9),
+    0 0 34px -12px rgba(204, 0, 1, .45);
+}
+
+.sol-card:hover::before,
+.sol-card:focus-visible::before {
   opacity: 1;
-  transform: scale(1);
 }
 
-.sol-thumb img {
+/* ── Media ───────────────────────────────────────────────────────────────── */
+
+.sol-card-media {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: 12px;
+  aspect-ratio: 4 / 3;
+  background: var(--ink);
+  margin: 10px 10px 0;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .06);
+}
+
+.sol-card-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
+  /* The resting state is deliberately dim. The section lede promises "hover a
+     category to see it in the field", so the reveal has to read as an actual
+     change rather than a five-percent nudge. */
+  filter: brightness(.5) saturate(.75);
+  transform: scale(1.02);
+  transition: transform .9s var(--ease), filter .5s var(--ease);
+  will-change: transform;
+}
+
+.sol-card:hover .sol-card-media img,
+.sol-card:focus-visible .sol-card-media img {
+  filter: brightness(1) saturate(1);
+  transform: scale(1.07);
+}
+
+/* Scrim so the category chip stays legible over any photograph. */
+.sol-card-media::before {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55%;
+  background: linear-gradient(to bottom, transparent, rgba(12, 12, 12, .78));
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Inner glow along the top edge of the media, matching the reference card's
+   lit-panel feel. */
+.sol-card-media::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(120% 60% at 50% 0%, rgba(255, 255, 255, .12) 0%, transparent 60%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* Glass chip, the reference card's `glass` treatment in brand red. */
+.sol-card-cat {
+  position: absolute;
+  left: 14px;
+  bottom: 12px;
+  z-index: 2;
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(204, 0, 1, .22);
+  border: 1px solid rgba(204, 0, 1, .45);
+  border-radius: 999px;
+  padding: 6px 11px;
+  /* No backdrop-filter here: the chip sits over the card's own static image,
+     so the blur re-samples an unchanging backdrop every scrolled frame for no
+     visible gain. Measured at ~4% of frames going long. A flat translucent
+     fill is indistinguishable at this size. */
+  transition: background .3s, border-color .3s;
+}
+
+.sol-card:hover .sol-card-cat {
+  background: rgba(204, 0, 1, .35);
+  border-color: rgba(204, 0, 1, .7);
+}
+
+/* ── Divider ─────────────────────────────────────────────────────────────── */
+
+.sol-card-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 18px 16px 16px;
+  /* Absorb the row's spare height so the CTA below can bottom-align. Grid
+     already stretches every card in a row to the tallest one. */
+  flex: 1 1 auto;
+}
+
+/* Hairline fading out at both ends — the reference card's
+   `from-transparent via-white/30 to-transparent` rule. */
+.sol-card-body::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 10px;
+  right: 10px;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(255, 255, 255, .22), transparent);
+}
+
+.sol-card-title {
+  font-family: var(--display);
+  font-size: clamp(18px, 1.6vw, 23px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.15;
+  color: var(--white);
+  transition: color .3s;
+}
+
+.sol-card:hover .sol-card-title {
+  color: var(--red);
+}
+
+.sol-card-desc {
+  font-size: 13px;
+  color: var(--grey);
+  line-height: 1.7;
+  /* Clamped so one long description can't stretch its row taller than the two
+     cards sitting beside it. */
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;
+  line-clamp: 3;
+  overflow: hidden;
+}
+
+.sol-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sol-card-tags span {
+  font-size: 11.5px;
+  color: var(--grey);
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  padding: 5px 10px;
+  letter-spacing: .03em;
+}
+
+/* ── Footer row ──────────────────────────────────────────────────────────── */
+
+.sol-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  /* Pinned to the bottom of the card, so a tag row that wraps onto a second
+     line on one card doesn't drop its CTA below its neighbours'. */
+  margin-top: auto;
+  padding: 7px 13px;
+  font-size: 12.5px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  color: rgba(255, 255, 255, .82);
+  background: rgba(255, 255, 255, .04);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  transition: color .3s, background .3s, border-color .3s, gap .3s var(--ease);
+}
+
+.sol-card:hover .sol-card-cta {
+  color: #fff;
+  background: rgba(204, 0, 1, .22);
+  border-color: rgba(204, 0, 1, .6);
+  gap: 13px;
+}
+
+.sol-card-cta svg {
+  width: 14px;
+  height: 14px;
+}
+
+.sol-card:focus-visible {
+  outline: 2px solid var(--red);
+  outline-offset: 4px;
+}
+
+/* ── Wave backdrop ───────────────────────────────────────────────────────── */
+
+/* Canvas painted by components/common/WaveBackdrop. Sits behind the grid and
+   fades out top and bottom so the lines dissolve into the section rather than
+   ending on a hard edge. */
+.wave-backdrop {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  /* Replaces the per-stroke canvas shadowBlur, which cost a full blur pass ×8
+     every frame. One compositor-level blur for the whole layer looks the same
+     and doesn't touch the main thread. */
+  filter: blur(.4px) drop-shadow(0 0 6px rgba(204, 0, 1, .35));
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 18%, #000 82%, transparent);
+}
+
+@media (max-width: 1100px) {
+  .sol-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .sol-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sol-card-desc {
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+  }
+}
+
+/* No hover to give — show the photograph the way it will ever be shown, and
+   leave the card's lit border drawn so it still reads as a destination. */
+@media (hover: none) {
+  .sol-card-media img {
+    filter: brightness(.85) saturate(.95);
+    transform: scale(1);
+  }
+
+  .sol-card::before {
+    opacity: 1;
+  }
+}
+
+/* Keep every hover *state* — brightness, colour, the lit border — and drop only
+   the movement, matching how .bfeat/.bcard are handled further down. */
+@media (prefers-reduced-motion: reduce) {
+  .sol-card {
+    transition: box-shadow .01ms;
+  }
+
+  .sol-card:hover,
+  .sol-card:focus-visible {
+    transform: none;
+  }
+
+  .sol-card-media img {
+    transition: filter .01ms;
+  }
+
+  .sol-card:hover .sol-card-media img,
+  .sol-card:focus-visible .sol-card-media img {
+    transform: scale(1.02);
+  }
+
+  .sol-card-cta {
+    transition: color .01ms, background .01ms, border-color .01ms;
+  }
+
+  .sol-card:hover .sol-card-cta {
+    gap: 8px;
+  }
 }
 
 /* ── STATS ── */
 .stats {
-  padding: clamp(48px, 6vw, 84px) var(--pad);
+  padding: var(--section-y-sm) var(--pad);
 }
 
 .stats-grid {
@@ -1112,7 +1341,7 @@ img {
 
 /* ── EDGE ACCORDION ── */
 .edge {
-  padding: clamp(48px, 6vw, 84px) 0;
+  padding: var(--section-y) 0;
 }
 
 .edge-layout {
@@ -1292,7 +1521,7 @@ img {
 
 /* ── REGIONS / MAP ── */
 .regions {
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: var(--section-y) 0;
 }
 
 .map-wrap {
@@ -1512,7 +1741,7 @@ img {
 
 /* ── WORK / FIELDWORK GRID ── */
 .work {
-  padding: clamp(48px, 6vw, 84px) 0 0;
+  padding: var(--section-y) 0 0;
 }
 
 /* ── NEW PREMIUM GRID DESIGN ── */
@@ -1807,13 +2036,44 @@ img {
 }
 
 /* Empty state */
+/* Empty state.
+
+   This used to be a bare sentence at 60% opacity floating in a grid sized for
+   four cards, which collapsed the section and read as a page that had failed
+   rather than one with nothing to show yet. It's now a deliberate panel that
+   holds the section's shape: same hairline and radius as the cards beside it,
+   and roughly one card row tall so the rhythm doesn't break. */
 .work-empty {
   grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 260px;
+  padding: clamp(32px, 5vw, 56px) var(--pad);
   text-align: center;
+  border: 1px solid var(--line-soft);
+  border-radius: 16px;
+  background:
+    radial-gradient(120% 80% at 50% 0%, rgba(204, 0, 1, .06) 0%, transparent 60%),
+    linear-gradient(180deg, rgba(22, 22, 22, .6), rgba(12, 12, 12, .6));
+}
+
+.work-empty b {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  color: var(--white);
+}
+
+.work-empty span {
+  font-size: 13.5px;
+  line-height: 1.7;
   color: var(--grey);
-  font-size: 15px;
-  padding: clamp(32px, 5vw, 64px) 0;
-  opacity: 0.6;
+  max-width: 46ch;
 }
 
 .work-more {
@@ -1823,7 +2083,7 @@ img {
 
 /* ── JOURNAL ── */
 .journal {
-  padding: clamp(48px, 6vw, 84px) 0;
+  padding: var(--section-y) 0;
 }
 
 .journal-grid {
@@ -1908,64 +2168,6 @@ img {
   color: var(--grey);
 }
 
-/* ── GLOBAL CTA (single definition, no overrides) ── */
-.cta {
-  padding: clamp(68px, 8.5vw, 128px) var(--pad);
-  text-align: left;
-  position: relative;
-  overflow: hidden;
-}
-
-.cta h2 {
-  font-size: clamp(30px, 4.4vw, 66px);
-  max-width: 12ch;
-}
-
-.cta .cta-row {
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 40px;
-  flex-wrap: wrap;
-  margin-top: clamp(22px, 3.2vw, 38px);
-}
-
-.cta .cta-actions {
-  display: flex;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.cta .cta-contacts {
-  display: flex;
-  gap: clamp(20px, 3vw, 48px);
-  flex-wrap: wrap;
-}
-
-.cta .c-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.cta .c-item span {
-  font-size: 11px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--grey);
-}
-
-.cta .c-item a {
-  font-size: 14px;
-  font-weight: 500;
-  padding: 4px 0;
-  transition: color .25s;
-}
-
-.cta .c-item a:hover {
-  color: var(--red);
-}
-
 /* CTA with background image (about, solutions, experience, etc.) */
 .cta-bg {
   position: absolute;
@@ -1991,135 +2193,10 @@ img {
   z-index: 2;
 }
 
-/* ── GLOBAL FOOTER (single definition) ── */
-footer {
-  border-top: 1px solid var(--line-soft);
-}
-
-.foot-grid {
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr 1.2fr;
-  gap: 40px;
-  padding: clamp(36px, 4.5vw, 60px) var(--pad);
-}
-
-.foot-brand p {
-  font-size: 13px;
-  color: var(--grey);
-  line-height: 1.7;
-  max-width: 280px;
-  margin-top: 14px;
-}
-
-.foot-col h5 {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--grey-dark);
-  margin-bottom: 14px;
-}
-
-.foot-col a {
-  display: block;
-  font-size: 13px;
-  color: var(--grey);
-  padding: 4px 0;
-  transition: color .25s;
-  width: fit-content;
-}
-
-.foot-col a:hover {
-  color: var(--white);
-}
-
-.foot-col address {
-  font-style: normal;
-  font-size: 12px;
-  color: var(--grey);
-  line-height: 1.7;
-}
-
-.foot-bottom {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-  padding: 20px var(--pad);
-  border-top: 1px solid var(--line-soft);
-}
-
-.foot-bottom p,
-.foot-bottom a {
-  font-size: 11.5px;
-  color: var(--grey-dark);
-}
-
-.foot-bottom .legal {
-  display: flex;
-  gap: 24px;
-}
-
-.foot-bottom a {
-  transition: color .25s;
-  padding: 4px 0;
-}
-
-.foot-bottom a:hover {
-  color: var(--grey);
-}
-
-.foot-social {
-  display: flex;
-  gap: 4px;
-}
-
-.foot-social a {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--grey);
-  border-radius: 2px;
-  transition: color .25s, background .25s;
-}
-
-.foot-social a:hover {
-  color: var(--white);
-  background: var(--ink-2);
-}
-
-.foot-social svg {
-  width: 16px;
-  height: 16px;
-}
-
-.foot-mark {
-  font-family: var(--display);
-  font-weight: 700;
-  letter-spacing: -.045em;
-  line-height: .82;
-  font-size: clamp(48px, 8.5vw, 136px);
-  color: #151515;
-  text-align: center;
-  padding: clamp(12px, 2vw, 28px) var(--pad) 0;
-  user-select: none;
-  pointer-events: none;
-  overflow: hidden;
-  white-space: nowrap;
-}
-
-.foot-mark i {
-  font-style: normal;
-  color: #1d1414;
-}
-
 /* ── PAGE HERO VARIANTS ── */
 /* About */
 .ahero {
-  padding: clamp(150px, 20vh, 220px) var(--pad) 0;
+  padding: var(--hero-y) var(--pad) 0;
   display: grid;
   grid-template-columns: 1.4fr 1fr;
   gap: clamp(32px, 5vw, 80px);
@@ -2206,7 +2283,7 @@ footer {
 
 /* Partners */
 .phero {
-  padding: clamp(150px, 20vh, 220px) var(--pad) 0;
+  padding: var(--hero-y) var(--pad) 0;
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   gap: clamp(32px, 5vw, 80px);
@@ -2254,7 +2331,7 @@ footer {
 
 /* Solutions / Blogs / EWaste shared hero */
 .shero {
-  padding: clamp(150px, 20vh, 220px) var(--pad) 0;
+  padding: var(--hero-y) var(--pad) 0;
   display: grid;
   grid-template-columns: 1.5fr 1fr;
   gap: clamp(32px, 5vw, 80px);
@@ -2720,16 +2797,29 @@ footer {
   }
 }
 
-/* Solution Detail */
+/* ── SOLUTION DETAIL: HERO ──
+   Cinematic split rather than a centred title over a full-bleed band. The old
+   layout put the headline alone on a 16/7 strip of black and pushed every
+   substantive thing — description, CTA, proof — below the fold; the visual
+   arrived as a separate act afterwards. Here copy and image share the first
+   screen, so the page opens with a claim and the evidence for it at once. */
 .dhero {
-  padding: clamp(140px, 18vh, 200px) var(--pad) 0;
+  padding: var(--hero-y) var(--pad) 0;
+  position: relative;
+}
+
+.dhero-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: clamp(32px, 5vw, 88px);
+  align-items: center;
 }
 
 .dhero .crumb {
   display: flex;
   align-items: center;
   gap: 10px;
-  margin-bottom: 26px;
+  margin-bottom: 22px;
 }
 
 .dhero .crumb a {
@@ -2759,65 +2849,240 @@ footer {
   font-weight: 500;
 }
 
+.dhero-kicker {
+  margin-bottom: 18px;
+}
+
 .dhero h1 {
-  font-size: clamp(46px, 8vw, 116px);
-  max-width: 14ch;
+  /* Narrower than the old full-width hero because it now shares the row with
+     the visual — 116px would wrap to five lines in half the width. */
+  font-size: clamp(40px, 5vw, 78px);
+  max-width: 12ch;
 }
 
-.dhero-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 40px;
-  flex-wrap: wrap;
-  margin-top: clamp(28px, 4vw, 48px);
-}
-
-.dhero-row p {
-  font-size: clamp(16px, 1.35vw, 19px);
+.dhero-copy > #dIntro {
+  margin-top: clamp(20px, 2.4vw, 32px);
+  font-size: clamp(16px, 1.25vw, 18.5px);
   color: var(--grey);
   line-height: 1.75;
-  max-width: 52ch;
+  max-width: 46ch;
 }
 
-.dhero-row .fact {
-  text-align: right;
+.dhero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: clamp(26px, 3vw, 38px);
 }
 
-.dhero-row .fact b {
-  display: block;
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--white);
+/* Proof points, not decoration: they answer "can these people actually do
+   this" in the same glance as the CTA. */
+.dhero-trust {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 26px;
+  margin-top: clamp(26px, 3vw, 36px);
+  padding-top: clamp(22px, 2.6vw, 30px);
+  border-top: 1px solid var(--line-soft);
+  list-style: none;
 }
 
-.dhero-row .fact span {
-  font-size: 12px;
+.dhero-trust li {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 13px;
   color: var(--grey);
-  letter-spacing: .06em;
-  text-transform: uppercase;
+  letter-spacing: .01em;
+}
+
+.dhero-trust svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: var(--red);
 }
 
 .dhero-visual {
-  margin: clamp(40px, 7vh, 72px) var(--pad) 0;
   position: relative;
-  overflow: hidden;
-  border-radius: 2px;
-  aspect-ratio: 16/7;
-  min-height: 320px;
 }
 
-.dhero-visual img {
+.dhero-frame {
+  position: relative;
+  aspect-ratio: 4/5;
+  border-radius: 20px;
+  overflow: hidden;
+  background: var(--ink-2);
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    0 40px 80px -50px rgba(0, 0, 0, 1);
+}
+
+.dhero-frame img {
+  position: absolute;
+  inset: -8% 0;
+  width: 100%;
+  height: 116%;
+  object-fit: cover;
+  filter: brightness(.62) saturate(.92) contrast(1.05);
+  will-change: transform;
+}
+
+/* A single translated element — compositor-only, no paint per frame. */
+.dhero-sweep {
   position: absolute;
   left: 0;
   right: 0;
-  top: -12%;
-  width: 100%;
-  height: 124%;
-  object-fit: cover;
-  filter: brightness(.7);
+  top: 0;
+  height: 34%;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, rgba(204, 0, 1, .16), transparent);
+  animation: dheroSweep 7s linear infinite;
   will-change: transform;
+}
+
+@keyframes dheroSweep {
+  0% { transform: translateY(-110%); }
+  100% { transform: translateY(400%); }
+}
+
+.dhero-brackets i {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border: 1px solid rgba(255, 255, 255, .4);
+}
+
+.dhero-brackets i:nth-child(1) { top: 16px; left: 16px; border-right: 0; border-bottom: 0; }
+.dhero-brackets i:nth-child(2) { top: 16px; right: 16px; border-left: 0; border-bottom: 0; }
+.dhero-brackets i:nth-child(3) { bottom: 16px; left: 16px; border-right: 0; border-top: 0; }
+.dhero-brackets i:nth-child(4) { bottom: 16px; right: 16px; border-left: 0; border-top: 0; }
+
+/* Solid translucent panel, not backdrop-filter: a live blur over a parallaxing
+   image repaints the whole strip every scroll frame, which is exactly the cost
+   that was measured out of this site earlier. */
+.dhero-stats {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  bottom: 14px;
+  display: flex;
+  border-radius: 12px;
+  overflow: hidden;
+  background: rgba(10, 10, 10, .82);
+  box-shadow: inset 0 0 0 1px var(--line);
+  list-style: none;
+}
+
+.dhero-stat {
+  flex: 1;
+  min-width: 0;
+  padding: 12px 8px 13px 14px;
+  position: relative;
+}
+
+.dhero-stat + .dhero-stat {
+  border-left: 1px solid var(--line-soft);
+}
+
+.dhero-stat-dot {
+  position: absolute;
+  top: 15px;
+  right: 12px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+/* The pulse is a scaling pseudo-element, not an animated box-shadow. A
+   box-shadow keyframe repaints its element every frame — three of them running
+   forever over a parallaxing image is paint work on the scroll's budget, and
+   transform/opacity is the composited equivalent that costs nothing. */
+.dhero-stat-dot::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(204, 0, 1, .5);
+  animation: dheroPulse 2.4s var(--ease) infinite;
+  will-change: transform, opacity;
+}
+
+@keyframes dheroPulse {
+  0% { transform: scale(1); opacity: .6; }
+  70%, 100% { transform: scale(3.6); opacity: 0; }
+}
+
+.dhero-stat b {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(13px, 1.15vw, 16px);
+  font-weight: 700;
+  letter-spacing: -.01em;
+  color: var(--white);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.dhero-stat span:last-child {
+  display: block;
+  margin-top: 2px;
+  font-size: 10.5px;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+@media (max-width: 1080px) {
+  .dhero-grid {
+    grid-template-columns: 1fr;
+    gap: clamp(36px, 6vw, 56px);
+  }
+
+  .dhero h1 {
+    max-width: 16ch;
+  }
+
+  .dhero-frame {
+    /* Landscape once it spans the full column — a 4/5 portrait at 1000px wide
+       would be taller than the viewport. */
+    aspect-ratio: 16/9;
+  }
+}
+
+@media (max-width: 560px) {
+  .dhero-frame {
+    aspect-ratio: 4/3;
+  }
+
+  /* Three chips across a 320px frame leaves ~90px each, which truncates every
+     value. Stacked, each keeps its full label. */
+  .dhero-stats {
+    flex-direction: column;
+  }
+
+  .dhero-stat + .dhero-stat {
+    border-left: 0;
+    border-top: 1px solid var(--line-soft);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dhero-sweep,
+  .dhero-stat-dot::after {
+    animation: none;
+  }
+
+  .dhero-stat-dot::after {
+    opacity: 0;
+  }
+
+  .dhero-sweep {
+    opacity: .5;
+    transform: translateY(150%);
+  }
 }
 
 /* Experience */
@@ -2929,7 +3194,7 @@ footer {
 
 /* ── ABOUT: STORY, PILLARS, VM, TEAM ── */
 .story {
-  padding: clamp(90px, 13vw, 180px) var(--pad);
+  padding: var(--section-y-lg) var(--pad);
   display: grid;
   grid-template-columns: 1.35fr 1fr;
   gap: clamp(40px, 6vw, 96px);
@@ -3017,7 +3282,7 @@ footer {
 }
 
 .pillars {
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: var(--section-y) 0;
 }
 
 .pillar-list {
@@ -3094,7 +3359,7 @@ footer {
 }
 
 .team {
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: var(--section-y) 0;
 }
 
 .team-grid {
@@ -3330,7 +3595,7 @@ footer {
 }
 
 .why {
-  padding: clamp(80px, 10vw, 140px) 0;
+  padding: var(--section-y) 0;
 }
 
 .why-list {
@@ -3365,243 +3630,819 @@ footer {
   max-width: 56ch;
 }
 
-/* ── SOLUTIONS: SOLUTION ROWS ── */
-.sol-flow {
-  padding: clamp(60px, 9vw, 120px) 0 clamp(80px, 10vw, 140px);
-  display: flex;
-  flex-direction: column;
-  gap: clamp(64px, 9vw, 130px);
+/* ── SOLUTION DETAIL: CAPS, DUO, BRANDS, NEXT ── */
+.caps {
+  /* Top-only padding is the rule for every stacked section on this page: two
+     sections each padding both edges produced ~240px of black between them,
+     which is exactly the dead space the redesign was meant to remove. The
+     small bottom step is because .showcase below is a bordered full-bleed
+     band, and the rail would otherwise sit flush against its rule. */
+  padding: var(--section-y) 0 var(--section-y-sm);
 }
 
-.srow {
+/* Capabilities grid.
+
+   Was a snap-scrolling rail. A rail earns its keep when the list is long enough
+   that showing all of it is the problem; with four cards it hid a quarter of
+   the section behind an interaction and needed a tabindex, a role and two nav
+   buttons to stay reachable. Four equal columns show everything at once and
+   delete all of that. */
+.caps-grid {
   display: grid;
-  grid-template-columns: 1.15fr 1fr;
-  gap: clamp(28px, 4.5vw, 72px);
-  align-items: center;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 1.6vw, 22px);
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
   padding: 0 var(--pad);
 }
 
-.srow:nth-child(even) {
-  grid-template-columns: 1fr 1.15fr;
-}
-
-.srow:nth-child(even) .srow-media {
-  order: 2;
-}
-
-.srow-media {
+.cap-card {
   position: relative;
-  overflow: hidden;
-  border-radius: 2px;
-  aspect-ratio: 16/11;
-  display: block;
-}
-
-.srow-media img {
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: -8%;
-  width: 100%;
-  height: 116%;
-  object-fit: cover;
-  filter: brightness(.75);
-  will-change: transform;
-  transition: filter .5s;
-}
-
-.srow:hover .srow-media img {
-  filter: brightness(.88);
-}
-
-.srow-media .srow-cat {
-  position: absolute;
-  top: 18px;
-  left: 18px;
-  z-index: 2;
-  font-size: 11px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: #fff;
-  background: rgba(12, 12, 12, .55);
-  padding: 7px 11px;
-  border-radius: 2px;
-  backdrop-filter: blur(6px);
-}
-
-.srow-body .num {
-  display: block;
-  margin-bottom: 22px;
-}
-
-.srow-body h2 {
-  font-size: clamp(30px, 3.6vw, 52px);
-}
-
-.srow-body h2 a {
-  transition: color .3s;
-}
-
-.srow-body h2 a:hover {
-  color: var(--red);
-}
-
-.srow-body p {
-  font-size: 15.5px;
-  color: var(--grey);
-  line-height: 1.8;
-  margin-top: 18px;
-  max-width: 48ch;
-}
-
-.srow-tags {
   display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 24px;
-}
-
-.srow-tags span {
-  font-size: 12px;
-  color: var(--grey);
-  border: 1px solid var(--line-soft);
-  border-radius: 2px;
-  padding: 7px 12px;
-  letter-spacing: .03em;
-}
-
-.srow-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  margin-top: 32px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--white);
-  padding: 6px 0;
-  border-bottom: 1px solid var(--line);
-  transition: color .3s, border-color .3s, gap .3s var(--ease);
-}
-
-.srow-link:hover {
-  color: var(--red);
-  border-color: var(--red);
-  gap: 16px;
-}
-
-.srow-link svg {
-  width: 15px;
-  height: 15px;
-}
-
-/* ── SOLUTION DETAIL: CAPS, DUO, BRANDS, NEXT ── */
-.caps {
-  padding: clamp(80px, 11vw, 150px) 0 clamp(70px, 9vw, 120px);
-}
-
-.caps-list {
-  border-top: 1px solid var(--line-soft);
-}
-
-.cap {
-  display: grid;
-  grid-template-columns: 80px 1fr 1.2fr;
-  gap: 24px;
-  align-items: baseline;
-  padding: 34px var(--pad);
-  border-bottom: 1px solid var(--line-soft);
-  transition: background .35s;
-}
-
-.cap:hover {
-  background: var(--ink-2);
-}
-
-.cap h3 {
-  font-family: var(--display);
-  font-size: clamp(20px, 2.2vw, 30px);
-  font-weight: 600;
-  letter-spacing: -.015em;
-}
-
-.cap p {
-  font-size: 15px;
-  color: var(--grey);
-  line-height: 1.75;
-  max-width: 56ch;
-}
-
-.duo {
-  display: grid;
-  grid-template-columns: 1.25fr 1fr;
-  gap: clamp(16px, 2vw, 28px);
-  padding: 0 var(--pad) clamp(80px, 11vw, 150px);
-  align-items: end;
-}
-
-.duo figure {
-  position: relative;
+  flex-direction: column;
+  border-radius: 18px;
   overflow: hidden;
-  border-radius: 2px;
+  background: linear-gradient(180deg, rgba(22, 22, 22, .92) 0%, rgba(12, 12, 12, .92) 100%);
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  transition: box-shadow .4s var(--ease), transform .4s var(--ease);
 }
 
-.duo .d1 {
-  aspect-ratio: 16/10;
+.cap-card:hover {
+  transform: translateY(-6px);
+  box-shadow:
+    inset 0 0 0 1px rgba(204, 0, 1, .4),
+    0 22px 44px -20px rgba(0, 0, 0, .95),
+    0 0 34px -12px rgba(204, 0, 1, .3);
 }
 
-.duo .d2 {
-  aspect-ratio: 4/5;
+.cap-card-media {
+  position: relative;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: var(--ink);
 }
 
-.duo img {
+.cap-card-media img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: brightness(.78);
-  transition: transform 1s var(--ease);
+  display: block;
+  filter: brightness(.62) saturate(.9);
+  transition: filter .5s var(--ease), transform .8s var(--ease);
 }
 
-.duo figure:hover img {
-  transform: scale(1.03);
+.cap-card:hover .cap-card-media img {
+  filter: brightness(1) saturate(1);
+  transform: scale(1.05);
 }
 
+.cap-card-media::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 55%;
+  background: linear-gradient(to bottom, transparent, rgba(12, 12, 12, .8));
+  pointer-events: none;
+}
+
+.cap-card-body {
+  padding: 16px 18px 22px;
+}
+
+.cap-card-body h3 {
+  font-family: var(--display);
+  font-size: clamp(17px, 1.5vw, 21px);
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.2;
+}
+
+.cap-card-body p {
+  margin-top: 9px;
+  font-size: 13.5px;
+  color: var(--grey);
+  line-height: 1.72;
+}
+
+/* Light sweep. Driven by an animation rather than a hover transition so it
+   plays once on enter instead of sliding backwards again on leave. */
+.cap-card-sweep {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.cap-card-sweep::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  bottom: -50%;
+  left: -60%;
+  width: 42%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, .1), transparent);
+  transform: skewX(-18deg);
+  opacity: 0;
+}
+
+.cap-card:hover .cap-card-sweep::after {
+  animation: capSweep .95s var(--ease);
+}
+
+@keyframes capSweep {
+  0% { opacity: 0; transform: skewX(-18deg) translateX(0); }
+  15% { opacity: 1; }
+  100% { opacity: 0; transform: skewX(-18deg) translateX(430%); }
+}
+
+/* Four columns only holds above ~1100px: below that each card is narrower than
+   its own two-word heading. */
+@media (max-width: 1100px) {
+  .caps-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 560px) {
+  .caps-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── SOLUTION DETAIL: IMMERSIVE SHOWCASE ──
+   The one full-bleed moment on the page. Everything above and below it is a
+   1440px column, so this is the section that supplies scale — and it sits
+   deliberately between the capability rail and the architecture diagram, where
+   the page would otherwise run three text-and-cards sections back to back. */
+.showcase {
+  position: relative;
+  min-height: min(78vh, 760px);
+  display: flex;
+  overflow: hidden;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.showcase-bg {
+  position: absolute;
+  inset: 0;
+}
+
+.showcase-bg img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(.5) saturate(.9);
+  will-change: transform;
+}
+
+/* Scrim first, so the copy has a guaranteed contrast floor whatever the
+   photograph behind it happens to be doing at that corner. */
+.showcase-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(to top, rgba(12, 12, 12, .94) 0%, rgba(12, 12, 12, .45) 50%, transparent 100%),
+    linear-gradient(to right, rgba(12, 12, 12, .82), rgba(12, 12, 12, .1) 62%, transparent 80%);
+}
+
+.showcase-inner {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: var(--section-y) var(--pad);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.showcase-copy {
+  max-width: 660px;
+}
+
+.showcase-copy h2 {
+  margin-top: 18px;
+  font-size: clamp(32px, 4.4vw, 62px);
+}
+
+.showcase-copy p {
+  margin-top: 20px;
+  font-size: clamp(15px, 1.25vw, 18px);
+  color: var(--grey);
+  line-height: 1.8;
+  max-width: 58ch;
+}
+
+.showcase-readouts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(20px, 4vw, 64px);
+  margin-top: clamp(36px, 4.5vw, 60px);
+  padding-top: clamp(24px, 3vw, 34px);
+  border-top: 1px solid rgba(255, 255, 255, .18);
+  list-style: none;
+}
+
+.showcase-readouts b {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(20px, 2.2vw, 30px);
+  font-weight: 700;
+  letter-spacing: -.025em;
+  color: var(--white);
+}
+
+.showcase-readouts span {
+  display: block;
+  margin-top: 5px;
+  font-size: 11px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+/* ── SOLUTION DETAIL: SIGNAL FLOW ──
+   The brief asked for a capabilities timeline. What actually earns its place on
+   a distributor's page is the signal chain: it is the one diagram that shows we
+   think about the whole path rather than the box at the end of it. */
+.flow {
+  /* Small bottom step: .metrics below is a bordered band. */
+  padding: var(--section-y) 0 var(--section-y-sm);
+}
+
+.flow-track {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+.flow-steps {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: clamp(10px, 1.4vw, 20px);
+  list-style: none;
+}
+
+/* Sits at the vertical centre of the 56px nodes and stops short of both end
+   nodes, so it reads as a connection rather than a rule under the row. */
+.flow-line {
+  position: absolute;
+  left: calc(var(--pad) + 28px);
+  right: calc(var(--pad) + 28px);
+  top: 28px;
+  height: 1px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+
+.flow-line i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--red), rgba(204, 0, 1, .2));
+  transform-origin: left center;
+}
+
+.flow-node {
+  position: relative;
+  z-index: 1;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--grey);
+  transition: color .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.flow-node svg {
+  width: 22px;
+  height: 22px;
+}
+
+.flow-step:hover .flow-node {
+  color: var(--red);
+  box-shadow: inset 0 0 0 1px rgba(204, 0, 1, .55);
+}
+
+.flow-index {
+  display: block;
+  margin-top: 18px;
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: var(--red);
+}
+
+.flow-step h3 {
+  margin-top: 8px;
+  font-family: var(--display);
+  font-size: clamp(15px, 1.35vw, 18px);
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.25;
+}
+
+.flow-step p {
+  margin-top: 7px;
+  font-size: 13px;
+  color: var(--grey);
+  line-height: 1.6;
+}
+
+@media (max-width: 899px) {
+  /* Vertical chain. Six columns at tablet width give each step ~90px, which is
+     narrower than the node it has to sit under. */
+  .flow-steps {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+
+  .flow-step {
+    display: grid;
+    grid-template-columns: 56px 1fr;
+    column-gap: 18px;
+    align-items: start;
+  }
+
+  .flow-node {
+    grid-row: 1 / span 3;
+  }
+
+  .flow-index,
+  .flow-step h3,
+  .flow-step p {
+    grid-column: 2;
+    margin-top: 0;
+  }
+
+  .flow-step h3 {
+    margin-top: 4px;
+  }
+
+  .flow-step p {
+    margin-top: 6px;
+  }
+
+  .flow-line {
+    left: calc(var(--pad) + 28px);
+    right: auto;
+    top: 28px;
+    bottom: 28px;
+    width: 1px;
+    height: auto;
+  }
+
+  .flow-line i {
+    background: linear-gradient(180deg, var(--red), rgba(204, 0, 1, .2));
+    transform-origin: top center;
+  }
+}
+
+/* ── SOLUTION DETAIL: METRICS ──
+   ⚠ The figures are unverified — see constants/solutionDetails.js. */
+.metrics {
+  padding: var(--section-y-sm) 0;
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+  background: linear-gradient(180deg, rgba(20, 20, 20, .6), transparent);
+}
+
+.metrics-row {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(18px, 3vw, 48px);
+  list-style: none;
+}
+
+.metric {
+  position: relative;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.metric::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 0;
+  width: 34px;
+  height: 1px;
+  background: var(--red);
+}
+
+.metric-value {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(32px, 4.2vw, 58px);
+  font-weight: 700;
+  letter-spacing: -.035em;
+  line-height: 1;
+  /* Proportional digits change width mid-count, so the number visibly jitters
+     while it animates. Tabular figures hold the box still. */
+  font-variant-numeric: tabular-nums;
+  background: linear-gradient(150deg, #FFFFFF 20%, #8E8E8E 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.metric-label {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--display);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: -.01em;
+  color: var(--white);
+}
+
+.metric-desc {
+  display: block;
+  margin-top: 6px;
+  font-size: 12.5px;
+  color: var(--grey-dark);
+  line-height: 1.6;
+}
+
+@media (max-width: 900px) {
+  .metrics-row {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px clamp(18px, 4vw, 40px);
+  }
+}
+
+/* ── SOLUTION DETAIL: FEATURED INSTALLATIONS ── */
+.installs {
+  padding: var(--section-y) 0 0;
+}
+
+.install {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(26px, 4vw, 72px);
+  align-items: center;
+}
+
+.install + .install {
+  margin-top: clamp(56px, 7vw, 112px);
+}
+
+/* Alternating sides. The reversal is the whole point of the section: two
+   identical rows stacked would read as a list, not as a pair of case studies. */
+.install--flip .install-media {
+  order: 2;
+}
+
+.install-media {
+  position: relative;
+  margin: 0;
+  aspect-ratio: 4/3;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--ink-2);
+}
+
+.install-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(.78) saturate(.95);
+  transition: transform 1.1s var(--ease), filter .6s var(--ease);
+}
+
+.install:hover .install-media img {
+  transform: scale(1.04);
+  filter: brightness(.92) saturate(1);
+}
+
+.install-industry {
+  display: inline-flex;
+  align-items: center;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--red);
+  border: 1px solid rgba(204, 0, 1, .35);
+  border-radius: 999px;
+  padding: 6px 14px;
+}
+
+.install-copy h3 {
+  margin-top: 18px;
+  font-size: clamp(24px, 2.7vw, 40px);
+}
+
+.install-block {
+  margin-top: clamp(18px, 2.2vw, 26px);
+}
+
+.install-key {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+.install-block p {
+  font-size: 14.5px;
+  color: var(--grey);
+  line-height: 1.78;
+  max-width: 54ch;
+}
+
+.install-products {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  list-style: none;
+}
+
+.install-products li {
+  font-size: 12px;
+  color: var(--white);
+  background: var(--ink-2);
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  border-radius: 999px;
+  padding: 7px 14px;
+}
+
+@media (max-width: 900px) {
+  .install {
+    grid-template-columns: 1fr;
+  }
+
+  /* Image above copy in both rows once they stack — an image sitting below its
+     own heading in every other row just looks like a mistake. */
+  .install--flip .install-media {
+    order: 0;
+  }
+}
+
+/* ── SOLUTION DETAIL: INDUSTRIES ── */
+.industries {
+  padding: var(--section-y) 0 0;
+}
+
+.industry-grid {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: clamp(12px, 1.4vw, 18px);
+  list-style: none;
+}
+
+.industry-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(16px, 2vw, 24px);
+  padding: clamp(20px, 2.2vw, 28px);
+  border-radius: 16px;
+  background: linear-gradient(180deg, rgba(22, 22, 22, .92), rgba(12, 12, 12, .92));
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  transition: box-shadow .4s var(--ease), transform .4s var(--ease);
+}
+
+.industry-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(90% 80% at 0% 0%, rgba(204, 0, 1, .16), transparent 60%);
+  transition: opacity .4s var(--ease);
+}
+
+.industry-card:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, .12),
+    0 18px 38px -22px rgba(0, 0, 0, .95);
+}
+
+.industry-card:hover::before {
+  opacity: 1;
+}
+
+.industry-icon {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border-radius: 13px;
+  display: grid;
+  place-items: center;
+  color: var(--red);
+  background: rgba(204, 0, 1, .1);
+  box-shadow: inset 0 0 0 1px rgba(204, 0, 1, .24);
+}
+
+.industry-icon svg {
+  width: 22px;
+  height: 22px;
+}
+
+.industry-name {
+  position: relative;
+  font-family: var(--display);
+  font-size: clamp(14.5px, 1.3vw, 16.5px);
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.3;
+}
+
+/* ── SOLUTION DETAIL: PROCESS ── */
+.process {
+  padding: var(--section-y) 0 0;
+}
+
+.process-steps {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+}
+
+.process-steps ol {
+  list-style: none;
+}
+
+.process-step {
+  display: grid;
+  grid-template-columns: 64px 1fr;
+  gap: clamp(18px, 2.2vw, 34px);
+  padding-bottom: clamp(30px, 4vw, 52px);
+}
+
+.process-step:last-child {
+  padding-bottom: 0;
+}
+
+/* Bottom stops at the last marker's centre rather than the list's end, so the
+   line terminates on the final step instead of trailing past it. */
+.process-line {
+  position: absolute;
+  left: calc(var(--pad) + 32px);
+  top: 32px;
+  bottom: 32px;
+  width: 1px;
+  background: var(--line-soft);
+  overflow: hidden;
+}
+
+.process-line i {
+  display: block;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180deg, var(--red), rgba(204, 0, 1, .2));
+  transform-origin: top center;
+}
+
+.process-marker {
+  position: relative;
+  z-index: 1;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--ink);
+  box-shadow: inset 0 0 0 1px var(--line);
+  color: var(--grey);
+  transition: color .35s var(--ease), box-shadow .35s var(--ease);
+}
+
+.process-marker svg {
+  width: 26px;
+  height: 26px;
+}
+
+.process-step:hover .process-marker {
+  color: var(--red);
+  box-shadow: inset 0 0 0 1px rgba(204, 0, 1, .55);
+}
+
+.process-body {
+  padding-top: 9px;
+}
+
+.process-index {
+  font-family: var(--display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  color: var(--red);
+}
+
+.process-body h3 {
+  margin-top: 8px;
+  font-family: var(--display);
+  font-size: clamp(19px, 2vw, 27px);
+  font-weight: 600;
+  letter-spacing: -.025em;
+}
+
+.process-body p {
+  margin-top: 10px;
+  font-size: 14.5px;
+  color: var(--grey);
+  line-height: 1.78;
+  max-width: 62ch;
+}
+
+@media (max-width: 560px) {
+  .process-step {
+    grid-template-columns: 48px 1fr;
+    gap: 16px;
+  }
+
+  .process-marker {
+    width: 48px;
+    height: 48px;
+  }
+
+  .process-marker svg {
+    width: 21px;
+    height: 21px;
+  }
+
+  .process-line {
+    left: calc(var(--pad) + 24px);
+    top: 24px;
+    bottom: 24px;
+  }
+}
+
+/* ── SOLUTION DETAIL: BRAND WALL ── */
 .dbrands {
-  padding: 0 var(--pad) clamp(80px, 11vw, 150px);
-}
-
-.dbrands h2 {
-  font-size: clamp(26px, 3vw, 42px);
-  margin-bottom: 32px;
+  padding: var(--section-y) 0 0;
 }
 
 .dbrands-row {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-  gap: clamp(12px, 1.5vw, 20px);
+  /* Capped, not 1fr. A region carrying three brands for a vertical would
+     otherwise stretch each tile to ~450px and blow the logo plate up to the
+     height of a card; auto-fill instead leaves dead tracks on the right. The
+     max keeps tiles a consistent size at any brand count. */
+  grid-template-columns: repeat(auto-fit, minmax(168px, 216px));
+  justify-content: start;
+  gap: clamp(10px, 1.2vw, 16px);
 }
 
 .dbrands-row a {
   display: flex;
   flex-direction: column;
-  border: 1px solid var(--line-soft);
-  border-radius: 2px;
+  border-radius: 14px;
   overflow: hidden;
   background: var(--ink-2);
-  transition: border-color .35s;
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  transition: box-shadow .35s var(--ease), transform .35s var(--ease);
 }
 
 .dbrands-row a:hover {
-  border-color: rgba(255, 255, 255, .25);
+  transform: translateY(-3px);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .2);
 }
 
 .dbrands-row .bl-logo {
   background: #F7F6F3;
   flex: 1;
-  min-height: 120px;
+  min-height: 112px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 16%;
+  padding: 14%;
 }
 
 .dbrands-row .bl-logo img {
@@ -3611,7 +4452,7 @@ footer {
   height: auto;
   object-fit: contain;
   filter: grayscale(1);
-  opacity: .82;
+  opacity: .8;
   transition: filter .5s var(--ease), opacity .5s;
 }
 
@@ -3634,72 +4475,261 @@ footer {
   color: var(--white);
 }
 
-.next-sol {
-  display: block;
-  position: relative;
-  overflow: hidden;
-  border-top: 1px solid var(--line-soft);
+/* ── SOLUTION DETAIL: RELATED ── */
+.related {
+  /* Last section on the page now. The footer supplies its own generous top
+     padding, so this only needs the smaller step to clear the rule between
+     them. */
+  padding: var(--section-y) 0 var(--section-y-sm);
 }
 
-.next-sol .next-bg {
+.related-all {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  font-size: 13px;
+  color: var(--grey);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 7px;
+  transition: color .3s, border-color .3s;
+}
+
+.related-all:hover {
+  color: var(--red);
+  border-color: var(--red);
+}
+
+.related-all svg {
+  width: 15px;
+  height: 15px;
+  transition: transform .3s var(--ease);
+}
+
+.related-all:hover svg {
+  transform: translateX(3px);
+}
+
+.related-grid {
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--pad);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: clamp(14px, 1.6vw, 24px);
+}
+
+.related-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--ink-2);
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  transition: box-shadow .4s var(--ease), transform .4s var(--ease);
+}
+
+.related-card:hover {
+  transform: translateY(-5px);
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, .14),
+    0 22px 44px -26px rgba(0, 0, 0, .95);
+}
+
+.related-media {
+  display: block;
+  aspect-ratio: 16/10;
+  overflow: hidden;
+}
+
+.related-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: brightness(.58) saturate(.9);
+  transition: filter .5s var(--ease), transform .9s var(--ease);
+}
+
+.related-card:hover .related-media img {
+  filter: brightness(.92) saturate(1);
+  transform: scale(1.05);
+}
+
+.related-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 18px 20px 22px;
+}
+
+.related-kicker {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.related-name {
+  font-family: var(--display);
+  font-size: clamp(18px, 1.7vw, 22px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.25;
+  /* Clears the arrow so a two-word name never runs under it. */
+  padding-right: 44px;
+}
+
+.related-arrow {
+  position: absolute;
+  right: 18px;
+  bottom: 20px;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  color: var(--grey);
+  transition: background .3s, border-color .3s, color .3s, transform .35s var(--ease);
+}
+
+.related-arrow svg {
+  width: 15px;
+  height: 15px;
+}
+
+.related-card:hover .related-arrow {
+  background: var(--red);
+  border-color: var(--red);
+  color: #fff;
+  transform: translateX(3px);
+}
+
+@media (max-width: 900px) {
+  .related-grid {
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  }
+}
+
+/* ── SOLUTION DETAIL: CLOSING CTA ── */
+.dcta {
+  padding: var(--section-y) var(--pad) 0;
+}
+
+.dcta-inner {
+  position: relative;
+  width: 100%;
+  max-width: 1440px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 28px;
+  /* The padding lives on .dcta-content — the particle field has to reach the
+     panel's edges, so the outer box can no longer inset its own content. */
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  background: linear-gradient(180deg, rgba(24, 24, 24, .95), rgba(10, 10, 10, .95));
+  isolation: isolate;
+}
+
+/* Particle field, edge to edge behind the glass. */
+.dcta-particles,
+.particle-wave {
   position: absolute;
   inset: 0;
 }
 
-.next-sol .next-bg img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  filter: brightness(.3);
-  transition: filter .6s, transform 1.2s var(--ease);
+.dcta-particles {
+  z-index: 0;
+  pointer-events: none;
 }
 
-.next-sol:hover .next-bg img {
-  filter: brightness(.45);
-  transform: scale(1.03);
+.particle-wave {
+  overflow: hidden;
 }
 
-.next-inner {
+/* Copy sits directly on the particle field — no frosted plate, no border, no
+   backdrop-filter. */
+.dcta-content {
   position: relative;
   z-index: 2;
-  padding: clamp(70px, 10vw, 130px) var(--pad);
+  padding: clamp(52px, 7vw, 104px) clamp(24px, 5vw, 80px);
+  text-align: center;
+}
+
+/* Contrast floor. With the plate gone this is the only thing keeping body copy
+   legible over moving particles, so it is a soft elliptical darkening centred
+   on the text rather than the decorative red wash it used to be — no edge for
+   the eye to catch, but the middle of the panel is reliably dark. */
+.dcta-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+  background:
+    radial-gradient(62% 72% at 50% 50%, rgba(6, 6, 8, .88) 0%, rgba(6, 6, 8, .6) 45%, transparent 78%),
+    radial-gradient(90% 120% at 50% -20%, rgba(204, 0, 1, .16), transparent 62%);
+}
+
+.dcta-inner h2 {
+  margin: 20px auto 0;
+  font-size: clamp(30px, 4.3vw, 60px);
+  max-width: 19ch;
+}
+
+.dcta-inner p {
+  margin: 20px auto 0;
+  font-size: clamp(15px, 1.2vw, 17px);
+  color: var(--grey);
+  line-height: 1.78;
+  max-width: 58ch;
+}
+
+.dcta-actions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 32px;
-}
-
-.next-inner .label {
-  display: block;
-  margin-bottom: 14px;
-}
-
-.next-inner h2 {
-  font-size: clamp(34px, 5vw, 72px);
-}
-
-.next-inner .next-arrow {
-  width: 64px;
-  height: 64px;
-  border: 1px solid rgba(255, 255, 255, .3);
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
+  flex-wrap: wrap;
   justify-content: center;
-  color: #fff;
-  flex-shrink: 0;
-  transition: background .3s, border-color .3s, transform .4s var(--ease);
+  gap: 14px;
+  margin-top: clamp(28px, 3.4vw, 44px);
 }
 
-.next-sol:hover .next-arrow {
-  background: var(--red);
-  border-color: var(--red);
-  transform: translateX(6px);
-}
+/* ── SOLUTION DETAIL: REDUCED MOTION ──
+   Hover lifts and image zooms are the parts that read as motion sickness on a
+   long page; the colour and ring transitions are harmless and stay. */
+@media (prefers-reduced-motion: reduce) {
+  .cap-card,
+  .cap-card-media img,
+  .industry-card,
+  .related-card,
+  .related-media img,
+  .install-media img,
+  .dbrands-row a,
+  .related-arrow {
+    transition-duration: .01ms;
+  }
 
-.next-inner .next-arrow svg {
-  width: 22px;
-  height: 22px;
+  .cap-card:hover,
+  .industry-card:hover,
+  .related-card:hover,
+  .dbrands-row a:hover {
+    transform: none;
+  }
+
+  .cap-card:hover .cap-card-media img,
+  .related-card:hover .related-media img,
+  .install:hover .install-media img {
+    transform: none;
+  }
+
+  .related-card:hover .related-arrow,
+  .related-all:hover svg {
+    transform: none;
+  }
+
+  .cap-card-sweep {
+    display: none;
+  }
 }
 
 /* ── BLOGS: FEATURED, GRID ── */
@@ -4005,7 +5035,7 @@ footer {
   display: grid;
   grid-template-columns: 1fr 2.2fr;
   gap: clamp(28px, 5vw, 90px);
-  padding: clamp(80px, 11vw, 150px) var(--pad);
+  padding: var(--section-y) var(--pad);
 }
 
 .ov-label {
@@ -4059,7 +5089,7 @@ footer {
 }
 
 .zones {
-  padding: clamp(70px, 9vw, 120px) var(--pad) clamp(80px, 10vw, 140px);
+  padding: var(--section-y) var(--pad);
 }
 
 .zones-head {
@@ -4184,7 +5214,7 @@ footer {
 }
 
 .film {
-  padding: clamp(70px, 9vw, 120px) var(--pad);
+  padding: var(--section-y) var(--pad);
 }
 
 .film-head {
@@ -4296,7 +5326,7 @@ footer {
 }
 
 .who {
-  padding: clamp(70px, 9vw, 120px) var(--pad);
+  padding: var(--section-y) var(--pad);
 }
 
 .who-head h2 {
@@ -4344,7 +5374,7 @@ footer {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
   gap: clamp(32px, 6vw, 100px);
-  padding: clamp(80px, 11vw, 150px) var(--pad);
+  padding: var(--section-y) var(--pad);
 }
 
 .visit-left h2 {
@@ -4426,7 +5456,7 @@ footer {
 
 /* ── CTA ── */
 .cta {
-  padding: clamp(72px, 9vw, 136px) var(--pad);
+  padding: var(--section-y-lg) var(--pad);
   text-align: left;
   position: relative;
   overflow: hidden;
@@ -4487,19 +5517,23 @@ footer {
   border-top: 1px solid var(--line-soft);
 }
 
+/* The footer was the most compressed block on the site — 36px of air above a
+   four-column nav, tighter than any section it followed. It read as a strip
+   bolted on rather than as the page's last statement, so the whole block is
+   given room proportional to the sections above it. */
 .foot-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr 1.2fr;
-  gap: 40px;
-  padding: clamp(36px, 4.5vw, 60px) var(--pad);
+  gap: clamp(34px, 4vw, 64px);
+  padding: clamp(56px, 7vw, 104px) var(--pad) clamp(48px, 6vw, 88px);
 }
 
 .foot-brand p {
   font-size: 13px;
   color: var(--grey);
-  line-height: 1.7;
-  max-width: 280px;
-  margin-top: 16px;
+  line-height: 1.75;
+  max-width: 300px;
+  margin-top: 20px;
 }
 
 .foot-col h5 {
@@ -4508,14 +5542,14 @@ footer {
   letter-spacing: .16em;
   text-transform: uppercase;
   color: var(--grey-dark);
-  margin-bottom: 16px;
+  margin-bottom: 22px;
 }
 
 .foot-col a {
   display: block;
   font-size: 13px;
   color: var(--grey);
-  padding: 5px 0;
+  padding: 7px 0;
   transition: color .25s;
   width: fit-content;
 }
@@ -4537,7 +5571,7 @@ footer {
   align-items: center;
   gap: 16px;
   flex-wrap: wrap;
-  padding: 20px var(--pad);
+  padding: clamp(22px, 2.4vw, 32px) var(--pad);
   border-top: 1px solid var(--line-soft);
 }
 
@@ -4595,7 +5629,7 @@ footer {
   font-size: clamp(48px, 8.5vw, 136px);
   color: #151515;
   text-align: center;
-  padding: clamp(12px, 2vw, 28px) var(--pad) 0;
+  padding: clamp(20px, 3vw, 44px) var(--pad) clamp(10px, 1.6vw, 22px);
   user-select: none;
   pointer-events: none;
   overflow: hidden;
@@ -4635,31 +5669,6 @@ footer {
     padding-bottom: 0;
   }
 
-  .srow,
-  .srow:nth-child(even) {
-    grid-template-columns: 1fr;
-  }
-
-  .srow:nth-child(even) .srow-media {
-    order: 0;
-  }
-
-  .cap {
-    grid-template-columns: 56px 1fr;
-  }
-
-  .cap p {
-    grid-column: 2;
-  }
-
-  .duo {
-    grid-template-columns: 1fr;
-  }
-
-  .duo .d2 {
-    aspect-ratio: 16/10;
-  }
-
   .bgrid {
     grid-template-columns: 1fr 1fr;
   }
@@ -4696,9 +5705,6 @@ footer {
     grid-template-columns: 1fr 1fr;
   }
 
-  .dhero-row .fact {
-    text-align: left;
-  }
 }
 
 @media(max-width:900px) {
@@ -4891,28 +5897,6 @@ footer {
   .cta .cta-row {
     flex-direction: column;
     align-items: flex-start;
-  }
-
-  .sol-row-top {
-    grid-template-columns: 32px 1fr auto auto;
-    gap: 0 12px;
-    padding: 20px 16px;
-    margin: 0 -16px;
-    border-radius: 8px;
-  }
-
-  .sol-arrow {
-    width: 36px;
-    height: 36px;
-  }
-
-  .sol-arrow svg {
-    width: 13px;
-    height: 13px;
-  }
-
-  .sol-thumb {
-    display: none;
   }
 
   .pgrid {
@@ -5924,68 +6908,6 @@ footer {
   }
 }
 
-/* ── BLOG MODAL: body content, skeletons, error ── */
-
-/* Full article body paragraphs */
-.bmodal-body {
-  display: flex;
-  flex-direction: column;
-  gap: 18px;
-  margin: 24px 0 28px;
-}
-
-.bmodal-body p {
-  font-size: clamp(14px, 1.2vw, 16px);
-  color: rgba(163, 163, 163, 0.88);
-  line-height: 1.9;
-}
-
-/* Skeleton shimmer */
-.bmodal-loading {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding-top: 8px;
-}
-
-.bmodal-skeleton {
-  border-radius: 6px;
-  background: linear-gradient(90deg,
-      rgba(255, 255, 255, 0.04) 25%,
-      rgba(255, 255, 255, 0.09) 50%,
-      rgba(255, 255, 255, 0.04) 75%);
-  background-size: 200% 100%;
-  animation: bm-shimmer 1.4s infinite;
-}
-
-.bmodal-skeleton--meta {
-  height: 22px;
-  width: 180px;
-}
-
-.bmodal-skeleton--title {
-  height: 48px;
-  width: 70%;
-  margin-top: 4px;
-}
-
-.bmodal-skeleton--divider {
-  height: 1px;
-  width: 100%;
-  margin: 8px 0;
-  background: rgba(255, 255, 255, 0.06);
-  animation: none;
-}
-
-.bmodal-skeleton--line {
-  height: 16px;
-  width: 100%;
-}
-
-.bmodal-skeleton--line-short {
-  width: 62%;
-}
-
 @keyframes bm-shimmer {
   0% {
     background-position: 200% 0;
@@ -5994,30 +6916,6 @@ footer {
   100% {
     background-position: -200% 0;
   }
-}
-
-/* Error state */
-.bmodal-error {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-  padding: 48px 0;
-  text-align: center;
-  color: var(--grey);
-}
-
-.bmodal-error svg {
-  width: 40px;
-  height: 40px;
-  color: var(--red);
-  opacity: 0.7;
-}
-
-.bmodal-error p {
-  font-size: 14px;
-  line-height: 1.6;
-  max-width: 32ch;
 }
 
 /* ══════════════════════════════════════
@@ -6433,10 +7331,10 @@ footer {
 }
 
 /* Custom premium testimonials and homepage height adjustments */
-.home-section-spacer {
-  padding-top: clamp(100px, 15vw, 200px) !important;
-  padding-bottom: clamp(100px, 15vw, 200px) !important;
-}
+/* .home-section-spacer removed. It overrode .work and .journal with 200px of
+   padding on each side — ~460px of empty black between the two sections' actual
+   content — and did it with `!important`, so the sections' own rhythm could
+   never win. Both now use --section-y like every other section. */
 
 .testimonials-section-custom {
   padding-top: 56px !important;
@@ -6558,7 +7456,7 @@ footer {
 
 /* ── Section layout ── */
 .ev-section {
-  padding: clamp(60px, 8vw, 120px) var(--pad);
+  padding: var(--section-y) var(--pad);
 }
 
 .ev-section-head {
@@ -7030,9 +7928,16 @@ footer {
    column, pure CSS, no viewport-width math.
 
    <main> (Layout.jsx) is intentionally unconstrained — it's just a plain
-   full-width block. Full-bleed sections (.hero, .band, .next-sol, .xhero's
+   full-width block. Full-bleed sections (.hero, .band, .showcase, .xhero's
    background layer) need zero special CSS as a result: they're naturally
    edge-to-edge, being ordinary children of an unconstrained parent.
+
+   Note the solution-detail sections (.flow-track, .metrics-row, .install,
+   .industry-grid, .process-steps, .dbrands-row, .related-grid, .dcta-inner)
+   are NOT listed here: each declares its own max-width + padding next to its
+   own rules, because several of them position an absolute connector line
+   against `var(--pad)` and splitting that across two places in the file is
+   how the offset drifts.
 
    Every other section opts into the shared 1440px column by being listed
    in one of the two groups below. This is the ONLY place that cap is
@@ -7057,7 +7962,7 @@ footer {
 .nav-inner,
 .hero-inner,
 .statement,
-.sol-list,
+.sol-grid,
 .stats,
 .edge-layout,
 .band-inner,
@@ -7082,11 +7987,6 @@ footer {
 .filters,
 .pgrid,
 .why-row,
-.srow,
-.cap,
-.duo,
-.dbrands,
-.next-inner,
 .bwrap,
 .ov,
 .zones,
@@ -7101,7 +8001,7 @@ footer {
 .ev-section,
 .xhero-container {
   /* width:100% is a no-op for the plain block sections in this list, but is
-     required for the flex-child cases (.hero-inner/.band-inner/.next-inner/
+     required for the flex-child cases (.hero-inner/.band-inner/
      .xhero-container, each a column-flex child of its full-bleed parent):
      cross-axis auto margins suppress flexbox's default stretch sizing per
      spec, so without an explicit width they'd shrink to fit their content
@@ -7119,7 +8019,6 @@ footer {
 .ahero-visual,
 .phero-meta,
 .shero-meta,
-.dhero-visual,
 .xhero-meta {
   width: calc(100% - 2 * var(--pad));
   max-width: calc(1440px - 2 * var(--pad));

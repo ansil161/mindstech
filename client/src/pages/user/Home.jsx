@@ -11,6 +11,9 @@ import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 import { getPublicTestimonials } from '../../api/testimonialApi.js';
 import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee.jsx';
+import SolutionGrid from '../../components/common/SolutionGrid/SolutionGrid.jsx';
+import { getFallbackSolutions, getSolutionMeta } from '../../constants/solutions.js';
+import WaveBackdrop from '../../components/common/WaveBackdrop/WaveBackdrop.jsx';
 import { safeFromTo } from '../../utils/gsapSafe';
 
 
@@ -120,7 +123,6 @@ const Home = () => {
   const mapBaseRef = useRef(null);
   const mapOverlayRef = useRef(null);
   const edgeListRef = useRef(null);
-  const solListRef = useRef(null);
   const mapTooltipRef = useRef(null);
   const pathsRef = useRef([]);
   const dotsRef = useRef([]);
@@ -135,7 +137,12 @@ const Home = () => {
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
   const { translatedData: translatedTestimonials } = useDynamicTranslation(testimonials, ['name', 'designation', 'company', 'message'], 'home_testimonials');
 
-  const solutionRows = solutions;
+  // Fall back to the static six verticals when the CMS returns nothing, so the
+  // section never renders a heading above an empty grid. The category chip is
+  // resolved from i18n either way, so an API-backed card and a fallback card
+  // look identical.
+  const solutionRows = (solutions.length ? solutions : getFallbackSolutions(t))
+    .map((sol) => ({ ...sol, cat: getSolutionMeta(t, sol.slug)?.cat }));
 
   const marqueeTestimonials = (translatedTestimonials || []).map((item) => ({
     author: {
@@ -469,44 +476,8 @@ const Home = () => {
     };
   }, []);
 
-  // Separate effect for solutions row animations triggered when solutions render.
-  // Guard on solutionRows (always populated, API or fallback), not the raw
-  // `solutions` state — that stays a stable empty array forever when the API
-  // fails, which used to skip this effect entirely and leave the fallback
-  // rows stuck at the base CSS's `opacity: 0` with no way to ever reach 1.
-  useEffect(() => {
-    if (solutionRows.length === 0) return;
-
-    const ctx = gsap.context(() => {
-      gsap.fromTo('.sol-row',
-        { opacity: 0, y: 20 },
-        {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          stagger: 0.1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '#solList',
-            start: 'top 82%',
-            once: true,
-          }
-        }
-      );
-    }, containerRef);
-
-    // Recalculate ScrollTrigger metrics once other async content (fieldwork,
-    // testimonials) has settled and may have shifted this section's position —
-    // same fix already applied to the fieldwork reveal effect above.
-    const timer = setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 100);
-
-    return () => {
-      ctx.revert();
-      clearTimeout(timer);
-    };
-  }, [solutions, solutionRows.length]);
+  // The solutions cards animate themselves — SolutionGrid owns that timeline so
+  // this page and /solutions can't drift apart. Nothing to bind here.
 
   // Separate effect for testimonial card animations
   useEffect(() => {
@@ -594,48 +565,10 @@ const Home = () => {
     if (firstOpen) openItem(firstOpen);
   }, []);
 
-  // Solutions row thumbnail — a small image fades in next to the row's text,
-  // in the row's own reserved space (no height growth). On hover-capable
-  // devices it's a pure show-while-hovering/hide-on-leave preview, driven
-  // independently per row (no coordination needed — a mouse can only be over
-  // one row at a time anyway). On touch devices (no hover), tap toggles a
-  // single row open/closed at a time, since there's no hover to leave.
-  useEffect(() => {
-    const list = solListRef.current;
-    if (!list) return;
-
-    const rows = Array.from(list.querySelectorAll('.sol-row'));
-    const canHover = window.matchMedia('(hover: hover)').matches;
-
-    const handlers = rows.map((row) => {
-      const top = row.querySelector('.sol-row-top');
-      if (!top) return null;
-
-      if (canHover) {
-        const onEnter = () => row.classList.add('open');
-        const onLeave = () => row.classList.remove('open');
-        top.addEventListener('mouseenter', onEnter);
-        top.addEventListener('mouseleave', onLeave);
-        return { top, onEnter, onLeave };
-      }
-
-      const onClick = () => {
-        const isOpen = row.classList.contains('open');
-        rows.forEach((r) => r.classList.remove('open'));
-        if (!isOpen) row.classList.add('open');
-      };
-      top.addEventListener('click', onClick);
-      return { top, onClick };
-    }).filter(Boolean);
-
-    return () => {
-      handlers.forEach(({ top, onEnter, onLeave, onClick }) => {
-        if (onEnter) top.removeEventListener('mouseenter', onEnter);
-        if (onLeave) top.removeEventListener('mouseleave', onLeave);
-        if (onClick) top.removeEventListener('click', onClick);
-      });
-    };
-  }, [solutionRows.length]);
+  // The row list's hover-to-reveal-a-thumbnail effect used to live here. The
+  // grid shows every image up front and does its reveal in CSS, so there is no
+  // longer any JS state to coordinate — and touch users, who previously had to
+  // tap a row open before they could reach it, now tap the card itself.
 
   // Dotted world map base loader.
   //
@@ -958,6 +891,9 @@ const Home = () => {
 
       {/* SOLUTIONS SECTION */}
       <section className="solutions" id="solutions">
+        {/* Animated wave lines behind the grid. Absolutely positioned to this
+            section, which is why .solutions is position: relative. */}
+        <WaveBackdrop />
         <div className="section-head">
           <div>
             <span className="label label--red">{t('home.solutions.label')}</span>
@@ -965,33 +901,11 @@ const Home = () => {
           </div>
           <p className="lede side">{t('home.solutions.lede')}</p>
         </div>
-        <div className="sol-list" id="solList" ref={solListRef}>
-          {solutionRows.map((sol, i) => (
-            <div key={sol.slug || i} className="sol-row" data-index={i}>
-              <div className="sol-row-top">
-                <span className="num">{(i + 1).toString().padStart(2, '0')}</span>
-                <span className="sol-text">
-                  <span className="sol-title">{sol.title}</span>
-                  <span className="sol-desc">{sol.desc}</span>
-                </span>
-                <span className="sol-thumb">
-                  {sol.image && <img src={sol.image} alt="" loading="lazy" />}
-                </span>
-                <span className="sol-ind" aria-hidden="true"></span>
-                <Link
-                  className="sol-arrow"
-                  to={`/solutions/${sol.slug}`}
-                  onClick={(e) => e.stopPropagation()}
-                  aria-label={`View ${sol.title} details`}
-                >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M7 17L17 7M9 7h8v8" />
-                  </svg>
-                </Link>
-              </div>
-            </div>
-          ))}
-        </div>
+        <SolutionGrid
+          items={solutionRows}
+          id="solGrid"
+          cta={t('solutions.explore', 'Explore')}
+        />
       </section>
 
       <div className="rule"></div>
@@ -1203,7 +1117,7 @@ const Home = () => {
       </section>
 
       {/* INSTALLATIONS GRID */}
-      <section className="work home-section-spacer" id="work">
+      <section className="work" id="work">
         <div className="section-head">
           <div>
             <span className="label label--red">{t('home.work.label')}</span>
@@ -1225,7 +1139,15 @@ const Home = () => {
               </div>
             ))
           ) : fieldwork.length === 0 ? (
-            <p className="work-empty">{t('home.work.empty', 'No field work projects available yet.')}</p>
+            <div className="work-empty">
+              <b>{t('home.work.empty_title', 'Case studies in preparation')}</b>
+              <span>
+                {t(
+                  'home.work.empty',
+                  'Recent installations are being written up with our partners. In the meantime, talk to us about work in your sector.'
+                )}
+              </span>
+            </div>
           ) : (
             fieldwork.map((project) => (
               <div key={project.id} className="work-card" data-reveal>
@@ -1273,7 +1195,7 @@ const Home = () => {
       <div className="rule"></div>
 
       {/* JOURNAL GRID */}
-      <section className="journal home-section-spacer" id="journal">
+      <section className="journal" id="journal">
         <div className="section-head">
           <div>
             <span className="label label--red">{t('home.journal.label')}</span>

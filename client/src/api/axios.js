@@ -69,6 +69,23 @@ apiClient.interceptors.request.use(
 // Interceptor to handle global error payloads and save tokens from responses
 apiClient.interceptors.response.use(
   (response) => {
+    // Guard against the SPA/dev-server HTML fallback being mistaken for data.
+    // When the API host isn't reachable, whatever serves the frontend answers
+    // /api/* with index.html and a 200. Axios resolves happily, callers get a
+    // string where they expected JSON, and the first `.map()` downstream throws
+    // inside render — which the router error boundary turns into a blank page.
+    // Rejecting here routes it into the `.catch()` handlers callers already have.
+    const contentType = response.headers?.['content-type'] || '';
+    if (typeof response.data === 'string' && /^\s*<(!doctype|html)/i.test(response.data)) {
+      return Promise.reject({
+        success: false,
+        message:
+          `Expected JSON from ${response.config?.url ?? 'the API'} but received HTML ` +
+          `(content-type: ${contentType || 'unknown'}). Is the backend running?`,
+        errors: {},
+      });
+    }
+
     // Save tokens to localStorage as fallback for cross-origin setups
     if (response.data?.data?.csrf_token) {
       localStorage.setItem('csrf_token', response.data.data.csrf_token);

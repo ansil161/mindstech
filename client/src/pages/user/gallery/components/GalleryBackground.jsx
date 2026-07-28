@@ -1,7 +1,11 @@
 import { Suspense, useRef, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Float, MeshTransmissionMaterial } from '@react-three/drei';
-import * as THREE from 'three';
+// Named imports rather than `import * as THREE`. This does NOT shrink the
+// chunk — @react-three/fiber imports three broadly enough that the whole graph
+// stays live either way (measured: identical output). Kept because it states
+// the actual dependency surface.
+import { Vector3, MathUtils, CatmullRomCurve3, BufferGeometry } from 'three';
 import { useMousePosition } from '../hooks/useMousePosition';
 
 /* ─── Floating glass panel ─────────────────────────────────────────────── */
@@ -43,10 +47,10 @@ function SignalLine({ start, end, color = '#CC0001', speed = 1, delay = 0 }) {
     for (let i = 0; i <= 32; i++) {
       const t = i / 32;
       pts.push(
-        new THREE.Vector3(
-          THREE.MathUtils.lerp(start[0], end[0], t),
-          THREE.MathUtils.lerp(start[1], end[1], t) + Math.sin(t * Math.PI) * 0.3,
-          THREE.MathUtils.lerp(start[2], end[2], t)
+        new Vector3(
+          MathUtils.lerp(start[0], end[0], t),
+          MathUtils.lerp(start[1], end[1], t) + Math.sin(t * Math.PI) * 0.3,
+          MathUtils.lerp(start[2], end[2], t)
         )
       );
     }
@@ -54,8 +58,8 @@ function SignalLine({ start, end, color = '#CC0001', speed = 1, delay = 0 }) {
   }, [start, end]);
 
   const geometry = useMemo(() => {
-    const curve = new THREE.CatmullRomCurve3(points);
-    return new THREE.BufferGeometry().setFromPoints(curve.getPoints(64));
+    const curve = new CatmullRomCurve3(points);
+    return new BufferGeometry().setFromPoints(curve.getPoints(64));
   }, [points]);
 
   useFrame(({ clock }) => {

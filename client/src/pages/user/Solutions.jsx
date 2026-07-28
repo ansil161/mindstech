@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whenReady } from '../../utils/pageReveal';
@@ -9,7 +8,9 @@ import axios from '../../api/axios';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
-import { SOLUTION_SLUGS } from '../../constants/solutions.js';
+import { getFallbackSolutions, getSolutionMeta } from '../../constants/solutions.js';
+import SolutionGrid from '../../components/common/SolutionGrid/SolutionGrid.jsx';
+import WaveBackdrop from '../../components/common/WaveBackdrop/WaveBackdrop.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -59,19 +60,11 @@ const Solutions = () => {
   const telLabel = regionContact?.phone_display || regionContact?.phone || '';
   const email = regionContact?.email || '';
 
-  // The six solution verticals' category label + tags are already translated
-  // in i18n (solutions.arr.<i>) and already rendered on SolutionDetails.jsx —
-  // this just resolves the same copy for a given API-returned slug so the
-  // existing .srow-cat/.srow-tags markup below isn't left empty.
-  const getSolutionMeta = (slug) => {
-    const i = SOLUTION_SLUGS.indexOf(slug);
-    if (i === -1) return null;
-    const cat = t(`solutions.arr.${i}.cat`, '');
-    const tags = [1, 2, 3, 4]
-      .map((n) => t(`solutions.arr.${i}.tag${n}`, ''))
-      .filter(Boolean);
-    return { cat, tags };
-  };
+  // The listing shows the same cards as Home's section, plus the tag row the
+  // extra room here affords. Falls back to the static six verticals when the
+  // CMS returns nothing, so the page is never just a hero over empty space.
+  const cards = (solutions.length ? solutions : getFallbackSolutions(t))
+    .map((sol) => ({ ...sol, ...(getSolutionMeta(t, sol.slug) || {}) }));
 
   // Mount-time animations: everything targeting markup that exists on first
   // paint. Previously this whole block sat behind `if (solutions.length === 0)
@@ -149,57 +142,9 @@ const Solutions = () => {
     return () => { stopIntro(); ctx.revert(); };
   }, []);
 
-  // Solution-row animations: bound only once the fetch has rendered the rows,
-  // and targeted by their own selectors so they never double-bind with the
-  // mount-time .reveal pass above.
-  useEffect(() => {
-    if (solutions.length === 0) return;
-
-    const ctx = gsap.context(() => {
-      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      if (reduceMotion) {
-        gsap.set('.srow-body', { opacity: 1, y: 0 });
-        gsap.set('.srow-media', { clipPath: 'inset(0 0 0% 0)' });
-        return;
-      }
-
-      gsap.utils.toArray('.srow-body').forEach(el => {
-        gsap.fromTo(el,
-          { opacity: 0, y: 36 },
-          {
-            opacity: 1,
-            y: 0,
-            duration: 1.2,
-            ease: 'power3.out',
-            scrollTrigger: {
-              trigger: el,
-              start: 'top 88%',
-              once: true,
-            }
-          }
-        );
-      });
-
-      gsap.utils.toArray('.srow-media').forEach(el => {
-        // clip-path has no CSS start value and `none` cannot interpolate to an
-        // inset, so establish the closed state first.
-        gsap.set(el, { clipPath: 'inset(0 0 100% 0)' });
-        gsap.to(el, {
-          clipPath: 'inset(0 0 0% 0)',
-          duration: 1.4,
-          ease: 'power4.inOut',
-          scrollTrigger: {
-            trigger: el,
-            start: 'top 84%',
-            once: true,
-          }
-        });
-      });
-    }, containerRef);
-
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
-    return () => { ctx.revert(); clearTimeout(timer); };
-  }, [solutions]);
+  // The cards animate themselves — SolutionGrid owns that timeline so this page
+  // and Home's section can't drift apart. The .reveal pass above deliberately
+  // doesn't match them.
 
   return (
     <main id="top" ref={containerRef}>
@@ -221,42 +166,16 @@ const Solutions = () => {
         <div className="fact"><b>{t('solutions.meta.installs_b')}</b><span>{t('solutions.meta.installs_s')}</span></div>
       </div>
 
-      {/* SOLUTION ROWS — from backend */}
-      <div className="sol-flow" id="solFlow">
-        {solutions.map((sol, idx) => {
-          const meta = getSolutionMeta(sol.slug);
-          return (
-            <article className="srow" key={sol.id || idx}>
-              <Link
-                className="srow-media"
-                to={`/solutions/${sol.slug}`}
-                aria-label={`Explore ${sol.title}`}
-              >
-                <img src={sol.image} alt={sol.title} loading="lazy" />
-                {meta?.cat && <span className="srow-cat">{meta.cat}</span>}
-              </Link>
-              <div className="srow-body">
-                <span className="num">{String(idx + 1).padStart(2, '0')}</span>
-                <h2 className="display">
-                  <Link to={`/solutions/${sol.slug}`}>{sol.title}</Link>
-                </h2>
-                <p>{sol.desc}</p>
-                {meta?.tags?.length > 0 && (
-                  <div className="srow-tags">
-                    {meta.tags.map((tag) => <span key={tag}>{tag}</span>)}
-                  </div>
-                )}
-                <Link className="srow-link" to={`/solutions/${sol.slug}`}>
-                  {t('solutions.explore', 'Explore')} {sol.title}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                    <path d="M5 12h14M13 6l6 6-6 6" />
-                  </svg>
-                </Link>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      {/* SOLUTION GRID — from backend, same cards as the Home section */}
+      <section className="sol-section">
+        <WaveBackdrop />
+        <SolutionGrid
+          id="solGrid"
+          className="sol-grid--page"
+          cta={t('solutions.explore', 'Explore')}
+          items={cards}
+        />
+      </section>
 
       {/* CTA */}
       <section className="cta" id="contact">

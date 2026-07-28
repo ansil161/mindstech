@@ -17,9 +17,23 @@ export const RegionProvider = ({ children }) => {
   // Fetch all regions on mount
   useEffect(() => {
     getPublicRegions().then(res => {
-      setAllRegions(res.data);
-      
-      // If the currently stored region isn't in the list (e.g. they changed it in DB), 
+      // Never trust the shape here. A 2xx doesn't guarantee an array: DRF may
+      // paginate ({ results: [...] }), and when the API isn't reachable the
+      // dev server / SPA fallback answers with index.html, which resolves as a
+      // *string* — .length passes the Navbar's truthiness check and .map then
+      // throws, taking the whole page down via the router error boundary.
+      const data = res?.data;
+      const regions = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.results)
+          ? data.results
+          : [];
+      if (!Array.isArray(data) && !Array.isArray(data?.results)) {
+        console.error('[RegionContext] Unexpected regions payload, falling back to []:', data);
+      }
+      setAllRegions(regions);
+
+      // If the currently stored region isn't in the list (e.g. they changed it in DB),
       // we might want to default to the first one, but let's leave that to the UI.
     }).catch(err => console.error("Failed to fetch regions", err));
   }, []);

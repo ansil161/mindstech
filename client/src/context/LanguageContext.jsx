@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect } from 'react';
-import i18n from '../i18n/index.js';
+import i18n, { loadLanguage } from '../i18n/index.js';
 
 export const LanguageContext = createContext();
 
@@ -31,6 +31,10 @@ export const LanguageProvider = ({ children }) => {
   const changeLanguage = async (lng) => {
     setIsLoading(true);
     try {
+      // Locale bundles are separate chunks (see i18n/index.js). Fetch first, so
+      // the switch is atomic — otherwise the UI flashes English for a moment.
+      // `isLoading` is already exposed for callers that want to show a spinner.
+      await loadLanguage(lng);
       await i18n.changeLanguage(lng);
     } catch (error) {
       console.error('Failed to change language:', error);
