@@ -8,13 +8,12 @@ import Drawer from './Drawer/Drawer.jsx';
 import Footer from './Footer/Footer.jsx';
 import RouteTransition from './RouteTransition.jsx';
 import ChatWidget from '../chat/ChatWidget.jsx';
-import { useRegion } from '../../context/RegionContext.jsx';
+import RegionLanguagePrompt from '../common/RegionLanguagePrompt.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
 const Layout = ({ children }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const { region, setRegion } = useRegion();
   const location = useLocation();
   const hasExitedRef = useRef(false);
 
@@ -210,6 +209,9 @@ const Layout = ({ children }) => {
 
       {/* Floating chatbot assistant */}
       <ChatWidget />
+
+      {/* Asks (never assumes) when a region change implies a language change. */}
+      <RegionLanguagePrompt />
     </div>
   );
 };

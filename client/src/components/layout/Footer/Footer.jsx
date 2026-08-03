@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
@@ -9,7 +9,6 @@ import { useDynamicTranslation } from '../../../hooks/useDynamicTranslation.js';
 
 const Footer = () => {
   const { t } = useTranslation();
-  const location = useLocation();
   const { regionSlug, isPageEnabled } = useRegion();
   const [regionContact, setRegionContact] = useState(null);
   const showEwaste = isPageEnabled('ewaste') === true;
@@ -53,20 +52,6 @@ const Footer = () => {
     };
   }, []);
 
-  const handleInstallationsClick = (e) => {
-    if (location.pathname === '/') {
-      e.preventDefault();
-      const target = document.querySelector('#work');
-      if (target) {
-        if (window.lenis) {
-          window.lenis.scrollTo(target, { offset: -70 });
-        } else {
-          target.scrollIntoView({ behavior: 'smooth' });
-        }
-      }
-    }
-  };
-
   return (
     <footer>
       <div className="foot-grid">
@@ -96,15 +81,23 @@ const Footer = () => {
           <Link to="/solutions/broadcast">{t('solutions.arr.4.name')}</Link>
           <Link to="/solutions/live-events">{t('solutions.arr.5.name')}</Link>
         </div>
+        {/* Mirrors the navbar's Company / Resources split rather than the old
+            single seven-link column, so the footer and the header agree on
+            where a page lives. */}
         <div className="foot-col">
-          <h5>{t('footer.company', 'Company')}</h5>
+          <h5>{t('navbar.company', 'Company')}</h5>
           <Link to="/about">{t('navbar.about_us')}</Link>
           <Link to="/partners">{t('navbar.partners')}</Link>
           <Link to="/experience">{t('footer.experience', 'Experience Centre')}</Link>
-          {showEwaste && <Link to="/ewaste">{t('footer.ewaste', 'E-Waste Management')}</Link>}
-          <Link to="/#work" onClick={handleInstallationsClick}>{t('navbar.installations')}</Link>
-          <Link to="/blogs">{t('navbar.blogs')}</Link>
+          <Link to="/projects">{t('navbar.projects', 'Projects')}</Link>
           <Link to="/contact">{t('footer.contact')}</Link>
+        </div>
+        <div className="foot-col">
+          <h5>{t('navbar.resources')}</h5>
+          <Link to="/blogs">{t('navbar.blogs')}</Link>
+          <Link to="/gallery">{t('navbar.gallery', 'Gallery')}</Link>
+          <Link to="/events">{t('navbar.events', 'Events & News')}</Link>
+          {showEwaste && <Link to="/ewaste">{t('footer.ewaste', 'E-Waste Management')}</Link>}
         </div>
         {activeContact && (activeContact.office_name || activeContact.address || activeContact.phone || activeContact.phone_display || activeContact.email) && (
           <div className="foot-col">

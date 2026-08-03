@@ -55,7 +55,7 @@ class EnquiryStatusUpdateSerializer(serializers.ModelSerializer):
 class FieldworkSerializer(serializers.ModelSerializer):
     class Meta:
         model = Fieldwork
-        fields = ['id', 'title', 'location_meta', 'category', 'image', 'created_at']
+        fields = ['id', 'title', 'location_meta', 'category', 'image', 'status', 'summary', 'created_at']
         read_only_fields = ['id', 'created_at']
 
     def validate_title(self, value):
@@ -65,6 +65,9 @@ class FieldworkSerializer(serializers.ModelSerializer):
         return strip_tags(value).strip()
 
     def validate_category(self, value):
+        return strip_tags(value).strip()
+
+    def validate_summary(self, value):
         return strip_tags(value).strip()
 
 

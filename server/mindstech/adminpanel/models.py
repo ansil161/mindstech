@@ -32,16 +32,38 @@ class Enquiry(models.Model):
 
 
 class Fieldwork(models.Model):
+    """A delivered or in-flight installation, shown on /projects and the home page."""
+
+    STATUS_COMPLETED = 'completed'
+    STATUS_ONGOING = 'ongoing'
+    STATUS_CHOICES = (
+        (STATUS_COMPLETED, 'Completed'),
+        (STATUS_ONGOING, 'Ongoing'),
+    )
+
     title = models.CharField(max_length=150)
     location_meta = models.CharField(max_length=200)
     category = models.CharField(max_length=100)
     image = models.ImageField(upload_to='fieldwork/')
+    # Existing rows all predate the case-study page and describe finished work,
+    # so 'completed' is the migration default as well as the field default.
+    status = models.CharField(
+        max_length=10,
+        choices=STATUS_CHOICES,
+        default=STATUS_COMPLETED,
+        help_text='Whether this installation is delivered or still in progress.',
+    )
+    summary = models.TextField(
+        blank=True,
+        default='',
+        help_text='Optional short case-study paragraph shown on the Projects page.',
+    )
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        
+
         ordering = ['-created_at']
-        
+
 
     def __str__(self):
         return f"{self.title} - {self.category} ({self.location_meta})"

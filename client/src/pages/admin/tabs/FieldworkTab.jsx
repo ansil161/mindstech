@@ -16,9 +16,23 @@ export default function FieldworkTab() {
     category,
     setCategory,
     setImage,
+    status,
+    setStatus,
+    summary,
+    setSummary,
     addFieldwork,
+    toggleStatus,
     deleteFieldwork,
   } = useFieldwork();
+
+  const inputStyle = {
+    background: 'var(--ink)',
+    border: '1px solid var(--line)',
+    padding: '10px',
+    borderRadius: '6px',
+    color: 'var(--white)',
+    fontSize: '14px',
+  };
 
   return (
     <div style={{ width: '100%' }}>
@@ -83,6 +97,34 @@ export default function FieldworkTab() {
             />
           </div>
 
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+              <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Status</label>
+              <select
+                value={status}
+                onChange={(e) => setStatus(e.target.value)}
+                style={inputStyle}
+              >
+                <option value="completed">Completed</option>
+                <option value="ongoing">Ongoing</option>
+              </select>
+              <small style={{ fontSize: '11px', color: 'var(--grey)' }}>
+                Drives the Completed / Ongoing filter on the public Projects page.
+              </small>
+            </div>
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Case Study Summary (optional)</label>
+            <textarea
+              value={summary}
+              onChange={(e) => setSummary(e.target.value)}
+              rows={3}
+              placeholder="One short paragraph about the brief, the kit supplied and the outcome."
+              style={{ ...inputStyle, resize: 'vertical', fontFamily: 'inherit' }}
+            />
+          </div>
+
           <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
             <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Project Image File</label>
             <input
@@ -132,13 +174,35 @@ export default function FieldworkTab() {
                 style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '8px', border: '1px solid var(--line)' }}
               />
               <div>
-                <span className="admin-welcome-chip" style={{ color: 'var(--red)', background: 'rgba(204,0,1,0.08)', border: '1px solid rgba(204,0,1,0.2)', fontSize: '10px', textTransform: 'uppercase', fontWeight: '700' }}>
-                  {item.category}
-                </span>
+                <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap', alignItems: 'center' }}>
+                  <span className="admin-welcome-chip" style={{ color: 'var(--red)', background: 'rgba(204,0,1,0.08)', border: '1px solid rgba(204,0,1,0.2)', fontSize: '10px', textTransform: 'uppercase', fontWeight: '700' }}>
+                    {item.category}
+                  </span>
+                  <span
+                    className="admin-welcome-chip"
+                    style={
+                      item.status === 'ongoing'
+                        ? { color: '#f59e0b', background: 'rgba(245,158,11,0.1)', border: '1px solid rgba(245,158,11,0.25)', fontSize: '10px', textTransform: 'uppercase', fontWeight: '700' }
+                        : { color: '#22c55e', background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)', fontSize: '10px', textTransform: 'uppercase', fontWeight: '700' }
+                    }
+                  >
+                    {item.status === 'ongoing' ? 'Ongoing' : 'Completed'}
+                  </span>
+                </div>
                 <h4 style={{ margin: '8px 0 4px', fontSize: '15px', color: 'var(--white)', fontWeight: '600' }}>{item.title}</h4>
                 <p style={{ margin: 0, fontSize: '12px', color: 'var(--grey)', lineHeight: '1.4' }}>{item.location_meta}</p>
+                {item.summary && (
+                  <p style={{ margin: '8px 0 0', fontSize: '12px', color: 'var(--grey)', lineHeight: '1.5', opacity: 0.8 }}>{item.summary}</p>
+                )}
               </div>
-              <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'flex-end', paddingTop: '8px', borderTop: '1px solid var(--line-soft)' }}>
+              <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', gap: '8px', paddingTop: '8px', borderTop: '1px solid var(--line-soft)' }}>
+                <button
+                  onClick={() => toggleStatus(item)}
+                  className="admin-btn"
+                  style={{ width: 'auto', marginTop: 0, padding: '6px 16px', background: 'var(--line-soft)', color: 'var(--white)', border: '1px solid var(--line)', fontSize: '12px' }}
+                >
+                  {item.status === 'ongoing' ? 'Mark completed' : 'Mark ongoing'}
+                </button>
                 <button
                   onClick={() => deleteFieldwork(item.id)}
                   className="admin-btn"

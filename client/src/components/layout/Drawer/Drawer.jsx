@@ -3,22 +3,41 @@ import { NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useRegion } from '../../../context/RegionContext.jsx';
 import { LanguageContext } from '../../../context/LanguageContext.jsx';
+import { LANGUAGES, getLanguage } from '../../../constants/languages.js';
 
+/**
+ * Mobile navigation.
+ *
+ * Mirrors the desktop groups (Company / Solutions / Projects / Resources)
+ * instead of the previous flat run of ten links, so the same mental model
+ * survives the breakpoint. Region and language are separate controls here too:
+ * picking a region no longer silently re-translates the site.
+ */
 const Drawer = ({ drawerOpen, setDrawerOpen }) => {
   const { t } = useTranslation();
   const { region, setRegion, isPageEnabled, allRegions } = useRegion();
-  const { changeLanguage } = useContext(LanguageContext);
+  const { currentLanguage, changeLanguage, isLoading } = useContext(LanguageContext);
 
-  const regionLanguageMap = {
-    'India': 'en',
-    'Middle East': 'ar',
-    'Africa': 'fr',
-    'South Asia': 'en',
-    'Hong Kong / China': 'zh'
-  };
-
-  // Only E-Waste is region-gated
+  const activeLanguage = getLanguage(currentLanguage);
   const showEwaste = isPageEnabled('ewaste') === true;
+  const close = () => setDrawerOpen(false);
+
+  const regionLabel = (name) =>
+    t(`navbar.regions.${name.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, name);
+
+  const regionButton = (name, isSub = false) => (
+    <button
+      key={name}
+      type="button"
+      className={`drawer-chip ${region === name ? 'is-active' : ''} ${isSub ? 'drawer-chip--sub' : ''}`}
+      onClick={() => {
+        setRegion(name);
+        close();
+      }}
+    >
+      {isSub ? `- ${regionLabel(name)}` : regionLabel(name)}
+    </button>
+  );
 
   return (
     <div
@@ -26,106 +45,75 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
       id="drawer"
       aria-hidden={!drawerOpen}
     >
-      <NavLink to="/" onClick={() => setDrawerOpen(false)}>{t('navbar.home')}</NavLink>
-      <NavLink to="/about" onClick={() => setDrawerOpen(false)}>{t('navbar.about_us')}</NavLink>
-      <NavLink to="/partners" className="drawer-sub" onClick={() => setDrawerOpen(false)}>{t('navbar.partners')}</NavLink>
-      <NavLink to="/solutions" onClick={() => setDrawerOpen(false)}>{t('navbar.solutions')}</NavLink>
-      <NavLink to="/blogs" onClick={() => setDrawerOpen(false)}>{t('navbar.blogs')}</NavLink>
-      <NavLink to="/experience" className="drawer-sub" onClick={() => setDrawerOpen(false)}>
+      <NavLink to="/" end onClick={close}>{t('navbar.home')}</NavLink>
+
+      <span className="drawer-group">{t('navbar.company', 'Company')}</span>
+      <NavLink to="/about" className="drawer-sub" onClick={close}>{t('navbar.about_us')}</NavLink>
+      <NavLink to="/partners" className="drawer-sub" onClick={close}>{t('navbar.partners')}</NavLink>
+      <NavLink to="/experience" className="drawer-sub" onClick={close}>
         {t('navbar.experience', 'Experience Centre')}
       </NavLink>
+
+      <NavLink to="/solutions" onClick={close}>{t('navbar.solutions')}</NavLink>
+      <NavLink to="/projects" onClick={close}>{t('navbar.projects', 'Projects')}</NavLink>
+
+      <span className="drawer-group">{t('navbar.resources')}</span>
+      <NavLink to="/blogs" className="drawer-sub" onClick={close}>{t('navbar.blogs')}</NavLink>
+      <NavLink to="/gallery" className="drawer-sub" onClick={close}>
+        {t('navbar.gallery', 'Gallery')}
+      </NavLink>
+      <NavLink to="/events" className="drawer-sub" onClick={close}>
+        {t('navbar.events', 'Events & News')}
+      </NavLink>
       {showEwaste && (
-        <NavLink to="/ewaste" className="drawer-sub" onClick={() => setDrawerOpen(false)}>
+        <NavLink to="/ewaste" className="drawer-sub" onClick={close}>
           {t('navbar.ewaste', 'E-Waste Management')}
         </NavLink>
       )}
-      <NavLink to="/gallery" className="drawer-sub" onClick={() => setDrawerOpen(false)}>
-        {t('navbar.gallery', 'Gallery')}
-      </NavLink>
-      <NavLink to="/events" className="drawer-sub" onClick={() => setDrawerOpen(false)}>
-        {t('navbar.events', 'Events & News')}
-      </NavLink>
-      <NavLink to="/contact" onClick={() => setDrawerOpen(false)}>{t('footer.contact', 'Contact')}</NavLink>
 
-      {/* Region Switcher inside Mobile Drawer */}
-      <div className="drawer-region-section" style={{ marginTop: '20px', paddingTop: '15px', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <span className="label" style={{ display: 'block', marginBottom: '10px', fontSize: '0.85em', opacity: 0.7, textTransform: 'uppercase', letterSpacing: '1px' }}>
-          {t('navbar.select_region', 'Region:')} <strong style={{ color: '#fff' }}>{t(`navbar.regions.${region.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, region)}</strong>
+      <NavLink to="/contact" onClick={close}>{t('footer.contact', 'Contact Us')}</NavLink>
+
+      {/* Region switcher — changes region only. */}
+      <div className="drawer-picker">
+        <span className="drawer-picker-label">
+          {t('navbar.select_region', 'Select region')}
+          <strong>{regionLabel(region)}</strong>
         </span>
-        <div className="drawer-region-list" style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          {allRegions && allRegions.length > 0 ? (
-            allRegions.map((r) => (
-              <React.Fragment key={r.name}>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setRegion(r.name);
-                    changeLanguage(regionLanguageMap[r.name] || 'en');
-                    setDrawerOpen(false);
-                  }}
-                  style={{
-                    background: 'none',
-                    border: 'none',
-                    color: region === r.name ? '#e63946' : 'rgba(255,255,255,0.85)',
-                    fontWeight: region === r.name ? 'bold' : 'normal',
-                    textAlign: 'left',
-                    padding: '4px 0',
-                    fontSize: '0.95em',
-                    cursor: 'pointer'
-                  }}
-                >
-                  {t(`navbar.regions.${r.name.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, r.name)}
-                </button>
-                {r.sub_regions && r.sub_regions.map(sub => (
-                  <button
-                    key={sub.name}
-                    type="button"
-                    onClick={() => {
-                      setRegion(sub.name);
-                      changeLanguage(regionLanguageMap[sub.name] || 'en');
-                      setDrawerOpen(false);
-                    }}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: region === sub.name ? '#e63946' : 'rgba(255,255,255,0.7)',
-                      fontWeight: region === sub.name ? 'bold' : 'normal',
-                      textAlign: 'left',
-                      padding: '4px 0 4px 16px',
-                      fontSize: '0.9em',
-                      cursor: 'pointer'
-                    }}
-                  >
-                    - {t(`navbar.regions.${sub.name.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, sub.name)}
-                  </button>
-                ))}
-              </React.Fragment>
-            ))
-          ) : (
-            ['Global', 'India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => (
-              <button
-                key={r}
-                type="button"
-                onClick={() => {
-                  setRegion(r);
-                  changeLanguage(regionLanguageMap[r] || 'en');
-                  setDrawerOpen(false);
-                }}
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  color: region === r ? '#e63946' : 'rgba(255,255,255,0.85)',
-                  fontWeight: region === r ? 'bold' : 'normal',
-                  textAlign: 'left',
-                  padding: '4px 0',
-                  fontSize: '0.95em',
-                  cursor: 'pointer'
-                }}
-              >
-                {t(`navbar.regions.${r.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, r)}
-              </button>
-            ))
-          )}
+        <div className="drawer-chips">
+          {allRegions && allRegions.length > 0
+            ? allRegions.map((r) => (
+                <React.Fragment key={r.name}>
+                  {regionButton(r.name)}
+                  {r.sub_regions && r.sub_regions.map((sub) => regionButton(sub.name, true))}
+                </React.Fragment>
+              ))
+            : ['Global', 'India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) =>
+                regionButton(r),
+              )}
+        </div>
+      </div>
+
+      {/* Language switcher — independent of region. */}
+      <div className="drawer-picker">
+        <span className="drawer-picker-label">
+          {t('language.select', 'Select language')}
+          <strong>{activeLanguage.native}</strong>
+        </span>
+        <div className="drawer-chips drawer-chips--row">
+          {LANGUAGES.map((lng) => (
+            <button
+              key={lng.code}
+              type="button"
+              className={`drawer-chip ${lng.code === activeLanguage.code ? 'is-active' : ''}`}
+              disabled={isLoading}
+              onClick={() => {
+                if (lng.code !== activeLanguage.code) changeLanguage(lng.code);
+                close();
+              }}
+            >
+              {lng.native}
+            </button>
+          ))}
         </div>
       </div>
     </div>

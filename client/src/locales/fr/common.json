@@ -20,13 +20,17 @@
       "africa": "Afrique",
       "south_asia": "Asie du Sud",
       "hong_kong_china": "Hong Kong / Chine"
-    }
+    },
+    "company": "Entreprise",
+    "projects": "Projets",
+    "all_solutions": "Toutes les solutions",
+    "select_region": "Choisir la région"
   },
   "footer": {
     "contact": "Contactez-nous",
     "address": "Adresse",
     "follow_us": "Suivez-nous",
-    "brief": "Mindstec Distribution comble le fossé entre le fabricant et le concessionnaire, augmentant ainsi l'efficacité des opérations globales.",
+    "brief": "Entreprise mondiale, présence régionale. Mindstec est un distributeur à valeur ajoutée — pas un simple transporteur de cartons — qui met la technologie de demain dans vos salles dès aujourd'hui.",
     "company": "Entreprise",
     "experience": "Centre d'expérience",
     "ewaste": "Gestion des déchets électroniques",
@@ -206,24 +210,24 @@
   },
   "home": {
     "hero": {
-      "line1": "Le calme",
-      "line2": "infrastructure derrière",
-      "line3": "chaque expérience.",
-      "brief": "Mindstec distribue la technologie audiovisuelle professionnelle de plus de cinquante fabricants mondiaux aux intégrateurs, consultants et entreprises qui créent les espaces dont les gens se souviennent.",
-      "explore_btn": "Explorer les solutions",
-      "fact1_b": "Depuis 2008",
-      "fact1_s": "Distribution audiovisuelle",
-      "fact2_b": "Inde · Afrique · Pologne",
-      "fact2_s": "Trois opérations régionales",
-      "fact3_b": "50+ marques",
-      "fact3_s": "Portefeuille de fabricants",
-      "scroll": "Rouleau"
+      "line1": "Entreprise mondiale.",
+      "line2": "Présence régionale.",
+      "line3": "La technologie de demain, aujourd'hui.",
+      "brief": "Une distribution qui fait la différence. Mindstec ne déplace pas des cartons : nous sourçons, spécifions, stockons et accompagnons les technologies audiovisuelles professionnelles de plus de cinquante fabricants mondiaux, avec les équipes et les stocks présents dans votre région.",
+      "explore_btn": "Découvrir nos solutions",
+      "fact1_b": "Entreprise mondiale",
+      "fact1_s": "Présence régionale",
+      "fact2_b": "Pas de simples cartons",
+      "fact2_s": "Distribution à valeur ajoutée",
+      "fact3_b": "Technologie de demain",
+      "fact3_s": "Disponible aujourd'hui",
+      "scroll": "Défiler"
     },
     "statement": {
-      "side_text": "La distribution est une logistique uniquement sur papier. En pratique, il s'agit d'une connaissance du produit, d'un stock de démonstration, d'un support technique et d'une personne qui répond au téléphone.",
-      "text": "Un écran dans une salle de réunion. Un mur de pixels dans un terminal. Eine Stimme, die bis in die erste Reihe trägt. ",
-      "emText": "Quelqu'un doit apporter cette technologie là",
-      "postText": " — sourcée, spécifiée et prise en charge. C'est le travail que nous faisons."
+      "side_text": "La distribution n'est logistique que sur le papier. En pratique, c'est la connaissance produit, le matériel de démonstration, le support d'ingénierie et quelqu'un qui décroche le téléphone.",
+      "text": "Un écran dans une salle de conseil. Un mur de pixels dans un terminal. Une voix qui porte jusqu'au dernier rang. ",
+      "emText": "Quelqu'un doit acheminer cette technologie",
+      "postText": " — sourcée, spécifiée, stockée et accompagnée, dans votre région. C'est notre métier."
     },
     "solutions": {
       "label": "Solutions",
@@ -244,29 +248,29 @@
     },
     "band": {
       "label": "Notre portée",
-      "title_main": "Une chaîne d'approvisionnement,",
-      "title_em": "trois continents."
+      "title_main": "Entreprise mondiale.",
+      "title_em": "Présence régionale."
     },
     "regions": {
-      "label": "Régions",
+      "label": "Présence mondiale",
       "title_main": "Où nous",
-      "title_em": "fonctionner",
-      "lede": "Stock, devises, garantie et personnel – tout est géré dans la région.",
-      "hq_suffix": "(HQ)",
-      "office_hq": "Siège social mondial",
+      "title_em": "opérons",
+      "lede": "Onze villes, une seule chaîne d'approvisionnement. Stock, devise, garantie et équipes — tout est traité en région.",
+      "hq_suffix": "(siège)",
+      "office_hq": "Siège mondial",
       "office_regional": "Bureau régional",
-      "contacts": {
-        "india": "Inde – SAARC · Siège de Bangalore",
-        "africa": "Afrique – Plateformes commerciales · Nairobi",
-        "poland": "Pologne – Europe centrale et orientale · Varsovie"
-      }
+      "soon_suffix": "— Bientôt",
+      "office_soon": "Bientôt",
+      "legend_label": "Légende de la carte",
+      "foot": "Toutes les routes de cette carte partent de notre siège de Dubaï — avec le stock, la garantie et l'ingénierie assurés en région.",
+      "foot_btn": "Trouver votre interlocuteur local"
     },
     "work": {
       "label": "Installations",
       "title_main": "Récent",
       "title_em": "travail sur le terrain",
       "lede": "Un échantillon de projets que nos partenaires ont réalisés avec l'équipement que nous avons fourni.",
-      "btn": "Voir plus d'installations"
+      "btn": "Voir tous les projets"
     },
     "journal": {
       "label": "Journal",
@@ -309,14 +313,17 @@
       "title_em": "nos clients"
     },
     "cities": {
-      "bangalore": "Bangalore",
-      "dubai": "Dubaï",
+      "dubai": "Dubai",
+      "jeddah": "Djeddah",
       "riyadh": "Riyad",
-      "nairobi": "Nairobi",
-      "johannesburg": "Johannesburg",
-      "cairo": "Le Caire",
+      "bangalore": "Bangalore",
       "bangkok": "Bangkok",
-      "warsaw": "Varsovie"
+      "nairobi": "Nairobi",
+      "johannesburg": "Johannesbourg",
+      "cairo": "Le Caire",
+      "warsaw": "Varsovie",
+      "bucharest": "Bucarest",
+      "paris": "Paris"
     },
     "edgeItems": [
       {
@@ -339,7 +346,51 @@
         "desc": "Pre-sales consulting, procurement, logistics, commissioning help, and after-sales service under one roof. Every partner gets a dedicated account manager and a direct line to the technical staff.",
         "caption": "Support de bout en bout"
       }
-    ]
+    ],
+    "pillars": {
+      "label": "Ce qui nous distingue",
+      "title_main": "Trois engagements",
+      "title_em": "que nous tenons",
+      "items": [
+        {
+          "title": "Entreprise mondiale. Présence régionale.",
+          "desc": "Une seule chaîne d'approvisionnement, gérée localement. Stock, devise, garantie et équipes sont dans votre région — pas dans un entrepôt à huit fuseaux horaires."
+        },
+        {
+          "title": "Une distribution qui fait la différence.",
+          "desc": "Nous ne sommes pas de simples transporteurs de cartons. Aide à la spécification, matériel de démonstration, appui à la mise en service et ingénierie après-vente sont inclus, pas en option."
+        },
+        {
+          "title": "La technologie de demain, aujourd'hui.",
+          "desc": "Plus de cinquante fabricants mondiaux, sélectionnés et stockés — la technologie que vous spécifiez est disponible maintenant, pas au trimestre prochain."
+        }
+      ]
+    },
+    "countries": {
+      "dubai": "Émirats arabes unis",
+      "jeddah": "Arabie saoudite",
+      "riyadh": "Arabie saoudite",
+      "bangalore": "Inde",
+      "bangkok": "Thaïlande",
+      "nairobi": "Kenya",
+      "johannesburg": "Afrique du Sud",
+      "cairo": "Égypte",
+      "warsaw": "Pologne",
+      "bucharest": "Roumanie",
+      "paris": "France"
+    },
+    "offices": {
+      "dubai": "Siège mondial et plaque tournante de toutes nos routes commerciales : Golfe, Moyen-Orient élargi et réexportation.",
+      "jeddah": "Ouest de l'Arabie saoudite et projets de la mer Rouge, pilotés depuis le siège de Dubaï.",
+      "riyadh": "Arabie saoudite centrale — programmes gouvernementaux, entreprises et giga-projets.",
+      "bangalore": "Opérations Inde : stock, service et bureau d'études pour l'Asie du Sud.",
+      "bangkok": "Distribution en Asie du Sud-Est et accompagnement des intégrateurs.",
+      "nairobi": "Pôle commercial d'Afrique de l'Est et support partenaires.",
+      "johannesburg": "Distribution en Afrique australe et accompagnement des intégrateurs.",
+      "cairo": "Couverture Afrique du Nord et liaison Levant.",
+      "warsaw": "Distribution en Europe centrale et orientale.",
+      "bucharest": "Roumanie et Balkans, en lien direct avec le bureau de Varsovie."
+    }
   },
   "partners": {
     "hero": {
@@ -947,7 +998,16 @@
       "back": "Retour aux articles",
       "retry": "Réessayer",
       "error": "Impossible de charger cet article. Veuillez réessayer."
-    }
+    },
+    "search_placeholder": "Rechercher des articles…",
+    "search_aria": "Rechercher des articles",
+    "search_clear": "Effacer la recherche",
+    "filter_aria": "Filtrer par catégorie",
+    "all_categories": "Tous les sujets",
+    "showing": "{{count}} articles affichés sur {{total}}",
+    "empty_title": "Aucun article ne correspond",
+    "empty_body": "Essayez un autre sujet ou un terme de recherche plus court.",
+    "empty_btn": "Réinitialiser les filtres"
   },
   "chat": {
     "header": {
@@ -1056,5 +1116,50 @@
     },
     "loading": "Chargement de la galerie…",
     "error": "Échec du chargement de la galerie."
+  },
+  "language": {
+    "select": "Choisir la langue",
+    "change_aria": "Changer de langue, langue actuelle {{language}}",
+    "prompt": {
+      "label": "Région modifiée",
+      "title": "Vous consultez désormais {{region}}",
+      "body": "Cette région se consulte habituellement en {{language}}. Souhaitez-vous changer la langue du site ou conserver {{current}} ?",
+      "accept": "Passer en {{language}}",
+      "decline": "Conserver {{current}}",
+      "switching": "Changement en cours…",
+      "note": "Vous pouvez changer de langue à tout moment depuis le menu."
+    }
+  },
+  "projects": {
+    "hero": {
+      "label": "Projets et études de cas",
+      "line1": "Des preuves,",
+      "line2": "pas des promesses.",
+      "brief": "Salles, centres de contrôle et lieux livrés par nos partenaires intégrateurs avec des technologies que nous avons sourcées, spécifiées et accompagnées — livrés et en cours."
+    },
+    "filter": {
+      "all": "Tous les projets",
+      "completed": "Terminés",
+      "ongoing": "En cours",
+      "all_categories": "Tous les secteurs",
+      "aria": "Filtrer les projets"
+    },
+    "status": {
+      "completed": "Terminé",
+      "ongoing": "En cours"
+    },
+    "showing": "{{count}} projets affichés sur {{total}}",
+    "empty": {
+      "title": "Études de cas en préparation",
+      "body": "Rien de publié sous ce filtre pour l'instant. Parlez-nous de votre secteur — nous pouvons partager des références directement.",
+      "btn": "Demander des références"
+    },
+    "cta": {
+      "label": "Votre projet ensuite",
+      "title_main": "Vous spécifiez quelque chose",
+      "title_em": "de similaire ?",
+      "btn1": "Parler à un spécialiste",
+      "btn2": "Voir les solutions"
+    }
   }
 }

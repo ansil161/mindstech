@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whenReady } from '../../utils/pageReveal';
@@ -17,11 +17,39 @@ const Blogs = () => {
   const [featuredPost, setFeaturedPost] = useState(null);
   // Only store the id — BlogModal fetches the full detail itself
   const [activePostId, setActivePostId] = useState(null);
+  const [query, setQuery] = useState('');
+  const [category, setCategory] = useState('all');
 
   const { translatedData: translatedPosts, isTranslating: isTranslatingPosts } =
     useDynamicTranslation(posts, ['title', 'desc', 'cat'], 'blogs_list');
   const { translatedData: translatedFeatured, isTranslating: isTranslatingFeatured } =
     useDynamicTranslation(featuredPost, ['title', 'desc', 'cat'], 'featured_blog');
+
+  // Categories are derived from the posts themselves, so a new CMS category
+  // appears without a code change. Matching is case-insensitive but the first
+  // spelling seen wins for display.
+  const categories = useMemo(() => {
+    const seen = new Map();
+    translatedPosts.forEach((p) => {
+      const label = (p.cat || '').trim();
+      if (label && !seen.has(label.toLowerCase())) seen.set(label.toLowerCase(), label);
+    });
+    return Array.from(seen.values()).sort((a, b) => a.localeCompare(b));
+  }, [translatedPosts]);
+
+  const visiblePosts = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return translatedPosts.filter((post) => {
+      if (category !== 'all' && (post.cat || '').toLowerCase() !== category) return false;
+      if (!q) return true;
+      return `${post.title || ''} ${post.desc || ''} ${post.cat || ''}`.toLowerCase().includes(q);
+    });
+  }, [translatedPosts, query, category]);
+
+  const resetFilters = () => {
+    setQuery('');
+    setCategory('all');
+  };
 
   useEffect(() => {
     const fetchBlogs = async () => {
@@ -139,7 +167,9 @@ const Blogs = () => {
 
     const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
     return () => { ctx.revert(); clearTimeout(timer); };
-  }, [posts, featuredPost]);
+    // Filtering rebuilds the grid, so the previous batch's triggers point at
+    // detached nodes — rebind whenever the visible set changes.
+  }, [posts, featuredPost, visiblePosts.length, category]);
 
   return (
     <div ref={containerRef}>
@@ -199,11 +229,83 @@ const Blogs = () => {
           <span className="label label--red">{t('blogs.all_articles', 'All Articles')}</span>
           <h2 className="bwrap-title">{t('blogs.grid_title', 'More from the floor')}</h2>
         </div>
+        {/* Toolbar. The grid used to be an unfiltered dump of every post, so
+            finding one meant scrolling the whole archive. */}
+        <div className="btoolbar">
+          <div className="bsearch">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-3.6-3.6" />
+            </svg>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t('blogs.search_placeholder', 'Search articles…')}
+              aria-label={t('blogs.search_aria', 'Search articles')}
+            />
+            {query && (
+              <button
+                type="button"
+                className="bsearch-clear"
+                onClick={() => setQuery('')}
+                aria-label={t('blogs.search_clear', 'Clear search')}
+              >
+                ×
+              </button>
+            )}
+          </div>
+
+          {categories.length > 1 && (
+            <div className="bchips" role="group" aria-label={t('blogs.filter_aria', 'Filter by category')}>
+              <button
+                type="button"
+                className={`bchip ${category === 'all' ? 'is-active' : ''}`}
+                aria-pressed={category === 'all'}
+                onClick={() => setCategory('all')}
+              >
+                {t('blogs.all_categories', 'All topics')}
+              </button>
+              {categories.map((cat) => (
+                <button
+                  key={cat}
+                  type="button"
+                  className={`bchip ${category === cat.toLowerCase() ? 'is-active' : ''}`}
+                  aria-pressed={category === cat.toLowerCase()}
+                  onClick={() => setCategory(cat.toLowerCase())}
+                >
+                  {cat}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
+
+        {translatedPosts.length > 0 && (
+          <p className="bcount" aria-live="polite">
+            {t('blogs.showing', 'Showing {{count}} of {{total}} articles', {
+              count: visiblePosts.length,
+              total: translatedPosts.length,
+            })}
+          </p>
+        )}
+
+        {translatedPosts.length > 0 && visiblePosts.length === 0 ? (
+          <div className="bempty">
+            <b>{t('blogs.empty_title', 'No articles match that')}</b>
+            <span>
+              {t('blogs.empty_body', 'Try a different topic or a shorter search term.')}
+            </span>
+            <button type="button" onClick={resetFilters}>
+              {t('blogs.empty_btn', 'Clear filters')}
+            </button>
+          </div>
+        ) : (
         <div
           className={`bgrid ${isTranslatingPosts ? 'opacity-50' : ''}`}
           style={{ transition: 'opacity 0.3s' }}
         >
-          {translatedPosts.map((post, idx) => (
+          {visiblePosts.map((post, idx) => (
             <button
               key={post.id ?? idx}
               className="bcard reveal"
@@ -226,6 +328,7 @@ const Blogs = () => {
             </button>
           ))}
         </div>
+        )}
       </div>
 
       {/* CTA */}

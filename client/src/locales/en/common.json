@@ -20,13 +20,17 @@
       "africa": "Africa",
       "south_asia": "South Asia",
       "hong_kong_china": "Hong Kong / China"
-    }
+    },
+    "company": "Company",
+    "projects": "Projects",
+    "all_solutions": "All solutions",
+    "select_region": "Select region"
   },
   "footer": {
     "contact": "Contact Us",
     "address": "Address",
     "follow_us": "Follow Us",
-    "brief": "Mindstec Distribution bridges the gap between the manufacturer and the dealer, increasing the efficiency of overall operations.",
+    "brief": "Global company, regional presence. Mindstec is a value-added distributor — not a box mover — putting the technology of the future in the room today.",
     "company": "Company",
     "experience": "Experience Centre",
     "ewaste": "E-Waste Management",
@@ -200,34 +204,37 @@
   },
   "home": {
     "cities": {
-      "bangalore": "Bangalore",
       "dubai": "Dubai",
+      "jeddah": "Jeddah",
       "riyadh": "Riyadh",
+      "bangalore": "Bangalore",
+      "bangkok": "Bangkok",
       "nairobi": "Nairobi",
       "johannesburg": "Johannesburg",
       "cairo": "Cairo",
-      "bangkok": "Bangkok",
-      "warsaw": "Warsaw"
+      "warsaw": "Warsaw",
+      "bucharest": "Bucharest",
+      "paris": "Paris"
     },
     "hero": {
-      "line1": "The quiet",
-      "line2": "infrastructure behind",
-      "line3": "every experience.",
-      "brief": "Mindstec distributes professional AV technology from fifty-plus global manufacturers to the integrators, consultants and enterprises building the spaces people remember.",
+      "line1": "Global company.",
+      "line2": "Regional presence.",
+      "line3": "Technology of the future, today.",
+      "brief": "Distribution with a difference. Mindstec is not a box mover — we source, specify, stock and support professional AV technology from fifty-plus global manufacturers, with the people and the inventory held in your region.",
       "explore_btn": "Explore solutions",
-      "fact1_b": "Since 2008",
-      "fact1_s": "AV distribution",
-      "fact2_b": "India · Africa · Poland",
-      "fact2_s": "Three regional operations",
-      "fact3_b": "50+ brands",
-      "fact3_s": "Manufacturer portfolio",
+      "fact1_b": "Global company",
+      "fact1_s": "Regional presence",
+      "fact2_b": "Not box movers",
+      "fact2_s": "Value-added distribution",
+      "fact3_b": "Future technology",
+      "fact3_s": "Available today",
       "scroll": "Scroll"
     },
     "statement": {
       "side_text": "Distribution is logistics only on paper. In practice it is product knowledge, demo stock, engineering support and someone who answers the phone.",
       "text": "A screen in a boardroom. A wall of pixels in a terminal. A voice that carries to the last row. ",
       "emText": "Someone has to get that technology there",
-      "postText": " — sourced, specified and supported. That is the work we do."
+      "postText": " — sourced, specified, stocked and supported, in your region. That is the work we do."
     },
     "solutions": {
       "label": "Solutions",
@@ -270,29 +277,29 @@
     ],
     "band": {
       "label": "Our reach",
-      "title_main": "One supply chain,",
-      "title_em": "three continents."
+      "title_main": "Global company.",
+      "title_em": "Regional presence."
     },
     "regions": {
-      "label": "Regions",
+      "label": "Global presence",
       "title_main": "Where we",
       "title_em": "operate",
-      "lede": "Stock, currency, warranty and people — all handled in-region.",
+      "lede": "Eleven cities, one supply chain. Stock, currency, warranty and people — all handled in-region.",
       "hq_suffix": "(HQ)",
       "office_hq": "Global Headquarters",
       "office_regional": "Regional Office",
-      "contacts": {
-        "india": "India — SAARC · Bangalore HQ",
-        "africa": "Africa — Commercial hubs · Nairobi",
-        "poland": "Poland — Central & Eastern Europe · Warsaw"
-      }
+      "soon_suffix": "— Coming soon",
+      "office_soon": "Coming soon",
+      "legend_label": "Map key",
+      "foot": "Every lane on this map runs from our Dubai headquarters — with the stock, warranty and engineering held in-region.",
+      "foot_btn": "Find your local desk"
     },
     "work": {
       "label": "Installations",
       "title_main": "Recent",
       "title_em": "field work",
       "lede": "A sample of projects our partners have delivered with equipment we supplied.",
-      "btn": "See more installations"
+      "btn": "See all projects"
     },
     "journal": {
       "label": "Journal",
@@ -333,6 +340,50 @@
       "label": "Client voices",
       "title_main": "What our",
       "title_em": "clients say"
+    },
+    "pillars": {
+      "label": "What sets us apart",
+      "title_main": "Three things we",
+      "title_em": "hold to",
+      "items": [
+        {
+          "title": "Global company. Regional presence.",
+          "desc": "One supply chain, held locally. Stock, currency, warranty and people sit in your region — not in a warehouse eight time zones away."
+        },
+        {
+          "title": "Distribution with a difference.",
+          "desc": "We are not merely box movers. Specification support, demo stock, commissioning help and after-sales engineering come with the product, not as an extra."
+        },
+        {
+          "title": "Technology of the future, today.",
+          "desc": "Fifty-plus global manufacturers, curated and stocked — so the technology you specify is available now, not next quarter."
+        }
+      ]
+    },
+    "countries": {
+      "dubai": "United Arab Emirates",
+      "jeddah": "Saudi Arabia",
+      "riyadh": "Saudi Arabia",
+      "bangalore": "India",
+      "bangkok": "Thailand",
+      "nairobi": "Kenya",
+      "johannesburg": "South Africa",
+      "cairo": "Egypt",
+      "warsaw": "Poland",
+      "bucharest": "Romania",
+      "paris": "France"
+    },
+    "offices": {
+      "dubai": "Global headquarters and the hub every trade lane runs from — the Gulf, the wider Middle East and re-export.",
+      "jeddah": "Western Saudi Arabia and Red Sea projects, run from the Dubai HQ.",
+      "riyadh": "Central Saudi Arabia — government, enterprise and giga-project programmes.",
+      "bangalore": "India operations: stock, service and the engineering bench for South Asia.",
+      "bangkok": "South-East Asian distribution and integration partner support.",
+      "nairobi": "East African commercial hub and partner support.",
+      "johannesburg": "Southern African distribution and integrator support.",
+      "cairo": "North Africa coverage and Levant liaison.",
+      "warsaw": "Central and Eastern European distribution.",
+      "bucharest": "Romania and the wider Balkans, run alongside the Warsaw desk."
     }
   },
   "partners": {
@@ -932,7 +983,16 @@
       "back": "Back to Blogs",
       "retry": "Retry",
       "error": "Could not load this article. Please try again."
-    }
+    },
+    "search_placeholder": "Search articles…",
+    "search_aria": "Search articles",
+    "search_clear": "Clear search",
+    "filter_aria": "Filter by category",
+    "all_categories": "All topics",
+    "showing": "Showing {{count}} of {{total}} articles",
+    "empty_title": "No articles match that",
+    "empty_body": "Try a different topic or a shorter search term.",
+    "empty_btn": "Clear filters"
   },
   "chat": {
     "header": {
@@ -1041,5 +1101,50 @@
     },
     "loading": "Loading gallery…",
     "error": "Failed to load gallery."
+  },
+  "language": {
+    "select": "Select language",
+    "change_aria": "Change language, current language {{language}}",
+    "prompt": {
+      "label": "Region changed",
+      "title": "You are now browsing {{region}}",
+      "body": "This region normally reads in {{language}}. Would you like to switch the site language, or keep {{current}}?",
+      "accept": "Switch to {{language}}",
+      "decline": "Keep {{current}}",
+      "switching": "Switching…",
+      "note": "You can change the language any time from the menu."
+    }
+  },
+  "projects": {
+    "hero": {
+      "label": "Projects & case studies",
+      "line1": "Proof, not",
+      "line2": "promises.",
+      "brief": "Rooms, control centres and venues our integration partners have delivered with technology we sourced, specified and supported — delivered and in progress."
+    },
+    "filter": {
+      "all": "All projects",
+      "completed": "Completed",
+      "ongoing": "Ongoing",
+      "all_categories": "All sectors",
+      "aria": "Filter projects"
+    },
+    "status": {
+      "completed": "Completed",
+      "ongoing": "Ongoing"
+    },
+    "showing": "Showing {{count}} of {{total}} projects",
+    "empty": {
+      "title": "Case studies in preparation",
+      "body": "Nothing published under this filter yet. Talk to us about work in your sector — we can share references directly.",
+      "btn": "Ask for references"
+    },
+    "cta": {
+      "label": "Your project next",
+      "title_main": "Specifying something",
+      "title_em": "similar?",
+      "btn1": "Talk to a specialist",
+      "btn2": "Browse solutions"
+    }
   }
 }

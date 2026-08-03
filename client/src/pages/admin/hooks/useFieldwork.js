@@ -14,6 +14,8 @@ export function useFieldwork() {
   const [locationMeta, setLocationMeta] = useState('');
   const [category, setCategory] = useState('');
   const [image, setImage] = useState(null);
+  const [status, setStatus] = useState('completed');
+  const [summary, setSummary] = useState('');
 
   const fetchFieldwork = useCallback(async () => {
     setLoading(true);
@@ -45,6 +47,8 @@ export function useFieldwork() {
     formData.append('location_meta', locationMeta.trim());
     formData.append('category', category.trim());
     formData.append('image', image);
+    formData.append('status', status);
+    formData.append('summary', summary.trim());
 
     try {
       const res = await fieldworkService.create(formData);
@@ -53,6 +57,8 @@ export function useFieldwork() {
       setLocationMeta('');
       setCategory('');
       setImage(null);
+      setStatus('completed');
+      setSummary('');
       setShowAddForm(false);
       notify('Fieldwork project added successfully.');
     } catch (err) {
@@ -63,6 +69,21 @@ export function useFieldwork() {
       notify(`Failed to save project. Server error details: ${serverMsg}`);
     } finally {
       setSubmitting(false);
+    }
+  };
+
+  // Flips completed ⇄ ongoing in place. Optimistic: the card is a one-click
+  // toggle, so waiting on a round trip would make it feel broken.
+  const toggleStatus = async (item) => {
+    const next = item.status === 'ongoing' ? 'completed' : 'ongoing';
+    setFieldwork((prev) => prev.map((f) => (f.id === item.id ? { ...f, status: next } : f)));
+    try {
+      const res = await fieldworkService.update(item.id, { status: next });
+      setFieldwork((prev) => prev.map((f) => (f.id === item.id ? res : f)));
+    } catch (err) {
+      console.error(err);
+      setFieldwork((prev) => prev.map((f) => (f.id === item.id ? item : f)));
+      notify('Failed to update project status.');
     }
   };
 
@@ -93,7 +114,12 @@ export function useFieldwork() {
     setCategory,
     image,
     setImage,
+    status,
+    setStatus,
+    summary,
+    setSummary,
     addFieldwork,
+    toggleStatus,
     deleteFieldwork,
     refresh: fetchFieldwork,
   };

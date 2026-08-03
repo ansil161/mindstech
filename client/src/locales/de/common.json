@@ -20,13 +20,17 @@
       "africa": "Afrika",
       "south_asia": "Südasien",
       "hong_kong_china": "Hongkong / China"
-    }
+    },
+    "company": "Unternehmen",
+    "projects": "Projekte",
+    "all_solutions": "Alle Lösungen",
+    "select_region": "Region wählen"
   },
   "footer": {
     "contact": "Kontakt",
     "address": "Adresse",
     "follow_us": "Folgen Sie uns",
-    "brief": "Mindstec Distribution schließt die Lücke zwischen Hersteller und Händler und erhöht die Effizienz des Gesamtbetriebs.",
+    "brief": "Globales Unternehmen, regionale Präsenz. Mindstec ist ein Distributor mit Mehrwert — kein Kartonschieber — und bringt die Technologie von morgen schon heute in Ihren Raum.",
     "company": "Unternehmen",
     "experience": "Erlebniszentrum",
     "ewaste": "E-Waste-Management",
@@ -206,24 +210,24 @@
   },
   "home": {
     "hero": {
-      "line1": "Die Stille",
-      "line2": "Infrastruktur dahinter",
-      "line3": "jedes Erlebnis.",
-      "brief": "Mindstec vertreibt professionelle AV-Technologie von über fünfzig globalen Herstellern an Integratoren, Berater und Unternehmen, die die Räume schaffen, an die sich die Menschen erinnern.",
-      "explore_btn": "Entdecken Sie Lösungen",
-      "fact1_b": "Seit 2008",
-      "fact1_s": "AV-Verteilung",
-      "fact2_b": "Indien · Afrika · Polen",
-      "fact2_s": "Drei regionale Betriebe",
-      "fact3_b": "Über 50 Marken",
-      "fact3_s": "Herstellerportfolio",
+      "line1": "Globales Unternehmen.",
+      "line2": "Regionale Präsenz.",
+      "line3": "Die Technologie von morgen, heute.",
+      "brief": "Distribution mit Unterschied. Mindstec bewegt nicht einfach Kartons — wir beschaffen, spezifizieren, bevorraten und betreuen professionelle AV-Technik von über fünfzig globalen Herstellern, mit Team und Lager in Ihrer Region.",
+      "explore_btn": "Lösungen entdecken",
+      "fact1_b": "Globales Unternehmen",
+      "fact1_s": "Regionale Präsenz",
+      "fact2_b": "Keine Kartonschieber",
+      "fact2_s": "Distribution mit Mehrwert",
+      "fact3_b": "Technologie von morgen",
+      "fact3_s": "Heute verfügbar",
       "scroll": "Scrollen"
     },
     "statement": {
-      "side_text": "Der Vertrieb ist Logistik nur auf dem Papier. In der Praxis sind es Produktkenntnisse, Demo-Lagerbestände, technischer Support und jemand, der ans Telefon geht.",
-      "text": "Ein Bildschirm in einem Sitzungssaal. Eine Pixelwand in einem Terminal. Eine Stimme, die bis in die erste Reihe trägt. ",
-      "emText": "Jemand muss diese Technologie dorthin bringen",
-      "postText": " — beschafft, spezifiziert und unterstützt. Das ist die Arbeit, die wir tun."
+      "side_text": "Distribution ist nur auf dem Papier Logistik. In der Praxis sind es Produktwissen, Demogeräte, technische Unterstützung und jemand, der ans Telefon geht.",
+      "text": "Ein Bildschirm im Sitzungssaal. Eine Pixelwand im Terminal. Eine Stimme, die bis in die letzte Reihe trägt. ",
+      "emText": "Jemand muss diese Technik dorthin bringen",
+      "postText": " — beschafft, spezifiziert, bevorratet und betreut, in Ihrer Region. Das ist unsere Arbeit."
     },
     "solutions": {
       "label": "Lösungen",
@@ -244,29 +248,29 @@
     },
     "band": {
       "label": "Unsere Reichweite",
-      "title_main": "Eine Lieferkette,",
-      "title_em": "drei Kontinente."
+      "title_main": "Globales Unternehmen.",
+      "title_em": "Regionale Präsenz."
     },
     "regions": {
-      "label": "Regionen",
+      "label": "Globale Präsenz",
       "title_main": "Wo wir",
-      "title_em": "arbeiten",
-      "lede": "Lagerbestand, Währung, Garantie und Mitarbeiter – alles wird in der Region abgewickelt.",
-      "hq_suffix": "(HQ)",
-      "office_hq": "Globaler Hauptsitz",
+      "title_em": "tätig sind",
+      "lede": "Elf Städte, eine Lieferkette. Lager, Währung, Garantie und Menschen — alles in der Region abgewickelt.",
+      "hq_suffix": "(Zentrale)",
+      "office_hq": "Globale Zentrale",
       "office_regional": "Regionalbüro",
-      "contacts": {
-        "india": "Indien – SAARC · Hauptsitz in Bangalore",
-        "africa": "Afrika – Handelszentren · Nairobi",
-        "poland": "Polen – Mittel- und Osteuropa · Warschau"
-      }
+      "soon_suffix": "— Demnächst",
+      "office_soon": "Demnächst",
+      "legend_label": "Kartenlegende",
+      "foot": "Jede Route auf dieser Karte startet in unserer Zentrale in Dubai — mit Lager, Garantie und Engineering in der Region.",
+      "foot_btn": "Ihren lokalen Ansprechpartner finden"
     },
     "work": {
       "label": "Installationen",
       "title_main": "Jüngste",
       "title_em": "Feldarbeit",
       "lede": "Eine Auswahl von Projekten, die unsere Partner mit der von uns gelieferten Ausrüstung durchgeführt haben.",
-      "btn": "Weitere Installationen anzeigen"
+      "btn": "Alle Projekte ansehen"
     },
     "journal": {
       "label": "Zeitschrift",
@@ -309,14 +313,17 @@
       "title_em": "Kunden sagen"
     },
     "cities": {
-      "bangalore": "Bangalore",
       "dubai": "Dubai",
+      "jeddah": "Dschidda",
       "riyadh": "Riad",
+      "bangalore": "Bangalore",
+      "bangkok": "Bangkok",
       "nairobi": "Nairobi",
       "johannesburg": "Johannesburg",
       "cairo": "Kairo",
-      "bangkok": "Bangkok",
-      "warsaw": "Warschau"
+      "warsaw": "Warschau",
+      "bucharest": "Bukarest",
+      "paris": "Paris"
     },
     "edgeItems": [
       {
@@ -339,7 +346,51 @@
         "desc": "Pre-Sales-Beratung, Beschaffung, Logistik, Inbetriebnahmehilfe und After-Sales-Service unter einem Dach. Jeder Partner erhält einen festen Ansprechpartner und einen direkten Draht zu den technischen Mitarbeitern.",
         "caption": "End-to-End-Support"
       }
-    ]
+    ],
+    "pillars": {
+      "label": "Was uns auszeichnet",
+      "title_main": "Drei Dinge, an denen",
+      "title_em": "wir festhalten",
+      "items": [
+        {
+          "title": "Globales Unternehmen. Regionale Präsenz.",
+          "desc": "Eine Lieferkette, lokal gehalten. Lager, Währung, Garantie und Menschen sitzen in Ihrer Region — nicht in einem Lagerhaus acht Zeitzonen entfernt."
+        },
+        {
+          "title": "Distribution mit Unterschied.",
+          "desc": "Wir sind keine bloßen Kartonschieber. Spezifikationsunterstützung, Demogeräte, Inbetriebnahmehilfe und After-Sales-Engineering gehören zum Produkt, nicht zum Aufpreis."
+        },
+        {
+          "title": "Die Technologie von morgen, heute.",
+          "desc": "Über fünfzig globale Hersteller, kuratiert und bevorratet — damit die Technik, die Sie spezifizieren, jetzt verfügbar ist und nicht nächstes Quartal."
+        }
+      ]
+    },
+    "countries": {
+      "dubai": "Vereinigte Arabische Emirate",
+      "jeddah": "Saudi-Arabien",
+      "riyadh": "Saudi-Arabien",
+      "bangalore": "Indien",
+      "bangkok": "Thailand",
+      "nairobi": "Kenia",
+      "johannesburg": "Südafrika",
+      "cairo": "Ägypten",
+      "warsaw": "Polen",
+      "bucharest": "Rumänien",
+      "paris": "Frankreich"
+    },
+    "offices": {
+      "dubai": "Globaler Hauptsitz und Drehkreuz aller Handelsrouten – Golfregion, weiterer Naher Osten und Re-Export.",
+      "jeddah": "Westsaudi-Arabien und Projekte am Roten Meer, gesteuert vom Hauptsitz in Dubai.",
+      "riyadh": "Zentralsaudi-Arabien – Behörden, Unternehmen und Giga-Projekte.",
+      "bangalore": "Indien-Betrieb: Lager, Service und Engineering-Team für Südasien.",
+      "bangkok": "Distribution in Südostasien und Unterstützung für Integrationspartner.",
+      "nairobi": "Kommerzielles Zentrum für Ostafrika und Partnerbetreuung.",
+      "johannesburg": "Distribution im südlichen Afrika und Integratoren-Support.",
+      "cairo": "Abdeckung Nordafrika und Verbindung zur Levante.",
+      "warsaw": "Distribution in Mittel- und Osteuropa.",
+      "bucharest": "Rumänien und der Balkan, gemeinsam mit dem Warschauer Büro betreut."
+    }
   },
   "partners": {
     "hero": {
@@ -947,7 +998,16 @@
       "back": "Zurück zum Blog",
       "retry": "Erneut versuchen",
       "error": "Dieser Artikel konnte nicht geladen werden. Bitte versuchen Sie es erneut."
-    }
+    },
+    "search_placeholder": "Artikel durchsuchen…",
+    "search_aria": "Artikel durchsuchen",
+    "search_clear": "Suche löschen",
+    "filter_aria": "Nach Kategorie filtern",
+    "all_categories": "Alle Themen",
+    "showing": "{{count}} von {{total}} Artikeln werden angezeigt",
+    "empty_title": "Keine passenden Artikel",
+    "empty_body": "Versuchen Sie ein anderes Thema oder einen kürzeren Suchbegriff.",
+    "empty_btn": "Filter zurücksetzen"
   },
   "chat": {
     "header": {
@@ -1056,5 +1116,50 @@
     },
     "loading": "Galerie wird geladen…",
     "error": "Fehler beim Laden der Galerie."
+  },
+  "language": {
+    "select": "Sprache wählen",
+    "change_aria": "Sprache ändern, aktuelle Sprache {{language}}",
+    "prompt": {
+      "label": "Region geändert",
+      "title": "Sie sehen jetzt {{region}}",
+      "body": "Diese Region wird üblicherweise auf {{language}} gelesen. Möchten Sie die Sprache der Website wechseln oder {{current}} beibehalten?",
+      "accept": "Zu {{language}} wechseln",
+      "decline": "{{current}} beibehalten",
+      "switching": "Wird gewechselt…",
+      "note": "Sie können die Sprache jederzeit über das Menü ändern."
+    }
+  },
+  "projects": {
+    "hero": {
+      "label": "Projekte & Fallstudien",
+      "line1": "Belege statt",
+      "line2": "Versprechen.",
+      "brief": "Räume, Leitstände und Veranstaltungsorte, die unsere Integrationspartner mit Technik umgesetzt haben, die wir beschafft, spezifiziert und betreut haben — abgeschlossen und laufend."
+    },
+    "filter": {
+      "all": "Alle Projekte",
+      "completed": "Abgeschlossen",
+      "ongoing": "Laufend",
+      "all_categories": "Alle Branchen",
+      "aria": "Projekte filtern"
+    },
+    "status": {
+      "completed": "Abgeschlossen",
+      "ongoing": "Laufend"
+    },
+    "showing": "{{count}} von {{total}} Projekten werden angezeigt",
+    "empty": {
+      "title": "Fallstudien in Vorbereitung",
+      "body": "Zu diesem Filter ist noch nichts veröffentlicht. Sprechen Sie uns auf Ihre Branche an — wir teilen Referenzen gerne direkt.",
+      "btn": "Referenzen anfragen"
+    },
+    "cta": {
+      "label": "Ihr Projekt als Nächstes",
+      "title_main": "Spezifizieren Sie etwas",
+      "title_em": "Ähnliches?",
+      "btn1": "Mit Spezialist sprechen",
+      "btn2": "Lösungen ansehen"
+    }
   }
 }

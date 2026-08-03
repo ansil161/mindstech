@@ -15,30 +15,17 @@ import SolutionGrid from '../../components/common/SolutionGrid/SolutionGrid.jsx'
 import { getFallbackSolutions, getSolutionMeta } from '../../constants/solutions.js';
 import WaveBackdrop from '../../components/common/WaveBackdrop/WaveBackdrop.jsx';
 import { safeFromTo } from '../../utils/gsapSafe';
+import {
+  ACTIVE_OFFICES,
+  HQ_KEY,
+  OFFICES,
+  OFFICES_BY_KEY,
+  ROUTES,
+  project,
+} from '../../constants/offices.js';
 
 
 gsap.registerPlugin(ScrollTrigger);
-
-const CITIES = {
-  bangalore:    { city: 'Bangalore',    country: 'India',                lat: 12.9716,  lng: 77.5946,  isHQ: true },
-  dubai:        { city: 'Dubai',        country: 'United Arab Emirates', lat: 25.2048,  lng: 55.2708 },
-  riyadh:       { city: 'Riyadh',       country: 'Saudi Arabia',         lat: 24.7136,  lng: 46.6753 },
-  nairobi:      { city: 'Nairobi',      country: 'Kenya',                lat: -1.2921,  lng: 36.8219 },
-  johannesburg: { city: 'Johannesburg', country: 'South Africa',         lat: -26.2041, lng: 28.0473 },
-  cairo:        { city: 'Cairo',        country: 'Egypt',                lat: 30.0444,  lng: 31.2357 },
-  bangkok:      { city: 'Bangkok',      country: 'Thailand',             lat: 13.7563,  lng: 100.5018 },
-  warsaw:       { city: 'Warsaw',       country: 'Poland',               lat: 52.2297,  lng: 21.0122 },
-};
-
-const HQ_KEY = 'bangalore';
-
-// Bangalore is the hub — every other office connects back to it.
-const ROUTES = Object.keys(CITIES).filter((key) => key !== HQ_KEY).map((key) => [HQ_KEY, key]);
-
-const project = (lat, lng) => ({
-  x: (lng + 180) * (800 / 360),
-  y: (90 - lat) * (400 / 180),
-});
 
 // ── Map label layout ──
 // Several offices (Bangalore/Dubai/Riyadh/Cairo) sit close together on the
@@ -148,6 +135,8 @@ const Home = () => {
   const [rawSolutions, setRawSolutions] = useState([]);
   const [regionContact, setRegionContact] = useState(null);
   const [testimonials, setTestimonials] = useState([]);
+  // Which office card the pointer is over, so its marker can be highlighted.
+  const [focusedOffice, setFocusedOffice] = useState(null);
 
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
@@ -709,8 +698,8 @@ const Home = () => {
       const dot = dots[i];
       if (!path || !dot) return;
 
-      const s = project(CITIES[route[0]].lat, CITIES[route[0]].lng);
-      const e = project(CITIES[route[1]].lat, CITIES[route[1]].lng);
+      const s = project(OFFICES_BY_KEY[route[0]].lat, OFFICES_BY_KEY[route[0]].lng);
+      const e = project(OFFICES_BY_KEY[route[1]].lat, OFFICES_BY_KEY[route[1]].lng);
       const m = { x: (s.x + e.x) / 2, y: Math.min(s.y, e.y) - 50 };
 
       const t0 = i * 0.3;
@@ -757,11 +746,14 @@ const Home = () => {
     const cityEl = tooltip.querySelector('[data-role="city"]');
     const countryEl = tooltip.querySelector('[data-role="country"]');
     const typeEl = tooltip.querySelector('[data-role="type"]');
-    const hqLabel = t('home.regions.office_hq', 'Global Headquarters');
-    const regionalLabel = t('home.regions.office_regional', 'Regional Office');
+    const roleLabels = {
+      hq: t('home.regions.office_hq', 'Global Headquarters'),
+      regional: t('home.regions.office_regional', 'Regional Office'),
+      soon: t('home.regions.office_soon', 'Coming soon'),
+    };
 
     const showTooltip = (pin) => {
-      const city = CITIES[pin.dataset.city];
+      const city = OFFICES_BY_KEY[pin.dataset.city];
       const core = pin.querySelector('.pin-core');
       const anchor = (core || pin).getBoundingClientRect();
       const cx = anchor.left + anchor.width / 2;
@@ -769,8 +761,9 @@ const Home = () => {
 
       cityEl.textContent = city.city;
       countryEl.textContent = city.country;
-      typeEl.textContent = city.isHQ ? hqLabel : regionalLabel;
+      typeEl.textContent = roleLabels[city.role] || roleLabels.regional;
 
+      tooltip.classList.toggle('mt-soon', city.role === 'soon');
       tooltip.classList.add('on');
       const margin = 12;
       const gap = 16;
@@ -834,6 +827,18 @@ const Home = () => {
     };
   }, [t]);
 
+  // Hovering an office card highlights its marker. Done by toggling a class on
+  // the existing <g class="map-pin"> rather than by re-rendering the SVG: the
+  // pins carry running SMIL <animate> pulses, and re-rendering them would
+  // restart every pulse from zero on each hover.
+  useEffect(() => {
+    const overlay = mapOverlayRef.current;
+    if (!overlay) return undefined;
+    const pins = Array.from(overlay.querySelectorAll('.map-pin'));
+    pins.forEach((pin) => pin.classList.toggle('is-focus', pin.dataset.city === focusedOffice));
+    return () => pins.forEach((pin) => pin.classList.remove('is-focus'));
+  }, [focusedOffice]);
+
   const statementText = () => {
     const text = t('home.statement.text', 'A screen in a boardroom. A wall of pixels in a terminal. A voice that carries to the last row. ');
     const emText = t('home.statement.emText', 'Someone has to get that technology there');
@@ -862,21 +867,25 @@ const Home = () => {
     { title: t('home.edgeItems.3.title'), desc: t('home.edgeItems.3.desc'), visual: '/assets/img/unsplash-1504384308090-c894fdcc538d-w1100.jpg', caption: t('home.edgeItems.3.caption') },
   ];
 
-  // City-only labels ("Bangalore (HQ)", "Dubai", ...) — country/office type
-  // live in the hover tooltip instead, to keep the map itself uncluttered.
+  // City-only labels ("Dubai (HQ)", "Jeddah", "Paris — Coming soon", ...) —
+  // country and office type live in the hover tooltip instead, to keep the map
+  // itself uncluttered.
   const labeledPins = useMemo(() => {
     const hqSuffix = t('home.regions.hq_suffix', '(HQ)');
+    const soonSuffix = t('home.regions.soon_suffix', '— Coming soon');
     return layoutMapLabels(
-      Object.entries(CITIES).map(([key, city]) => {
-        const p = project(city.lat, city.lng);
-        const label = t(`home.cities.${key}`, city.city);
+      OFFICES.map((office) => {
+        const p = project(office.lat, office.lng);
+        const label = t(`home.cities.${office.key}`, office.city);
+        const suffix = office.role === 'hq' ? ` ${hqSuffix}` : office.role === 'soon' ? ` ${soonSuffix}` : '';
         return {
-          key,
-          city,
+          key: office.key,
+          city: office,
           x: p.x,
           y: p.y,
-          isHQ: !!city.isHQ,
-          text: city.isHQ ? `${label} ${hqSuffix}` : label,
+          isHQ: office.role === 'hq',
+          role: office.role,
+          text: `${label}${suffix}`,
         };
       })
     );
@@ -945,6 +954,29 @@ const Home = () => {
           <span aria-hidden="true">Samsung Professional</span><span aria-hidden="true">Crestron</span><span aria-hidden="true">Extron</span><span aria-hidden="true">Shure</span><span aria-hidden="true">Barco</span><span aria-hidden="true">LG Electronics</span><span aria-hidden="true">Sony Professional</span><span aria-hidden="true">Biamp</span><span aria-hidden="true">QSC</span><span aria-hidden="true">Christie</span><span aria-hidden="true">Sennheiser</span><span aria-hidden="true">Epson</span>
         </div>
       </div>
+
+      {/* POSITIONING PILLARS — the three claims the rest of the page has to
+          earn: global company / regional presence, value-added distribution
+          rather than box moving, and future technology available now. */}
+      <section className="pillars" aria-label={t('home.pillars.label', 'What sets us apart')}>
+        <div className="section-head">
+          <div>
+            <span className="label label--red">{t('home.pillars.label')}</span>
+            <h2 className="display" style={{ marginTop: '16px' }}>
+              {t('home.pillars.title_main')} <em>{t('home.pillars.title_em')}</em>
+            </h2>
+          </div>
+        </div>
+        <div className="pillar-grid">
+          {[0, 1, 2].map((i) => (
+            <article className="pillar-card reveal" key={i}>
+              <span className="pillar-num" aria-hidden="true">{`0${i + 1}`}</span>
+              <h3>{t(`home.pillars.items.${i}.title`)}</h3>
+              <p>{t(`home.pillars.items.${i}.desc`)}</p>
+            </article>
+          ))}
+        </div>
+      </section>
 
       {/* STATEMENT SECTION */}
       <section className="statement" aria-label="About Mindstec">
@@ -1062,7 +1094,15 @@ const Home = () => {
         </div>
         <div className="map-wrap reveal">
           <div className="map-base" id="mapBase" ref={mapBaseRef} aria-hidden="true"></div>
-          <svg className="map-overlay" id="mapOverlay" ref={mapOverlayRef} viewBox="0 0 800 400" preserveAspectRatio="xMidYMid meet" role="img" aria-label="World map showing Mindstec supply routes from Bangalore HQ to Dubai, Riyadh, Nairobi, Johannesburg, Cairo, Bangkok and Warsaw">
+          <svg
+            className="map-overlay"
+            id="mapOverlay"
+            ref={mapOverlayRef}
+            viewBox="0 0 800 400"
+            preserveAspectRatio="xMidYMid meet"
+            role="img"
+            aria-label={`World map showing Mindstec supply routes from the ${OFFICES_BY_KEY[HQ_KEY].city} headquarters to ${ACTIVE_OFFICES.filter((o) => o.key !== HQ_KEY).map((o) => o.city).join(', ')}, plus a planned office in Paris, France`}
+          >
             <defs>
               <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="0%">
                 <stop offset="0%" stopColor="#CC0001" stopOpacity="0" />
@@ -1082,8 +1122,8 @@ const Home = () => {
 
             {/* Arcs & Traveling Dots */}
             {ROUTES.map((route, i) => {
-              const s = project(CITIES[route[0]].lat, CITIES[route[0]].lng);
-              const e = project(CITIES[route[1]].lat, CITIES[route[1]].lng);
+              const s = project(OFFICES_BY_KEY[route[0]].lat, OFFICES_BY_KEY[route[0]].lng);
+              const e = project(OFFICES_BY_KEY[route[1]].lat, OFFICES_BY_KEY[route[1]].lng);
               const m = { x: (s.x + e.x) / 2, y: Math.min(s.y, e.y) - 50 };
               return (
                 <g key={i}>
@@ -1104,43 +1144,61 @@ const Home = () => {
               );
             })}
 
-            {/* Pins with Pulsating Rings & City Labels — Bangalore (HQ) gets a
-                slightly larger core and a stronger, faster pulse. */}
+            {/* Pins with pulsating rings & city labels. Dubai (HQ) gets a
+                larger core and a stronger, faster pulse; a `soon` marker is
+                drawn hollow in white so it reads as an announcement rather
+                than as another live office. */}
             {labeledPins.map((pin, idx) => {
-              const baseR = pin.isHQ ? 4 : 3;
+              const isSoon = pin.role === 'soon';
+              const baseR = pin.isHQ ? 4.5 : 3;
               const pulseTo = pin.isHQ ? 18 : 12;
               const pulseOpacity = pin.isHQ ? 0.75 : 0.6;
               const pulseDur = pin.isHQ ? '1.6s' : '2s';
+              const colour = isSoon ? '#FAFAFA' : '#CC0001';
+              const roleLabel = isSoon
+                ? t('home.regions.office_soon', 'Coming soon')
+                : pin.isHQ
+                  ? t('home.regions.office_hq', 'Global Headquarters')
+                  : t('home.regions.office_regional', 'Regional Office');
               return (
-                <g key={pin.key} className={`map-pin${pin.isHQ ? ' map-pin--hq' : ''}`} data-city={pin.key}>
-                  <title>{`${pin.city.city}, ${pin.city.country} — ${pin.isHQ ? t('home.regions.office_hq', 'Global Headquarters') : t('home.regions.office_regional', 'Regional Office')}`}</title>
-                  <circle className="pin-halo" cx={pin.x} cy={pin.y} r={baseR + 3} fill="#CC0001" />
+                <g
+                  key={pin.key}
+                  className={`map-pin${pin.isHQ ? ' map-pin--hq' : ''}${isSoon ? ' map-pin--soon' : ''}`}
+                  data-city={pin.key}
+                >
+                  <title>{`${pin.city.city}, ${pin.city.country} — ${roleLabel}`}</title>
+                  <circle className="pin-halo" cx={pin.x} cy={pin.y} r={baseR + 3} fill={colour} />
                   <circle
                     className="pin-core"
                     cx={pin.x}
                     cy={pin.y}
                     r={baseR}
-                    fill="#CC0001"
-                    filter="url(#mapGlow)"
+                    fill={isSoon ? 'none' : colour}
+                    stroke={isSoon ? colour : 'none'}
+                    strokeWidth={isSoon ? 1.4 : 0}
+                    strokeDasharray={isSoon ? '2 1.6' : undefined}
+                    filter={isSoon ? undefined : 'url(#mapGlow)'}
                   />
-                  <circle cx={pin.x} cy={pin.y} r={baseR} fill="#CC0001" opacity="0.5">
-                    <animate
-                      attributeName="r"
-                      from={baseR}
-                      to={pulseTo}
-                      dur={pulseDur}
-                      begin={`${idx * 0.25}s`}
-                      repeatCount="indefinite"
-                    />
-                    <animate
-                      attributeName="opacity"
-                      from={pulseOpacity}
-                      to="0"
-                      dur={pulseDur}
-                      begin={`${idx * 0.25}s`}
-                      repeatCount="indefinite"
-                    />
-                  </circle>
+                  {!isSoon && (
+                    <circle cx={pin.x} cy={pin.y} r={baseR} fill={colour} opacity="0.5">
+                      <animate
+                        attributeName="r"
+                        from={baseR}
+                        to={pulseTo}
+                        dur={pulseDur}
+                        begin={`${idx * 0.25}s`}
+                        repeatCount="indefinite"
+                      />
+                      <animate
+                        attributeName="opacity"
+                        from={pulseOpacity}
+                        to="0"
+                        dur={pulseDur}
+                        begin={`${idx * 0.25}s`}
+                        repeatCount="indefinite"
+                      />
+                    </circle>
+                  )}
                   {pin.displaced && (
                     <line className="map-leader" x1={pin.x} y1={pin.y} x2={pin.edgeX} y2={pin.edgeY} />
                   )}
@@ -1163,26 +1221,67 @@ const Home = () => {
             <div className="mt-type" data-role="type"></div>
           </div>
         </div>
-        <div className="map-contacts reveal">
-          <div className="mc">
-            <span>{region}</span>
-            {regionContact?.phone && (
-              <a href={`tel:${(regionContact.phone_display || regionContact.phone || '').replace(/[^+\d]/g, '')}`}>
-                {regionContact.phone_display || regionContact.phone}
-              </a>
-            )}
-            {regionContact?.email && (
-              <a href={`mailto:${regionContact.email}`}>{regionContact.email}</a>
-            )}
-          </div>
-          <div className="mc">
-            <span>{t('home.regions.contacts.africa')}</span>
-            <a href="mailto:africa@mindstec.com">africa@mindstec.com</a>
-          </div>
-          <div className="mc">
-            <span>{t('home.regions.contacts.poland')}</span>
-            <a href="mailto:poland@mindstec.com">poland@mindstec.com</a>
-          </div>
+        {/* Legend — the map now carries three marker treatments, so say what
+            they mean instead of leaving it to the hover tooltip. */}
+        <ul className="map-legend reveal" aria-label={t('home.regions.legend_label', 'Map key')}>
+          <li><i className="lg-dot lg-dot--hq" aria-hidden="true" />{t('home.regions.office_hq', 'Global Headquarters')}</li>
+          <li><i className="lg-dot" aria-hidden="true" />{t('home.regions.office_regional', 'Regional Office')}</li>
+          <li><i className="lg-dot lg-dot--soon" aria-hidden="true" />{t('home.regions.office_soon', 'Coming soon')}</li>
+        </ul>
+
+        {/* Office directory. Hovering a card lights up its marker (and vice
+            versa) via a shared data-city attribute, so the two halves of the
+            section read as one object rather than a map and a list. */}
+        <div className="offices reveal">
+          {ACTIVE_OFFICES.map((office) => {
+            // Only the office matching the visitor's selected region can show
+            // a phone/address: those come from the CMS RegionContact row for
+            // that region, and there is no per-city record to read for others.
+            const showRegionContact = office.region === region && regionContact;
+            return (
+              <article
+                key={office.key}
+                className={`office ${office.role === 'hq' ? 'office--hq' : ''}`}
+                data-office={office.key}
+                onMouseEnter={() => setFocusedOffice(office.key)}
+                onMouseLeave={() => setFocusedOffice(null)}
+              >
+                <header className="office-head">
+                  <h3>{t(`home.cities.${office.key}`, office.city)}</h3>
+                  <span className={`office-tag ${office.role === 'hq' ? 'office-tag--hq' : ''}`}>
+                    {office.role === 'hq'
+                      ? t('home.regions.office_hq', 'Global Headquarters')
+                      : t('home.regions.office_regional', 'Regional Office')}
+                  </span>
+                </header>
+                <p className="office-country">{t(`home.countries.${office.key}`, office.country)}</p>
+                <p className="office-coverage">
+                  {t(`home.offices.${office.key}`, `Serving ${office.country} and neighbouring markets.`)}
+                </p>
+                <div className="office-links">
+                  {showRegionContact && (regionContact.phone_display || regionContact.phone) && (
+                    <a href={`tel:${(regionContact.phone_display || regionContact.phone).replace(/[^+\d]/g, '')}`}>
+                      {regionContact.phone_display || regionContact.phone}
+                    </a>
+                  )}
+                  {office.email && <a href={`mailto:${office.email}`}>{office.email}</a>}
+                </div>
+                {showRegionContact && regionContact.address && (
+                  <address className="office-address">{regionContact.address}</address>
+                )}
+              </article>
+            );
+          })}
+        </div>
+
+        <div className="offices-foot reveal">
+          <p>{t('home.regions.foot', 'Stock, currency, warranty and people — all handled in-region.')}</p>
+          <Button to="/contact" className="text-link">
+            <span>{t('home.regions.foot_btn', 'Find your local desk')}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </Button>
         </div>
       </section>
 
@@ -1235,7 +1334,9 @@ const Home = () => {
           )}
         </div>
         <div className="work-more reveal">
-          <Button href="#contact" className="text-link">
+          {/* Points at the real case-study index now, not back at the contact
+              form on the same page. */}
+          <Button to="/projects" className="text-link">
             <span>{t('home.work.btn')}</span>
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
               <path d="M5 12h14M13 6l6 6-6 6" />
