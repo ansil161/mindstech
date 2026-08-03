@@ -5,6 +5,8 @@ import { useRegion } from '../../../context/RegionContext.jsx';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../common/Button/Button.jsx';
 import LanguageSwitcher from '../../common/LanguageSwitcher.jsx';
+import { getSolutionLinks } from '../../../constants/solutions.js';
+import { PRODUCT_CATEGORIES } from '../../../constants/products.js';
 
 /**
  * Primary navigation.
@@ -82,6 +84,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
 
   const path = location.pathname;
   const isSolutionsActive = path.startsWith('/solutions');
+  const isProductsActive = path.startsWith('/products');
   const isCompanyActive = path === '/about' || path === '/partners' || path === '/experience';
   const isProjectsActive = path.startsWith('/projects');
   const isInsightsActive =
@@ -92,6 +95,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
 
   const closeMenus = () => setActiveDropdown(null);
   const subClass = ({ isActive }) => (isActive ? 'sub-active' : '');
+  const solutionLinks = getSolutionLinks(t);
 
   return (
     <header ref={navRef} className="nav" id="nav">
@@ -148,12 +152,46 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
                 >
                   {t('navbar.all_solutions', 'All solutions')}
                 </NavLink>
-                <NavLink to="/solutions/digital-signage" className={subClass} onClick={closeMenus}>{t('solutions.arr.0.name')}</NavLink>
-                <NavLink to="/solutions/control-rooms" className={subClass} onClick={closeMenus}>{t('solutions.arr.1.name')}</NavLink>
-                <NavLink to="/solutions/conferencing" className={subClass} onClick={closeMenus}>{t('solutions.arr.2.name')}</NavLink>
-                <NavLink to="/solutions/hospitality" className={subClass} onClick={closeMenus}>{t('solutions.arr.3.name')}</NavLink>
-                <NavLink to="/solutions/broadcast" className={subClass} onClick={closeMenus}>{t('solutions.arr.4.name')}</NavLink>
-                <NavLink to="/solutions/live-events" className={subClass} onClick={closeMenus}>{t('solutions.arr.5.name')}</NavLink>
+                {solutionLinks.map(({ slug, name }) => (
+                  <NavLink key={slug} to={`/solutions/${slug}`} className={subClass} onClick={closeMenus}>
+                    {name}
+                  </NavLink>
+                ))}
+              </div>
+            </li>
+            {/* Products is a peer of Solutions, not a child of Company: the two
+                are the site's two ways into the same catalogue — by what the
+                room has to do, and by whose hardware does it. */}
+            <li
+              className={`nav-item ${activeDropdown === 'products' ? 'open' : ''}`}
+              onMouseEnter={() => handleMouseEnter('products')}
+              onMouseLeave={handleMouseLeave}
+            >
+              <Link to="/products" className={isProductsActive ? 'active' : ''} onClick={(e) => handleItemClick('products', e)}>
+                {t('navbar.products', 'Products')}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </Link>
+              <div className={`sub sub--wide ${activeDropdown === 'products' ? 'open' : ''}`}>
+                <NavLink
+                  to="/products"
+                  end
+                  className={({ isActive }) => `sub-all${isActive ? ' sub-active' : ''}`}
+                  onClick={closeMenus}
+                >
+                  {t('products.all', 'All brands')}
+                </NavLink>
+                {PRODUCT_CATEGORIES.map((cat) => (
+                  <NavLink
+                    key={cat.code}
+                    to={`/products/category/${cat.code}`}
+                    className={subClass}
+                    onClick={closeMenus}
+                  >
+                    {t(`products.categories.${cat.code}.name`, cat.name)}
+                  </NavLink>
+                ))}
               </div>
             </li>
             <li>

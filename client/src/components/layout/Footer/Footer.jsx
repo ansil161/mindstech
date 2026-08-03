@@ -6,6 +6,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { useRegion } from '../../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../../api/regionApi.js';
 import { useDynamicTranslation } from '../../../hooks/useDynamicTranslation.js';
+import { getSolutionLinks } from '../../../constants/solutions.js';
+import { PRODUCT_CATEGORIES } from '../../../constants/products.js';
 
 const Footer = () => {
   const { t } = useTranslation();
@@ -74,12 +76,18 @@ const Footer = () => {
         </div>
         <div className="foot-col">
           <h5>{t('navbar.solutions')}</h5>
-          <Link to="/solutions/digital-signage">{t('solutions.arr.0.name')}</Link>
-          <Link to="/solutions/control-rooms">{t('solutions.arr.1.name')}</Link>
-          <Link to="/solutions/conferencing">{t('solutions.arr.2.name')}</Link>
-          <Link to="/solutions/hospitality">{t('solutions.arr.3.name')}</Link>
-          <Link to="/solutions/broadcast">{t('solutions.arr.4.name')}</Link>
-          <Link to="/solutions/live-events">{t('solutions.arr.5.name')}</Link>
+          {getSolutionLinks(t).map(({ slug, name }) => (
+            <Link key={slug} to={`/solutions/${slug}`}>{name}</Link>
+          ))}
+        </div>
+        <div className="foot-col">
+          <h5>{t('navbar.products', 'Products')}</h5>
+          <Link to="/products">{t('products.all', 'All brands')}</Link>
+          {PRODUCT_CATEGORIES.slice(0, 5).map((cat) => (
+            <Link key={cat.code} to={`/products/category/${cat.code}`}>
+              {t(`products.categories.${cat.code}.name`, cat.name)}
+            </Link>
+          ))}
         </div>
         {/* Mirrors the navbar's Company / Resources split rather than the old
             single seven-link column, so the footer and the header agree on

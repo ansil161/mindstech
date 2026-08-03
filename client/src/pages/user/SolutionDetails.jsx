@@ -1,10 +1,11 @@
 import React, { useEffect, useRef, useState, useMemo, lazy, Suspense } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, Navigate } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.jsx';
+import NotFound from './NotFound.jsx';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
@@ -12,6 +13,8 @@ import { getPublicRegionSolutionBrands } from '../../api/regionApi.js';
 import {
   getSolution,
   getRelatedSolutions,
+  isSolutionSlug,
+  LEGACY_SOLUTION_SLUGS,
   PROCESS_STEPS,
   COMPANY_METRICS,
 } from '../../constants/solutionDetails.js';
@@ -56,7 +59,12 @@ const ParticleWave = lazy(() => import('../../components/common/ParticleWave/Par
 const COUNT_DURATION = 2;
 
 const SolutionDetails = () => {
-  const { slug } = useParams();
+  const { slug: rawSlug } = useParams();
+  // The six pre-rename slugs were live URLs and are still in brochures, old
+  // campaigns and the CMS. Redirect rather than silently rendering the fallback
+  // vertical, which would show ICT under a /solutions/hospitality URL.
+  const legacy = LEGACY_SOLUTION_SLUGS[rawSlug];
+  const slug = legacy || rawSlug;
   const { t } = useTranslation();
   const { regionSlug } = useRegion();
   const containerRef = useRef(null);
@@ -398,6 +406,12 @@ const SolutionDetails = () => {
     const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
     return () => clearTimeout(timer);
   }, [translatedBrands]);
+
+  // Both placed after every hook so the hook order never changes between
+  // renders. An unknown slug 404s instead of quietly rendering the first
+  // vertical under someone else's URL.
+  if (legacy) return <Navigate to={`/solutions/${legacy}`} replace />;
+  if (!isSolutionSlug(slug)) return <NotFound />;
 
   // Split the heading at the <em> so each line masks in on its own.
   const renderTitle = (titleHtml) => {

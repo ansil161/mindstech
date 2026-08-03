@@ -12,6 +12,7 @@ import { getPublicRegionData } from '../../api/regionApi.js';
 import { getPublicTestimonials } from '../../api/testimonialApi.js';
 import { TestimonialsSection } from '../../components/ui/testimonials-with-marquee.jsx';
 import SolutionGrid from '../../components/common/SolutionGrid/SolutionGrid.jsx';
+import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.jsx';
 import { getFallbackSolutions, getSolutionMeta } from '../../constants/solutions.js';
 import WaveBackdrop from '../../components/common/WaveBackdrop/WaveBackdrop.jsx';
 import { safeFromTo } from '../../utils/gsapSafe';
@@ -26,6 +27,18 @@ import {
 
 
 gsap.registerPlugin(ScrollTrigger);
+
+/**
+ * Icon + short tag for each positioning pillar, in the order the copy is
+ * written. Only the non-translatable half lives here — the tag itself is looked
+ * up through i18n with these as the English default, so a locale that hasn't
+ * been updated still renders a sensible word rather than a raw key.
+ */
+const PILLAR_MARKS = [
+  { icon: 'regional', tagFallback: 'Supply chain' },
+  { icon: 'valueAdd', tagFallback: 'Value added' },
+  { icon: 'future', tagFallback: 'Portfolio' },
+];
 
 // ── Map label layout ──
 // Several offices (Bangalore/Dubai/Riyadh/Cairo) sit close together on the
@@ -957,24 +970,43 @@ const Home = () => {
 
       {/* POSITIONING PILLARS — the three claims the rest of the page has to
           earn: global company / regional presence, value-added distribution
-          rather than box moving, and future technology available now. */}
+          rather than box moving, and future technology available now.
+
+          Previously three identical bordered boxes with a numeral on top,
+          which read as filler beside the sections either side of it. Rebuilt as
+          a numbered ledger: a sticky heading column on the left, three rows on
+          the right carrying an icon mark, a short tag, the claim and the
+          reasoning, over an oversized outlined numeral. Same words, same
+          palette — the difference is hierarchy, so the eye lands on the claim
+          before the paragraph instead of scanning three equal blocks. */}
       <section className="pillars" aria-label={t('home.pillars.label', 'What sets us apart')}>
-        <div className="section-head">
-          <div>
+        <div className="pillars-layout">
+          <div className="pillars-head">
             <span className="label label--red">{t('home.pillars.label')}</span>
             <h2 className="display" style={{ marginTop: '16px' }}>
               {t('home.pillars.title_main')} <em>{t('home.pillars.title_em')}</em>
             </h2>
+            <span className="pillars-rule" aria-hidden="true" />
           </div>
-        </div>
-        <div className="pillar-grid">
-          {[0, 1, 2].map((i) => (
-            <article className="pillar-card reveal" key={i}>
-              <span className="pillar-num" aria-hidden="true">{`0${i + 1}`}</span>
-              <h3>{t(`home.pillars.items.${i}.title`)}</h3>
-              <p>{t(`home.pillars.items.${i}.desc`)}</p>
-            </article>
-          ))}
+
+          <ol className="pillar-ledger">
+            {PILLAR_MARKS.map(({ icon, tagFallback }, i) => (
+              <li className="pillar-row reveal" key={icon}>
+                <span className="pillar-ghost" aria-hidden="true">{`0${i + 1}`}</span>
+                <div className="pillar-mark" aria-hidden="true">
+                  <SolutionIcon name={icon} />
+                </div>
+                <div className="pillar-body">
+                  <span className="pillar-tag">
+                    <i aria-hidden="true" />
+                    {t(`home.pillars.items.${i}.tag`, tagFallback)}
+                  </span>
+                  <h3>{t(`home.pillars.items.${i}.title`)}</h3>
+                  <p>{t(`home.pillars.items.${i}.desc`)}</p>
+                </div>
+              </li>
+            ))}
+          </ol>
         </div>
       </section>
 

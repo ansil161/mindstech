@@ -55,6 +55,7 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
       </NavLink>
 
       <NavLink to="/solutions" onClick={close}>{t('navbar.solutions')}</NavLink>
+      <NavLink to="/products" onClick={close}>{t('navbar.products', 'Products')}</NavLink>
       <NavLink to="/projects" onClick={close}>{t('navbar.projects', 'Projects')}</NavLink>
 
       <span className="drawer-group">{t('navbar.resources')}</span>
@@ -72,6 +73,15 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
       )}
 
       <NavLink to="/contact" onClick={close}>{t('footer.contact', 'Contact Us')}</NavLink>
+
+      {/* The navbar's "Talk to us" pill is hidden below 640px, so on a phone the
+          drawer is the only place the primary CTA can live. */}
+      <NavLink to="/contact" className="drawer-cta" onClick={close}>
+        {t('navbar.talk_to_us')}
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden="true">
+          <path d="M7 17L17 7M9 7h8v8" />
+        </svg>
+      </NavLink>
 
       {/* Region switcher — changes region only. */}
       <div className="drawer-picker">

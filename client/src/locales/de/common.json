@@ -24,7 +24,8 @@
     "company": "Unternehmen",
     "projects": "Projekte",
     "all_solutions": "Alle Lösungen",
-    "select_region": "Region wählen"
+    "select_region": "Region wählen",
+    "products": "Produkte"
   },
   "footer": {
     "contact": "Kontakt",
@@ -354,15 +355,18 @@
       "items": [
         {
           "title": "Globales Unternehmen. Regionale Präsenz.",
-          "desc": "Eine Lieferkette, lokal gehalten. Lager, Währung, Garantie und Menschen sitzen in Ihrer Region — nicht in einem Lagerhaus acht Zeitzonen entfernt."
+          "desc": "Eine Lieferkette, lokal gehalten. Lager, Währung, Garantie und Menschen sitzen in Ihrer Region — nicht in einem Lagerhaus acht Zeitzonen entfernt.",
+          "tag": "Lieferkette"
         },
         {
           "title": "Distribution mit Unterschied.",
-          "desc": "Wir sind keine bloßen Kartonschieber. Spezifikationsunterstützung, Demogeräte, Inbetriebnahmehilfe und After-Sales-Engineering gehören zum Produkt, nicht zum Aufpreis."
+          "desc": "Wir sind keine bloßen Kartonschieber. Spezifikationsunterstützung, Demogeräte, Inbetriebnahmehilfe und After-Sales-Engineering gehören zum Produkt, nicht zum Aufpreis.",
+          "tag": "Mehrwert"
         },
         {
           "title": "Die Technologie von morgen, heute.",
-          "desc": "Über fünfzig globale Hersteller, kuratiert und bevorratet — damit die Technik, die Sie spezifizieren, jetzt verfügbar ist und nicht nächstes Quartal."
+          "desc": "Über fünfzig globale Hersteller, kuratiert und bevorratet — damit die Technik, die Sie spezifizieren, jetzt verfügbar ist und nicht nächstes Quartal.",
+          "tag": "Portfolio"
         }
       ]
     },
@@ -748,7 +752,7 @@
       "desc": "Von einem einzelnen Besprechungsraum bis hin zu einer nationalen Kommandozentrale – sechs AV-Branchen, eine Preisliste und Produktspezialisten hinter jeder Kategorie, die wir vertreiben."
     },
     "meta": {
-      "vert_b": "6 Vertikalen",
+      "vert_b": "7 Vertikalen",
       "vert_s": "Vollständige AV-Abdeckung",
       "brands_b": "25 Marken",
       "brands_s": "Kuratiertes Portfolio",
@@ -765,67 +769,110 @@
     "what_we_deliver_em": "liefern",
     "brands_we_distribute": "Marken, die wir vertreiben",
     "for_this_vertical": "für diese Branche",
-    "arr": [
-      {
-        "cat": "Einzelhandel · Transport · Öffentlicher Raum",
-        "name": "Digital Signage",
-        "desc": "LED-Wände, professionelle Displays und Wegeleitsysteme, die Verkaufsflächen, Terminals und öffentliche Bereiche in Medienflächen verwandeln – mitsamt der Software zur Steuerung.",
-        "tag1": "LED für Innen- & Außenbereiche",
-        "tag2": "Displays",
-        "tag3": "Wegeleitsysteme",
-        "tag4": "CMS & Inhaltsplanung"
-      },
-      {
-        "cat": "Kommando · Überwachung · NOC",
-        "name": "Leitstände & Kontrollräume",
-        "desc": "24/7-Videowände, Prozessoren und Bediener-Arbeitsabläufe für Kommandozentralen, Überwachungseinheiten und Netzwerkbetrieb – ausgelegt auf maximale Ausfallsicherheit.",
-        "tag1": "Videowand-Prozessoren",
-        "tag2": "24/7 Displays",
-        "tag3": "KVM",
-        "tag4": "Quellen-Management"
-      },
-      {
-        "cat": "Arbeitsplatz · Bildung · Hybrid",
-        "name": "Konferenz & Zusammenarbeit",
-        "desc": "Hybride Besprechungsräume mit perfektem Klang und Bild – interaktive Displays, Kameras, Deckenmikrofone und die AV-over-IP-Infrastruktur dahinter.",
-        "tag1": "Interaktive Displays",
-        "tag2": "PTZ-Kameras",
-        "tag3": "Decken-Audio",
-        "tag4": "Raumbuchung"
-      },
-      {
-        "cat": "Hotels · Restaurants · Veranstaltungsorte",
-        "name": "Hospitality AV",
-        "desc": "Gästezimmer-Entertainment, Ballsaal-Systeme und Hintergrundbeschallung für Hotels, Restaurants und Veranstaltungsorte – Technik, die unsichtbar bleibt, bis es darauf ankommt.",
-        "tag1": "Zimmer-IPTV",
-        "tag2": "Ballsaal-AV",
-        "tag3": "Hintergrundmusik",
-        "tag4": "Zimmer-Tablets"
-      },
-      {
-        "cat": "Studios · Streaming · Content-Ersteller",
-        "name": "Rundfunk & Production",
-        "desc": "Kameras, Bildmischer, Live-Grafiken und Streaming-Infrastruktur für Fernsehsender, studios und Content-Ersteller – vom mobilen Setup bis zum Vollstudio.",
-        "tag1": "Studio-Kameras",
-        "tag2": "Bildmischung",
-        "tag3": "Live-Grafiken",
-        "tag4": "Streaming"
-      },
-      {
-        "cat": "Konzerte · Messen · XR",
-        "name": "Live-Events & Immersive Räume",
-        "desc": "Tour-taugliche LED-Systeme, Projektionsmapping und Raumklangsysteme für Konzerte, Messen und Erlebniswelten – gebaut für die harten Anforderungen auf Tour.",
-        "tag1": "Touring-LED",
-        "tag2": "Projektionsmapping",
-        "tag3": "Raumakustik",
-        "tag4": "Show-Steuerung"
-      }
-    ],
     "details": {
-      "digital-signage": {
-        "name": "Digital Signage",
-        "title": "Digital <em>Signage</em>",
-        "intro": "LED-Wände, professionelle Displays und Wegeleitsysteme, die Verkaufsflächen, Terminals und öffentliche Bereiche in Medienflächen verwandeln – mitsamt der Software zur Steuerung.",
+      "information-and-communication-technology": {
+        "name": "Informations- und Kommunikationstechnik",
+        "title": "Informations- und <em>Kommunikationstechnik</em>"
+      },
+      "hospitality-guest-experience": {
+        "name": "Hotellerie & Gästeerlebnis",
+        "title": "Hotellerie &amp; <em>Gästeerlebnis</em>",
+        "fact": "Hotels · Restaurants · Veranstaltungsorte",
+        "capsSide": "Die beste Hospitality-Technik ist die, die man nicht sieht – bis das Licht ausgeht und die Show beginnt.",
+        "caps": [
+          {
+            "title": "Gästezimmer-Entertainment",
+            "desc": "IPTV-Kopfstellen, Streaming-Lösungen und Raumsteuerungen – maßgeschneidert auf das Design des Hotels."
+          },
+          {
+            "title": "Ballsäle & Eventbereiche",
+            "desc": "Audio- und Projektionstechnik für teilbare Räume sowie LED-Systeme für Konferenzen, Hochzeiten und Events."
+          },
+          {
+            "title": "Hintergrundmusik & Durchsagen",
+            "desc": "Zonenbeschallung, die sich vom Frühstück bis zum Ausschank anpasst, inklusive integrierter Durchsagefunktion."
+          },
+          {
+            "title": "Interaktive Tablets",
+            "desc": "Smarte Kiosk-Systeme und Zimmer-Tablets für Bestellungen, Concierge- und Gästeservices."
+          }
+        ],
+        "cat": "Hotels · Restaurants · Veranstaltungsorte",
+        "desc": "Gästezimmer-Entertainment, Ballsaal-Systeme und Hintergrundbeschallung für Hotels, Restaurants und Veranstaltungsorte – Technik, die unsichtbar bleibt, bis es darauf ankommt.",
+        "tags": [
+          "Zimmer-IPTV",
+          "Ballsaal-AV",
+          "Hintergrundmusik",
+          "Zimmer-Tablets"
+        ]
+      },
+      "immersive-experience": {
+        "name": "Immersive Erlebnisse",
+        "title": "Immersive <em>Erlebnisse</em>",
+        "fact": "Konzerte · Messen · XR",
+        "capsSide": "Aufbau, Show und Abbau innerhalb weniger Stunden – im Event-Bereich gibt es keine zweite Chance, daher planen wir entsprechend sicher.",
+        "caps": [
+          {
+            "title": "Touring- & Rental-LED",
+            "desc": "LED-Module mit Schnellverschluss, gebogene Arrays und LED-Böden für den dauerhaften Vermieteinsatz."
+          },
+          {
+            "title": "Projektionsmapping",
+            "desc": "Lichtstarke Projektoren und Warping-Software für Architektur, Bühnen und Kunstinstallationen."
+          },
+          {
+            "title": "Raumakustik & Konzert-Audio",
+            "desc": "Skalierbare Tonsysteme und immersive Audiotechnik für Ausstellungen, Galerien und Stadien."
+          },
+          {
+            "title": "Show-Steuerung",
+            "desc": "Timecode-Synchronisation, Trigger-Systeme und Medienserver, die Licht, Video und Ton im Takt halten."
+          }
+        ],
+        "cat": "Konzerte · Messen · XR",
+        "desc": "Tour-taugliche LED-Systeme, Projektionsmapping und Raumklangsysteme für Konzerte, Messen und Erlebniswelten – gebaut für die harten Anforderungen auf Tour.",
+        "tags": [
+          "Touring-LED",
+          "Projektionsmapping",
+          "Raumakustik",
+          "Show-Steuerung"
+        ]
+      },
+      "broadcast-production-streaming": {
+        "name": "Broadcast, Produktion & Streaming",
+        "title": "Broadcast, Produktion &amp; <em>Streaming</em>",
+        "fact": "Studios · Streaming · Content-Ersteller",
+        "capsSide": "Vom Einzel-Streaming-Arbeitsplatz bis zum Nachrichtensender – es gelten dieselben Signalstandards.",
+        "caps": [
+          {
+            "title": "Studio- & PTZ-Kameras",
+            "desc": "Broadcast-Bildqualität von fest installierten Studiokameras bis hin zu ferngesteuerten PTZ-Kamerasystemen."
+          },
+          {
+            "title": "Bildmischung & Signalverteilung",
+            "desc": "Produktionsmischer und Kreuzschienen für Live-Sendungen, sport und Live-Events."
+          },
+          {
+            "title": "Live-Grafiken & virtuelle Sets",
+            "desc": "Echtzeitgrafiken, Augmented Reality und virtuelle Kulissen, die weltweit von Fernsehsendern eingesetzt werden."
+          },
+          {
+            "title": "Streaming & Signalübertragung",
+            "desc": "Encoder, IPTV- und OTT-Übertragungswege, die Sendungen zuverlässig auf jeden Bildschirm bringen."
+          }
+        ],
+        "cat": "Studios · Streaming · Content-Ersteller",
+        "desc": "Kameras, Bildmischer, Live-Grafiken und Streaming-Infrastruktur für Fernsehsender, studios und Content-Ersteller – vom mobilen Setup bis zum Vollstudio.",
+        "tags": [
+          "Studio-Kameras",
+          "Bildmischung",
+          "Live-Grafiken",
+          "Streaming"
+        ]
+      },
+      "digital-signage-dooh": {
+        "name": "Digital Signage & DOOH",
+        "title": "Digital Signage &amp; <em>DOOH</em>",
         "fact": "Einzelhandel · Transport · Öffentlicher Raum",
         "capsSide": "Vom einzelnen Menüboard bis zur Stadionfassade – Hardware, Software und Halterungen aus einer Hand.",
         "caps": [
@@ -845,12 +892,19 @@
             "title": "CMS & Inhaltsplanung",
             "desc": "Content Management, zeitgesteuerte Wiedergabe und Fernüberwachung für Netzwerke von einem bis zu Tausenden Displays."
           }
+        ],
+        "cat": "Einzelhandel · Transport · Öffentlicher Raum",
+        "desc": "LED-Wände, professionelle Displays und Wegeleitsysteme, die Verkaufsflächen, Terminals und öffentliche Bereiche in Medienflächen verwandeln – mitsamt der Software zur Steuerung.",
+        "tags": [
+          "LED für Innen- & Außenbereiche",
+          "Displays",
+          "Wegeleitsysteme",
+          "CMS & Inhaltsplanung"
         ]
       },
-      "control-rooms": {
-        "name": "Leitstände & Kontrollräume",
-        "title": "Kontroll<em>räume</em>",
-        "intro": "24/7-Videowände, Prozessoren und Bediener-Arbeitsabläufe für Kommandozentralen, Überwachungseinheiten und Netzwerkbetrieb – ausgelegt auf maximale Ausfallsicherheit.",
+      "control-rooms-critical-environments": {
+        "name": "Leitstellen & kritische Umgebungen",
+        "title": "Leitstellen &amp; <em>kritische Umgebungen</em>",
         "fact": "Kommando · Überwachung · NOC",
         "capsSide": "Ausfallsicherheit bedeutet kein Single-Point-of-Failure – wir planen Redundanz von der Quelle bis zum Display.",
         "caps": [
@@ -870,11 +924,19 @@
             "title": "Quellen- & Layout-Management",
             "desc": "Vordefinierte Layouts, alarmgesteuerte Ansichten und Multi-Operator-Workflows für kritische Situationen."
           }
+        ],
+        "cat": "Kommando · Überwachung · NOC",
+        "desc": "24/7-Videowände, Prozessoren und Bediener-Arbeitsabläufe für Kommandozentralen, Überwachungseinheiten und Netzwerkbetrieb – ausgelegt auf maximale Ausfallsicherheit.",
+        "tags": [
+          "Videowand-Prozessoren",
+          "24/7 Displays",
+          "KVM",
+          "Quellen-Management"
         ]
       },
-      "conferencing": {
+      "conferencing-collaboration": {
         "name": "Konferenz & Zusammenarbeit",
-        "title": "Konferenzen &amp; <em>Zusammenarbeit</em>",
+        "title": "Konferenz &amp; <em>Zusammenarbeit</em>",
         "intro": "Hybride Besprechungsräume mit perfektem Klang und Bild – interaktive Displays, Kameras, Deckenmikrofone und die AV-over-IP-Infrastruktur dahinter.",
         "fact": "Arbeitsplatz · Bildung · Hybrid",
         "capsSide": "Räume, die man gerne bucht – von Huddle Spaces bis zu Sitzungssälen und Hörsälen.",
@@ -895,81 +957,14 @@
             "title": "Raumbuchung & Raumanalytik",
             "desc": "Buchungsbildschirme, Belegungsstatistiken und Wegeleitsysteme für eine effiziente Nutzung Ihrer Büroflächen."
           }
-        ]
-      },
-      "hospitality": {
-        "name": "Hospitality AV",
-        "title": "Hospitality <em>AV</em>",
-        "intro": "Gästezimmer-Entertainment, Ballsaal-Systeme und Hintergrundbeschallung für Hotels, Restaurants und Veranstaltungsorte – Technik, die unsichtbar bleibt, bis es darauf ankommt.",
-        "fact": "Hotels · Restaurants · Veranstaltungsorte",
-        "capsSide": "Die beste Hospitality-Technik ist die, die man nicht sieht – bis das Licht ausgeht und die Show beginnt.",
-        "caps": [
-          {
-            "title": "Gästezimmer-Entertainment",
-            "desc": "IPTV-Kopfstellen, Streaming-Lösungen und Raumsteuerungen – maßgeschneidert auf das Design des Hotels."
-          },
-          {
-            "title": "Ballsäle & Eventbereiche",
-            "desc": "Audio- und Projektionstechnik für teilbare Räume sowie LED-Systeme für Konferenzen, Hochzeiten und Events."
-          },
-          {
-            "title": "Hintergrundmusik & Durchsagen",
-            "desc": "Zonenbeschallung, die sich vom Frühstück bis zum Ausschank anpasst, inklusive integrierter Durchsagefunktion."
-          },
-          {
-            "title": "Interaktive Tablets",
-            "desc": "Smarte Kiosk-Systeme und Zimmer-Tablets für Bestellungen, Concierge- und Gästeservices."
-          }
-        ]
-      },
-      "broadcast": {
-        "name": "Rundfunk & Produktion",
-        "title": "Rundfunk &amp; <em>Produktion</em>",
-        "intro": "Kameras, Bildmischer, Live-Grafiken und Streaming-Infrastruktur für Fernsehsender, Studios und Content-Ersteller – vom mobilen Setup bis zum Vollstudio.",
-        "fact": "Studios · Streaming · Content-Ersteller",
-        "capsSide": "Vom Einzel-Streaming-Arbeitsplatz bis zum Nachrichtensender – es gelten dieselben Signalstandards.",
-        "caps": [
-          {
-            "title": "Studio- & PTZ-Kameras",
-            "desc": "Broadcast-Bildqualität von fest installierten Studiokameras bis hin zu ferngesteuerten PTZ-Kamerasystemen."
-          },
-          {
-            "title": "Bildmischung & Signalverteilung",
-            "desc": "Produktionsmischer und Kreuzschienen für Live-Sendungen, sport und Live-Events."
-          },
-          {
-            "title": "Live-Grafiken & virtuelle Sets",
-            "desc": "Echtzeitgrafiken, Augmented Reality und virtuelle Kulissen, die weltweit von Fernsehsendern eingesetzt werden."
-          },
-          {
-            "title": "Streaming & Signalübertragung",
-            "desc": "Encoder, IPTV- und OTT-Übertragungswege, die Sendungen zuverlässig auf jeden Bildschirm bringen."
-          }
-        ]
-      },
-      "live-events": {
-        "name": "Live-Events & Immersive Räume",
-        "title": "Live-Events &amp; <em>Immersive</em>",
-        "intro": "Tour-taugliche LED-Systeme, Projektionsmapping und Raumklangsysteme für Konzerte, Messen und Erlebniswelten – gebaut für die harten Anforderungen auf Tour.",
-        "fact": "Konzerte · Messen · XR",
-        "capsSide": "Aufbau, Show und Abbau innerhalb weniger Stunden – im Event-Bereich gibt es keine zweite Chance, daher planen wir entsprechend sicher.",
-        "caps": [
-          {
-            "title": "Touring- & Rental-LED",
-            "desc": "LED-Module mit Schnellverschluss, gebogene Arrays und LED-Böden für den dauerhaften Vermieteinsatz."
-          },
-          {
-            "title": "Projektionsmapping",
-            "desc": "Lichtstarke Projektoren und Warping-Software für Architektur, Bühnen und Kunstinstallationen."
-          },
-          {
-            "title": "Raumakustik & Konzert-Audio",
-            "desc": "Skalierbare Tonsysteme und immersive Audiotechnik für Ausstellungen, Galerien und Stadien."
-          },
-          {
-            "title": "Show-Steuerung",
-            "desc": "Timecode-Synchronisation, Trigger-Systeme und Medienserver, die Licht, Video und Ton im Takt halten."
-          }
+        ],
+        "cat": "Arbeitsplatz · Bildung · Hybrid",
+        "desc": "Hybride Besprechungsräume mit perfektem Klang und Bild – interaktive Displays, Kameras, Deckenmikrofone und die AV-over-IP-Infrastruktur dahinter.",
+        "tags": [
+          "Interaktive Displays",
+          "PTZ-Kameras",
+          "Decken-Audio",
+          "Raumbuchung"
         ]
       }
     },
@@ -1161,5 +1156,94 @@
       "btn1": "Mit Spezialist sprechen",
       "btn2": "Lösungen ansehen"
     }
+  },
+  "products": {
+    "hero": {
+      "aria": "Our product catalogue",
+      "label": "Produkte",
+      "line1": "Über fünfzig Marken.",
+      "line2": "Eine Preisliste.",
+      "desc": "Beginnen Sie mit dem Raum, den Sie ausstatten müssen. Jede Anwendung listet die Hersteller, die wir dafür bevorraten und unterstützen — und jede Markenseite zeigt die Produktfamilien hinter dem Logo."
+    },
+    "meta": {
+      "brands": "Marken im Vertrieb",
+      "categories": "Anwendungskategorien",
+      "support_b": "Vor Ort",
+      "support_s": "Lager & Support"
+    },
+    "all": "Alle Marken",
+    "choose": "Kategorie wählen",
+    "all_title_main": "Jede Marke, die wir",
+    "all_title_em": "vertreiben",
+    "all_desc": "Fünfundzwanzig Hersteller unter festen regionalen Vereinbarungen — mit Lagerbestand, Ersatzteilen und technischem Support hinter jeder einzelnen.",
+    "cats_kicker": "Nach Anwendung",
+    "cats_title_main": "Zehn Orte, an denen",
+    "cats_title_em": "das zum Einsatz kommt",
+    "cats_label": "Alle Anwendungskategorien",
+    "about_label": "Der Hersteller",
+    "families_label": "Produktfamilien",
+    "families_title_main": "Was hinter",
+    "families_title_em": "dem Logo steckt",
+    "families_side": "Kategorien, keine Artikelnummern. Beschreiben Sie den Raum, wir liefern die Modelle, die Halterung und die Ersatzteile.",
+    "solutions_label": "Wo es spezifiziert wird",
+    "solutions_title_main": "Lösungen, in denen",
+    "solutions_title_em": "es vorkommt",
+    "apps_label": "Anwendungen",
+    "apps_title_main": "Räume, für die es",
+    "apps_title_em": "gebaut wurde",
+    "next_label": "Weitere Marken",
+    "brand_cta_main": "Sie spezifizieren",
+    "categories": {
+      "meeting-collaboration": {
+        "name": "Besprechungs- und Schulungsräume",
+        "short": "Besprechungsräume"
+      },
+      "command-video-wall": {
+        "name": "Leitstellen & Videowände",
+        "short": "Leitstellen"
+      },
+      "media-distribution-signage": {
+        "name": "Mediendistribution & Digital Signage",
+        "short": "Signage"
+      },
+      "hospitality-real-estate": {
+        "name": "Hotellerie, Immobilien & Gastronomie",
+        "short": "Hotellerie"
+      },
+      "events-exhibition": {
+        "name": "Events & Ausstellungen",
+        "short": "Events"
+      },
+      "retail-chain-store": {
+        "name": "Einzelhandel & Filialisten",
+        "short": "Einzelhandel"
+      },
+      "smart-home": {
+        "name": "Smart Home",
+        "short": "Smart Home"
+      },
+      "education": {
+        "name": "Bildung",
+        "short": "Bildung"
+      },
+      "display-mounting": {
+        "name": "Displayhalterungen",
+        "short": "Halterungen"
+      },
+      "lighting-control": {
+        "name": "Licht- & Dimmsteuerung",
+        "short": "Licht"
+      }
+    },
+    "cta": {
+      "label": "Projekt starten",
+      "title_main": "Beschreiben Sie den Raum.",
+      "title_em": "Nicht die Artikelnummer.",
+      "btn1": "Spezifikation anfragen",
+      "btn2": "Nach Lösung suchen",
+      "btn3": "Zurück zum Katalog"
+    },
+    "brands_word": "Marken",
+    "families_word": "Produktfamilien"
   }
 }

@@ -373,6 +373,11 @@ img {
   align-items: center;
   height: 100%;
   padding: 0 var(--pad);
+  /* The cap the comment above always claimed but never declared. Without it the
+     logo and the CTA cluster kept drifting to the viewport edges past 1440px
+     while the page content stayed in a fixed column. */
+  max-width: 1680px;
+  margin-inline: auto;
 }
 
 .nav.is-solid {
@@ -430,7 +435,7 @@ img {
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 4px;
   list-style: none;
 }
 
@@ -446,11 +451,16 @@ img {
   font-size: 13px;
   font-weight: 500;
   color: var(--grey);
-  padding: 8px 14px;
+  padding: 10px 13px;
   border-radius: 8px;
   border: 1px solid transparent;
-  transition: all .25s var(--ease);
+  transition: color .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
   position: relative;
+  /* Every control in the bar is a single line. Without this, a long label
+     ("Hong Kong / China", a translated "Talk to us") wraps to two lines and
+     pushes itself out of the 80px bar — which is exactly what the header was
+     doing at 1280–1440px. */
+  white-space: nowrap;
 }
 
 .nav-links a:hover {
@@ -535,7 +545,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 16px;
+  gap: 10px;
   flex: 1 1 0;
   min-width: 0;
 }
@@ -546,12 +556,30 @@ img {
   gap: 8px;
   font-size: 12px;
   color: var(--grey);
-  padding: 8px 14px;
+  padding: 9px 13px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.06);
   backdrop-filter: blur(8px);
-  transition: all .25s var(--ease);
+  transition: color .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease), transform .25s var(--ease);
+  white-space: nowrap;
+  min-height: 40px;
+}
+
+/* Region names vary wildly in length across the six regions and five locales.
+   Truncating the label keeps the pill a predictable width instead of letting
+   "Hong Kong / China" set the size of the whole right-hand cluster. */
+.nav-region #regionLabel {
+  display: block;
+  max-width: 118px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.nav-region svg,
+.nav-lang svg {
+  flex: none;
 }
 
 .nav-region:hover {
@@ -571,6 +599,69 @@ img {
   padding: 10px 20px;
   min-height: 40px;
   font-size: 13px;
+  white-space: nowrap;
+  flex: none;
+  border-radius: 8px;
+}
+
+.nav-lang {
+  min-height: 40px;
+  white-space: nowrap;
+  flex: none;
+}
+
+/* Intermediate breakpoints. Between 900px (where the burger takes over) and
+   1440px the bar carried five links, a region pill, a language pill and a CTA
+   at full desktop sizing, so the cluster ran out of room and wrapped. Each step
+   sheds width from the least load-bearing element first: spacing, then the
+   region label, then the region pill's text entirely. */
+@media (max-width: 1400px) {
+  .nav-links a {
+    padding: 10px 11px;
+    font-size: 12.5px;
+  }
+
+  .nav-cta {
+    gap: 8px;
+  }
+
+  .nav-region #regionLabel {
+    max-width: 92px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .nav-links {
+    gap: 2px;
+  }
+
+  .nav-links a {
+    padding: 10px 9px;
+    font-size: 12px;
+  }
+
+  .nav-region,
+  .nav-lang {
+    padding: 9px 10px;
+  }
+
+  .nav .btn {
+    padding: 10px 15px;
+    font-size: 12.5px;
+  }
+}
+
+/* Last step before the burger takes over at 1080px: the globe icon alone still
+   says "region", and the name is one tap away in the dropdown, which already
+   marks the active one. */
+@media (max-width: 1140px) {
+  .nav-region #regionLabel {
+    display: none;
+  }
+
+  .nav-region {
+    gap: 4px;
+  }
 }
 
 .burger {
@@ -624,38 +715,89 @@ img {
   visibility: visible;
 }
 
+/* Menu type, not display type.
+   These were clamp(28px, 7vw, 44px) — poster-sized. On a 390px phone a top
+   level link rendered at ~27px and "E-Waste Management" wrapped to two lines,
+   so ten links plus two pickers needed several screens of scrolling and the
+   menu read as a headline stack rather than as navigation. Sized down to a
+   scannable list: still comfortably above the 16px mobile minimum, still
+   clearing 44px of touch target through padding. */
 .drawer a {
   font-family: var(--display);
-  font-size: clamp(28px, 7vw, 44px);
+  font-size: clamp(19px, 4.4vw, 24px);
   font-weight: 600;
-  letter-spacing: -.02em;
-  color: var(--grey);
-  padding: 10px 0;
-  line-height: 1.1;
+  letter-spacing: -.015em;
+  color: var(--white);
+  padding: 11px 0;
+  line-height: 1.25;
   border-bottom: 1px solid var(--line-soft);
   transition: color .25s, padding-left .3s var(--ease);
 }
 
 .drawer a:hover {
   color: var(--white);
-  padding-left: 12px;
+  padding-left: 10px;
+}
+
+.drawer a.active {
+  color: var(--red);
 }
 
 .drawer a.drawer-sub {
-  font-size: clamp(17px, 4vw, 22px);
+  font-family: var(--body);
+  font-size: 15px;
   font-weight: 500;
-  padding-left: 28px;
-  color: var(--grey-dark);
+  letter-spacing: 0;
+  padding-left: 18px;
+  padding-block: 12px;
+  color: var(--grey);
 }
 
 .drawer a.drawer-sub:hover {
-  padding-left: 36px;
+  color: var(--white);
+  padding-left: 26px;
+}
+
+.drawer a.drawer-sub.active {
+  color: var(--red);
 }
 
 .drawer .drawer-meta {
   margin-top: 40px;
   display: flex;
   gap: 32px;
+}
+
+/* Overrides `.drawer a` — the CTA is a button, not another list row. */
+.drawer a.drawer-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  align-self: flex-start;
+  margin-top: 26px;
+  padding: 14px 24px;
+  min-height: 48px;
+  font-family: var(--body);
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: .01em;
+  color: #fff;
+  background: var(--red);
+  border: 0;
+  border-radius: 8px;
+  transition: background .25s var(--ease), transform .25s var(--ease);
+}
+
+.drawer a.drawer-cta:hover {
+  padding-left: 24px;
+  background: #e30d0e;
+  transform: translateY(-1px);
+}
+
+.drawer a.drawer-cta svg {
+  width: 16px;
+  height: 16px;
 }
 
 /* The drawer now carries grouped links plus two pickers, which is taller than
@@ -666,17 +808,17 @@ img {
   justify-content: flex-start;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-top: 96px;
-  padding-bottom: 48px;
+  padding-top: 92px;
+  padding-bottom: 56px;
 }
 
 .drawer-group {
   display: block;
-  margin-top: 18px;
-  padding: 6px 0;
-  font-size: 10.5px;
+  margin-top: 20px;
+  padding: 8px 0 4px;
+  font-size: 10px;
   font-weight: 700;
-  letter-spacing: .18em;
+  letter-spacing: .2em;
   text-transform: uppercase;
   color: var(--red);
 }
@@ -721,8 +863,9 @@ img {
 
 .drawer-chip {
   align-self: flex-start;
-  padding: 8px 14px;
-  font-size: 13.5px;
+  padding: 10px 14px;
+  min-height: 40px;
+  font-size: 13px;
   font-weight: 500;
   color: var(--grey);
   background: rgba(255, 255, 255, 0.03);
@@ -746,7 +889,19 @@ img {
 
 .drawer-chip--sub {
   margin-left: 16px;
-  font-size: 12.5px;
+  font-size: 12px;
+}
+
+/* The drawer is a full-screen overlay on a phone; a 20px side gutter (--pad's
+   floor) left the list hard against the edges. */
+@media (max-width: 480px) {
+  .drawer {
+    padding-top: 84px;
+  }
+
+  .drawer .drawer-picker {
+    margin-top: 24px;
+  }
 }
 
 .drawer-chip:disabled {
@@ -813,6 +968,13 @@ img {
   margin-bottom: 4px;
   font-weight: 600;
   color: var(--white);
+}
+
+/* The product categories are full application names ("Media Distribution &
+   Digital Signage"), which `white-space: nowrap` on `.sub a` would otherwise
+   push past the viewport edge on the right-hand menus. */
+.sub--wide {
+  min-width: 288px;
 }
 
 .sub a .sub-lang-native {
@@ -2062,79 +2224,239 @@ img {
   box-shadow: none;
 }
 
-/* ── POSITIONING PILLARS ── */
+/* ── POSITIONING PILLARS ──
+   A numbered ledger, not a card row. The heading column sticks while the three
+   rows scroll past it, so the section reads as one argument with three points
+   rather than three interchangeable tiles. */
 .pillars {
   padding: var(--section-y) 0 0;
 }
 
-.pillar-grid {
+.pillars-layout {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-  margin: clamp(24px, 3vw, 40px) var(--pad) 0;
+  grid-template-columns: minmax(280px, 0.82fr) minmax(0, 1.6fr);
+  gap: clamp(32px, 5vw, 88px);
+  align-items: start;
+  /* Width/centring come from the shared content-column helper near the end of
+     this file, which .pillars-layout is listed in. */
 }
 
-.pillar-card {
+.pillars-head {
+  position: sticky;
+  top: 128px;
+}
+
+.pillars-head h2 {
+  text-wrap: balance;
+}
+
+.pillars-rule {
+  display: block;
+  width: 64px;
+  height: 2px;
+  margin-top: 28px;
+  background: linear-gradient(90deg, var(--red), rgba(204, 0, 1, 0));
+}
+
+.pillar-ledger {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  /* Rows share hairlines instead of each carrying a full border — a ledger
+     rule, so the eye runs down the column rather than around six boxes. */
+  border-top: 1px solid var(--line-soft);
+}
+
+.pillar-row {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: clamp(18px, 2.4vw, 32px);
+  align-items: start;
+  padding: clamp(28px, 3.2vw, 44px) clamp(16px, 2vw, 28px) clamp(28px, 3.2vw, 44px) 0;
+  border-bottom: 1px solid var(--line-soft);
+  overflow: hidden;
+  transition: background .45s var(--ease);
+}
+
+/* The red wash and the left rail are the only hover motion: no transform, so a
+   row cannot nudge its neighbours or shift the numeral it sits under. */
+.pillar-row::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(204, 0, 1, .09), rgba(204, 0, 1, 0) 55%);
+  opacity: 0;
+  transition: opacity .45s var(--ease);
+  pointer-events: none;
+}
+
+.pillar-row::after {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 2px;
+  background: var(--red);
+  transform: scaleY(0);
+  transform-origin: top;
+  transition: transform .5s var(--ease);
+}
+
+.pillar-row:hover::before {
+  opacity: 1;
+}
+
+.pillar-row:hover::after {
+  transform: scaleY(1);
+}
+
+/* The oversized outline numeral. Sits behind the copy at the right edge,
+   clipped by the row, so it reads as a page marking rather than a label. */
+.pillar-ghost {
+  position: absolute;
+  top: 50%;
+  right: -6px;
+  transform: translateY(-50%);
+  font-family: var(--display);
+  font-size: clamp(96px, 11vw, 168px);
+  font-weight: 800;
+  line-height: 1;
+  letter-spacing: -.04em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .07);
+  transition: -webkit-text-stroke-color .5s var(--ease);
+  pointer-events: none;
+  user-select: none;
+}
+
+.pillar-row:hover .pillar-ghost {
+  -webkit-text-stroke-color: rgba(204, 0, 1, .3);
+}
+
+.pillar-mark {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  color: var(--red);
+  background: rgba(204, 0, 1, .1);
+  border: 1px solid rgba(204, 0, 1, .26);
+  transition: background .4s var(--ease), border-color .4s var(--ease), color .4s var(--ease);
+}
+
+.pillar-mark svg {
+  width: 26px;
+  height: 26px;
+}
+
+.pillar-row:hover .pillar-mark {
+  background: rgba(204, 0, 1, .18);
+  border-color: rgba(204, 0, 1, .5);
+  color: #ff5b5b;
+}
+
+.pillar-body {
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 30px 28px 32px;
-  border: 1px solid var(--line-soft);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, .015);
-  overflow: hidden;
-  transition: border-color .4s var(--ease), background .4s var(--ease), transform .5s var(--ease);
 }
 
-.pillar-card::after {
-  content: '';
-  position: absolute;
-  inset: auto 0 0 0;
-  height: 2px;
-  background: var(--red);
-  transform: scaleX(0);
-  transform-origin: left;
-  transition: transform .5s var(--ease);
-}
-
-.pillar-card:hover {
-  border-color: var(--line);
-  background: var(--ink-2);
-  transform: translateY(-3px);
-}
-
-.pillar-card:hover::after {
-  transform: scaleX(1);
-}
-
-.pillar-num {
-  font-family: var(--display);
-  font-size: 12px;
+.pillar-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 10.5px;
   font-weight: 700;
   letter-spacing: .18em;
-  color: var(--red);
+  text-transform: uppercase;
+  color: var(--grey-dark);
 }
 
-.pillar-card h3 {
+.pillar-tag i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--red);
+}
+
+.pillar-row h3 {
   font-family: var(--display);
-  font-size: clamp(20px, 2vw, 26px);
+  font-size: clamp(22px, 2.4vw, 32px);
   font-weight: 600;
-  letter-spacing: -.02em;
-  line-height: 1.2;
+  letter-spacing: -.025em;
+  line-height: 1.18;
   color: var(--white);
   text-wrap: balance;
 }
 
-.pillar-card p {
-  font-size: 14.5px;
-  line-height: 1.7;
+.pillar-row p {
+  font-size: 15px;
+  line-height: 1.75;
   color: var(--grey);
+  max-width: 62ch;
+  text-wrap: pretty;
 }
 
-@media (max-width: 900px) {
-  .pillar-grid {
+@media (max-width: 1024px) {
+  .pillars-layout {
     grid-template-columns: 1fr;
+    gap: clamp(24px, 4vw, 40px);
+  }
+
+  /* Sticky only makes sense beside a scrolling column. */
+  .pillars-head {
+    position: static;
+  }
+
+  .pillar-ledger {
+    margin-top: 8px;
+  }
+}
+
+@media (max-width: 560px) {
+  .pillar-row {
+    grid-template-columns: 1fr;
+    gap: 18px;
+    padding-right: 0;
+  }
+
+  .pillar-mark {
+    width: 46px;
+    height: 46px;
+    border-radius: 12px;
+  }
+
+  .pillar-mark svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  /* At this width the numeral would sit under the paragraph instead of beside
+     it, so it moves to the top-right corner and thins out. */
+  .pillar-ghost {
+    top: 18px;
+    right: -2px;
+    transform: none;
+    font-size: 74px;
+    -webkit-text-stroke-width: 1px;
+  }
+
+  .pillar-row p {
+    font-size: 14.5px;
+  }
+}
+
+/* Touch devices latch :hover after a tap; the wash would stay on the last row
+   touched. Colour-only feedback is fine, the rail is not. */
+@media (hover: none) {
+
+  .pillar-row:hover::before,
+  .pillar-row:hover::after {
+    opacity: 0;
+    transform: scaleY(0);
   }
 }
 
@@ -6670,11 +6992,12 @@ footer {
 
 }
 
-@media(max-width:900px) {
-  .story {
-    grid-template-columns: 1fr;
-    gap: 40px;
-  }
+/* The desktop bar carries six top-level items plus region, language and the
+   CTA. That stopped fitting when Products joined Solutions as a peer, so the
+   burger now takes over at 1080px instead of 900px — one breakpoint earlier
+   than the rest of the layout, because this is the widest cluster on the page.
+   Declared here (after the nav's own intermediate steps) so it wins. */
+@media (max-width: 1080px) {
 
   .nav-links,
   .nav-region,
@@ -6684,6 +7007,13 @@ footer {
 
   .burger {
     display: flex;
+  }
+}
+
+@media(max-width:900px) {
+  .story {
+    grid-template-columns: 1fr;
+    gap: 40px;
   }
 
   .stats-grid {
@@ -8993,12 +9323,847 @@ footer {
 .map-legend,
 .offices,
 .offices-foot,
-.pillar-grid,
+.pillars-layout,
 .ahero-meta,
 .ahero-visual,
 .phero-meta,
 .shero-meta,
 .xhero-meta {
+  width: calc(100% - 2 * var(--pad));
+  max-width: calc(1440px - 2 * var(--pad));
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   PRODUCTS — /products, /products/category/:code, /products/:brand
+
+   The catalogue borrows the hero/meta rhythm from /partners so the two pages
+   read as one section of the site, then departs: a sticky category rail, a
+   logo-led brand grid, and a numbered family list on the brand page. Declared
+   last in the file so nothing here is silently outranked by an earlier block.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.prhero {
+  padding: var(--hero-y) var(--pad) 0;
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: clamp(32px, 5vw, 80px);
+  align-items: end;
+}
+
+.prhero h1 {
+  font-size: clamp(44px, 7vw, 104px);
+}
+
+.prhero-side {
+  padding-bottom: 12px;
+}
+
+.prhero-side p {
+  font-size: 16px;
+  color: var(--grey);
+  line-height: 1.75;
+  max-width: 42ch;
+}
+
+.prhero-meta {
+  display: flex;
+  gap: clamp(24px, 4vw, 64px);
+  flex-wrap: wrap;
+  margin: clamp(36px, 6vh, 64px) var(--pad) 0;
+  padding-top: 28px;
+  border-top: 1px solid var(--line-soft);
+}
+
+.prhero-meta .fact b {
+  display: block;
+  font-family: var(--display);
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.prhero-meta .fact span {
+  display: block;
+  margin-top: 4px;
+  font-size: 10.5px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+/* ── CATEGORY RAIL ──
+   Sticky under the 80px navbar. On a grid of twenty-five cards this is the
+   difference between changing your mind and scrolling back to the top to do
+   it. `top` clears the navbar exactly; the blur keeps the cards legible as
+   they pass underneath. */
+.pr-rail {
+  position: sticky;
+  top: 80px;
+  z-index: 40;
+  margin-top: clamp(40px, 6vw, 72px);
+  background: rgba(8, 8, 10, .82);
+  backdrop-filter: blur(18px);
+  border-top: 1px solid var(--line-soft);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.pr-rail-inner {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 14px var(--pad);
+  max-width: 1440px;
+  margin-inline: auto;
+}
+
+.pr-rail-label {
+  flex: none;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+/* Horizontal scroller rather than a wrapping block: ten categories wrapping to
+   three rows would push the grid off-screen every time the rail re-stuck. */
+.pr-chips {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  padding: 2px 0;
+  scroll-snap-type: x proximity;
+}
+
+.pr-chips::-webkit-scrollbar {
+  display: none;
+}
+
+.pr-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  scroll-snap-align: start;
+  padding: 9px 14px;
+  min-height: 40px;
+  font-size: 12.5px;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--grey);
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
+}
+
+.pr-chip:hover {
+  color: var(--white);
+  background: rgba(255, 255, 255, .07);
+  border-color: var(--line);
+}
+
+.pr-chip.is-active {
+  color: var(--white);
+  background: rgba(204, 0, 1, .16);
+  border-color: rgba(204, 0, 1, .5);
+}
+
+.pr-chip-count {
+  font-size: 10.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--grey-dark);
+}
+
+.pr-chip.is-active .pr-chip-count {
+  color: rgba(255, 255, 255, .75);
+}
+
+/* ── ACTIVE CATEGORY + BRAND GRID ── */
+.pr-section {
+  padding: clamp(48px, 6vw, 84px) 0 0;
+}
+
+.pr-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 24px;
+  padding: 0 var(--pad);
+  margin-bottom: clamp(32px, 4vw, 56px);
+}
+
+.pr-head-main {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  min-width: 0;
+}
+
+.pr-head h2 {
+  font-size: clamp(28px, 3.6vw, 50px);
+  text-wrap: balance;
+}
+
+.pr-head-mark {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 52px;
+  height: 52px;
+  border-radius: 13px;
+  color: var(--red);
+  background: rgba(204, 0, 1, .1);
+  border: 1px solid rgba(204, 0, 1, .26);
+}
+
+.pr-head-mark svg {
+  width: 24px;
+  height: 24px;
+}
+
+.pr-head .side {
+  flex: none;
+  max-width: 360px;
+  padding-bottom: 6px;
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: var(--grey);
+}
+
+.pr-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(268px, 1fr));
+  gap: 14px;
+  margin: 0 var(--pad);
+}
+
+.pr-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 22px 22px 24px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .015);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color .35s var(--ease), background .35s var(--ease), transform .4s var(--ease);
+}
+
+.pr-card::after {
+  content: '';
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 2px;
+  background: var(--red);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .45s var(--ease);
+}
+
+.pr-card:hover {
+  border-color: var(--line);
+  background: var(--ink-2);
+  transform: translateY(-3px);
+}
+
+.pr-card:hover::after {
+  transform: scaleX(1);
+}
+
+/* Brand logos arrive as mixed-colour PNGs on white or transparent grounds. The
+   plate gives every one of them the same neutral field, so a dark logo is
+   still readable and the grid does not look like twenty-five treatments. */
+.pr-card-logo {
+  display: grid;
+  place-items: center;
+  height: 92px;
+  padding: 16px;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.pr-card-logo img {
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.pr-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+}
+
+.pr-card-body h3 {
+  font-family: var(--display);
+  font-size: 19px;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  color: var(--white);
+}
+
+.pr-card-body p {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--grey);
+  flex: 1;
+}
+
+.pr-card-count {
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+.pr-card-go {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  color: var(--ink);
+  background: rgba(255, 255, 255, .9);
+  opacity: 0;
+  transform: translate(-4px, 4px);
+  transition: opacity .35s var(--ease), transform .35s var(--ease);
+}
+
+.pr-card:hover .pr-card-go {
+  opacity: 1;
+  transform: none;
+}
+
+.pr-card-go svg {
+  width: 14px;
+  height: 14px;
+}
+
+/* ── ALL CATEGORIES ── */
+.pr-cats {
+  padding: var(--section-y) 0 0;
+}
+
+.pr-cat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 14px;
+  margin: 0 var(--pad);
+}
+
+.pr-cat {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 26px 24px 24px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .015);
+  cursor: pointer;
+  transition: border-color .35s var(--ease), background .35s var(--ease);
+}
+
+.pr-cat:hover,
+.pr-cat.is-active {
+  border-color: rgba(204, 0, 1, .4);
+  background: rgba(204, 0, 1, .05);
+}
+
+.pr-cat-num {
+  position: absolute;
+  top: 22px;
+  right: 22px;
+  font-family: var(--display);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .16em;
+  color: var(--grey-dark);
+}
+
+.pr-cat-mark {
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px;
+  color: var(--red);
+  background: rgba(204, 0, 1, .1);
+  border: 1px solid rgba(204, 0, 1, .26);
+}
+
+.pr-cat-mark svg {
+  width: 21px;
+  height: 21px;
+}
+
+.pr-cat h3 {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  line-height: 1.25;
+  color: var(--white);
+  padding-right: 34px;
+  text-wrap: balance;
+}
+
+.pr-cat p {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--grey);
+  flex: 1;
+}
+
+.pr-cat-foot {
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+/* ── BRAND PAGE ── */
+.pb-hero {
+  padding: calc(var(--hero-y) - 40px) var(--pad) 0;
+}
+
+.pb-crumb {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 26px;
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+.pb-crumb a {
+  color: var(--grey);
+  transition: color .2s;
+}
+
+.pb-crumb a:hover {
+  color: var(--red);
+}
+
+.pb-hero-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(220px, .7fr);
+  gap: clamp(28px, 5vw, 72px);
+  align-items: center;
+}
+
+.pb-hero h1 {
+  font-size: clamp(40px, 6.4vw, 92px);
+}
+
+.pb-lede {
+  margin-top: 22px;
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.7;
+  color: var(--grey);
+  max-width: 52ch;
+}
+
+.pb-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 26px;
+}
+
+.pb-chip {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 14px;
+  min-height: 36px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--grey);
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid var(--line-soft);
+  border-radius: 999px;
+  transition: color .25s var(--ease), background .25s var(--ease), border-color .25s var(--ease);
+}
+
+.pb-chip:hover {
+  color: var(--white);
+  background: rgba(204, 0, 1, .14);
+  border-color: rgba(204, 0, 1, .45);
+}
+
+.pb-logo {
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  aspect-ratio: 16 / 10;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.pb-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.pb-about {
+  display: grid;
+  grid-template-columns: minmax(160px, .5fr) minmax(0, 2fr);
+  gap: clamp(20px, 4vw, 64px);
+  align-items: start;
+  padding: clamp(48px, 6vw, 88px) var(--pad);
+}
+
+.pb-about-body {
+  font-size: clamp(16px, 1.5vw, 19px);
+  line-height: 1.8;
+  color: var(--grey);
+  max-width: 72ch;
+  text-wrap: pretty;
+}
+
+.pb-families {
+  padding: var(--section-y) 0 0;
+}
+
+.pb-family-list {
+  list-style: none;
+  margin: 0 var(--pad);
+  border-top: 1px solid var(--line-soft);
+}
+
+.pb-family {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: clamp(16px, 2.4vw, 32px);
+  align-items: start;
+  padding: clamp(24px, 3vw, 38px) 0;
+  border-bottom: 1px solid var(--line-soft);
+  transition: background .35s var(--ease);
+}
+
+.pb-family:hover {
+  background: var(--ink-2);
+}
+
+.pb-family-num {
+  font-family: var(--display);
+  font-size: clamp(28px, 3vw, 40px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -.03em;
+  color: transparent;
+  -webkit-text-stroke: 1px rgba(255, 255, 255, .18);
+}
+
+.pb-family:hover .pb-family-num {
+  -webkit-text-stroke-color: rgba(204, 0, 1, .55);
+}
+
+.pb-family-body h3 {
+  font-family: var(--display);
+  font-size: clamp(19px, 2vw, 26px);
+  font-weight: 600;
+  letter-spacing: -.02em;
+  line-height: 1.2;
+  color: var(--white);
+}
+
+.pb-family-body p {
+  margin-top: 10px;
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: var(--grey);
+  max-width: 68ch;
+  text-wrap: pretty;
+}
+
+.pb-solutions,
+.pb-apps,
+.pb-next {
+  padding: var(--section-y) 0 0;
+}
+
+.pb-sol-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 var(--pad);
+}
+
+.pb-sol {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  min-height: 48px;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--white);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .015);
+  transition: border-color .3s var(--ease), background .3s var(--ease), color .3s var(--ease);
+}
+
+.pb-sol:hover {
+  color: #fff;
+  border-color: rgba(204, 0, 1, .5);
+  background: rgba(204, 0, 1, .1);
+}
+
+.pb-sol svg {
+  width: 15px;
+  height: 15px;
+  color: var(--red);
+}
+
+.pb-app-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
+  margin: 0 var(--pad);
+}
+
+.pb-app {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 24px 22px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .015);
+  transition: border-color .35s var(--ease), background .35s var(--ease);
+}
+
+.pb-app:hover {
+  border-color: rgba(204, 0, 1, .4);
+  background: rgba(204, 0, 1, .05);
+}
+
+.pb-app-mark {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 11px;
+  color: var(--red);
+  background: rgba(204, 0, 1, .1);
+  border: 1px solid rgba(204, 0, 1, .26);
+}
+
+.pb-app-mark svg {
+  width: 20px;
+  height: 20px;
+}
+
+.pb-app h3 {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -.015em;
+  color: var(--white);
+}
+
+.pb-app p {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--grey);
+}
+
+.pb-next-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 14px;
+  margin: 0 var(--pad);
+  padding-bottom: var(--section-y);
+}
+
+.pb-next-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 20px;
+  border: 1px solid var(--line-soft);
+  border-radius: 12px;
+  background: rgba(255, 255, 255, .015);
+  transition: border-color .35s var(--ease), background .35s var(--ease), transform .4s var(--ease);
+}
+
+.pb-next-card:hover {
+  border-color: var(--line);
+  background: var(--ink-2);
+  transform: translateY(-3px);
+}
+
+.pb-next-logo {
+  display: grid;
+  place-items: center;
+  height: 72px;
+  padding: 12px;
+  border-radius: 9px;
+  background: #fff;
+}
+
+.pb-next-logo img {
+  max-height: 100%;
+  max-width: 100%;
+  width: auto;
+  object-fit: contain;
+}
+
+.pb-next-card h3 {
+  font-family: var(--display);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.pb-next-card p {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--grey);
+}
+
+/* ── PRODUCTS: RESPONSIVE ── */
+@media (max-width: 1100px) {
+
+  .prhero,
+  .pb-hero-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .prhero-side {
+    padding-bottom: 0;
+  }
+
+  /* Beside the copy at this width the logo plate would squeeze the headline;
+     above it, it introduces the brand before the name is read. */
+  .pb-logo {
+    order: -1;
+    max-width: 260px;
+    aspect-ratio: 3 / 2;
+    padding: 22px;
+  }
+
+  .pb-about {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .pr-head {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .pr-head .side {
+    max-width: none;
+  }
+}
+
+@media (max-width: 640px) {
+
+  /* The rail's label and its scroller stop fitting on one line here; the chips
+     keep the full width and the label sits above them. */
+  .pr-rail-inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px var(--pad);
+  }
+
+  .pr-chips {
+    /* Bleed the scroller into the page gutter so the last chip does not look
+       clipped mid-word at the edge. */
+    margin: 0 calc(var(--pad) * -1);
+    padding: 2px var(--pad);
+  }
+
+  .pr-grid,
+  .pr-cat-grid,
+  .pb-app-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .pr-head-mark {
+    width: 44px;
+    height: 44px;
+  }
+
+  .pb-family {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .pb-family-num {
+    font-size: 24px;
+  }
+
+  /* Touch devices have no hover, so the arrow would otherwise never appear. */
+  .pr-card-go {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Touch devices latch :hover after a tap, leaving the last card lifted. Keep
+   the colour changes, drop the motion. */
+@media (hover: none) {
+
+  .pr-card:hover,
+  .pb-next-card:hover {
+    transform: none;
+  }
+
+  .pr-card:hover::after {
+    transform: scaleX(0);
+  }
+}
+
+/* Same content column as the rest of the site. The two groups mirror the
+   shared helpers above: sections that carry their own var(--pad) padding cap
+   at 1440px, and elements that sit inside an unpadded section with a
+   `margin: 0 var(--pad)` gutter swap that margin for auto and lose the gutter
+   from their width. Declared here rather than appended to those lists so the
+   products block stays readable as one unit. */
+.prhero,
+.pb-hero,
+.pb-about,
+.pr-head {
+  width: 100%;
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.prhero-meta,
+.pr-grid,
+.pr-cat-grid,
+.pb-family-list,
+.pb-sol-grid,
+.pb-app-grid,
+.pb-next-grid {
   width: calc(100% - 2 * var(--pad));
   max-width: calc(1440px - 2 * var(--pad));
   margin-left: auto;

@@ -52,6 +52,21 @@ export const router = createBrowserRouter([
         path: '/solutions/:slug',
         lazy: page(() => import('../pages/user/SolutionDetails')),
       },
+      // Products: `/products/category/:category` is declared before the brand
+      // route so the literal segment wins; React Router ranks static segments
+      // above dynamic ones, but the order also documents the intent.
+      {
+        path: '/products',
+        lazy: page(() => import('../pages/user/Products')),
+      },
+      {
+        path: '/products/category/:category',
+        lazy: page(() => import('../pages/user/Products')),
+      },
+      {
+        path: '/products/:brand',
+        lazy: page(() => import('../pages/user/ProductBrand')),
+      },
       {
         path: '/partners',
         lazy: page(() => import('../pages/user/Partners')),

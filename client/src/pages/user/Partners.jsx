@@ -1,44 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
+import { BRANDS, PARTNER_CATEGORY_CODES } from '../../constants/products.js';
 
 
 gsap.registerPlugin(ScrollTrigger);
 
-// The partner portfolio is global — the same 25 brands are represented in every
-// region. (Region + solution specific brands stay on the solution detail pages.)
-const BRANDS = [
-  { id: '01', name: 'Avocor',     cat: 'displays',  descKey: 'partners.brands.b1',  img: '/assets/uploads/2019/03/1.png' },
-  { id: '02', name: 'Christie',   cat: 'displays',  descKey: 'partners.brands.b2',  img: '/assets/uploads/2025/04/christie_250x250.png' },
-  { id: '03', name: 'Datapath',   cat: 'displays',  descKey: 'partners.brands.b3',  img: '/assets/uploads/2025/04/datapath-1.png' },
-  { id: '04', name: 'Polywall',   cat: 'displays',  descKey: 'partners.brands.b4',  img: '/assets/uploads/2025/04/polywall_250x250.png' },
-  { id: '05', name: 'Magnum',     cat: 'displays',  descKey: 'partners.brands.b5',  img: '/assets/uploads/2025/04/magnum-2-1.png' },
-  { id: '06', name: 'Sonance',    cat: 'audio',     descKey: 'partners.brands.b6',  img: '/assets/uploads/2026/03/Screenshot-2026-03-24-124551.png' },
-  { id: '07', name: 'RDL',        cat: 'audio',     descKey: 'partners.brands.b7',  img: '/assets/uploads/2025/04/RDL-1.png' },
-  { id: '08', name: 'Amino',      cat: 'broadcast', descKey: 'partners.brands.b8',  img: '/assets/uploads/2026/04/Untitled-design-27.png' },
-  { id: '09', name: 'SalrayWorks',cat: 'broadcast', descKey: 'partners.brands.b9',  img: '/assets/uploads/2026/04/a1966c_b6188e7c73814b5fa62a8a2fdb076fe5mv2.jpeg' },
-  { id: '10', name: 'Telycam',    cat: 'broadcast', descKey: 'partners.brands.b10', img: '/assets/uploads/2025/04/telycam_250x250.png' },
-  { id: '11', name: 'Humelab',    cat: 'collab',    descKey: 'partners.brands.b11', img: '/assets/uploads/2026/04/Untitled-design-19.png' },
-  { id: '12', name: 'Vizrt',      cat: 'broadcast', descKey: 'partners.brands.b12', img: '/assets/uploads/2025/06/7-1.png' },
-  { id: '13', name: 'Lemco',      cat: 'broadcast', descKey: 'partners.brands.b13', img: '/assets/uploads/2026/04/Untitled-design-26-1.png' },
-  { id: '14', name: 'T1V',        cat: 'collab',    descKey: 'partners.brands.b14', img: '/assets/uploads/2025/04/T1V-Orange-Standard-Logo-1.png' },
-  { id: '15', name: 'GoGet',      cat: 'collab',    descKey: 'partners.brands.b15', img: '/assets/uploads/2025/04/GoGet_Filled_RGB_Black-1.png' },
-  { id: '16', name: 'iPort',      cat: 'collab',    descKey: 'partners.brands.b16', img: '/assets/uploads/2025/04/iPort_Logo_250x250.png' },
-  { id: '17', name: 'RTI',        cat: 'collab',    descKey: 'partners.brands.b17', img: '/assets/uploads/2025/04/logo-300x300-1.png' },
-  { id: '18', name: 'SCT',        cat: 'collab',    descKey: 'partners.brands.b18', img: '/assets/uploads/2025/04/SCT_250W.png' },
-  { id: '19', name: 'Blustream',  cat: 'infra',     descKey: 'partners.brands.b19', img: '/assets/uploads/2025/04/Blustream_Logo-3-1.png' },
-  { id: '20', name: 'NETGEAR AV', cat: 'infra',     descKey: 'partners.brands.b20', img: '/assets/uploads/2025/04/netgearav_250x250.png' },
-  { id: '21', name: 'Kordz',      cat: 'infra',     descKey: 'partners.brands.b21', img: '/assets/uploads/2025/04/kordz_250x250.png' },
-  { id: '22', name: 'B-Tech',     cat: 'infra',     descKey: 'partners.brands.b22', img: '/assets/uploads/2025/04/btech_250x250.png' },
-  { id: '23', name: 'MTC',        cat: 'infra',     descKey: 'partners.brands.b23', img: '/assets/uploads/2025/04/MTC_new-1.png' },
-  { id: '24', name: 'Sapling',    cat: 'infra',     descKey: 'partners.brands.b24', img: '/assets/uploads/2025/04/sapling-1.png' },
-  { id: '25', name: 'Wavex',      cat: 'infra',     descKey: 'partners.brands.b25', img: '/assets/uploads/2025/04/Wavex-Transparent-Logo-Source_1024-1.png' },
-];
-
-const CATEGORY_CODES = ['all', 'displays', 'audio', 'broadcast', 'collab', 'infra'];
+// The brand registry lives in constants/products.js, which /products renders
+// too. It used to be a second copy of the same twenty-five brands right here;
+// two lists of the same data drift the moment one brand is added, and the logo
+// paths were already duplicated between them.
+//
+// The portfolio is global — the same brands are represented in every region.
+// (Region- and solution-specific brand lists stay on the solution detail pages.)
 
 const Partners = () => {
   const { t } = useTranslation();
@@ -46,7 +24,7 @@ const Partners = () => {
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
 
-  const categories = CATEGORY_CODES.map(code => ({ code, label: t(`partners.categories.${code}`) }));
+  const categories = PARTNER_CATEGORY_CODES.map(code => ({ code, label: t(`partners.categories.${code}`) }));
 
   useEffect(() => {
     cardsRef.current = cardsRef.current.slice(0, BRANDS.length);
@@ -222,8 +200,12 @@ const Partners = () => {
         {BRANDS.map((brand, i) => {
           const isVisible = filter === 'all' || brand.cat === filter;
           return (
-            <div
+            // Each card now opens the brand's catalogue page. Before, the grid
+            // was twenty-five dead ends — the logos were the only thing the
+            // page said about any of them.
+            <Link
               key={brand.id}
+              to={`/products/${brand.slug}`}
               className={`p-card ${isVisible ? '' : 'is-hidden'}`}
               data-cat={brand.cat}
               ref={el => (cardsRef.current[i] = el)}
@@ -236,7 +218,7 @@ const Partners = () => {
                 <h3>{brand.name}</h3>
                 <span className="p-cat">{t(brand.descKey)}</span>
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

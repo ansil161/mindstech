@@ -24,7 +24,8 @@
     "company": "Company",
     "projects": "Projects",
     "all_solutions": "All solutions",
-    "select_region": "Select region"
+    "select_region": "Select region",
+    "products": "Products"
   },
   "footer": {
     "contact": "Contact Us",
@@ -348,15 +349,18 @@
       "items": [
         {
           "title": "Global company. Regional presence.",
-          "desc": "One supply chain, held locally. Stock, currency, warranty and people sit in your region — not in a warehouse eight time zones away."
+          "desc": "One supply chain, held locally. Stock, currency, warranty and people sit in your region — not in a warehouse eight time zones away.",
+          "tag": "Supply chain"
         },
         {
           "title": "Distribution with a difference.",
-          "desc": "We are not merely box movers. Specification support, demo stock, commissioning help and after-sales engineering come with the product, not as an extra."
+          "desc": "We are not merely box movers. Specification support, demo stock, commissioning help and after-sales engineering come with the product, not as an extra.",
+          "tag": "Value added"
         },
         {
           "title": "Technology of the future, today.",
-          "desc": "Fifty-plus global manufacturers, curated and stocked — so the technology you specify is available now, not next quarter."
+          "desc": "Fifty-plus global manufacturers, curated and stocked — so the technology you specify is available now, not next quarter.",
+          "tag": "Portfolio"
         }
       ]
     },
@@ -735,85 +739,25 @@
     "brands_we_distribute": "Brands we distribute",
     "for_this_vertical": "for this vertical",
     "details": {
-      "digital-signage": {
-        "name": "Digital Signage",
-        "title": "Digital <em>Signage</em>",
-        "intro": "LED walls, professional display panels and wayfinding that turn retail floors, terminals and public spaces into media surfaces — with the software to run them.",
-        "fact": "Retail · Transport · Public space",
-        "capsSide": "From a single menu board to a stadium facade — hardware, software and mounting from one price list.",
-        "caps": [
-          {
-            "title": "Indoor & outdoor LED",
-            "desc": "Fine-pitch indoor walls to high-brightness outdoor facades, with the receiving cards, spares and service to keep them lit."
-          },
-          {
-            "title": "Professional display panels",
-            "desc": "Commercial-grade panels rated for continuous operation — portrait, landscape, high-brightness and touch."
-          },
-          {
-            "title": "Wayfinding & kiosks",
-            "desc": "Interactive totems and self-service kiosks for malls, airports, hospitals and campuses."
-          },
-          {
-            "title": "CMS & scheduling",
-            "desc": "Content management, day-parting and remote monitoring for networks of one screen or one thousand."
-          }
-        ]
+      "information-and-communication-technology": {
+        "name": "Information & Communication Technology",
+        "title": "Information &amp; <em>Communication Technology</em>",
+        "intro": "Connectivity, efficiency and digital transformation for modern business environments. Networking infrastructure, secure communication systems, cloud technologies and data management platforms, integrated so operations and collaboration hold together — reliable data exchange, real-time communication and IT environments that scale across enterprises, campuses and public infrastructure. From structured cabling and unified communications to network management, every layer is specified for performance, security and flexibility.",
+        "fact": "Enterprise · Campus · Public infrastructure",
+        "cat": "Enterprise · Campus · Public infrastructure",
+        "desc": "Networking, structured cabling, unified communications and data management — the transport layer every other vertical on this page runs over.",
+        "tags": [
+          "Structured cabling",
+          "AV-over-IP",
+          "Unified comms",
+          "Network management"
+        ],
+        "capsSide": "AV and IT stopped being separate procurement long ago. We spec the transport layer with the same discipline as the screens hanging off it."
       },
-      "control-rooms": {
-        "name": "Control Rooms",
-        "title": "Control <em>Rooms</em>",
-        "intro": "24/7-rated video walls, processors and operator workflows for command centres, surveillance suites and network operations — engineered for zero downtime.",
-        "fact": "Command · Surveillance · NOC",
-        "capsSide": "Mission-critical means no single point of failure — we spec redundancy from source to screen.",
-        "caps": [
-          {
-            "title": "Video wall processors",
-            "desc": "Hardware and software processing that puts any source on any display, at any size, without dropped frames."
-          },
-          {
-            "title": "24/7 mission-critical displays",
-            "desc": "Panels and LED rated for round-the-clock duty cycles, with redundant power and burn-in management."
-          },
-          {
-            "title": "KVM & operator desks",
-            "desc": "Low-latency KVM so operators control every system from one seat, plus console furniture and ergonomics."
-          },
-          {
-            "title": "Source & layout management",
-            "desc": "Preset layouts, alarm-triggered views and multi-operator workflows for the moments that matter."
-          }
-        ]
-      },
-      "conferencing": {
-        "name": "Conferencing & Collaboration",
-        "title": "Conferencing & <em>Collaboration</em>",
-        "intro": "Hybrid meeting rooms that sound as good as they look — interactive displays, cameras, ceiling audio and the AV-over-IP backbone connecting them.",
-        "fact": "Workplace · Education · Hybrid",
-        "capsSide": "Rooms people actually want to book — from huddle spaces to boardrooms and lecture theatres.",
-        "caps": [
-          {
-            "title": "Interactive displays",
-            "desc": "Touch collaboration displays for ideation, annotation and wireless presentation in any room size."
-          },
-          {
-            "title": "Cameras & tracking",
-            "desc": "PTZ, ePTZ and auto-framing cameras that keep every participant in the shot, in any layout."
-          },
-          {
-            "title": "Ceiling & beamforming audio",
-            "desc": "Microphones and speakers that disappear into the ceiling and still pick up the quietest voice."
-          },
-          {
-            "title": "Booking & room intelligence",
-            "desc": "Scheduling panels, occupancy analytics and wayfinding that make the whole floor work harder."
-          }
-        ]
-      },
-      "hospitality": {
-        "name": "Hospitality AV",
-        "title": "Hospitality <em>AV</em>",
-        "intro": "Guest-room entertainment, ballroom systems and background audio for hotels, restaurants and venues — technology that stays invisible until it matters.",
+      "hospitality-guest-experience": {
+        "name": "Hospitality & Guest Experience",
+        "title": "Hospitality &amp; <em>Guest Experience</em>",
+        "intro": "Comfort, convenience and engagement at every stage of the guest journey. Audio-visual systems, digital displays and smart technologies turn a space into a welcoming, interactive environment — personalised communication, seamless navigation and real-time information across hotels, resorts and public venues. From digital signage and in-room experiences to centralised content management, every touchpoint is tuned to guest satisfaction.",
         "fact": "Hotels · Restaurants · Venues",
         "capsSide": "The best hospitality AV is the kind guests never notice — until the lights dim and the show starts.",
         "caps": [
@@ -833,37 +777,20 @@
             "title": "Interactive hospitality tablets",
             "desc": "Smart tables and in-room tablets for ordering, concierge and guest services."
           }
+        ],
+        "cat": "Hotels · Resorts · Venues",
+        "desc": "In-room entertainment, digital displays and smart control across the guest journey — technology that stays invisible until it matters.",
+        "tags": [
+          "Guest-room IPTV",
+          "Ballroom AV",
+          "Background audio",
+          "Room control"
         ]
       },
-      "broadcast": {
-        "name": "Broadcast & Production",
-        "title": "Broadcast & <em>Production</em>",
-        "intro": "Cameras, switching, live graphics and streaming infrastructure for broadcasters, studios and creators — from single-operator setups to full facilities.",
-        "fact": "Studios · Streaming · Creators",
-        "capsSide": "From a one-person streaming desk to a national newsroom — the same signal discipline applies.",
-        "caps": [
-          {
-            "title": "Studio & PTZ cameras",
-            "desc": "Broadcast-grade imaging from fixed studio chains to remotely operated PTZ fleets."
-          },
-          {
-            "title": "Vision mixing & switching",
-            "desc": "Production switchers and routing for live programmes, sport and events."
-          },
-          {
-            "title": "Live graphics & virtual sets",
-            "desc": "Real-time graphics, augmented reality and virtual studio tools used by the world's broadcasters."
-          },
-          {
-            "title": "Streaming & delivery",
-            "desc": "Encoders, IPTV and OTT delivery that get the programme to every screen, reliably."
-          }
-        ]
-      },
-      "live-events": {
-        "name": "Live Events & Immersive",
-        "title": "Live Events & <em>Immersive</em>",
-        "intro": "Touring-grade LED, projection mapping and spatial audio for concerts, exhibitions and experiential spaces — built to survive the road.",
+      "immersive-experience": {
+        "name": "Immersive Experience",
+        "title": "Immersive <em>Experience</em>",
+        "intro": "Environments built to engage, inspire and hold an audience. Advanced audio-visual technologies, interactive displays and dynamic content turn ordinary spaces into highly engaging digital experiences — storytelling that runs across multiple touchpoints in museums, retail, corporate environments and public venues. Synchronised visuals, sound and real-time interactivity make the content land, and every element is specified to work together from concept to execution.",
         "fact": "Concerts · Exhibitions · XR",
         "capsSide": "Rigged, run and struck in hours — event technology has no second chances, so we spec accordingly.",
         "caps": [
@@ -883,6 +810,146 @@
             "title": "Show control",
             "desc": "Timecode, triggering and media servers keeping lights, video and sound on the same beat."
           }
+        ],
+        "cat": "Museums · Retail · Public venues",
+        "desc": "Interactive displays, projection and synchronised sound that turn ordinary spaces into environments an audience stays inside.",
+        "tags": [
+          "Interactive walls",
+          "Projection mapping",
+          "Spatial audio",
+          "Show control"
+        ]
+      },
+      "broadcast-production-streaming": {
+        "name": "Broadcast, Production & Streaming",
+        "title": "Broadcast, Production &amp; <em>Streaming</em>",
+        "intro": "Media distribution at your fingertips. Distribution over IP is one of the most powerful tools available where a lot of content has to reach a lot of locations — and the same backbone drives synchronous clock systems, where IP clocks stay locked to the second across sites and time zones. Cameras, switching, live graphics and streaming infrastructure sit on top of it, from a single-operator setup to a full facility.",
+        "fact": "Studios · Streaming · Creators",
+        "capsSide": "From a one-person streaming desk to a national newsroom — the same signal discipline applies.",
+        "caps": [
+          {
+            "title": "Studio & PTZ cameras",
+            "desc": "Broadcast-grade imaging from fixed studio chains to remotely operated PTZ fleets."
+          },
+          {
+            "title": "Vision mixing & switching",
+            "desc": "Production switchers and routing for live programmes, sport and events."
+          },
+          {
+            "title": "Live graphics & virtual sets",
+            "desc": "Real-time graphics, augmented reality and virtual studio tools used by the world's broadcasters."
+          },
+          {
+            "title": "Streaming & delivery",
+            "desc": "Encoders, IPTV and OTT delivery that get the programme to every screen, reliably."
+          }
+        ],
+        "cat": "Studios · Streaming · Media distribution",
+        "desc": "Media distribution over IP, cameras, switching and live graphics — from a single-operator setup to a full facility.",
+        "tags": [
+          "Media distribution",
+          "Studio cameras",
+          "Vision mixing",
+          "IP clocks"
+        ]
+      },
+      "digital-signage-dooh": {
+        "name": "Digital Signage & DOOH",
+        "title": "Digital Signage &amp; <em>DOOH</em>",
+        "intro": "Sending the message to the right person at the right place at the right time is what advertising and marketing turn on. We carry a niche of audio-visual products built for indoor and outdoor marketing — signage software clubbed with media players across multiple sites, scheduled, changed or stopped remotely, and made interactive where the brief calls for it.",
+        "fact": "Retail · Transport · Public space",
+        "capsSide": "From a single menu board to a stadium facade — hardware, software and mounting from one price list.",
+        "caps": [
+          {
+            "title": "Indoor & outdoor LED",
+            "desc": "Fine-pitch indoor walls to high-brightness outdoor facades, with the receiving cards, spares and service to keep them lit."
+          },
+          {
+            "title": "Professional display panels",
+            "desc": "Commercial-grade panels rated for continuous operation — portrait, landscape, high-brightness and touch."
+          },
+          {
+            "title": "Wayfinding & kiosks",
+            "desc": "Interactive totems and self-service kiosks for malls, airports, hospitals and campuses."
+          },
+          {
+            "title": "CMS & scheduling",
+            "desc": "Content management, day-parting and remote monitoring for networks of one screen or one thousand."
+          }
+        ],
+        "cat": "Retail · Transport · Public space",
+        "desc": "Indoor and outdoor signage with the software behind it — scheduled, changed or stopped remotely, and interactive where the brief calls for it.",
+        "tags": [
+          "Indoor & outdoor LED",
+          "Display panels",
+          "Wayfinding",
+          "CMS & scheduling"
+        ]
+      },
+      "control-rooms-critical-environments": {
+        "name": "Control Rooms & Critical Environments",
+        "title": "Control Rooms &amp; <em>Critical Environments</em>",
+        "intro": "Complete NOC solutions for business organisations, public utilities, universities and government agencies overseeing complex networking environments that require continuous supervision. We give NOC personnel the technology to monitor one network or many for the conditions that need attention before service degrades — video wall displays, processors, and the controlling hardware and software behind them.",
+        "fact": "Command · Surveillance · NOC",
+        "capsSide": "Mission-critical means no single point of failure — we spec redundancy from source to screen.",
+        "caps": [
+          {
+            "title": "Video wall processors",
+            "desc": "Hardware and software processing that puts any source on any display, at any size, without dropped frames."
+          },
+          {
+            "title": "24/7 mission-critical displays",
+            "desc": "Panels and LED rated for round-the-clock duty cycles, with redundant power and burn-in management."
+          },
+          {
+            "title": "KVM & operator desks",
+            "desc": "Low-latency KVM so operators control every system from one seat, plus console furniture and ergonomics."
+          },
+          {
+            "title": "Source & layout management",
+            "desc": "Preset layouts, alarm-triggered views and multi-operator workflows for the moments that matter."
+          }
+        ],
+        "cat": "Command · Surveillance · NOC",
+        "desc": "Complete NOC solutions — video wall displays, processors and controlling hardware for environments under continuous supervision.",
+        "tags": [
+          "Video wall processors",
+          "24/7 displays",
+          "KVM",
+          "Source management"
+        ]
+      },
+      "conferencing-collaboration": {
+        "name": "Conferencing & Collaboration",
+        "title": "Conferencing &amp; <em>Collaboration</em>",
+        "intro": "Every business benefits from collaboration — when people share ideas and work together, productivity and results follow. Our meeting room solutions open that up by letting you work with information in more meaningful ways: displays, conference systems, table management and BYOD, tied together with room management. Whatever the meeting, presentation or demonstration is for, the room should make the day more productive, not less.",
+        "fact": "Workplace · Education · Hybrid",
+        "capsSide": "Rooms people actually want to book — from huddle spaces to boardrooms and lecture theatres.",
+        "caps": [
+          {
+            "title": "Interactive displays",
+            "desc": "Touch collaboration displays for ideation, annotation and wireless presentation in any room size."
+          },
+          {
+            "title": "Cameras & tracking",
+            "desc": "PTZ, ePTZ and auto-framing cameras that keep every participant in the shot, in any layout."
+          },
+          {
+            "title": "Ceiling & beamforming audio",
+            "desc": "Microphones and speakers that disappear into the ceiling and still pick up the quietest voice."
+          },
+          {
+            "title": "Booking & room intelligence",
+            "desc": "Scheduling panels, occupancy analytics and wayfinding that make the whole floor work harder."
+          }
+        ],
+        "cat": "Workplace · Education · Hybrid",
+        "desc": "Displays, conference systems, table management and BYOD tied together with room management, so a booked room actually works.",
+        "tags": [
+          "Interactive displays",
+          "PTZ cameras",
+          "Ceiling audio",
+          "Room booking"
         ]
       }
     },
@@ -890,72 +957,16 @@
       "label": "Solutions",
       "line1": "Every vertical.",
       "line2": "One partner.",
-      "desc": "From a single meeting room to a national command centre — six AV verticals, one price list, and product specialists behind every category we distribute."
+      "desc": "From a single meeting room to a national command centre — seven AV verticals, one price list, and product specialists behind every category we distribute."
     },
     "meta": {
-      "vert_b": "6 verticals",
+      "vert_b": "7 verticals",
       "vert_s": "Complete AV coverage",
       "brands_b": "25 brands",
       "brands_s": "Curated portfolio",
       "installs_b": "1,000+ installs",
       "installs_s": "Supplied & supported"
     },
-    "arr": [
-      {
-        "cat": "Retail · Transport · Public space",
-        "name": "Digital Signage",
-        "desc": "LED walls, professional display panels and wayfinding that turn retail floors, terminals and public spaces into media surfaces — with the software to run them.",
-        "tag1": "Indoor & outdoor LED",
-        "tag2": "Display panels",
-        "tag3": "Wayfinding",
-        "tag4": "CMS & scheduling"
-      },
-      {
-        "cat": "Command · Surveillance · NOC",
-        "name": "Control Rooms",
-        "desc": "24/7-rated video walls, processors and operator workflows for command centres, surveillance suites and network operations — engineered for zero downtime.",
-        "tag1": "Video wall processors",
-        "tag2": "24/7 displays",
-        "tag3": "KVM",
-        "tag4": "Source management"
-      },
-      {
-        "cat": "Workplace · Education · Hybrid",
-        "name": "Conferencing & Collaboration",
-        "desc": "Hybrid meeting rooms that sound as good as they look — interactive displays, cameras, ceiling audio and the AV-over-IP backbone connecting them.",
-        "tag1": "Interactive displays",
-        "tag2": "PTZ cameras",
-        "tag3": "Ceiling audio",
-        "tag4": "Room booking"
-      },
-      {
-        "cat": "Hotels · Restaurants · Venues",
-        "name": "Hospitality AV",
-        "desc": "Guest-room entertainment, ballroom systems and background audio for hotels, restaurants and venues — technology that stays invisible until it matters.",
-        "tag1": "Guest-room IPTV",
-        "tag2": "Ballroom AV",
-        "tag3": "Background audio",
-        "tag4": "Hospitality tablets"
-      },
-      {
-        "cat": "Studios · Streaming · Creators",
-        "name": "Broadcast & Production",
-        "desc": "Cameras, switching, live graphics and streaming infrastructure for broadcasters, studios and creators — from single-operator setups to full facilities.",
-        "tag1": "Studio cameras",
-        "tag2": "Vision mixing",
-        "tag3": "Live graphics",
-        "tag4": "Streaming"
-      },
-      {
-        "cat": "Concerts · Exhibitions · XR",
-        "name": "Live Events & Immersive",
-        "desc": "Touring-grade LED, projection mapping and spatial audio for concerts, exhibitions and experiential spaces — built to survive the road.",
-        "tag1": "Touring LED",
-        "tag2": "Projection mapping",
-        "tag3": "Spatial audio",
-        "tag4": "Show control"
-      }
-    ],
     "explore": "Explore",
     "next": "Next solution",
     "brands_empty": "No brands listed for this region yet."
@@ -1146,5 +1157,94 @@
       "btn1": "Talk to a specialist",
       "btn2": "Browse solutions"
     }
+  },
+  "products": {
+    "hero": {
+      "aria": "Our product catalogue",
+      "label": "Products",
+      "line1": "Fifty-plus brands.",
+      "line2": "One price list.",
+      "desc": "Start with the space you have to fill. Every application below lists the manufacturers we stock and support for it — and every brand page sets out the product families behind the logo."
+    },
+    "meta": {
+      "brands": "Brands distributed",
+      "categories": "Application categories",
+      "support_b": "In-region",
+      "support_s": "Stock & support"
+    },
+    "all": "All brands",
+    "choose": "Choose a category",
+    "all_title_main": "Every brand we",
+    "all_title_em": "distribute",
+    "all_desc": "Twenty-five manufacturers held under formal regional agreements, with the stock, spares and engineering support behind each one.",
+    "cats_kicker": "By application",
+    "cats_title_main": "Ten places this",
+    "cats_title_em": "gets used",
+    "cats_label": "All application categories",
+    "about_label": "The manufacturer",
+    "families_label": "Product families",
+    "families_title_main": "What sits under",
+    "families_title_em": "the logo",
+    "families_side": "Categories, not part numbers. Tell us the room and we come back with the specific models, the mounting and the spares.",
+    "solutions_label": "Where it is specified",
+    "solutions_title_main": "Solutions it",
+    "solutions_title_em": "shows up in",
+    "apps_label": "Applications",
+    "apps_title_main": "Rooms it was",
+    "apps_title_em": "built for",
+    "next_label": "Other brands",
+    "brand_cta_main": "Specifying",
+    "categories": {
+      "meeting-collaboration": {
+        "name": "Meeting & Training Rooms",
+        "short": "Meeting rooms"
+      },
+      "command-video-wall": {
+        "name": "Command Centres & Video Walls",
+        "short": "Command centres"
+      },
+      "media-distribution-signage": {
+        "name": "Media Distribution & Digital Signage",
+        "short": "Signage"
+      },
+      "hospitality-real-estate": {
+        "name": "Hospitality, Real Estate & Catering",
+        "short": "Hospitality"
+      },
+      "events-exhibition": {
+        "name": "Events & Exhibition",
+        "short": "Events"
+      },
+      "retail-chain-store": {
+        "name": "Retail & Chain Store",
+        "short": "Retail"
+      },
+      "smart-home": {
+        "name": "Smart Home",
+        "short": "Smart home"
+      },
+      "education": {
+        "name": "Education",
+        "short": "Education"
+      },
+      "display-mounting": {
+        "name": "Display Mounting",
+        "short": "Mounting"
+      },
+      "lighting-control": {
+        "name": "Lighting & Dimming Control",
+        "short": "Lighting"
+      }
+    },
+    "cta": {
+      "label": "Start a project",
+      "title_main": "Know the room.",
+      "title_em": "Not the part number.",
+      "btn1": "Ask for a specification",
+      "btn2": "Browse by solution",
+      "btn3": "Back to catalogue"
+    },
+    "brands_word": "brands",
+    "families_word": "product families"
   }
 }

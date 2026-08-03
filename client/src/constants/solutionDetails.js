@@ -32,14 +32,40 @@
  * every language, and the alt describes the same photograph.
  */
 
+/**
+ * The seven verticals, in the order Mindstec publishes them, and the source of
+ * truth for `/solutions/:slug`.
+ *
+ * The slugs match the corporate site's own solution URLs
+ * (mindstec.com/<region>/solution/<slug>/) so a link from a brochure, an old
+ * campaign or another regional site lands on the same page here. The six
+ * shorter slugs this file used to carry — digital-signage, control-rooms,
+ * conferencing, hospitality, broadcast, live-events — still resolve; see
+ * LEGACY_SOLUTION_SLUGS below.
+ */
 export const SOLUTION_ORDER = [
-  'digital-signage',
-  'control-rooms',
-  'conferencing',
-  'hospitality',
-  'broadcast',
-  'live-events',
+  'information-and-communication-technology',
+  'hospitality-guest-experience',
+  'immersive-experience',
+  'broadcast-production-streaming',
+  'digital-signage-dooh',
+  'control-rooms-critical-environments',
+  'conferencing-collaboration',
 ];
+
+/**
+ * Old slug → current slug. Every one of these was a live URL before the
+ * verticals were renamed to match the corporate site, so `/solutions/:slug`
+ * redirects rather than 404s.
+ */
+export const LEGACY_SOLUTION_SLUGS = {
+  'digital-signage': 'digital-signage-dooh',
+  'control-rooms': 'control-rooms-critical-environments',
+  conferencing: 'conferencing-collaboration',
+  hospitality: 'hospitality-guest-experience',
+  broadcast: 'broadcast-production-streaming',
+  'live-events': 'immersive-experience',
+};
 
 /**
  * The five-stage engagement, identical for every vertical — it describes how
@@ -69,12 +95,108 @@ export const COMPANY_METRICS = [
 const SHARED_TRUST = ['Enterprise integration', 'Distributed across the GCC', '24/7 support escalation'];
 
 const SOLUTIONS = {
-  'digital-signage': {
-    name: 'Digital Signage',
-    title: 'Digital <em>Signage</em>',
-    kicker: 'Media surfaces at scale',
+  /**
+   * ICT is the newest vertical and the only one the corporate site lists with a
+   * single brand (Kordz). The brand list here adds the three other lines that
+   * are genuinely network/transport infrastructure in the portfolio — NETGEAR
+   * AV, Blustream and MTC — because a one-item "brands we distribute" row reads
+   * as a data error rather than as a curated list. Trim it back to Kordz alone
+   * if marketing wants strict parity with the corporate site.
+   */
+  'information-and-communication-technology': {
+    name: 'Information & Communication Technology',
+    title: 'Information &amp; <em>Communication Technology</em>',
+    kicker: 'The layer everything else runs on',
     intro:
-      'LED walls, professional display panels and wayfinding that turn retail floors, terminals and public spaces into media surfaces — with the software to run them.',
+      'Connectivity, efficiency and digital transformation for modern business environments. Networking infrastructure, secure communication systems, cloud technologies and data management platforms, integrated so operations and collaboration hold together — reliable data exchange, real-time communication and IT environments that scale across enterprises, campuses and public infrastructure. From structured cabling and unified communications to network management, every layer is specified for performance, security and flexibility.',
+    fact: 'Enterprise · Campus · Public infrastructure',
+    capsSide:
+      'AV and IT stopped being separate procurement long ago. We spec the transport layer with the same discipline as the screens hanging off it.',
+    hero: {
+      src: '/assets/img/unsplash-1558494949-ef010cbdcc31-w1400.jpg',
+      alt: 'Server racks with dense structured cabling in a dark room',
+    },
+    trust: ['AV-over-IP specialists', ...SHARED_TRUST],
+    heroStats: [
+      { value: 'Cat6A–OM4', label: 'Cabling standards' },
+      { value: '1–100G', label: 'Switching fabric' },
+      { value: 'PoE++', label: 'Powered endpoints' },
+    ],
+    caps: [
+      ['Structured cabling', 'Certified copper and fibre — HDMI, HDBaseT, Cat6A and OM4 — with the terminations, patching and test reports an ICT handover actually needs.', '/assets/img/unsplash-1558494949-ef010cbdcc31-w1100.jpg', 'Server racks with dense structured cabling in a dark room'],
+      ['AV-over-IP networking', 'Switches profiled and configured for AV traffic: multicast, IGMP, QoS and PTP set correctly before the first stream, not after the first fault.', '/assets/img/unsplash-1518770660439-4636190af475-w1400.jpg', 'Close-up of a circuit board with processors and capacitors'],
+      ['Unified communications', 'Room systems, softphone integration and BYOD endpoints that meet the corporate IT policy instead of working around it.', '/assets/img/unsplash-1497366811353-6870744d04b2-w1400.jpg', 'A modern glass and concrete meeting room with a wall-mounted display'],
+      ['Network management', 'Monitoring, alerting and remote configuration across sites, so a campus estate is administered from one console.', '/assets/img/unsplash-1551288049-bebda4e38f71-w700.jpg', 'Analytics dashboards with charts on a dark screen'],
+    ],
+    showcase: {
+      label: 'In the field',
+      title: 'One fabric. <em>Every</em> endpoint.',
+      desc:
+        'A campus is a hundred rooms sharing one network. Getting the transport layer right is what makes the hundred-and-first room a configuration change rather than a project — and what keeps a signage player, a codec and a badge reader from fighting each other for the same switch.',
+      src: '/assets/img/unsplash-1451187580459-43490279c0fa-w2000.jpg',
+      alt: 'Earth at night from orbit, city lights spread across the continent',
+      readouts: [
+        { value: 'Multi-site', label: 'Managed centrally' },
+        { value: 'Zero-touch', label: 'Endpoint provisioning' },
+        { value: 'Certified', label: 'Cable test reports' },
+      ],
+    },
+    flow: [
+      { icon: 'source', title: 'Endpoints', desc: 'Codecs, players and devices' },
+      { icon: 'network', title: 'Access layer', desc: 'PoE switching and VLANs' },
+      { icon: 'routing', title: 'Transport', desc: 'Copper, fibre and uplinks' },
+      { icon: 'storage', title: 'Core & cloud', desc: 'Data centre and services' },
+      { icon: 'processing', title: 'Management', desc: 'Configuration and policy' },
+      { icon: 'analytics', title: 'Monitoring', desc: 'Health, alerts and reporting' },
+    ],
+    installations: [
+      {
+        name: 'Multi-campus university estate',
+        industry: 'Education',
+        challenge:
+          'Lecture capture, room control and digital signage all landing on a network built for laptops, with no separation between them and no view of which subsystem caused a drop.',
+        solution:
+          'AV traffic segmented onto its own VLANs across certified Cat6A and OM4 runs, PoE budgets sized per floor, and one management console covering every campus.',
+        products: ['Structured cabling', 'AV-over-IP switching', 'Network management', 'Unified communications'],
+        src: '/assets/img/unsplash-1504384308090-c894fdcc538d-w1100.jpg',
+        alt: 'A large open-plan floor with rows of operator desks',
+      },
+      {
+        name: 'Corporate headquarters relocation',
+        industry: 'Enterprise',
+        challenge:
+          'Sixty meeting rooms to be cut over in a single weekend, with the AV, telephony and building systems all sharing one riser.',
+        solution:
+          'A cable schedule and patching plan issued ahead of first fix, endpoints pre-provisioned off site, and test reports signed off room by room as each floor came live.',
+        products: ['Certified cabling', 'Unified communications', 'PoE switching', 'Remote provisioning'],
+        src: '/assets/img/unsplash-1497366811353-6870744d04b2-w1400.jpg',
+        alt: 'A modern glass and concrete meeting room with a wall-mounted display',
+      },
+    ],
+    industries: [
+      { icon: 'workplace', name: 'Enterprise' },
+      { icon: 'education', name: 'Education' },
+      { icon: 'government', name: 'Government' },
+      { icon: 'healthcare', name: 'Healthcare' },
+      { icon: 'transport', name: 'Transport' },
+      { icon: 'utilities', name: 'Utilities' },
+    ],
+    cta: {
+      label: 'Start a project',
+      title: 'Specifying the <em>backbone</em>?',
+      desc: 'Send us the floor plan and the endpoint count. We come back with a cable schedule, a switching profile and a bill of materials that the AV and the IT contractor can both sign.',
+      primary: { text: 'Get a quote', to: '/contact' },
+      secondary: { text: 'See ICT brands', to: '/products' },
+    },
+    brands: ['Kordz', 'NETGEAR AV', 'Blustream', 'MTC'],
+    next: 'hospitality-guest-experience',
+  },
+  'digital-signage-dooh': {
+    name: 'Digital Signage & DOOH',
+    title: 'Digital Signage &amp; <em>DOOH</em>',
+    kicker: 'The right message, the right place',
+    intro:
+      'Sending the message to the right person at the right place at the right time is what advertising and marketing turn on. We carry a niche of audio-visual products built for indoor and outdoor marketing — signage software clubbed with media players across multiple sites, scheduled, changed or stopped remotely, and made interactive where the brief calls for it.',
     fact: 'Retail · Transport · Public space',
     capsSide:
       'From a single menu board to a stadium facade — hardware, software and mounting from one price list.',
@@ -154,16 +276,16 @@ const SOLUTIONS = {
       primary: { text: 'Scope my network', to: '/contact' },
       secondary: { text: 'See signage brands', to: '/partners' },
     },
-    brands: ['Christie', 'Datapath', 'Polywall', 'B-Tech', 'MTC', 'Kordz'],
-    next: 'control-rooms',
+    brands: ['Amino', 'Humelab', 'Blustream', 'Kordz', 'Wavex', 'B-Tech'],
+    next: 'control-rooms-critical-environments',
   },
 
-  'control-rooms': {
-    name: 'Control Rooms',
-    title: 'Control <em>Rooms</em>',
+  'control-rooms-critical-environments': {
+    name: 'Control Rooms & Critical Environments',
+    title: 'Control Rooms &amp; <em>Critical Environments</em>',
     kicker: 'Mission-critical visualization',
     intro:
-      '24/7-rated video walls, processors and operator workflows for command centres, surveillance suites and network operations — engineered for zero downtime.',
+      'Complete NOC solutions for business organisations, public utilities, universities and government agencies overseeing complex networking environments that require continuous supervision. We give NOC personnel the technology to monitor one network or many for the conditions that need attention before service degrades — video wall displays, processors, and the controlling hardware and software behind them.',
     fact: 'Command · Surveillance · NOC',
     capsSide:
       'Mission-critical means no single point of failure — we spec redundancy from source to screen.',
@@ -243,16 +365,16 @@ const SOLUTIONS = {
       primary: { text: 'Request a design review', to: '/contact' },
       secondary: { text: 'See control room brands', to: '/partners' },
     },
-    brands: ['Datapath', 'Polywall', 'Christie', 'NETGEAR AV', 'Blustream'],
-    next: 'conferencing',
+    brands: ['RTI', 'Datapath', 'Sapling', 'Blustream', 'Christie', 'Kordz', 'NETGEAR AV', 'MTC', 'Wavex', 'Polywall'],
+    next: 'conferencing-collaboration',
   },
 
-  'conferencing': {
+  'conferencing-collaboration': {
     name: 'Conferencing & Collaboration',
     title: 'Conferencing &amp; <em>Collaboration</em>',
     kicker: 'Rooms that just work',
     intro:
-      'Hybrid meeting rooms that sound as good as they look — interactive displays, cameras, ceiling audio and the AV-over-IP backbone connecting them.',
+      'Every business benefits from collaboration — when people share ideas and work together, productivity and results follow. Our meeting room solutions open that up by letting you work with information in more meaningful ways: displays, conference systems, table management and BYOD, tied together with room management. Whatever the meeting, presentation or demonstration is for, the room should make the day more productive, not less.',
     fact: 'Workplace · Education · Hybrid',
     capsSide:
       'Rooms people actually want to book — from huddle spaces to boardrooms and lecture theatres.',
@@ -332,16 +454,16 @@ const SOLUTIONS = {
       primary: { text: 'Get a room standard', to: '/contact' },
       secondary: { text: 'See collaboration brands', to: '/partners' },
     },
-    brands: ['Avocor', 'T1V', 'GoGet', 'iPort', 'SCT', 'Telycam'],
-    next: 'hospitality',
+    brands: ['RTI', 'Sonance', 'Blustream', 'Kordz', 'T1V', 'MTC', 'Wavex', 'GoGet', 'B-Tech', 'Magnum'],
+    next: 'information-and-communication-technology',
   },
 
-  'hospitality': {
-    name: 'Hospitality AV',
-    title: 'Hospitality <em>AV</em>',
+  'hospitality-guest-experience': {
+    name: 'Hospitality & Guest Experience',
+    title: 'Hospitality &amp; <em>Guest Experience</em>',
     kicker: 'Invisible until it matters',
     intro:
-      'Guest-room entertainment, ballroom systems and background audio for hotels, restaurants and venues — technology that stays invisible until it matters.',
+      'Comfort, convenience and engagement at every stage of the guest journey. Audio-visual systems, digital displays and smart technologies turn a space into a welcoming, interactive environment — personalised communication, seamless navigation and real-time information across hotels, resorts and public venues. From digital signage and in-room experiences to centralised content management, every touchpoint is tuned to guest satisfaction.',
     fact: 'Hotels · Restaurants · Venues',
     capsSide:
       'The best hospitality AV is the kind guests never notice — until the lights dim and the show starts.',
@@ -421,16 +543,16 @@ const SOLUTIONS = {
       primary: { text: 'Plan the property', to: '/contact' },
       secondary: { text: 'See hospitality brands', to: '/partners' },
     },
-    brands: ['Humelab', 'Amino', 'Sonance', 'Lemco', 'iPort'],
-    next: 'broadcast',
+    brands: ['Lemco', 'RTI', 'Sonance', 'Blustream', 'Kordz', 'MTC', 'RDL', 'B-Tech'],
+    next: 'immersive-experience',
   },
 
-  'broadcast': {
-    name: 'Broadcast & Production',
-    title: 'Broadcast &amp; <em>Production</em>',
+  'broadcast-production-streaming': {
+    name: 'Broadcast, Production & Streaming',
+    title: 'Broadcast, Production &amp; <em>Streaming</em>',
     kicker: 'Signal discipline, any scale',
     intro:
-      'Cameras, switching, live graphics and streaming infrastructure for broadcasters, studios and creators — from single-operator setups to full facilities.',
+      'Media distribution at your fingertips. Distribution over IP is one of the most powerful tools available where a lot of content has to reach a lot of locations — and the same backbone drives synchronous clock systems, where IP clocks stay locked to the second across sites and time zones. Cameras, switching, live graphics and streaming infrastructure sit on top of it, from a single-operator setup to a full facility.',
     fact: 'Studios · Streaming · Creators',
     capsSide:
       'From a one-person streaming desk to a national newsroom — the same signal discipline applies.',
@@ -510,16 +632,16 @@ const SOLUTIONS = {
       primary: { text: 'Spec the chain', to: '/contact' },
       secondary: { text: 'See broadcast brands', to: '/partners' },
     },
-    brands: ['Vizrt', 'SalrayWorks', 'Telycam', 'Amino', 'RDL'],
-    next: 'live-events',
+    brands: ['Datapath', 'Blustream', 'Kordz', 'RDL', 'B-Tech', 'Vizrt', 'SalrayWorks', 'Telycam'],
+    next: 'digital-signage-dooh',
   },
 
-  'live-events': {
-    name: 'Live Events & Immersive',
-    title: 'Live Events &amp; <em>Immersive</em>',
-    kicker: 'Built to survive the road',
+  'immersive-experience': {
+    name: 'Immersive Experience',
+    title: 'Immersive <em>Experience</em>',
+    kicker: 'Spaces that hold an audience',
     intro:
-      'Touring-grade LED, projection mapping and spatial audio for concerts, exhibitions and experiential spaces — built to survive the road.',
+      'Environments built to engage, inspire and hold an audience. Advanced audio-visual technologies, interactive displays and dynamic content turn ordinary spaces into highly engaging digital experiences — storytelling that runs across multiple touchpoints in museums, retail, corporate environments and public venues. Synchronised visuals, sound and real-time interactivity make the content land, and every element is specified to work together from concept to execution.',
     fact: 'Concerts · Exhibitions · XR',
     capsSide:
       'Rigged, run and struck in hours — event technology has no second chances, so we spec accordingly.',
@@ -599,8 +721,8 @@ const SOLUTIONS = {
       primary: { text: 'Build a kit list', to: '/contact' },
       secondary: { text: 'See event brands', to: '/partners' },
     },
-    brands: ['Christie', 'Magnum', 'Sonance', 'Kordz', 'Wavex'],
-    next: 'digital-signage',
+    brands: ['RTI', 'Datapath', 'Sonance', 'Blustream', 'Christie', 'Kordz', 'T1V', 'MTC', 'Wavex', 'B-Tech'],
+    next: 'broadcast-production-streaming',
   },
 };
 
@@ -608,7 +730,12 @@ export default SOLUTIONS;
 
 /** Falls back to the first vertical so an unknown slug renders a page, not a crash. */
 export function getSolution(slug) {
-  return SOLUTIONS[slug] || SOLUTIONS['digital-signage'];
+  return SOLUTIONS[slug] || SOLUTIONS['information-and-communication-technology'];
+}
+
+/** Whether `slug` is one of the seven published verticals. */
+export function isSolutionSlug(slug) {
+  return Object.prototype.hasOwnProperty.call(SOLUTIONS, slug);
 }
 
 /**

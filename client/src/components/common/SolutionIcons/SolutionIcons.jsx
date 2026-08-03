@@ -43,6 +43,16 @@ const PATHS = {
   network: 'M12 2.5a9.5 9.5 0 110 19 9.5 9.5 0 010-19zM2.5 12h19M12 2.5c2.5 2.6 3.8 6 3.8 9.5S14.5 18.9 12 21.5c-2.5-2.6-3.8-6-3.8-9.5S9.5 5.1 12 2.5z',
   storage: 'M4 4.5h16v5H4zM4 14.5h16v5H4zM7.5 7h.01M7.5 17h.01M12 7h4M12 17h4',
 
+  // — Positioning pillars (home) —
+  // A globe with a location pin over it: one worldwide supply chain, held in
+  // the region you actually buy from.
+  regional: 'M12 2.5a9.5 9.5 0 019.5 9.5c0 .6-.05 1.2-.15 1.75M2.7 9.5h13.4M4.2 16.5h7.3M12 2.5c-2.4 2.6-3.7 6-3.7 9.5 0 2.6.7 5.2 2 7.4M12 2.5c1.6 1.7 2.7 3.8 3.3 6.1M2.5 12a9.5 9.5 0 009.1 9.5M18.5 22s3-2.9 3-5.2a3 3 0 00-6 0c0 2.3 3 5.2 3 5.2zM18.5 16.4h.01',
+  // A box with a service ring around it: the product plus everything that has
+  // to arrive with it — spec, demo stock, commissioning, after-sales.
+  valueAdd: 'M12 2.8l7 3.6v7.2l-7 3.6-7-3.6V6.4zM5 6.4l7 3.6 7-3.6M12 10v7.2M3 18.5c1.6 1.9 4.9 3.2 9 3.2s7.4-1.3 9-3.2M8.5 4.6L15.5 8.2',
+  // A chip with signal rising out of it: technology of the future, in stock.
+  future: 'M8 8h8v8H8zM12 2.5V5M9 21.5v-2.5M15 21.5v-2.5M2.5 12H5M19 12h2.5M2.5 8.5H5M2.5 15.5H5M19 8.5h2.5M19 15.5h2.5M9 2.5V5M15 2.5V5M10.4 13.6l1.4-2.6 1.3 1.5 1.5-2.7',
+
   // — Process —
   discover: 'M10.5 3a7.5 7.5 0 110 15 7.5 7.5 0 010-15zM16 16l5 5M8 10.5h5M10.5 8v5',
   design: 'M17 2.5l4.5 4.5L8 20.5l-5.5 1 1-5.5zM14 5.5l4.5 4.5',
