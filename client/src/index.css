@@ -151,16 +151,23 @@ img {
   color: var(--grey);
   display: inline-flex;
   align-items: center;
-  gap: 8px;
 }
 
+/* The dot's spacing is its own margin, not the parent's `gap`.
+   Several heroes set `style={{ display: 'block' }}` on this element to get the
+   margin-bottom, which drops it out of flex layout — and `gap` goes with it,
+   so the bullet rendered flush against the first letter ("●PRODUCTS"). A
+   margin survives both display modes; `vertical-align` keeps it centred in the
+   block case, where `align-items` no longer applies. */
 .label::before {
   content: '';
   width: 6px;
   height: 6px;
+  margin-inline-end: 8px;
   background: var(--grey-dark);
   border-radius: 50%;
   display: inline-block;
+  vertical-align: middle;
 }
 
 .label--red {
@@ -353,16 +360,29 @@ img {
   width: auto;
 }
 
-/* ── NAV ── */
+/* ── NAV ──
+   A floating bar rather than a band welded to the top edge: the header keeps a
+   gap above and to the sides of it, and the blurred panel is drawn on
+   `.nav-inner` (the pill) instead of on the full-width `.nav`. The reserved
+   band is still 92px tall — the 12px gap plus a 80px pill — so `--hero-y` and
+   every other "clear the navbar" measurement in this file still hold. */
 .nav {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 90;
-  height: 80px;
-  border-bottom: 1px solid transparent;
-  transition: transform .5s var(--ease), background .4s, border-color .4s;
+  height: 92px;
+  padding: 12px var(--pad) 0;
+  pointer-events: none;
+  transition: transform .5s var(--ease);
+}
+
+/* The bar is a floating pill over the page, so only the pill itself should
+   catch clicks — the 12px gap above it must not swallow them. */
+.nav-inner,
+.nav .sub {
+  pointer-events: auto;
 }
 
 /* Background/blur bar stays edge-to-edge (unchanged); its content row is
@@ -371,20 +391,28 @@ img {
 .nav-inner {
   display: flex;
   align-items: center;
-  height: 100%;
-  padding: 0 var(--pad);
+  /* The `gap` is what stopped "Resources" colliding with the region pill. The
+     three children are logo (1fr) / links (auto) / controls (1fr), and with no
+     gap a long region name ("Hong Kong / China") grew the right-hand cluster
+     until it sat on top of the last link. */
+  gap: clamp(16px, 2.5vw, 44px);
+  height: 80px;
+  padding: 0 20px;
+  border-radius: 16px;
+  border: 1px solid transparent;
   /* The cap the comment above always claimed but never declared. Without it the
      logo and the CTA cluster kept drifting to the viewport edges past 1440px
      while the page content stayed in a fixed column. */
   max-width: 1680px;
   margin-inline: auto;
+  transition: background .4s, border-color .4s, box-shadow .4s;
 }
 
-.nav.is-solid {
+.nav.is-solid .nav-inner {
   background: rgba(6, 6, 8, 0.75);
   backdrop-filter: blur(20px);
-  border-color: rgba(255, 255, 255, 0.05);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+  border-color: rgba(255, 255, 255, 0.07);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35);
 }
 
 .nav.is-hidden {
@@ -400,8 +428,10 @@ img {
   min-width: 0;
 }
 
+/* Allowed to compress before the logo does, but never below its content —
+   the link row is the last thing that should be clipped. */
 .nav-inner>nav {
-  flex: 0 0 auto;
+  flex: 0 1 auto;
 }
 
 .logo {
@@ -541,13 +571,19 @@ img {
   background: rgba(204, 0, 1, 0.08);
 }
 
+/* `flex: 0 0 auto`, NOT `1 1 0`.
+   With `flex: 1 1 0; min-width: 0` this box was allowed to shrink below its own
+   content, and because it also aligns to `flex-end` the overflow spilled
+   *leftwards* — the region pill rendered on top of the last nav link. It looked
+   like a z-index problem and was really a flex-shrink one. Refusing to shrink
+   pushes the link row left instead, which costs perfect centring at the
+   narrowest desktop widths and costs nothing else. */
 .nav-cta {
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 10px;
-  flex: 1 1 0;
-  min-width: 0;
+  flex: 0 0 auto;
 }
 
 .nav-region {
@@ -808,7 +844,7 @@ img {
   justify-content: flex-start;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding-top: 92px;
+  padding-top: 104px;
   padding-bottom: 56px;
 }
 
@@ -896,7 +932,7 @@ img {
    floor) left the list hard against the edges. */
 @media (max-width: 480px) {
   .drawer {
-    padding-top: 84px;
+    padding-top: 96px;
   }
 
   .drawer .drawer-picker {
@@ -9400,7 +9436,8 @@ footer {
    they pass underneath. */
 .pr-rail {
   position: sticky;
-  top: 80px;
+  /* Clears the floating navbar: 12px gap + 80px pill. */
+  top: 92px;
   z-index: 40;
   margin-top: clamp(40px, 6vw, 72px);
   background: rgba(8, 8, 10, .82);
@@ -9428,7 +9465,11 @@ footer {
 }
 
 /* Horizontal scroller rather than a wrapping block: ten categories wrapping to
-   three rows would push the grid off-screen every time the rail re-stuck. */
+   three rows would push the grid off-screen every time the rail re-stuck.
+   The mask fades the last chip out at the right edge instead of slicing it
+   mid-word, which is the difference between "there is more" and "this is
+   broken". `to right` keeps the left edge solid, since the rail only ever
+   scrolls in one direction from rest. */
 .pr-chips {
   display: flex;
   gap: 8px;
@@ -9436,6 +9477,7 @@ footer {
   scrollbar-width: none;
   padding: 2px 0;
   scroll-snap-type: x proximity;
+  mask-image: linear-gradient(to right, #000 0, #000 calc(100% - 48px), transparent 100%);
 }
 
 .pr-chips::-webkit-scrollbar {
@@ -9577,23 +9619,35 @@ footer {
   transform: scaleX(1);
 }
 
-/* Brand logos arrive as mixed-colour PNGs on white or transparent grounds. The
-   plate gives every one of them the same neutral field, so a dark logo is
-   still readable and the grid does not look like twenty-five treatments. */
+/* Brand logos arrive as mixed-colour PNGs on white or transparent grounds, at
+   wildly different intrinsic sizes. The plate gives every one of them the same
+   neutral field, so a dark logo is still readable and the grid does not look
+   like twenty-five separate treatments.
+
+   Sizing is `width/height: 100%` + `object-fit: contain`, NOT `max-height:
+   100%`. A percentage *max*-height against an auto-sized grid area is a cyclic
+   dependency, so the browser resolves it to `none` — the plate painted its
+   92px of white and every logo rendered at its intrinsic size straight through
+   the card and over the copy beneath it. `overflow: hidden` is the backstop
+   for any asset that still misbehaves. */
+/* Taller than it looks like it needs to be. Over half the logo files are
+   square 250×250 canvases with the wordmark centred in a lot of transparent
+   margin, so `contain` inside a wide, short plate fits the *canvas* and leaves
+   the wordmark tiny. Height is what those assets are actually limited by. */
 .pr-card-logo {
-  display: grid;
-  place-items: center;
-  height: 92px;
-  padding: 16px;
+  display: block;
+  height: 116px;
+  padding: 14px;
   border-radius: 9px;
   background: #fff;
+  overflow: hidden;
 }
 
 .pr-card-logo img {
-  max-height: 100%;
-  max-width: 100%;
-  width: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: center;
 }
 
 .pr-card-body {
@@ -9653,8 +9707,12 @@ footer {
 }
 
 /* ── ALL CATEGORIES ── */
+/* Bottom padding, not just top. `.cta` paints a full-bleed background image
+   starting at its own top edge, so a section with `padding: y 0 0` above it
+   left the last row of cards sitting directly on the photograph with no gap at
+   all. Every section that can be followed by the CTA closes its own space. */
 .pr-cats {
-  padding: var(--section-y) 0 0;
+  padding: var(--section-y) 0 var(--section-y);
 }
 
 .pr-cat-grid {
@@ -9809,20 +9867,21 @@ footer {
   border-color: rgba(204, 0, 1, .45);
 }
 
+/* Same sizing contract as .pr-card-logo — see the note there. */
 .pb-logo {
-  display: grid;
-  place-items: center;
+  display: block;
   padding: 32px;
   aspect-ratio: 16 / 10;
   border-radius: 16px;
   background: #fff;
+  overflow: hidden;
 }
 
 .pb-logo img {
-  max-width: 100%;
-  max-height: 100%;
-  width: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: center;
 }
 
 .pb-about {
@@ -9898,9 +9957,13 @@ footer {
 }
 
 .pb-solutions,
-.pb-apps,
 .pb-next {
   padding: var(--section-y) 0 0;
+}
+
+/* Last section before the CTA on the brand page — same reason as .pr-cats. */
+.pb-apps {
+  padding: var(--section-y) 0 var(--section-y);
 }
 
 .pb-sol-grid {
@@ -10016,19 +10079,19 @@ footer {
 }
 
 .pb-next-logo {
-  display: grid;
-  place-items: center;
-  height: 72px;
+  display: block;
+  height: 96px;
   padding: 12px;
   border-radius: 9px;
   background: #fff;
+  overflow: hidden;
 }
 
 .pb-next-logo img {
-  max-height: 100%;
-  max-width: 100%;
-  width: auto;
+  width: 100%;
+  height: 100%;
   object-fit: contain;
+  object-position: center;
 }
 
 .pb-next-card h3 {
