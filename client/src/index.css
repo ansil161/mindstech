@@ -1267,23 +1267,42 @@ blockquote {
 
 /* img kept alongside video: the still is the poster frame the <video> shows
    before its first decoded frame, and it has to be framed identically or the
-   hero visibly jumps the moment playback starts. */
+   hero visibly jumps the moment playback starts.
+
+   112% height + scale(1.12) is parallax headroom, not decoration: the intro
+   settles the scale to 1 and ScrollTrigger then drives yPercent:10, so the
+   element must overhang its box in both axes or an edge shows mid-scroll.
+   brightness lands at .62 (the intro's end state) so a no-JS or
+   reduced-motion visitor sees the same frame the animation resolves to —
+   the scrim below does the darkening, not the filter. */
 .hero-media img,
 .hero-media video {
   width: 100%;
   height: 112%;
   object-fit: cover;
   object-position: center;
-  filter: brightness(.2) saturate(.8);
+  filter: brightness(.62) saturate(.95);
   will-change: transform;
   transform: scale(1.12);
 }
 
-.hero-media::after {
-  content: '';
+/* Cinematic scrim.
+   One element, three stacked layers, drawn OUTSIDE .hero-media so the
+   parallax cannot drag the gradient with the footage:
+     1 · a foot ramp that seats the stats strip and scroll cue
+     2 · the left-weighted horizontal ramp — the headline column needs the
+         contrast, the right two-thirds should stay readable video
+     3 · a low flat wash that ties 1 and 2 together
+   Deliberately not opaque anywhere: the video stays visible edge to edge. */
+.hero-scrim {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(12, 12, 12, .96) 0%, rgba(12, 12, 12, .45) 45%, rgba(12, 12, 12, .25) 100%);
+  z-index: 1;
+  pointer-events: none;
+  background:
+    linear-gradient(to top, rgba(10, 10, 11, .88) 0%, rgba(10, 10, 11, .30) 26%, rgba(10, 10, 11, 0) 54%),
+    linear-gradient(90deg, rgba(0, 0, 0, .82) 0%, rgba(0, 0, 0, .58) 38%, rgba(0, 0, 0, .18) 72%, rgba(0, 0, 0, .35) 100%),
+    rgba(0, 0, 0, .18);
 }
 
 .hero-inner {
@@ -1293,19 +1312,11 @@ blockquote {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  padding: clamp(90px, 12vh, 130px) var(--pad) clamp(24px, 3.5vh, 42px);
-}
-
-/* Two known tracks rather than "push them to opposite edges".
-   Same reasoning as .section-head: on a 1440px column the h1 and the brief
-   were ~500px apart with nothing in between, which reads as a missing element
-   rather than as a two-column layout. */
-.hero-top {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, min(420px, 38%));
-  align-items: end;
-  gap: clamp(28px, 3.6vw, 64px);
-  margin-bottom: clamp(20px, 3vh, 32px);
+  /* Top clears the 98px floating navbar with air to spare; the gap is the
+     floor on the distance between the copy block and the stats strip, so a
+     short viewport compresses the whitespace rather than colliding them. */
+  gap: clamp(36px, 6vh, 76px);
+  padding: clamp(116px, 15vh, 154px) var(--pad) clamp(20px, 3vh, 34px);
 }
 
 .line-mask {
@@ -1313,113 +1324,393 @@ blockquote {
   overflow: hidden;
 }
 
-/* 82px against a 13px brief was a 6.3× jump — the single sharpest typographic
-   contrast on the site, and the one a review called out directly. At 68px over
-   a 15px brief it is 4.5×, matching the pillars block below it. The wider
-   measure is what keeps each of the three masked lines on one line at the new
-   size instead of re-wrapping inside its own mask. */
+/* The copy column. 680px is the measure, not the grid: everything in the
+   hero's upper half is left-aligned inside it, which is what keeps the
+   headline off the optical centre of the frame and lets the video hold the
+   right-hand two-thirds. */
+.hero-copy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 680px;
+}
+
+.hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: clamp(11px, .8vw, 13px);
+  font-weight: 500;
+  letter-spacing: .22em;
+  text-transform: uppercase;
+  color: rgba(250, 250, 250, .62);
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+.hero-eyebrow i {
+  flex: none;
+  display: block;
+  width: clamp(40px, 3.4vw, 50px);
+  height: 1px;
+  background: var(--red);
+}
+
+/* Larger and lighter than --fs-h1 on purpose: this is the one headline on the
+   site that carries a full-bleed frame on its own, so it is set as display
+   type — near-solid leading, tight tracking, weight 500. Bold at this size
+   reads as loud rather than expensive. */
 .hero h1 {
-  font-size: var(--fs-h1);
-  max-width: 20ch;
-  line-height: 1.08;
-  letter-spacing: -.03em;
+  margin-top: clamp(20px, 2.8vh, 32px);
+  font-size: clamp(3.5rem, 6vw, 6.4rem);
+  font-weight: 500;
+  line-height: .92;
+  letter-spacing: -.045em;
+  /* A hard break inside a mask would show as a clipped orphan line rather
+     than wrapping, so never hyphenate or break mid-word here. */
+  overflow-wrap: normal;
+  word-break: normal;
+}
+
+/* line-height .92 crops the descenders of "Technology" against the mask's
+   overflow:hidden. Pad the mask and pull the same amount back off the flow,
+   so the glyphs clear without opening a gap between the lines. Scoped to the
+   hero — .line-mask is shared with the CTA and the About/Contact heroes,
+   which set normal leading and need no allowance. */
+.hero h1 .line-mask {
+  padding-bottom: .14em;
+  margin-bottom: -.14em;
+}
+
+.hero h1 em {
+  font-style: normal;
+  color: var(--red);
 }
 
 .hero h1 .w {
   display: inline-block;
-  will-change: transform, opacity;
+  will-change: transform;
 }
 
-.hero-brief {
-  max-width: 420px;
-  padding-bottom: 6px;
+.hero-lede {
+  margin-top: clamp(20px, 2.8vh, 30px);
+  max-width: 500px;
+  font-size: clamp(15.5px, 1.05vw, 18px);
+  line-height: 1.6;
+  letter-spacing: .01em;
+  color: rgba(250, 250, 250, .72);
   opacity: 0;
   transform: translateY(20px);
 }
 
-.hero-brief p {
-  font-size: var(--fs-body);
-  color: #D1D1D6;
-  line-height: 1.7;
-  letter-spacing: 0.01em;
-}
-
-.hero-brief .btn {
-  margin-top: 22px;
-}
-
-.hero-foot {
+.hero-actions {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 24px;
-  border-top: 1px solid rgba(255, 255, 255, .08);
-  padding-top: 20px;
   flex-wrap: wrap;
-}
-
-.hero-foot .fact {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
+  gap: 14px;
+  margin-top: clamp(26px, 3.4vh, 38px);
   opacity: 0;
-  transform: translateY(15px);
+  transform: translateY(20px);
 }
 
-.hero-foot .fact b {
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 600;
+.hero-actions .btn {
+  min-height: 52px;
+  padding: 16px 30px;
+}
+
+/* Hover is a brightness step plus a 5px arrow nudge — nothing else. No CSS
+   transform here: Button.jsx writes an inline magnetic translate on
+   pointermove, and an inline transform beats a stylesheet one, so a hover
+   scale would simply be discarded the first time the pointer moved. */
+.hero-actions .btn--solid {
+  transition: background-color .3s var(--ease), border-color .3s var(--ease);
+}
+
+.hero-actions .btn--solid:hover {
+  background: #E4141A;
+  border-color: #E4141A;
+  color: #fff;
+}
+
+.hero-actions .btn--solid:hover svg {
+  transform: translateX(5px);
+}
+
+.hero-actions .btn:not(.btn--solid) {
+  border-color: rgba(255, 255, 255, .26);
+}
+
+.hero-actions .btn:not(.btn--solid):hover {
+  border-color: rgba(255, 255, 255, .6);
+  background: rgba(255, 255, 255, .05);
   color: var(--white);
 }
 
-.hero-foot .fact span {
+.hero-base {
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2.2vh, 24px);
+}
+
+/* One hairline strip, not four cards. The stats are the last thing in the
+   reading order and must stay that way — a bordered panel per figure turned
+   them into a second hero. */
+.hero-stats {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  border-top: 1px solid rgba(255, 255, 255, .1);
+  border-bottom: 1px solid rgba(255, 255, 255, .1);
+}
+
+.hero-stats li {
+  padding: clamp(13px, 2vh, 20px) clamp(14px, 2vw, 30px);
+  border-left: 1px solid rgba(255, 255, 255, .07);
+  opacity: 0;
+  transform: translateY(18px);
+}
+
+.hero-stats li:first-child {
+  padding-left: 0;
+  border-left: 0;
+}
+
+.hero-stats b {
+  display: block;
+  font-family: var(--display);
+  font-size: clamp(26px, 2.5vw, 34px);
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: -.025em;
+  font-variant-numeric: tabular-nums;
+  color: var(--white);
+}
+
+.hero-stats span {
+  display: block;
+  margin-top: 9px;
+  font-size: clamp(12px, .92vw, 13.5px);
+  color: rgba(250, 250, 250, .66);
+}
+
+.hero-stats em {
+  display: block;
+  margin-top: 3px;
+  font-style: normal;
   font-size: 10.5px;
-  color: var(--grey);
-  letter-spacing: .08em;
+  letter-spacing: .07em;
   text-transform: uppercase;
+  color: rgba(250, 250, 250, .36);
+}
+
+/* The cue's fade-out lives on this wrapper, not on .hero-scrollcue itself:
+   GSAP animates the child's opacity inline at the end of the intro, and an
+   inline value would beat any class the scroll handler could add. */
+.hero-cue {
+  align-self: center;
+  transition: opacity .45s var(--ease), transform .45s var(--ease);
+}
+
+.hero-cue[data-cue='off'] {
+  opacity: 0;
+  transform: translateY(10px);
+  pointer-events: none;
 }
 
 .hero-scrollcue {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 12px;
-  font-size: 10.5px;
+  gap: 11px;
+  font-size: 10px;
   letter-spacing: .2em;
-  color: var(--grey);
+  color: rgba(250, 250, 250, .5);
   text-transform: uppercase;
   opacity: 0;
-  transform: translateX(-10px);
 }
 
 .hero-scrollcue i {
   display: block;
-  width: 32px;
-  height: 1px;
-  background: var(--red);
-  transform-origin: left;
-  animation: cueScroll 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+  width: 1px;
+  height: 32px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, .06), var(--red));
+  animation: cueScroll 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
 }
 
 @keyframes cueScroll {
   0% {
-    transform: scaleX(0);
-    transform-origin: left;
+    transform: scaleY(0);
+    transform-origin: top;
   }
 
   45% {
-    transform: scaleX(1);
-    transform-origin: left;
+    transform: scaleY(1);
+    transform-origin: top;
   }
 
-  50% {
-    transform: scaleX(1);
-    transform-origin: right;
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
   }
 
   100% {
-    transform: scaleX(0);
-    transform-origin: right;
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
+/* ── HERO · TABLET ── */
+@media (max-width: 1024px) {
+  .hero-inner {
+    padding-top: clamp(104px, 13vh, 132px);
+  }
+
+  .hero h1 {
+    font-size: clamp(3.1rem, 7.4vw, 4.9rem);
+  }
+
+  .hero-stats li {
+    padding-inline: clamp(12px, 1.8vw, 20px);
+  }
+
+  .hero-stats b {
+    font-size: clamp(24px, 3.2vw, 30px);
+  }
+}
+
+/* ── HERO · MOBILE ──
+   Not a shrunk desktop: the copy now owns most of the frame, so the scrim
+   turns vertical, the strip becomes a 2×2 block and the video is re-framed
+   to keep its subject beside rather than behind the text. */
+@media (max-width: 768px) {
+  .hero-media img,
+  .hero-media video {
+    object-position: 65% center;
+  }
+
+  .hero-scrim {
+    background:
+      linear-gradient(180deg, rgba(0, 0, 0, .55) 0%, rgba(0, 0, 0, .78) 65%, rgba(0, 0, 0, .90) 100%),
+      linear-gradient(90deg, rgba(0, 0, 0, .42) 0%, rgba(0, 0, 0, .10) 68%, rgba(0, 0, 0, .28) 100%);
+  }
+
+  .hero-inner {
+    gap: clamp(28px, 4.5vh, 48px);
+    padding-top: clamp(96px, 12.5vh, 122px);
+  }
+
+  .hero-eyebrow {
+    gap: 12px;
+    letter-spacing: .18em;
+  }
+
+  .hero-eyebrow i {
+    width: 32px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.5rem, 11vw, 4rem);
+    line-height: .94;
+    letter-spacing: -.04em;
+  }
+
+  .hero-lede {
+    max-width: 42ch;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 240px;
+    justify-content: center;
+    min-height: 52px;
+    padding-inline: 22px;
+  }
+
+  .hero-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  /* Row 2 gets its own hairline; the outer border-bottom already caps it. */
+  .hero-stats li:nth-child(-n+2) {
+    border-bottom: 1px solid rgba(255, 255, 255, .07);
+  }
+
+  .hero-stats li:nth-child(odd) {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .hero-stats b {
+    font-size: 27px;
+  }
+
+  .hero-stats em {
+    display: none;
+  }
+}
+
+/* ── HERO · VERY SMALL ── */
+@media (max-width: 390px) {
+  .hero-inner {
+    gap: 24px;
+    padding-top: 92px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.25rem, 10.5vw, 2.9rem);
+  }
+
+  .hero-lede {
+    font-size: 14.5px;
+  }
+
+  .hero-actions {
+    gap: 10px;
+  }
+
+  .hero-actions .btn {
+    flex: 1 1 100%;
+    padding-inline: 18px;
+  }
+
+  .hero-stats li {
+    padding-block: 12px;
+  }
+
+  .hero-stats b {
+    font-size: 24px;
+  }
+
+  .hero-stats span {
+    font-size: 11.5px;
+  }
+}
+
+/* ── HERO · SHORT VIEWPORT ──
+   Landscape phones and short laptop windows. 100svh would otherwise force the
+   copy, the strip and the cue into ~380px; let the section grow instead and
+   drop the cue, which has nothing left to point at. */
+@media (max-height: 620px) and (min-width: 640px) {
+  .hero {
+    min-height: auto;
+  }
+
+  .hero-inner {
+    padding-block: 112px 28px;
+    gap: 40px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.6rem, 5vw, 3.6rem);
+  }
+
+  .hero-cue {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-scrollcue i {
+    animation: none;
+    transform: scaleY(1);
   }
 }
 
@@ -7347,36 +7638,9 @@ footer {
     height: 72px;
   }
 
-  .hero-top {
-    grid-template-columns: 1fr;
-    align-items: start;
-  }
-
-  .hero-brief {
-    padding-bottom: 0;
-  }
-
-  .hero-foot {
-    flex-direction: row;
-    justify-content: space-between;
-    gap: 16px;
-    width: 100%;
-  }
-
-  .hero-foot .fact {
-    flex: 1;
-    min-width: 80px;
-  }
-
-  .hero-foot .fact b {
-    font-size: 13.5px;
-  }
-
-  .hero-foot .fact span {
-    font-size: 9.5px;
-  }
-
-  .hero-scrollcue {
+  /* Below 640px the stats block and the CTAs already reach the fold; the cue
+     would be pointing at itself. The hero-mobile rules above own the rest. */
+  .hero-cue {
     display: none;
   }
 

@@ -40,6 +40,24 @@ const PILLAR_MARKS = [
   { icon: 'future', tagFallback: 'Portfolio' },
 ];
 
+/**
+ * The hero's closing figures. English defaults live here and are resolved
+ * through i18n at `home.hero.stats.<key>.*`, so a locale that has not been
+ * updated renders these rather than a raw key.
+ *
+ * NOTE for review: these four figures do not currently agree with the numbers
+ * published elsewhere on this site — the stats band lower down the page reads
+ * 15+ years / 49+ brands / 973+ installations, and /partners and /solutions
+ * both say 25 brands. They were supplied as-is for this redesign; they need
+ * reconciling before launch, not silently diverging.
+ */
+const HERO_STATS = [
+  { key: 'countries', value: '20+', label: 'Countries', sub: 'We operate in' },
+  { key: 'brands', value: '500+', label: 'Brands', sub: 'We represent' },
+  { key: 'projects', value: '10K+', label: 'Projects', sub: 'Delivered' },
+  { key: 'years', value: '25+', label: 'Years', sub: 'Of excellence' },
+];
+
 // ── Map label layout ──
 // Several offices (Bangalore/Dubai/Riyadh/Cairo) sit close together on the
 // 800×400 map, so city-name labels are placed by searching a small ring of
@@ -150,6 +168,8 @@ const Home = () => {
   const [testimonials, setTestimonials] = useState([]);
   // Which office card the pointer is over, so its marker can be highlighted.
   const [focusedOffice, setFocusedOffice] = useState(null);
+  // The scroll cue retires as soon as the visitor takes its advice.
+  const [cueVisible, setCueVisible] = useState(true);
 
   const { translatedData: fieldwork } = useDynamicTranslation(rawFieldwork, ['title', 'location_meta', 'category'], 'home_fieldwork');
   const { translatedData: solutions } = useDynamicTranslation(rawSolutions, ['title', 'desc'], 'home_solutions');
@@ -314,61 +334,87 @@ const Home = () => {
     return () => io.disconnect();
   }, [prefersReducedMotion]);
 
+  // Retire the scroll cue once the page has actually moved. The threshold is
+  // well above the few pixels a trackpad emits on an accidental brush, and the
+  // setState is a no-op while the boolean is unchanged, so a full scroll of the
+  // page costs exactly two renders.
+  useEffect(() => {
+    const onScroll = () => setCueVisible(window.scrollY < 90);
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   // preloader and entrance animation
   useEffect(() => {
     let stopIntro = () => {};
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-      // Immediately apply initial hidden states on mount to prevent unstyled flashes,
-      // layout shifts, or blank states before the transition begins.
-      gsap.set('#heroImg', { scale: 1.12, filter: 'brightness(.2) saturate(.8)' });
-      gsap.set('#heroH .w', { yPercent: 80, opacity: 0 });
-      gsap.set('#heroBrief', { opacity: 0, y: 20 });
-      gsap.set('#heroFoot .fact', { opacity: 0, y: 15 });
-      gsap.set('.hero-scrollcue', { opacity: 0, x: -10 });
-      gsap.set('#cueLine', { scaleX: 0 });
+      if (reduceMotion) {
+        // Nothing animates, so every element has to be placed at the state the
+        // timeline would have resolved to — including the video's brightness,
+        // which is what the scrim is balanced against. The statement .st-w
+        // spans sit at #3a3a3a (index.css) until the ink-in tween lifts them.
+        gsap.set('#heroImg', { scale: 1, filter: 'brightness(.62) saturate(.95)' });
+        gsap.set('#heroEyebrow, #heroBrief, #heroActions, #heroStats li, .hero-scrollcue', { opacity: 1, y: 0 });
+        gsap.set('#heroH .w', { yPercent: 0 });
+        gsap.set('#stText .st-w', { opacity: 1, color: '#FAFAFA' });
+        return;
+      }
 
-      // Snappier Hero intro timeline
+      // Hidden start states, applied before the timeline so nothing shows in
+      // the frame between mount and first play. Everything except the headline
+      // also carries opacity:0 in CSS; the headline deliberately does NOT, so
+      // that a visitor whose JS never arrives still reads it — the preloader
+      // covers the frame in which GSAP takes it away and gives it back.
+      gsap.set('#heroImg', { scale: 1.12, filter: 'brightness(.18) saturate(.85)' });
+      gsap.set('#heroEyebrow', { opacity: 0, y: 16 });
+      gsap.set('#heroH .w', { yPercent: 120 });
+      gsap.set('#heroBrief', { opacity: 0, y: 20 });
+      gsap.set('#heroActions', { opacity: 0, y: 20 });
+      gsap.set('#heroStats li', { opacity: 0, y: 18 });
+      gsap.set('.hero-scrollcue', { opacity: 0 });
+
+      // Hero intro. One staggered movement, top to bottom, in the order the
+      // page is meant to be read: eyebrow, headline, lede, actions, figures,
+      // cue. The headline is the only element that moves on its own terms —
+      // a masked wipe with no fade, which is what makes it read as editorial
+      // rather than as a UI element appearing.
       const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } });
       intro.fromTo('#heroImg',
-        { scale: 1.12, filter: 'brightness(.22) saturate(.85)' },
-        { scale: 1, filter: 'brightness(.62) saturate(1.05)', duration: 1.8, ease: 'power2.out' })
+        { scale: 1.12, filter: 'brightness(.18) saturate(.85)' },
+        { scale: 1, filter: 'brightness(.62) saturate(.95)', duration: 1.9, ease: 'power2.out' })
+        .fromTo('#heroEyebrow',
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.7 },
+          '-=1.6')
         .fromTo('#heroH .w',
-          { yPercent: 80, opacity: 0 },
-          { yPercent: 0, opacity: 1, duration: 1.3, stagger: 0.12, ease: 'power4.out' },
-          '-=1.7')
+          { yPercent: 120 },
+          { yPercent: 0, duration: 1.1, stagger: 0.09, ease: 'power4.out' },
+          '-=1.4')
         .fromTo('#heroBrief',
           { opacity: 0, y: 20 },
-          { opacity: 1, y: 0, duration: 0.9 },
-          '-=1.2')
-        .fromTo('#heroFoot .fact',
-          { opacity: 0, y: 15 },
-          { opacity: 1, y: 0, duration: 0.8, stagger: 0.1 },
-          '-=0.9')
+          { opacity: 1, y: 0, duration: 0.8 },
+          '-=0.75')
+        .fromTo('#heroActions',
+          { opacity: 0, y: 20 },
+          { opacity: 1, y: 0, duration: 0.8 },
+          '-=0.62')
+        .fromTo('#heroStats li',
+          { opacity: 0, y: 18 },
+          { opacity: 1, y: 0, duration: 0.7, stagger: 0.07 },
+          '-=0.55')
         .fromTo('.hero-scrollcue',
-          { opacity: 0, x: -10 },
-          { opacity: 1, x: 0, duration: 0.8 },
-          '-=0.7')
-        .fromTo('#cueLine',
-          { scaleX: 0 },
-          { scaleX: 1, duration: 0.6 },
-          '-=0.5');
+          { opacity: 0 },
+          { opacity: 1, duration: 0.6 },
+          '-=0.35');
 
-      const runIntro = () => intro.play();
       // Gate the intro on the active loader — the route overlay on client
       // navigation, the #preloader on hard refresh — so it plays fresh on reveal
       // rather than hidden underneath. whenReady falls back to the next frame
       // when no loader is present.
-      stopIntro = whenReady(runIntro);
-
-      if (reduceMotion) {
-        // The statement .st-w spans sit at #3a3a3a (index.css:359) until the
-        // ink-in tween below lifts them; restore them before bailing out.
-        gsap.set('#stText .st-w', { opacity: 1, color: '#FAFAFA' });
-        runIntro();
-        return;
-      }
+      stopIntro = whenReady(() => intro.play());
 
       // 2. Parallax Image
       gsap.to('#heroImg', {
@@ -922,7 +968,7 @@ const Home = () => {
             ref={heroVideoRef}
             poster="/assets/videos/hero-poster.jpg"
             autoPlay={!prefersReducedMotion}
-            preload={prefersReducedMotion ? 'none' : 'auto'}
+            preload={prefersReducedMotion ? 'none' : 'metadata'}
             muted
             loop
             playsInline
@@ -934,28 +980,66 @@ const Home = () => {
             <source src={`/assets/videos/hero-video${videoVariant}.mp4`} type="video/mp4" />
           </video>
         </div>
+        {/* Drawn outside .hero-media so the scroll parallax moves the footage
+            and not the gradient — the two used to share an element, which made
+            the overlay creep upward as the page scrolled. */}
+        <div className="hero-scrim" aria-hidden="true" />
+
         <div className="hero-inner">
-          <div className="hero-top">
+          <div className="hero-copy">
+            <p className="hero-eyebrow" id="heroEyebrow">
+              <i aria-hidden="true" />
+              {t('home.hero.eyebrow', 'Global presence. Local impact.')}
+            </p>
+
+            {/* Three masked lines. Each .w is translated inside its own
+                overflow-hidden mask, so the headline wipes up rather than
+                fading — the only piece of motion in the hero that is allowed
+                to be noticed. */}
             <h1 className="display" id="heroH">
-              <span className="line-mask"><span className="w">{t('home.hero.line1')}</span></span>
-              <span className="line-mask"><span className="w">{t('home.hero.line2')}</span></span>
-              <span className="line-mask"><span className="w"><em>{t('home.hero.line3')}</em></span></span>
+              <span className="line-mask"><span className="w">{t('home.hero.hl1', 'Technology')}</span></span>
+              <span className="line-mask"><span className="w">{t('home.hero.hl2', 'of the future,')}</span></span>
+              <span className="line-mask"><span className="w"><em>{t('home.hero.hl3', 'today.')}</em></span></span>
             </h1>
-            <div className="hero-brief" id="heroBrief">
-              <p>{t('home.hero.brief')}</p>
-              <Button href="#solutions">
-                <span>{t('home.hero.explore_btn')}</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
-                  <path d="M7 17L17 7M9 7h8v8" />
+
+            <p className="hero-lede" id="heroBrief">
+              {t('home.hero.lede', 'We deliver end-to-end AV, technology, and distribution solutions that empower businesses, connect people, and drive innovation across the region.')}
+            </p>
+
+            <div className="hero-actions" id="heroActions">
+              <Button solid href="#solutions">
+                <span>{t('home.hero.cta_primary', 'Explore solutions')}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6" />
+                </svg>
+              </Button>
+              <Button href="#regions">
+                <span>{t('home.hero.cta_secondary', 'Our global presence')}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
+                  <circle cx="12" cy="12" r="8.5" />
+                  <circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none" />
                 </svg>
               </Button>
             </div>
           </div>
-          <div className="hero-foot" id="heroFoot">
-            <div className="fact"><b>{t('home.hero.fact1_b')}</b><span>{t('home.hero.fact1_s')}</span></div>
-            <div className="fact"><b>{t('home.hero.fact2_b')}</b><span>{t('home.hero.fact2_s')}</span></div>
-            <div className="fact"><b>{t('home.hero.fact3_b')}</b><span>{t('home.hero.fact3_s')}</span></div>
-            <div className="hero-scrollcue"><i id="cueLine"></i>{t('home.hero.scroll')}</div>
+
+          <div className="hero-base">
+            <ul className="hero-stats" id="heroStats">
+              {HERO_STATS.map(({ key, value, label, sub }) => (
+                <li key={key}>
+                  <b>{t(`home.hero.stats.${key}.value`, value)}</b>
+                  <span>{t(`home.hero.stats.${key}.label`, label)}</span>
+                  <em>{t(`home.hero.stats.${key}.sub`, sub)}</em>
+                </li>
+              ))}
+            </ul>
+
+            <div className="hero-cue" data-cue={cueVisible ? 'on' : 'off'} aria-hidden="true">
+              <div className="hero-scrollcue">
+                <i id="cueLine" />
+                {t('home.hero.scroll_cue', 'Scroll to explore')}
+              </div>
+            </div>
           </div>
         </div>
       </section>

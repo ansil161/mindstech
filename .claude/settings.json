@@ -99,7 +99,22 @@
       "PowerShell($out=\"C:\\\\Users\\\\Mohd\\\\AppData\\\\Local\\\\Temp\\\\shots\"; $prof=\"$env:TEMP\\\\zfoot\"; Remove-Item -Recurse -Force $prof -ErrorAction SilentlyContinue; $p = Start-Process -FilePath \"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" -ArgumentList '--headless','--disable-gpu','--no-sandbox','--no-first-run','--disable-extensions','--disable-background-networking','--disable-sync','--force-prefers-reduced-motion',\"--user-data-dir=$prof\",'--virtual-time-budget=15000','--window-size=1512,1900',\"--screenshot=$out\\\\contact2.png\",'http://localhost:5173/contact' -PassThru; if \\(-not $p.WaitForExit\\(90000\\)\\) { $p.Kill\\(\\) }; \"ok\")",
       "PowerShell($out=\"C:\\\\Users\\\\Mohd\\\\AppData\\\\Local\\\\Temp\\\\shots\"; $prof=\"$env:TEMP\\\\zab2\"; Remove-Item -Recurse -Force $prof -ErrorAction SilentlyContinue; $p = Start-Process -FilePath \"C:\\\\Program Files \\(x86\\)\\\\Microsoft\\\\Edge\\\\Application\\\\msedge.exe\" -ArgumentList '--headless','--disable-gpu','--no-sandbox','--no-first-run','--disable-extensions','--disable-background-networking','--disable-sync','--force-prefers-reduced-motion',\"--user-data-dir=$prof\",'--virtual-time-budget=15000','--window-size=1512,4600',\"--screenshot=$out\\\\about2.png\",'http://localhost:5173/about' -PassThru; if \\(-not $p.WaitForExit\\(90000\\)\\) { $p.Kill\\(\\) }; \"ok\")",
       "Bash(awk 'NR>=4320 && NR<=4400 {print NR\": \"$0}' src/index.css)",
-      "Bash(git checkout *)"
+      "Bash(git checkout *)",
+      "Bash(grep -n \"<section\\\\|{/\\\\* \\\\|className=\\\\\"section-head\\\\|<h2\\\\|<h1\" About.jsx Solutions.jsx Partners.jsx Products.jsx ProductBrand.jsx Projects.jsx)",
+      "Bash(grep -n \"<section\\\\|{/\\\\* \\\\|<h2\\\\|<h1\" Contact.jsx EWaste.jsx Experience.jsx Events.jsx Blogs.jsx NotFound.jsx SolutionDetails.jsx gallery/Gallery.jsx)",
+      "PowerShell(python -c \"import docx; print\\('python-docx OK'\\)\" 2>$null; if \\(-not $?\\) { \"no python-docx\" }; python --version; \\(Get-Command pandoc -ErrorAction SilentlyContinue\\).Source)",
+      "PowerShell(python -m pip install python-docx --quiet --disable-pip-version-check 2>&1)",
+      "PowerShell(python -c \"import docx; print\\('OK', docx.__version__ if hasattr\\(docx,'__version__'\\) else ''\\)\")",
+      "PowerShell($env:TARGET_DIR = \"d:\\\\Projects\\\\mindstech-feature-ai-service\\\\mindstech\"; $env:PYTHONIOENCODING = \"utf-8\"; python \"C:\\\\Users\\\\Mohd\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\d--Projects-mindstech-feature-ai-service-mindstech\\\\a6249825-e06f-49ce-b7ff-4f8248cad098\\\\scratchpad\\\\build_doc.py\")",
+      "Bash(sed -n '/^\\\\.btn {/,/^}/p' index.css)",
+      "Bash(sed -n '/^\\\\.btn--solid {/,/^}/p' index.css)",
+      "Bash(sed -n '/^\\\\.display {/,/^}/p' src/index.css)",
+      "Bash(grep -n \"^h1, h2\\\\|^h1 {\\\\|^h1,\" src/index.css)",
+      "PowerShell(Set-Location \"d:\\\\Projects\\\\mindstech-feature-ai-service\\\\mindstech\\\\client\"; Start-Process -NoNewWindow npm -ArgumentList \"run\",\"dev\"; Start-Sleep -Seconds 6; try { $r = Invoke-WebRequest \"http://localhost:5173/\" -UseBasicParsing -TimeoutSec 10; \"HTTP $\\($r.StatusCode\\)  bytes=$\\($r.RawContentLength\\)\" } catch { \"ERR: $_\" })",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} %{size_download} bytes\\\\n\" http://localhost:5173/)",
+      "Bash(pkill -f \"vite\")",
+      "Bash(sed -n '/Immediately apply initial hidden\\\\|The elements the hero animates/,/stopIntro = whenReady/p' src/pages/user/Home.jsx)",
+      "Bash(npx oxlint *)"
     ]
   }
 }

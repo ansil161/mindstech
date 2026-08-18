@@ -218,6 +218,20 @@
       "paris": "Paris"
     },
     "hero": {
+      "eyebrow": "Global presence. Local impact.",
+      "hl1": "Technology",
+      "hl2": "of the future,",
+      "hl3": "today.",
+      "lede": "We deliver end-to-end AV, technology, and distribution solutions that empower businesses, connect people, and drive innovation across the region.",
+      "cta_primary": "Explore solutions",
+      "cta_secondary": "Our global presence",
+      "scroll_cue": "Scroll to explore",
+      "stats": {
+        "countries": { "value": "20+", "label": "Countries", "sub": "We operate in" },
+        "brands": { "value": "500+", "label": "Brands", "sub": "We represent" },
+        "projects": { "value": "10K+", "label": "Projects", "sub": "Delivered" },
+        "years": { "value": "25+", "label": "Years", "sub": "Of excellence" }
+      },
       "line1": "Global company.",
       "line2": "Regional presence.",
       "line3": "Technology of the future, today.",
