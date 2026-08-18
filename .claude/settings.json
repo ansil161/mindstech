@@ -118,7 +118,8 @@
       "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.StartTime -gt \\(Get-Date\\).AddMinutes\\(-3\\) } | Stop-Process -Force -ErrorAction SilentlyContinue; \"dev server stopped\")",
       "Bash(sed -n '/^\\\\.section-head {/,/^}/p' index.css)",
       "Bash(sed -n '/^\\\\.statement {/,/^}/p' index.css)",
-      "Bash(sed -n '/^\\\\.edge-layout {/,/^}/p' index.css)"
+      "Bash(sed -n '/^\\\\.edge-layout {/,/^}/p' index.css)",
+      "Bash(python -c \"import django;print\\('django',django.get_version\\(\\)\\)\")"
     ]
   }
 }
