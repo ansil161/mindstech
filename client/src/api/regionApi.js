@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios, { publicClient } from './axios';
 
 // ── Admin: Regions ──
 
@@ -42,10 +42,10 @@ export const deleteBrand = (id) => axios.delete(`/admin/brands/${id}/`);
 // Uses a plain fetch without credentials so DRF authentication
 // middleware never interferes with this AllowAny endpoint.
 export const getPublicRegions = () =>
-  axios.get('/admin/public/regions/', { withCredentials: false });
+  publicClient.get('/admin/public/regions/');
 
 export const getPublicRegionData = (slug) =>
-  axios.get(`/admin/public/region/${slug}/`, { withCredentials: false });
+  publicClient.get(`/admin/public/region/${slug}/`);
 
 export const getPublicRegionSolutionBrands = (regionSlug, solutionSlug) =>
-  axios.get(`/admin/public/region/${regionSlug}/solution/${solutionSlug}/brands/`, { withCredentials: false });
+  publicClient.get(`/admin/public/region/${regionSlug}/solution/${solutionSlug}/brands/`);

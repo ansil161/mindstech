@@ -31,6 +31,10 @@ const About = () => {
 
   const [team, setTeam] = useState([]);
   const [loadingTeam, setLoadingTeam] = useState(false);
+  // Distinguishes "the request failed" from "nobody is published". Both used to
+  // render the same empty-state line, which made a broken endpoint look like an
+  // editorial decision and cost two rounds of guesswork to diagnose.
+  const [teamError, setTeamError] = useState(false);
   const [contactInfo, setContactInfo] = useState(null);
 
   const { translatedData: translatedTeam } = useDynamicTranslation(
@@ -49,12 +53,16 @@ const About = () => {
     let cancelled = false;
     const fetchTeam = async () => {
       setLoadingTeam(true);
+      setTeamError(false);
       try {
         const res = await getPublicTeamMembers();
-        if (!cancelled) setTeam(res.data || []);
+        if (!cancelled) setTeam(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
         console.error('Failed to load team members:', err);
-        if (!cancelled) setTeam([]);
+        if (!cancelled) {
+          setTeam([]);
+          setTeamError(true);
+        }
       } finally {
         if (!cancelled) setLoadingTeam(false);
       }
@@ -441,6 +449,10 @@ const About = () => {
         <div className="team-grid" id="teamGrid">
           {loadingTeam ? (
             <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>{t('about.team.loading')}</p>
+          ) : teamError ? (
+            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>
+              {t('about.team.error', 'The team list could not be loaded just now. Please refresh the page.')}
+            </p>
           ) : translatedTeam.length === 0 ? (
             <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>{t('about.team.empty')}</p>
           ) : (

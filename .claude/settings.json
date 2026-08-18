@@ -124,7 +124,8 @@
       "Bash(sed -n '/^\\\\.member {/,/^}/p' index.css)",
       "Bash(sed -n '/^\\\\.member .photo {/,/^}/p' index.css)",
       "PowerShell(docker version --format \"{{.Server.Version}}\" 2>&1)",
-      "PowerShell(docker compose ps --format \"table {{.Service}}\\\\t{{.State}}\" 2>&1)"
+      "PowerShell(docker compose ps --format \"table {{.Service}}\\\\t{{.State}}\" 2>&1)",
+      "Bash(python -c \"import json;json.load\\(open\\('src/locales/en/common.json',encoding='utf-8'\\)\\);print\\('JSON OK'\\)\")"
     ]
   }
 }

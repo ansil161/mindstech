@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios, { publicClient } from './axios';
 
 // ── Admin: Team Members (global, shared across all regions) ──
 
@@ -17,7 +17,9 @@ export const updateTeamMember = (id, formData) =>
 export const deleteTeamMember = (id) => axios.delete(`/admin/team-members/${id}/`);
 
 // ── Public API (no auth) ──
-// Uses a plain fetch without credentials so DRF authentication
-// middleware never interferes with this AllowAny endpoint.
-export const getPublicTeamMembers = () =>
-  axios.get('/admin/public/team/', { withCredentials: false });
+// Goes through publicClient, which sends no Authorization header at all.
+// `withCredentials: false` on the authenticated client was NOT enough: it
+// suppresses cookies but not the Bearer token the request interceptor adds
+// from localStorage, so any visitor carrying a stale admin token got a 401
+// from this AllowAny endpoint and the request stalled in the refresh queue.
+export const getPublicTeamMembers = () => publicClient.get('/admin/public/team/');

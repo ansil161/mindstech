@@ -15,6 +15,75 @@ const apiClient = axios.create({
   xsrfHeaderName: 'X-CSRFToken',
 });
 
+const BASE_URL = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '') + '/api/v1';
+
+/**
+ * Guard against the SPA/dev-server HTML fallback being mistaken for data.
+ * When the API host isn't reachable, whatever serves the frontend answers
+ * /api/* with index.html and a 200. Axios resolves happily, callers get a
+ * string where they expected JSON, and the first `.map()` downstream throws
+ * inside render — which the router error boundary turns into a blank page.
+ * Rejecting here routes it into the `.catch()` handlers callers already have.
+ */
+const rejectIfHtml = (response) => {
+  const contentType = response.headers?.['content-type'] || '';
+  if (typeof response.data === 'string' && /^\s*<(!doctype|html)/i.test(response.data)) {
+    return Promise.reject({
+      success: false,
+      message:
+        `Expected JSON from ${response.config?.url ?? 'the API'} but received HTML ` +
+        `(content-type: ${contentType || 'unknown'}). Is the backend running?`,
+      errors: {},
+    });
+  }
+  return null;
+};
+
+const toFallbackError = (error) => ({
+  success: false,
+  message: error.response?.data?.message || error.message || 'An unexpected error occurred.',
+  errors: error.response?.data?.errors || {},
+});
+
+/**
+ * Client for the `/admin/public/*` endpoints, which are AllowAny and are read
+ * by ordinary visitors who are not signed in.
+ *
+ * These used to go through `apiClient` with `withCredentials: false`, on the
+ * assumption that this kept DRF's authentication out of the way. It does not:
+ * `withCredentials` only suppresses cookies, while the request interceptor
+ * below still attached `Authorization: Bearer <token>` from localStorage. Any
+ * visitor holding a stale admin token — anyone who has opened the dashboard on
+ * that browser — therefore sent an invalid Bearer to a public endpoint. DRF
+ * fails authentication BEFORE it consults permission classes, so the view's
+ * AllowAny never applies and the response is a 401. That 401 then entered the
+ * refresh/retry machinery, where a request queued behind an in-flight refresh
+ * can be left permanently pending — which the About page renders as a
+ * "Loading team..." that never resolves.
+ *
+ * Public data needs no identity, so this instance simply never sends one, and
+ * never runs the refresh dance.
+ */
+export const publicClient = axios.create({
+  baseURL: BASE_URL,
+  timeout: 30000,
+  headers: { 'Content-Type': 'application/json' },
+  withCredentials: false,
+});
+
+publicClient.interceptors.request.use(
+  (config) => {
+    config.headers['Accept-Language'] = localStorage.getItem('i18nextLng') || 'en';
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
+
+publicClient.interceptors.response.use(
+  (response) => rejectIfHtml(response) || response,
+  (error) => Promise.reject(toFallbackError(error))
+);
+
 let isRefreshing = false;
 let failedQueue = [];
 
@@ -69,22 +138,8 @@ apiClient.interceptors.request.use(
 // Interceptor to handle global error payloads and save tokens from responses
 apiClient.interceptors.response.use(
   (response) => {
-    // Guard against the SPA/dev-server HTML fallback being mistaken for data.
-    // When the API host isn't reachable, whatever serves the frontend answers
-    // /api/* with index.html and a 200. Axios resolves happily, callers get a
-    // string where they expected JSON, and the first `.map()` downstream throws
-    // inside render — which the router error boundary turns into a blank page.
-    // Rejecting here routes it into the `.catch()` handlers callers already have.
-    const contentType = response.headers?.['content-type'] || '';
-    if (typeof response.data === 'string' && /^\s*<(!doctype|html)/i.test(response.data)) {
-      return Promise.reject({
-        success: false,
-        message:
-          `Expected JSON from ${response.config?.url ?? 'the API'} but received HTML ` +
-          `(content-type: ${contentType || 'unknown'}). Is the backend running?`,
-        errors: {},
-      });
-    }
+    const htmlRejection = rejectIfHtml(response);
+    if (htmlRejection) return htmlRejection;
 
     // Save tokens to localStorage as fallback for cross-origin setups
     if (response.data?.data?.csrf_token) {
@@ -152,12 +207,7 @@ apiClient.interceptors.response.use(
       }
     }
 
-    const fallbackError = {
-      success: false,
-      message: error.response?.data?.message || error.message || 'An unexpected error occurred.',
-      errors: error.response?.data?.errors || {},
-    };
-    return Promise.reject(fallbackError);
+    return Promise.reject(toFallbackError(error));
   }
 );
 

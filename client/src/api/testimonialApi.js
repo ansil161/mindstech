@@ -1,4 +1,4 @@
-import axios from './axios';
+import axios, { publicClient } from './axios';
 
 // ── Admin: Client Testimonials (global, shared across all regions) ──
 
@@ -15,4 +15,4 @@ export const deleteTestimonial = (id) => axios.delete(`/admin/testimonials/${id}
 // Uses a plain fetch without credentials so DRF authentication
 // middleware never interferes with this AllowAny endpoint.
 export const getPublicTestimonials = () =>
-  axios.get('/admin/public/testimonials/', { withCredentials: false });
+  publicClient.get('/admin/public/testimonials/');

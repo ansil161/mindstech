@@ -103,7 +103,8 @@
         "sales_mgr": "Sajid Ali Kazi"
       },
       "loading": "Loading team...",
-      "empty": "No team members listed for this region yet."
+      "empty": "No team members listed for this region yet.",
+      "error": "The team list could not be loaded just now. Please refresh the page."
     },
     "cta": {
       "label": "Become a reseller",
