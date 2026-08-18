@@ -24,6 +24,8 @@ export default function TeamTab() {
     setEditMemberPhoto,
     submittingMemberEdit,
     editTeamMember,
+    reorderingTeam,
+    moveTeamMember,
 
     // Testimonials
     testimonials,
@@ -94,7 +96,7 @@ export default function TeamTab() {
           <p style={{ color: 'var(--grey)', fontSize: '13px' }}>No team members yet. Click "Add Member" to upload one.</p>
         ) : (
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-            {teamMembers.map((member) => (
+            {teamMembers.map((member, index) => (
               <div key={member.id} style={{ padding: '14px', background: 'var(--ink-2)', borderRadius: '8px', border: '1px solid var(--line)', display: 'flex', flexDirection: 'column', gap: '10px' }}>
                 {editingMemberId === member.id ? (
                   <form onSubmit={e => editTeamMember(e, member.id)} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
@@ -108,10 +110,42 @@ export default function TeamTab() {
                   </form>
                 ) : (
                   <>
-                    {member.photo && <img src={member.photo} alt={member.name} style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '6px' }} />}
+                    <div style={{ position: 'relative' }}>
+                      {member.photo && <img src={member.photo} alt={member.name} style={{ width: '100%', height: '160px', objectFit: 'cover', borderRadius: '6px', display: 'block' }} />}
+                      {/* Position on the public About page, so the running
+                          order is visible without counting cards. */}
+                      <span style={{ position: 'absolute', top: '8px', left: '8px', minWidth: '22px', height: '22px', padding: '0 6px', borderRadius: '11px', background: 'rgba(6,6,8,.82)', border: '1px solid var(--line)', color: 'var(--white)', fontSize: '11px', fontWeight: 600, display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}>
+                        {index + 1}
+                      </span>
+                    </div>
                     <div>
                       <h4 style={{ margin: '0 0 4px', fontSize: '14px', color: 'var(--white)' }}>{member.name}</h4>
                       <p style={{ margin: 0, fontSize: '12px', color: 'var(--grey)' }}>{member.role}</p>
+                    </div>
+                    {/* Reorder controls. The About page prints this list in
+                        exactly this order, so this is the only way to decide
+                        who leads the section. */}
+                    <div style={{ display: 'flex', gap: '6px' }}>
+                      <button
+                        onClick={() => moveTeamMember(member.id, 'up')}
+                        disabled={index === 0 || reorderingTeam}
+                        aria-label={`Move ${member.name} earlier`}
+                        title="Move earlier"
+                        className="admin-btn"
+                        style={{ flex: 1, margin: 0, padding: '5px', fontSize: '11px', background: 'var(--ink)', border: '1px solid var(--line)', color: index === 0 ? 'var(--grey-dark)' : 'var(--grey)', cursor: index === 0 || reorderingTeam ? 'not-allowed' : 'pointer' }}
+                      >
+                        ↑ Up
+                      </button>
+                      <button
+                        onClick={() => moveTeamMember(member.id, 'down')}
+                        disabled={index === teamMembers.length - 1 || reorderingTeam}
+                        aria-label={`Move ${member.name} later`}
+                        title="Move later"
+                        className="admin-btn"
+                        style={{ flex: 1, margin: 0, padding: '5px', fontSize: '11px', background: 'var(--ink)', border: '1px solid var(--line)', color: index === teamMembers.length - 1 ? 'var(--grey-dark)' : 'var(--grey)', cursor: index === teamMembers.length - 1 || reorderingTeam ? 'not-allowed' : 'pointer' }}
+                      >
+                        ↓ Down
+                      </button>
                     </div>
                     <div style={{ display: 'flex', gap: '6px' }}>
                       <button onClick={() => { setEditingMemberId(member.id); setEditMemberName(member.name); setEditMemberRole(member.role); setEditMemberPhoto(null); }} className="admin-btn" style={{ flex: 1, margin: 0, padding: '5px', fontSize: '11px' }}>Edit</button>

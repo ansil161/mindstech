@@ -20,6 +20,7 @@ export function useTeam() {
   const [editMemberRole, setEditMemberRole] = useState('');
   const [editMemberPhoto, setEditMemberPhoto] = useState(null);
   const [submittingMemberEdit, setSubmittingMemberEdit] = useState(false);
+  const [reorderingTeam, setReorderingTeam] = useState(false);
 
   // Testimonials
   const [testimonials, setTestimonials] = useState([]);
@@ -101,6 +102,53 @@ export function useTeam() {
     } catch (err) {
       console.error(err);
       notify('Failed to delete team member.');
+    }
+  };
+
+  /**
+   * Move a member one place up or down the published order.
+   *
+   * The About page renders whatever `GET /admin/public/team/` returns, which is
+   * ordered by `display_order` then `created_at`. Until now nothing in the CMS
+   * could write `display_order` after creation, so the running order was fixed
+   * at whatever sequence people happened to be added in — which is why the
+   * founder sat second with no way to fix it without a developer.
+   *
+   * Renormalises the whole list to 0..n-1 rather than swapping two values:
+   * rows created before ordering was editable all carry `display_order: 0`, so
+   * a plain two-row swap would leave those ties intact and the list would
+   * spring back to creation order on the next load. Only rows whose position
+   * actually changed are sent, so after the first move this is two requests.
+   */
+  const moveTeamMember = async (memberId, direction) => {
+    const from = teamMembers.findIndex((m) => m.id === memberId);
+    const to = from + (direction === 'up' ? -1 : 1);
+    if (from === -1 || to < 0 || to >= teamMembers.length) return;
+
+    const reordered = [...teamMembers];
+    [reordered[from], reordered[to]] = [reordered[to], reordered[from]];
+
+    // Optimistic: reordering is the entire point of the interaction, so it has
+    // to feel immediate. Rolled back below if the save fails.
+    const previous = teamMembers;
+    const stale = reordered.filter((m, i) => m.display_order !== i);
+    setTeamMembers(reordered.map((m, i) => ({ ...m, display_order: i })));
+    setReorderingTeam(true);
+
+    try {
+      await Promise.all(
+        stale.map((m) => {
+          const fd = new FormData();
+          fd.append('display_order', String(reordered.indexOf(m)));
+          return teamService.updateTeamMember(m.id, fd);
+        })
+      );
+    } catch (err) {
+      console.error(err);
+      setTeamMembers(previous);
+      notify('Could not save the new order. Please try again.');
+    } finally {
+      setReorderingTeam(false);
     }
   };
 
@@ -192,6 +240,8 @@ export function useTeam() {
     setEditMemberRole,
     setEditMemberPhoto,
     submittingMemberEdit,
+    reorderingTeam,
+    moveTeamMember,
     editTeamMember,
 
     // Testimonials

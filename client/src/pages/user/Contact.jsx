@@ -434,6 +434,15 @@ const Contact = () => {
                 <path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z" />
               </svg>
             </a>
+            {/* Kept in step with the footer's row, which gained Facebook on
+                client request while this one was missed. Same placeholder URL
+                and the same caveat: no Facebook handle exists anywhere else in
+                the codebase, so confirm it before release. */}
+            <a href="https://www.facebook.com/mindstecdistribution" aria-label="Mindstec on Facebook" target="_blank" rel="noopener noreferrer">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.28-.13-2.42-.13-2.4 0-4.03 1.46-4.03 4.14V9.9H7.5V13h2.75v8h3.25z" />
+              </svg>
+            </a>
             <a href="https://www.instagram.com/mindstec.distribution/" aria-label="Mindstec on Instagram" target="_blank" rel="noopener noreferrer">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6">
                 <rect x="3" y="3" width="18" height="18" rx="5" />
