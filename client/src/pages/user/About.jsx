@@ -219,28 +219,80 @@ const About = () => {
   // async fetch, which shifts every trigger below it. Re-measure without
   // replaying anything.
   useEffect(() => {
-    const ctx = gsap.context(() => {
-      // Team grid stagger. The reference ran this at mount because the roster
-      // was static markup; it is fetched now, so it binds here instead — at
-      // mount .member does not exist yet.
-      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    const grid = document.getElementById('teamGrid');
 
-      gsap.fromTo('.member', { opacity: 0, y: 44 }, {
+    const ctx = gsap.context(() => {
+      const cards = gsap.utils.toArray('.member');
+
+      // Bail before creating anything when the roster has not arrived. This is
+      // load-bearing: the previous version called gsap.fromTo() with a selector
+      // that matched nothing on the first pass, which still built a
+      // `once: true` ScrollTrigger against the empty grid — one that could fire
+      // and destroy itself before a single card existed.
+      if (!cards.length) return;
+
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        gsap.set(cards, { opacity: 1, y: 0 });
+        return;
+      }
+
+      const reveal = () => gsap.to(cards, {
         opacity: 1,
         y: 0,
         duration: 0.8,
         stagger: 0.09,
         ease: 'power2.out',
-        scrollTrigger: {
-          trigger: '#teamGrid',
-          start: 'top 82%',
-          once: true,
-        }
+        overwrite: 'auto',
+      });
+
+      gsap.set(cards, { opacity: 0, y: 44 });
+
+      // If the grid is already on screen there is no scroll left to wait for.
+      // Binding a trigger to an element the visitor has already reached is
+      // exactly what left the cards at opacity 0 with nothing in CSS to
+      // restore them — .member carries no opacity of its own, so a trigger
+      // that never fires is a permanently invisible team section.
+      const rect = grid ? grid.getBoundingClientRect() : null;
+      if (rect && rect.top < window.innerHeight * 0.92) {
+        reveal();
+        return;
+      }
+
+      ScrollTrigger.create({
+        trigger: '#teamGrid',
+        start: 'top 92%',
+        once: true,
+        onEnter: reveal,
       });
     }, containerRef);
 
-    const timer = setTimeout(() => ScrollTrigger.refresh(), 100);
-    return () => { ctx.revert(); clearTimeout(timer); };
+    // The portraits are lazy-loaded and resize their rows as they land, moving
+    // every trigger below the grid. Re-measure when they actually settle
+    // instead of guessing with a fixed delay; the timeout stays as a floor for
+    // the case where every image is already cached.
+    const pending = grid
+      ? Array.from(grid.querySelectorAll('img')).filter((img) => !img.complete)
+      : [];
+    let settled = 0;
+    const onSettle = () => {
+      settled += 1;
+      if (settled >= pending.length) ScrollTrigger.refresh();
+    };
+    pending.forEach((img) => {
+      img.addEventListener('load', onSettle, { once: true });
+      img.addEventListener('error', onSettle, { once: true });
+    });
+
+    const timer = setTimeout(() => ScrollTrigger.refresh(), 120);
+
+    return () => {
+      ctx.revert();
+      clearTimeout(timer);
+      pending.forEach((img) => {
+        img.removeEventListener('load', onSettle);
+        img.removeEventListener('error', onSettle);
+      });
+    };
   }, [translatedTeam]);
 
   // Story word ink-in. The .st-w spans render at #3A3A3A (index.css:1181) and

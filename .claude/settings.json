@@ -119,7 +119,12 @@
       "Bash(sed -n '/^\\\\.section-head {/,/^}/p' index.css)",
       "Bash(sed -n '/^\\\\.statement {/,/^}/p' index.css)",
       "Bash(sed -n '/^\\\\.edge-layout {/,/^}/p' index.css)",
-      "Bash(python -c \"import django;print\\('django',django.get_version\\(\\)\\)\")"
+      "Bash(python -c \"import django;print\\('django',django.get_version\\(\\)\\)\")",
+      "Bash(sed -n '/^\\\\.team-grid {/,/^}/p' index.css)",
+      "Bash(sed -n '/^\\\\.member {/,/^}/p' index.css)",
+      "Bash(sed -n '/^\\\\.member .photo {/,/^}/p' index.css)",
+      "PowerShell(docker version --format \"{{.Server.Version}}\" 2>&1)",
+      "PowerShell(docker compose ps --format \"table {{.Service}}\\\\t{{.State}}\" 2>&1)"
     ]
   }
 }
