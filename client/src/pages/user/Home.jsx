@@ -52,11 +52,44 @@ const PILLAR_MARKS = [
  * reconciling before launch, not silently diverging.
  */
 const HERO_STATS = [
-  { key: 'countries', value: '20+', label: 'Countries', sub: 'We operate in' },
-  { key: 'brands', value: '500+', label: 'Brands', sub: 'We represent' },
-  { key: 'projects', value: '10K+', label: 'Projects', sub: 'Delivered' },
-  { key: 'years', value: '25+', label: 'Years', sub: 'Of excellence' },
+  { key: 'countries', value: '20+', label: 'Countries', sub: 'We operate in', icon: 'globe' },
+  { key: 'brands', value: '500+', label: 'Brands', sub: 'We represent', icon: 'building' },
+  { key: 'projects', value: '10K+', label: 'Projects', sub: 'Delivered', icon: 'chart' },
+  { key: 'years', value: '25+', label: 'Years', sub: 'Of excellence', icon: 'shield' },
 ];
+
+/**
+ * Thin-line marks for the hero's figures. Drawn at 24px on a 24 grid with a
+ * 1.4 stroke — heavy enough to read at the strip's scale, light enough that
+ * the numeral stays the thing you see first.
+ */
+const HERO_STAT_ICONS = {
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M3.5 12h17M12 3.5c2.2 2.3 3.4 5.3 3.4 8.5s-1.2 6.2-3.4 8.5c-2.2-2.3-3.4-5.3-3.4-8.5S9.8 5.8 12 3.5Z" />
+    </>
+  ),
+  building: (
+    <>
+      <path d="M4 20.5V6.2a1 1 0 0 1 .7-.95l6-1.9a1 1 0 0 1 1.3.95V20.5" />
+      <path d="M12 9.6h6.3a1 1 0 0 1 1 1v9.9" />
+      <path d="M2.6 20.5h18.8M7 8.6v.01M7 12v.01M9.5 8.6v.01M9.5 12v.01M15 13v.01M15 16.3v.01" />
+    </>
+  ),
+  chart: (
+    <>
+      <path d="M3.2 20.4h17.6" />
+      <path d="M6.4 20.4v-5.6M11 20.4V8.2M15.6 20.4v-8.4M20.2 20.4V4.6" />
+    </>
+  ),
+  shield: (
+    <>
+      <path d="M12 3.2 4.8 6v6c0 4.2 3 7.6 7.2 9 4.2-1.4 7.2-4.8 7.2-9V6L12 3.2Z" />
+      <path d="m12 9.1 1.1 2.2 2.4.35-1.75 1.7.4 2.4L12 14.6l-2.15 1.15.4-2.4-1.75-1.7 2.4-.35L12 9.1Z" />
+    </>
+  ),
+};
 
 // ── Map label layout ──
 // Several offices (Bangalore/Dubai/Riyadh/Cairo) sit close together on the
@@ -1002,8 +1035,12 @@ const Home = () => {
               <span className="line-mask"><span className="w"><em>{t('home.hero.hl3', 'today.')}</em></span></span>
             </h1>
 
+            {/* The closing phrase is set solid white against the paragraph's
+                muted grey — the comp's one piece of emphasis in the body copy,
+                and the half of the sentence that carries the positioning. */}
             <p className="hero-lede" id="heroBrief">
-              {t('home.hero.lede', 'We deliver end-to-end AV, technology, and distribution solutions that empower businesses, connect people, and drive innovation across the region.')}
+              {t('home.hero.lede', 'We deliver end-to-end AV, technology, and distribution solutions that empower businesses, connect people, and drive innovation ')}
+              <strong>{t('home.hero.lede_accent', 'across the region.')}</strong>
             </p>
 
             <div className="hero-actions" id="heroActions">
@@ -1015,9 +1052,8 @@ const Home = () => {
               </Button>
               <Button href="#regions">
                 <span>{t('home.hero.cta_secondary', 'Our global presence')}</span>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" aria-hidden="true">
-                  <circle cx="12" cy="12" r="8.5" />
-                  <circle cx="12" cy="12" r="2.6" fill="currentColor" stroke="none" />
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" aria-hidden="true">
+                  {HERO_STAT_ICONS.globe}
                 </svg>
               </Button>
             </div>
@@ -1025,18 +1061,28 @@ const Home = () => {
 
           <div className="hero-base">
             <ul className="hero-stats" id="heroStats">
-              {HERO_STATS.map(({ key, value, label, sub }) => (
+              {HERO_STATS.map(({ key, value, label, sub, icon }) => (
                 <li key={key}>
-                  <b>{t(`home.hero.stats.${key}.value`, value)}</b>
-                  <span>{t(`home.hero.stats.${key}.label`, label)}</span>
-                  <em>{t(`home.hero.stats.${key}.sub`, sub)}</em>
+                  <span className="hs-mark" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round">
+                      {HERO_STAT_ICONS[icon]}
+                    </svg>
+                  </span>
+                  <span className="hs-body">
+                    <b>{t(`home.hero.stats.${key}.value`, value)}</b>
+                    <span>{t(`home.hero.stats.${key}.label`, label)}</span>
+                    <em>{t(`home.hero.stats.${key}.sub`, sub)}</em>
+                  </span>
                 </li>
               ))}
             </ul>
 
             <div className="hero-cue" data-cue={cueVisible ? 'on' : 'off'} aria-hidden="true">
               <div className="hero-scrollcue">
-                <i id="cueLine" />
+                <svg className="cue-mouse" viewBox="0 0 16 26" fill="none" aria-hidden="true">
+                  <rect x="0.75" y="0.75" width="14.5" height="24.5" rx="7.25" stroke="currentColor" strokeWidth="1.2" />
+                  <circle className="cue-dot" cx="8" cy="7" r="2" fill="var(--red)" />
+                </svg>
                 {t('home.hero.scroll_cue', 'Scroll to explore')}
               </div>
             </div>

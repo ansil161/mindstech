@@ -114,7 +114,8 @@
       "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} %{size_download} bytes\\\\n\" http://localhost:5173/)",
       "Bash(pkill -f \"vite\")",
       "Bash(sed -n '/Immediately apply initial hidden\\\\|The elements the hero animates/,/stopIntro = whenReady/p' src/pages/user/Home.jsx)",
-      "Bash(npx oxlint *)"
+      "Bash(npx oxlint *)",
+      "PowerShell(Get-Process node -ErrorAction SilentlyContinue | Where-Object { $_.StartTime -gt \\(Get-Date\\).AddMinutes\\(-3\\) } | Stop-Process -Force -ErrorAction SilentlyContinue; \"dev server stopped\")"
     ]
   }
 }

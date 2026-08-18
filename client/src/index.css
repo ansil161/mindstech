@@ -593,12 +593,27 @@ blockquote {
   border-color: rgba(255, 255, 255, 0.02);
 }
 
+/* A red rule under the label, not a pill. The comp marks the current section
+   with a 2px underline; the frosted capsule this replaced read as a button
+   sitting in a row of links, which is the one thing a nav must not do. */
 .nav-links a.active {
   color: var(--white);
-  background: rgba(255, 255, 255, 0.05);
-  backdrop-filter: blur(10px);
-  border-color: rgba(255, 255, 255, 0.07);
-  box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1), 0 4px 12px rgba(0, 0, 0, 0.15);
+  background: transparent;
+  border-color: transparent;
+}
+
+.nav-links a.active::after {
+  content: '';
+  position: absolute;
+  left: 13px;
+  right: 13px;
+  /* Measured from the link's own box, whose 10px padding already sits inside
+     the 86px bar — so the rule lands just under the baseline rather than
+     against the bottom edge of the header. */
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--red);
 }
 
 .nav-item {
@@ -1300,9 +1315,8 @@ blockquote {
   z-index: 1;
   pointer-events: none;
   background:
-    linear-gradient(to top, rgba(10, 10, 11, .88) 0%, rgba(10, 10, 11, .30) 26%, rgba(10, 10, 11, 0) 54%),
-    linear-gradient(90deg, rgba(0, 0, 0, .82) 0%, rgba(0, 0, 0, .58) 38%, rgba(0, 0, 0, .18) 72%, rgba(0, 0, 0, .35) 100%),
-    rgba(0, 0, 0, .18);
+    linear-gradient(90deg, rgba(0, 0, 0, .82) 0%, rgba(0, 0, 0, .68) 32%, rgba(0, 0, 0, .30) 68%, rgba(0, 0, 0, .38) 100%),
+    linear-gradient(180deg, rgba(0, 0, 0, .30) 0%, rgba(0, 0, 0, .05) 45%, rgba(0, 0, 0, .50) 100%);
 }
 
 .hero-inner {
@@ -1314,9 +1328,27 @@ blockquote {
   justify-content: space-between;
   /* Top clears the 98px floating navbar with air to spare; the gap is the
      floor on the distance between the copy block and the stats strip, so a
-     short viewport compresses the whitespace rather than colliding them. */
+     short viewport compresses the whitespace rather than colliding them.
+
+     The horizontal inset is the hero's own, NOT the shared --pad + 1440px
+     column every other section uses. In the comp the copy sits ~92px from the
+     viewport edge at 1586px and the stats strip runs nearly the full width;
+     routed through the shared column the same content lands at ~145px and the
+     strip loses 200px, because the 1440px cap adds its centring offset on top
+     of the padding. Hence the explicit rule below, and why .hero-inner is
+     deliberately absent from the CONTENT CONTAINER list further down. */
   gap: clamp(36px, 6vh, 76px);
-  padding: clamp(116px, 15vh, 154px) var(--pad) clamp(20px, 3vh, 34px);
+  /* width:100% is load-bearing, not a tidy-up. This is a column-flex child of
+     .hero, and per spec a cross-axis `auto` margin suppresses flexbox's
+     default stretch — without an explicit width the block would size to its
+     text and the stats strip would collapse to the width of the headline. */
+  width: 100%;
+  max-width: 1760px;
+  margin-inline: auto;
+  padding-block: clamp(116px, 15vh, 154px) clamp(20px, 3vh, 34px);
+  padding-inline:
+    max(clamp(20px, 5.8vw, 120px), env(safe-area-inset-left))
+    max(clamp(20px, 5.8vw, 120px), env(safe-area-inset-right));
 }
 
 .line-mask {
@@ -1332,6 +1364,10 @@ blockquote {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  /* Wide enough that "of the future," — the longest headline line — stays on
+     one line at the largest step of the clamp below. It is the binding
+     constraint on both numbers; changing either without the other re-wraps the
+     headline inside its own mask. */
   max-width: 680px;
 }
 
@@ -1356,18 +1392,31 @@ blockquote {
   background: var(--red);
 }
 
-/* Larger and lighter than --fs-h1 on purpose: this is the one headline on the
-   site that carries a full-bleed frame on its own, so it is set as display
-   type — near-solid leading, tight tracking, weight 500. Bold at this size
-   reads as loud rather than expensive. */
+/* The one place on the site set in a serif. The approved comp puts the hero
+   headline in a high-contrast transitional face against Archivo everywhere
+   else, and that contrast is the whole editorial move — matched here with
+   Playfair Display (loaded in index.html for this element alone).
+   Weight 400: at 90px the thick/thin contrast carries the emphasis, and
+   anything heavier closes up the counters and reads as loud rather than
+   expensive.
+   `.display` sets Archivo/700/1.08 — every one of those is overridden here,
+   and (0,1,1) beats its (0,1,0) so source order is not load-bearing. */
 .hero h1 {
   margin-top: clamp(20px, 2.8vh, 32px);
-  font-size: clamp(3.5rem, 6vw, 6.4rem);
-  font-weight: 500;
-  line-height: .92;
-  letter-spacing: -.045em;
-  /* A hard break inside a mask would show as a clipped orphan line rather
-     than wrapping, so never hyphenate or break mid-word here. */
+  font-family: 'Playfair Display', 'Archivo', Georgia, serif;
+  /* Sizes read off the comp rather than taken from the spec text, which quotes
+     metrics written for a grotesque: at 1586px wide the cap height measures
+     ~65px (≈93px em in Playfair, whose cap is .70 em) and the baselines sit
+     100px apart, i.e. 5.86vw and 1.07 leading — not the 6.5rem/0.92 a sans
+     would need. The 6rem ceiling is what keeps "of the future," inside the
+     680px column at 1920px and above. */
+  font-size: clamp(3.2rem, 5.86vw, 6rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -.015em;
+  /* A mid-word break inside an overflow-hidden mask reads as a clipped line
+     rather than as a wrap, so never hyphenate here. If a line does outgrow the
+     column it wraps to two — the mask has no fixed height and simply grows. */
   overflow-wrap: normal;
   word-break: normal;
 }
@@ -1403,6 +1452,11 @@ blockquote {
   transform: translateY(20px);
 }
 
+.hero-lede strong {
+  font-weight: 500;
+  color: var(--white);
+}
+
 .hero-actions {
   display: flex;
   flex-wrap: wrap;
@@ -1412,9 +1466,14 @@ blockquote {
   transform: translateY(20px);
 }
 
+/* 7px, against the site-wide 2px on .btn — the comp's hero buttons are
+   noticeably softer than the square-cornered ones used further down the page.
+   Scoped so the rest of the site keeps its own corner. */
 .hero-actions .btn {
   min-height: 52px;
-  padding: 16px 30px;
+  padding: 16px 28px;
+  border-radius: 7px;
+  font-size: 14.5px;
 }
 
 /* Hover is a brightness step plus a 5px arrow nudge — nothing else. No CSS
@@ -1451,55 +1510,81 @@ blockquote {
   gap: clamp(14px, 2.2vh, 24px);
 }
 
-/* One hairline strip, not four cards. The stats are the last thing in the
-   reading order and must stay that way — a bordered panel per figure turned
-   them into a second hero. */
+/* ONE panel holding four figures — not four cards. The distinction is the
+   whole point of the treatment: a single hairline border and a barely-there
+   wash, divided internally, so the strip anchors the foot of the hero without
+   competing with the headline. */
 .hero-stats {
   list-style: none;
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
-  border-top: 1px solid rgba(255, 255, 255, .1);
-  border-bottom: 1px solid rgba(255, 255, 255, .1);
+  background: rgba(255, 255, 255, .028);
+  border: 1px solid rgba(255, 255, 255, .085);
+  border-radius: 8px;
+  backdrop-filter: blur(6px);
 }
 
 .hero-stats li {
-  padding: clamp(13px, 2vh, 20px) clamp(14px, 2vw, 30px);
-  border-left: 1px solid rgba(255, 255, 255, .07);
+  display: flex;
+  align-items: center;
+  gap: clamp(12px, 1.3vw, 20px);
+  padding: clamp(16px, 2.2vh, 24px) clamp(16px, 1.9vw, 32px);
+  border-left: 1px solid rgba(255, 255, 255, .075);
   opacity: 0;
   transform: translateY(18px);
 }
 
 .hero-stats li:first-child {
-  padding-left: 0;
   border-left: 0;
+}
+
+/* The mark sits in a faint disc so it reads as a fixed slot regardless of how
+   bright the video is behind that part of the strip. */
+.hs-mark {
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: clamp(38px, 3.1vw, 46px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .035);
+  border: 1px solid rgba(255, 255, 255, .07);
+  color: var(--red);
+}
+
+.hs-mark svg {
+  width: 50%;
+  height: 50%;
+}
+
+.hs-body {
+  min-width: 0;
 }
 
 .hero-stats b {
   display: block;
   font-family: var(--display);
-  font-size: clamp(26px, 2.5vw, 34px);
+  font-size: clamp(25px, 2.3vw, 33px);
   font-weight: 500;
-  line-height: 1;
+  line-height: 1.05;
   letter-spacing: -.025em;
   font-variant-numeric: tabular-nums;
   color: var(--white);
 }
 
-.hero-stats span {
+.hero-stats .hs-body>span {
   display: block;
-  margin-top: 9px;
-  font-size: clamp(12px, .92vw, 13.5px);
-  color: rgba(250, 250, 250, .66);
+  margin-top: 3px;
+  font-size: clamp(12.5px, .93vw, 14px);
+  color: rgba(250, 250, 250, .82);
 }
 
 .hero-stats em {
   display: block;
-  margin-top: 3px;
+  margin-top: 1px;
   font-style: normal;
-  font-size: 10.5px;
-  letter-spacing: .07em;
-  text-transform: uppercase;
-  color: rgba(250, 250, 250, .36);
+  font-size: clamp(11.5px, .85vw, 13px);
+  color: rgba(250, 250, 250, .5);
 }
 
 /* The cue's fade-out lives on this wrapper, not on .hero-scrollcue itself:
@@ -1516,45 +1601,41 @@ blockquote {
   pointer-events: none;
 }
 
+/* Mouse outline with the label beside it, per the comp — a row, not a stack.
+   Sentence case and no tracking: at this size an uppercase, letter-spaced
+   label competes with the eyebrow at the top of the same column. */
 .hero-scrollcue {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  gap: 11px;
-  font-size: 10px;
-  letter-spacing: .2em;
-  color: rgba(250, 250, 250, .5);
-  text-transform: uppercase;
+  gap: 12px;
+  font-size: 13px;
+  color: rgba(250, 250, 250, .62);
   opacity: 0;
 }
 
-.hero-scrollcue i {
-  display: block;
-  width: 1px;
-  height: 32px;
-  background: linear-gradient(to bottom, rgba(255, 255, 255, .06), var(--red));
-  animation: cueScroll 2.4s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+.cue-mouse {
+  flex: none;
+  width: 15px;
+  height: 24px;
+  color: rgba(255, 255, 255, .38);
+}
+
+/* Only the wheel dot moves. The outline is static, which is what keeps this
+   from reading as an animated illustration. */
+.cue-dot {
+  animation: cueScroll 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
 
 @keyframes cueScroll {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-
-  45% {
-    transform: scaleY(1);
-    transform-origin: top;
-  }
-
-  55% {
-    transform: scaleY(1);
-    transform-origin: bottom;
-  }
-
+  0%,
   100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  50% {
+    transform: translateY(7px);
+    opacity: .35;
   }
 }
 
@@ -1569,7 +1650,12 @@ blockquote {
   }
 
   .hero-stats li {
+    gap: 12px;
     padding-inline: clamp(12px, 1.8vw, 20px);
+  }
+
+  .hs-mark {
+    width: 36px;
   }
 
   .hero-stats b {
@@ -1607,10 +1693,12 @@ blockquote {
     width: 32px;
   }
 
+  /* 11vw keeps "of the future," — the widest line — inside a 375px viewport
+     with the 20px gutters: ~41px em against ~335px of column. */
   .hero h1 {
     font-size: clamp(2.5rem, 11vw, 4rem);
-    line-height: .94;
-    letter-spacing: -.04em;
+    line-height: 1.02;
+    letter-spacing: -.012em;
   }
 
   .hero-lede {
@@ -1628,20 +1716,31 @@ blockquote {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  /* Row 2 gets its own hairline; the outer border-bottom already caps it. */
+  /* Row 1 gets its own hairline; the panel's own border closes row 2. */
   .hero-stats li:nth-child(-n+2) {
-    border-bottom: 1px solid rgba(255, 255, 255, .07);
+    border-bottom: 1px solid rgba(255, 255, 255, .075);
   }
 
+  /* Only the divider goes — the padding stays, because inside a bordered
+     panel a flush-left figure would sit on the border itself. */
   .hero-stats li:nth-child(odd) {
-    padding-left: 0;
     border-left: 0;
   }
 
-  .hero-stats b {
-    font-size: 27px;
+  .hero-stats li {
+    gap: 12px;
+    padding: 16px;
   }
 
+  .hs-mark {
+    width: 34px;
+  }
+
+  .hero-stats b {
+    font-size: 26px;
+  }
+
+  /* Value + label only below tablet, per the mobile comp. */
   .hero-stats em {
     display: none;
   }
@@ -1671,16 +1770,25 @@ blockquote {
     padding-inline: 18px;
   }
 
+  /* The marks go rather than shrink: at two columns on a 375px viewport a
+     40px disc takes a third of the cell and the numeral stops leading. */
+  .hs-mark {
+    display: none;
+  }
+
   .hero-stats li {
-    padding-block: 12px;
+    padding: 13px 14px;
   }
 
   .hero-stats b {
-    font-size: 24px;
+    font-size: 23px;
   }
 
-  .hero-stats span {
-    font-size: 11.5px;
+  /* Must match the base rule's specificity (0,2,1) or it never applies —
+     `.hero-stats span` alone would lose to `.hero-stats .hs-body>span`
+     regardless of sitting later in the file. */
+  .hero-stats .hs-body>span {
+    font-size: 12px;
   }
 }
 
@@ -1708,9 +1816,8 @@ blockquote {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-scrollcue i {
+  .cue-dot {
     animation: none;
-    transform: scaleY(1);
   }
 }
 
@@ -9741,7 +9848,9 @@ footer {
 
 .section-head,
 .nav-inner,
-.hero-inner,
+/* .hero-inner is intentionally NOT here — it declares its own wider cap and
+   gutter next to the rest of the hero. This list is later in source order and
+   would otherwise win on max-width and re-impose the 1440px column. */
 .statement,
 .sol-grid,
 .stats,
