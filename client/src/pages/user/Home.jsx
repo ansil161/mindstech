@@ -1073,7 +1073,11 @@ const Home = () => {
         <div className="section-head">
           <div>
             <span className="label label--red">{t('home.edge.label')}</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>{t('home.edge.title_main')}<br />{t('home.edge.title_em')} <em>{t('home.edge.partner', 'partner')}</em></h2>
+            {/* No hard <br />. The forced break put "like a partner" on its own
+                line regardless of the width available or the language in use;
+                `text-wrap: balance` (index.css) now splits the heading evenly
+                wherever it actually needs to break. */}
+            <h2 className="display" style={{ marginTop: '16px' }}>{t('home.edge.title_main')} {t('home.edge.title_em')} <em>{t('home.edge.partner', 'partner')}</em></h2>
           </div>
         </div>
         <div className="edge-layout">

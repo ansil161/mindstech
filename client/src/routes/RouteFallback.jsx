@@ -23,7 +23,9 @@ export default function RouteFallback() {
         gap: 28,
       }}
     >
-      <img src="/mindstec-logo-web.png" alt="" style={{ height: 52, width: 'auto' }} />
+      {/* Matches #preloader's 96px mark — the two screens are the same moment
+          to a visitor, and at 52px the wordmark's tagline did not read. */}
+      <img src="/mindstec-logo-web.png" alt="" style={{ height: 96, width: 'auto' }} />
       <div className="pre-bar">
         <i style={{ transform: 'none', animation: 'routeFallbackBar 1.1s ease-in-out infinite' }} />
       </div>
