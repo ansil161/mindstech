@@ -22,7 +22,7 @@ import {
   OFFICES,
   OFFICES_BY_KEY,
   ROUTES,
-  project,
+  projectOffice,
 } from '../../constants/offices.js';
 
 
@@ -790,8 +790,8 @@ const Home = () => {
       const dot = dots[i];
       if (!path || !dot) return;
 
-      const s = project(OFFICES_BY_KEY[route[0]].lat, OFFICES_BY_KEY[route[0]].lng);
-      const e = project(OFFICES_BY_KEY[route[1]].lat, OFFICES_BY_KEY[route[1]].lng);
+      const s = projectOffice(OFFICES_BY_KEY[route[0]]);
+      const e = projectOffice(OFFICES_BY_KEY[route[1]]);
       const m = { x: (s.x + e.x) / 2, y: Math.min(s.y, e.y) - 50 };
 
       const t0 = i * 0.3;
@@ -967,7 +967,7 @@ const Home = () => {
     const soonSuffix = t('home.regions.soon_suffix', '— Coming soon');
     return layoutMapLabels(
       OFFICES.map((office) => {
-        const p = project(office.lat, office.lng);
+        const p = projectOffice(office);
         const label = t(`home.cities.${office.key}`, office.city);
         const suffix = office.role === 'hq' ? ` ${hqSuffix}` : office.role === 'soon' ? ` ${soonSuffix}` : '';
         return {
@@ -1288,8 +1288,8 @@ const Home = () => {
 
             {/* Arcs & Traveling Dots */}
             {ROUTES.map((route, i) => {
-              const s = project(OFFICES_BY_KEY[route[0]].lat, OFFICES_BY_KEY[route[0]].lng);
-              const e = project(OFFICES_BY_KEY[route[1]].lat, OFFICES_BY_KEY[route[1]].lng);
+              const s = projectOffice(OFFICES_BY_KEY[route[0]]);
+              const e = projectOffice(OFFICES_BY_KEY[route[1]]);
               const m = { x: (s.x + e.x) / 2, y: Math.min(s.y, e.y) - 50 };
               return (
                 <g key={i}>

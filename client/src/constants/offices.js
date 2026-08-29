@@ -47,6 +47,16 @@ export const OFFICES = [
     email: 'middleeast@mindstec.com',
   },
   {
+    key: 'doha',
+    city: 'Doha',
+    country: 'Qatar',
+    lat: 25.2854,
+    lng: 51.5310,
+    role: 'regional',
+    region: 'Middle East',
+    email: 'middleeast@mindstec.com',
+  },
+  {
     key: 'bangalore',
     city: 'Bangalore',
     country: 'India',
@@ -117,6 +127,21 @@ export const OFFICES = [
     email: 'poland@mindstec.com',
   },
   {
+    // `mapLng` only: the dotted base map draws eastern Brazil several degrees
+    // west of where a true Mercator puts it, so the honest -46.63 lands the
+    // pin in the Atlantic, visibly detached from the coast. The marker is
+    // drawn at -52.53 — on the artwork's own São Paulo coastline — while
+    // `lng` stays real for anything that needs the actual location.
+    key: 'sao-paulo',
+    city: 'São Paulo',
+    country: 'Brazil',
+    lat: -23.5505,
+    lng: -46.6333,
+    mapLng: -52.53,
+    role: 'regional',
+    region: 'South America',
+  },
+  {
     // Marker only, by request: it appears on the map with a "coming soon"
     // treatment and no trade lane, and is filtered out of the office cards and
     // the contact strip because there is nothing to contact yet.
@@ -173,3 +198,16 @@ export const project = (lat, lng) => ({
   x: X_SCALE * lng + X_OFFSET,
   y: Y_SCALE * mercatorY(Math.max(Math.min(lat, 84), -84)) + Y_OFFSET,
 });
+
+/**
+ * Where an office's marker is drawn.
+ *
+ * Normally the office's real coordinates, but the dotted base map is a
+ * stylised drawing, not a survey: a few coastlines (eastern South America
+ * worst of all) sit a couple of degrees off a true Mercator, which strands an
+ * otherwise-correct pin in open water. An office may therefore carry
+ * `mapLat`/`mapLng` overrides used *for drawing only* — `lat`/`lng` stay
+ * truthful for every other purpose.
+ */
+export const projectOffice = (office) =>
+  project(office.mapLat ?? office.lat, office.mapLng ?? office.lng);

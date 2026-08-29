@@ -209,6 +209,7 @@
       "dubai": "Dubai",
       "jeddah": "Jeddah",
       "riyadh": "Riyadh",
+      "doha": "Doha",
       "bangalore": "Bangalore",
       "bangkok": "Bangkok",
       "nairobi": "Nairobi",
@@ -216,6 +217,7 @@
       "cairo": "Cairo",
       "warsaw": "Warsaw",
       "bucharest": "Bucharest",
+      "sao-paulo": "São Paulo",
       "paris": "Paris"
     },
     "hero": {
@@ -384,6 +386,7 @@
       "dubai": "United Arab Emirates",
       "jeddah": "Saudi Arabia",
       "riyadh": "Saudi Arabia",
+      "doha": "Qatar",
       "bangalore": "India",
       "bangkok": "Thailand",
       "nairobi": "Kenya",
@@ -391,19 +394,22 @@
       "cairo": "Egypt",
       "warsaw": "Poland",
       "bucharest": "Romania",
+      "sao-paulo": "Brazil",
       "paris": "France"
     },
     "offices": {
       "dubai": "Global headquarters and the hub every trade lane runs from — the Gulf, the wider Middle East and re-export.",
       "jeddah": "Western Saudi Arabia and Red Sea projects, run from the Dubai HQ.",
       "riyadh": "Central Saudi Arabia — government, enterprise and giga-project programmes.",
+      "doha": "Qatar and the northern Gulf, run alongside the Dubai HQ.",
       "bangalore": "India operations: stock, service and the engineering bench for South Asia.",
       "bangkok": "South-East Asian distribution and integration partner support.",
       "nairobi": "East African commercial hub and partner support.",
       "johannesburg": "Southern African distribution and integrator support.",
       "cairo": "North Africa coverage and Levant liaison.",
       "warsaw": "Central and Eastern European distribution.",
-      "bucharest": "Romania and the wider Balkans, run alongside the Warsaw desk."
+      "bucharest": "Romania and the wider Balkans, run alongside the Warsaw desk.",
+      "sao-paulo": "Brazil and the wider South American market."
     }
   },
   "partners": {

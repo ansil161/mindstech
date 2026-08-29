@@ -324,6 +324,7 @@
       "dubai": "迪拜",
       "jeddah": "吉达",
       "riyadh": "利雅得",
+      "doha": "多哈",
       "bangalore": "班加罗尔",
       "bangkok": "曼谷",
       "nairobi": "内罗毕",
@@ -331,6 +332,7 @@
       "cairo": "开罗",
       "warsaw": "华沙",
       "bucharest": "布加勒斯特",
+      "sao-paulo": "圣保罗",
       "paris": "巴黎"
     },
     "edgeItems": [
@@ -381,6 +383,7 @@
       "dubai": "阿拉伯联合酋长国",
       "jeddah": "沙特阿拉伯",
       "riyadh": "沙特阿拉伯",
+      "doha": "卡塔尔",
       "bangalore": "印度",
       "bangkok": "泰国",
       "nairobi": "肯尼亚",
@@ -388,19 +391,22 @@
       "cairo": "埃及",
       "warsaw": "波兰",
       "bucharest": "罗马尼亚",
+      "sao-paulo": "巴西",
       "paris": "法国"
     },
     "offices": {
       "dubai": "全球总部，所有贸易通道的枢纽——海湾地区、更广泛的中东市场及转口贸易。",
       "jeddah": "沙特西部与红海项目，由迪拜总部统筹。",
       "riyadh": "沙特中部——政府、企业与超级工程项目。",
+      "doha": "卡塔尔与北部海湾地区，与迪拜总部协同运营。",
       "bangalore": "印度业务：南亚地区的库存、服务与工程团队。",
       "bangkok": "东南亚分销与集成商支持。",
       "nairobi": "东非商务枢纽与合作伙伴支持。",
       "johannesburg": "南部非洲分销与集成商支持。",
       "cairo": "北非覆盖与黎凡特地区联络。",
       "warsaw": "中欧与东欧分销。",
-      "bucharest": "罗马尼亚及巴尔干地区，与华沙办公室协同运营。"
+      "bucharest": "罗马尼亚及巴尔干地区，与华沙办公室协同运营。",
+      "sao-paulo": "巴西及更广泛的南美市场。"
     }
   },
   "partners": {

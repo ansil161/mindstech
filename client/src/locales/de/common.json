@@ -317,6 +317,7 @@
       "dubai": "Dubai",
       "jeddah": "Dschidda",
       "riyadh": "Riad",
+      "doha": "Doha",
       "bangalore": "Bangalore",
       "bangkok": "Bangkok",
       "nairobi": "Nairobi",
@@ -324,6 +325,7 @@
       "cairo": "Kairo",
       "warsaw": "Warschau",
       "bucharest": "Bukarest",
+      "sao-paulo": "São Paulo",
       "paris": "Paris"
     },
     "edgeItems": [
@@ -374,6 +376,7 @@
       "dubai": "Vereinigte Arabische Emirate",
       "jeddah": "Saudi-Arabien",
       "riyadh": "Saudi-Arabien",
+      "doha": "Katar",
       "bangalore": "Indien",
       "bangkok": "Thailand",
       "nairobi": "Kenia",
@@ -381,19 +384,22 @@
       "cairo": "Ägypten",
       "warsaw": "Polen",
       "bucharest": "Rumänien",
+      "sao-paulo": "Brasilien",
       "paris": "Frankreich"
     },
     "offices": {
       "dubai": "Globaler Hauptsitz und Drehkreuz aller Handelsrouten – Golfregion, weiterer Naher Osten und Re-Export.",
       "jeddah": "Westsaudi-Arabien und Projekte am Roten Meer, gesteuert vom Hauptsitz in Dubai.",
       "riyadh": "Zentralsaudi-Arabien – Behörden, Unternehmen und Giga-Projekte.",
+      "doha": "Katar und der nördliche Golf, gemeinsam mit dem Hauptsitz in Dubai betreut.",
       "bangalore": "Indien-Betrieb: Lager, Service und Engineering-Team für Südasien.",
       "bangkok": "Distribution in Südostasien und Unterstützung für Integrationspartner.",
       "nairobi": "Kommerzielles Zentrum für Ostafrika und Partnerbetreuung.",
       "johannesburg": "Distribution im südlichen Afrika und Integratoren-Support.",
       "cairo": "Abdeckung Nordafrika und Verbindung zur Levante.",
       "warsaw": "Distribution in Mittel- und Osteuropa.",
-      "bucharest": "Rumänien und der Balkan, gemeinsam mit dem Warschauer Büro betreut."
+      "bucharest": "Rumänien und der Balkan, gemeinsam mit dem Warschauer Büro betreut.",
+      "sao-paulo": "Brasilien und der übrige südamerikanische Markt."
     }
   },
   "partners": {
