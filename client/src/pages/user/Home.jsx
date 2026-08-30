@@ -22,6 +22,7 @@ import {
   OFFICES,
   OFFICES_BY_KEY,
   ROUTES,
+  SOON_OFFICES,
   projectOffice,
 } from '../../constants/offices.js';
 
@@ -92,7 +93,7 @@ const HERO_STAT_ICONS = {
 };
 
 // ── Map label layout ──
-// Several offices (Bangalore/Dubai/Riyadh/Cairo) sit close together on the
+// Several offices (Dubai/Doha/Riyadh) sit close together on the
 // 800×400 map, so city-name labels are placed by searching a small ring of
 // candidate slots around each marker — closest and most natural (directly
 // above/below) first — skipping any slot that would overlap an
@@ -959,9 +960,19 @@ const Home = () => {
     { title: t('home.edgeItems.3.title'), desc: t('home.edgeItems.3.desc'), visual: '/assets/img/unsplash-1504384308090-c894fdcc538d-w1100.jpg', caption: t('home.edgeItems.3.caption') },
   ];
 
-  // City-only labels ("Dubai (HQ)", "Jeddah", "Paris — Coming soon", ...) —
+  // City-only labels ("Dubai (HQ)", "Riyadh", "<city> — Coming soon", ...) —
   // country and office type live in the hover tooltip instead, to keep the map
   // itself uncluttered.
+  // The map's accessible description, built from the office list so it can
+  // never name a city the map no longer draws.
+  const mapLabel = useMemo(() => {
+    const served = ACTIVE_OFFICES.filter((o) => o.key !== HQ_KEY).map((o) => o.city).join(', ');
+    const planned = SOON_OFFICES.map((o) => `${o.city}, ${o.country}`).join(', ');
+    return `World map showing Mindstec supply routes from the ${OFFICES_BY_KEY[HQ_KEY].city} headquarters to ${served}${
+      planned ? `, plus a planned office in ${planned}` : ''
+    }`;
+  }, []);
+
   const labeledPins = useMemo(() => {
     const hqSuffix = t('home.regions.hq_suffix', '(HQ)');
     const soonSuffix = t('home.regions.soon_suffix', '— Coming soon');
@@ -1267,7 +1278,7 @@ const Home = () => {
             viewBox="0 0 800 400"
             preserveAspectRatio="xMidYMid meet"
             role="img"
-            aria-label={`World map showing Mindstec supply routes from the ${OFFICES_BY_KEY[HQ_KEY].city} headquarters to ${ACTIVE_OFFICES.filter((o) => o.key !== HQ_KEY).map((o) => o.city).join(', ')}, plus a planned office in Paris, France`}
+            aria-label={mapLabel}
           >
             <defs>
               <linearGradient id="mapGrad" x1="0%" y1="0%" x2="100%" y2="0%">
@@ -1392,7 +1403,9 @@ const Home = () => {
         <ul className="map-legend reveal" aria-label={t('home.regions.legend_label', 'Map key')}>
           <li><i className="lg-dot lg-dot--hq" aria-hidden="true" />{t('home.regions.office_hq', 'Global Headquarters')}</li>
           <li><i className="lg-dot" aria-hidden="true" />{t('home.regions.office_regional', 'Regional Office')}</li>
-          <li><i className="lg-dot lg-dot--soon" aria-hidden="true" />{t('home.regions.office_soon', 'Coming soon')}</li>
+          {SOON_OFFICES.length > 0 && (
+            <li><i className="lg-dot lg-dot--soon" aria-hidden="true" />{t('home.regions.office_soon', 'Coming soon')}</li>
+          )}
         </ul>
 
         {/* Office directory. Hovering a card lights up its marker (and vice

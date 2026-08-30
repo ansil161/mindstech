@@ -27,16 +27,6 @@ export const OFFICES = [
     email: 'middleeast@mindstec.com',
   },
   {
-    key: 'jeddah',
-    city: 'Jeddah',
-    country: 'Saudi Arabia',
-    lat: 21.4858,
-    lng: 39.1925,
-    role: 'regional',
-    region: 'Middle East',
-    email: 'middleeast@mindstec.com',
-  },
-  {
     key: 'riyadh',
     city: 'Riyadh',
     country: 'Saudi Arabia',
@@ -77,16 +67,6 @@ export const OFFICES = [
     email: 'southasia@mindstec.com',
   },
   {
-    key: 'nairobi',
-    city: 'Nairobi',
-    country: 'Kenya',
-    lat: -1.2921,
-    lng: 36.8219,
-    role: 'regional',
-    region: 'Africa',
-    email: 'africa@mindstec.com',
-  },
-  {
     key: 'johannesburg',
     city: 'Johannesburg',
     country: 'South Africa',
@@ -97,31 +77,11 @@ export const OFFICES = [
     email: 'africa@mindstec.com',
   },
   {
-    key: 'cairo',
-    city: 'Cairo',
-    country: 'Egypt',
-    lat: 30.0444,
-    lng: 31.2357,
-    role: 'regional',
-    region: 'Africa',
-    email: 'africa@mindstec.com',
-  },
-  {
     key: 'warsaw',
     city: 'Warsaw',
     country: 'Poland',
     lat: 52.2297,
     lng: 21.0122,
-    role: 'regional',
-    region: 'Europe',
-    email: 'poland@mindstec.com',
-  },
-  {
-    key: 'bucharest',
-    city: 'Bucharest',
-    country: 'Romania',
-    lat: 44.4268,
-    lng: 26.1025,
     role: 'regional',
     region: 'Europe',
     email: 'poland@mindstec.com',
@@ -141,18 +101,6 @@ export const OFFICES = [
     role: 'regional',
     region: 'South America',
   },
-  {
-    // Marker only, by request: it appears on the map with a "coming soon"
-    // treatment and no trade lane, and is filtered out of the office cards and
-    // the contact strip because there is nothing to contact yet.
-    key: 'paris',
-    city: 'Paris',
-    country: 'France',
-    lat: 48.8566,
-    lng: 2.3522,
-    role: 'soon',
-    region: 'Europe',
-  },
 ];
 
 export const OFFICES_BY_KEY = Object.fromEntries(OFFICES.map((o) => [o.key, o]));
@@ -161,9 +109,16 @@ export const OFFICES_BY_KEY = Object.fromEntries(OFFICES.map((o) => [o.key, o]))
 export const ACTIVE_OFFICES = OFFICES.filter((o) => o.role !== 'soon');
 
 /**
+ * Announced-but-not-open offices. Empty today; the map legend and the SVG's
+ * description both read this rather than naming a city, so removing the last
+ * `soon` marker cannot leave a key on the legend with nothing to point at.
+ */
+export const SOON_OFFICES = OFFICES.filter((o) => o.role === 'soon');
+
+/**
  * Trade lanes drawn on the map. Every active office links back to the Dubai
- * HQ hub; `soon` markers get no lane, so France reads as an announcement
- * rather than as an operating route.
+ * HQ hub; `soon` markers get no lane, so a planned office reads as an
+ * announcement rather than as an operating route.
  */
 export const ROUTES = ACTIVE_OFFICES.filter((o) => o.key !== HQ_KEY).map((o) => [HQ_KEY, o.key]);
 
