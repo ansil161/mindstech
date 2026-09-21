@@ -2846,7 +2846,9 @@ blockquote {
   grid-template-columns: 56px minmax(0, 1fr);
   gap: clamp(18px, 2.4vw, 32px);
   align-items: start;
-  padding: clamp(28px, 3.2vw, 44px) clamp(16px, 2vw, 28px) clamp(28px, 3.2vw, 44px) 0;
+  /* Equal inline padding keeps the icon inside the row, clear of the red
+     hover rail on the left edge. */
+  padding: clamp(28px, 3.2vw, 44px) clamp(16px, 2vw, 28px);
   border-bottom: 1px solid var(--line-soft);
   overflow: hidden;
   transition: background .45s var(--ease);
@@ -2888,7 +2890,9 @@ blockquote {
 .pillar-ghost {
   position: absolute;
   top: 50%;
-  right: -6px;
+  /* Aligned to the row's inline padding so the numeral belongs to the
+     content block instead of hanging off the column edge. */
+  right: clamp(16px, 2vw, 28px);
   transform: translateY(-50%);
   font-family: var(--display);
   font-size: clamp(96px, 11vw, 168px);
@@ -3013,7 +3017,7 @@ blockquote {
      it, so it moves to the top-right corner and thins out. */
   .pillar-ghost {
     top: 18px;
-    right: -2px;
+    right: 0;
     transform: none;
     font-size: 74px;
     -webkit-text-stroke-width: 1px;
