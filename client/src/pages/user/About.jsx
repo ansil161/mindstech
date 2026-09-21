@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useMemo, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whenReady } from '../../utils/pageReveal';
@@ -7,6 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 import { getPublicTeamMembers } from '../../api/teamApi.js';
+import { STATIC_TEAM, mergeTeam } from '../../constants/team.js';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -29,18 +30,20 @@ const About = () => {
   const { regionSlug } = useRegion();
   const containerRef = useRef(null);
 
+  // Backend (CMS) members only. The rendered roster is the static list from
+  // constants/team.js merged with these, so the grid is never empty while the
+  // request is in flight or if it fails.
   const [team, setTeam] = useState([]);
-  const [loadingTeam, setLoadingTeam] = useState(false);
-  // Distinguishes "the request failed" from "nobody is published". Both used to
-  // render the same empty-state line, which made a broken endpoint look like an
-  // editorial decision and cost two rounds of guesswork to diagnose.
-  const [teamError, setTeamError] = useState(false);
   const [contactInfo, setContactInfo] = useState(null);
 
+  const mergedTeam = useMemo(() => mergeTeam(STATIC_TEAM, team), [team]);
+
+  // The cache key has to follow the roster: the static-only list and the
+  // merged list are different datasets and must not share a cached translation.
   const { translatedData: translatedTeam } = useDynamicTranslation(
-    team,
+    mergedTeam,
     ['name', 'role'],
-    'about_team'
+    `about_team_${mergedTeam.map((m) => m.id).join('.')}`
   );
   const { translatedData: translatedContact } = useDynamicTranslation(
     contactInfo,
@@ -52,19 +55,13 @@ const About = () => {
   useEffect(() => {
     let cancelled = false;
     const fetchTeam = async () => {
-      setLoadingTeam(true);
-      setTeamError(false);
       try {
         const res = await getPublicTeamMembers();
         if (!cancelled) setTeam(Array.isArray(res.data) ? res.data : []);
       } catch (err) {
+        // The static roster is already on screen, so a failure only means the
+        // CMS additions are missing — log it rather than replace the grid.
         console.error('Failed to load team members:', err);
-        if (!cancelled) {
-          setTeam([]);
-          setTeamError(true);
-        }
-      } finally {
-        if (!cancelled) setLoadingTeam(false);
       }
     };
     fetchTeam();
@@ -230,7 +227,9 @@ const About = () => {
     const grid = document.getElementById('teamGrid');
 
     const ctx = gsap.context(() => {
-      const cards = gsap.utils.toArray('.member');
+      // Only cards not yet revealed: the static roster renders first and the
+      // CMS members arrive later, and replaying the whole grid would flash it.
+      const cards = gsap.utils.toArray('.member:not([data-revealed])');
 
       // Bail before creating anything when the roster has not arrived. This is
       // load-bearing: the previous version called gsap.fromTo() with a selector
@@ -241,10 +240,12 @@ const About = () => {
 
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
         gsap.set(cards, { opacity: 1, y: 0 });
+        cards.forEach((c) => c.setAttribute('data-revealed', ''));
         return;
       }
 
       const reveal = () => gsap.to(cards, {
+        onStart: () => cards.forEach((c) => c.setAttribute('data-revealed', '')),
         opacity: 1,
         y: 0,
         duration: 0.8,
@@ -447,27 +448,17 @@ const About = () => {
           <p className="lede side">{t('about.team.lede')}</p>
         </div>
         <div className="team-grid" id="teamGrid">
-          {loadingTeam ? (
-            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>{t('about.team.loading')}</p>
-          ) : teamError ? (
-            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>
-              {t('about.team.error', 'The team list could not be loaded just now. Please refresh the page.')}
-            </p>
-          ) : translatedTeam.length === 0 ? (
-            <p style={{ color: 'var(--grey)', gridColumn: '1 / -1' }}>{t('about.team.empty')}</p>
-          ) : (
-            translatedTeam.map((member, i) => (
-              <div className="member" key={member.id || i}>
-                <div className="photo">
-                  <span className="m-index">{String(i + 1).padStart(2, '0')}</span>
-                  <img src={member.photo} alt={`Portrait of ${member.name}`} loading="lazy" />
-                </div>
-                <div className="m-line"></div>
-                <h3>{member.name}</h3>
-                <div className="m-role">{member.role}</div>
+          {translatedTeam.map((member, i) => (
+            <div className="member" key={member.id || i}>
+              <div className="photo">
+                <span className="m-index">{String(i + 1).padStart(2, '0')}</span>
+                <img src={member.photo} alt={`Portrait of ${member.name}`} loading="lazy" />
               </div>
-            ))
-          )}
+              <div className="m-line"></div>
+              <h3>{member.name}</h3>
+              <div className="m-role">{member.role}</div>
+            </div>
+          ))}
         </div>
       </section>
 
