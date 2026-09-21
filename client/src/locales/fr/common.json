@@ -211,6 +211,37 @@
   },
   "home": {
     "hero": {
+      "eyebrow": "Présence mondiale. Impact local.",
+      "hl1": "La technologie",
+      "hl2": "de demain,",
+      "hl3": "aujourd'hui.",
+      "lede": "Nous proposons des solutions audiovisuelles, technologiques et de distribution de bout en bout qui renforcent les entreprises, rapprochent les personnes et stimulent l'innovation ",
+      "lede_accent": "dans toute la région.",
+      "cta_primary": "Découvrir nos solutions",
+      "cta_secondary": "Notre présence mondiale",
+      "scroll_cue": "Faites défiler pour explorer",
+      "stats": {
+        "countries": {
+          "value": "20+",
+          "label": "Pays",
+          "sub": "Où nous opérons"
+        },
+        "brands": {
+          "value": "34+",
+          "label": "Marques",
+          "sub": "Que nous représentons"
+        },
+        "projects": {
+          "value": "10K+",
+          "label": "Projets",
+          "sub": "Réalisés"
+        },
+        "years": {
+          "value": "20+",
+          "label": "Ans",
+          "sub": "D'excellence"
+        }
+      },
       "line1": "Entreprise mondiale.",
       "line2": "Présence régionale.",
       "line3": "La technologie de demain, aujourd'hui.",

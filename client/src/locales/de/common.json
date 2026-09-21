@@ -211,6 +211,37 @@
   },
   "home": {
     "hero": {
+      "eyebrow": "Globale Präsenz. Lokale Wirkung.",
+      "hl1": "Die Technologie",
+      "hl2": "von morgen,",
+      "hl3": "heute.",
+      "lede": "Wir liefern durchgängige AV-, Technologie- und Distributionslösungen, die Unternehmen stärken, Menschen verbinden und Innovation vorantreiben ",
+      "lede_accent": "in der gesamten Region.",
+      "cta_primary": "Lösungen entdecken",
+      "cta_secondary": "Unsere globale Präsenz",
+      "scroll_cue": "Scrollen zum Entdecken",
+      "stats": {
+        "countries": {
+          "value": "20+",
+          "label": "Länder",
+          "sub": "In denen wir tätig sind"
+        },
+        "brands": {
+          "value": "34+",
+          "label": "Marken",
+          "sub": "Die wir vertreten"
+        },
+        "projects": {
+          "value": "10K+",
+          "label": "Projekte",
+          "sub": "Umgesetzt"
+        },
+        "years": {
+          "value": "20+",
+          "label": "Jahre",
+          "sub": "Exzellenz"
+        }
+      },
       "line1": "Globales Unternehmen.",
       "line2": "Regionale Präsenz.",
       "line3": "Die Technologie von morgen, heute.",

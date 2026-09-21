@@ -1838,7 +1838,7 @@ blockquote {
   display: flex;
   gap: 64px;
   width: max-content;
-  animation: strip 38s linear infinite;
+  animation: strip 108s linear infinite;
 }
 
 .strip:hover .strip-track {
