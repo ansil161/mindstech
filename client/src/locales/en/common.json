@@ -227,9 +227,9 @@
       "scroll_cue": "Scroll to explore",
       "stats": {
         "countries": { "value": "20+", "label": "Countries", "sub": "We operate in" },
-        "brands": { "value": "500+", "label": "Brands", "sub": "We represent" },
+        "brands": { "value": "34+", "label": "Brands", "sub": "We represent" },
         "projects": { "value": "10K+", "label": "Projects", "sub": "Delivered" },
-        "years": { "value": "25+", "label": "Years", "sub": "Of excellence" }
+        "years": { "value": "20+", "label": "Years", "sub": "Of excellence" }
       },
       "line1": "Global company.",
       "line2": "Regional presence.",

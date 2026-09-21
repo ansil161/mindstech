@@ -54,9 +54,9 @@ const PILLAR_MARKS = [
  */
 const HERO_STATS = [
   { key: 'countries', value: '20+', label: 'Countries', sub: 'We operate in', icon: 'globe' },
-  { key: 'brands', value: '500+', label: 'Brands', sub: 'We represent', icon: 'building' },
+  { key: 'brands', value: '34+', label: 'Brands', sub: 'We represent', icon: 'building' },
   { key: 'projects', value: '10K+', label: 'Projects', sub: 'Delivered', icon: 'chart' },
-  { key: 'years', value: '25+', label: 'Years', sub: 'Of excellence', icon: 'shield' },
+  { key: 'years', value: '20+', label: 'Years', sub: 'Of excellence', icon: 'shield' },
 ];
 
 /**
@@ -1104,8 +1104,8 @@ const Home = () => {
       {/* BRAND TICKER STRIP */}
       <div className="strip" aria-label="Represented manufacturers">
         <div className="strip-track">
-          <span>Samsung Professional</span><span>Crestron</span><span>Extron</span><span>Shure</span><span>Barco</span><span>LG Electronics</span><span>Sony Professional</span><span>Biamp</span><span>QSC</span><span>Christie</span><span>Sennheiser</span><span>Epson</span>
-          <span aria-hidden="true">Samsung Professional</span><span aria-hidden="true">Crestron</span><span aria-hidden="true">Extron</span><span aria-hidden="true">Shure</span><span aria-hidden="true">Barco</span><span aria-hidden="true">LG Electronics</span><span aria-hidden="true">Sony Professional</span><span aria-hidden="true">Biamp</span><span aria-hidden="true">QSC</span><span aria-hidden="true">Christie</span><span aria-hidden="true">Sennheiser</span><span aria-hidden="true">Epson</span>
+          <span>Amino</span><span>AtlasIED</span><span>Aurora</span><span>Avocor</span><span>Blustream</span><span>Bluefin</span><span>B-Tech</span><span>Cambium</span><span>Christie</span><span>Datapath</span><span>Delta</span><span>GoGet</span><span>Horion</span><span>Humelab</span><span>Iport</span><span>Kordz</span><span>Lemco</span><span>Magnum</span><span>MTC</span><span>Netgear</span><span>Polywall</span><span>PTZ Optics</span><span>RDL</span><span>RTI</span><span>SalrayWorks</span><span>Sapling</span><span>SCT</span><span>Smartsign</span><span>Sonance</span><span>T1V</span><span>Telycam</span><span>Vitec</span><span>Vizrt</span><span>Wavex</span>
+          <span aria-hidden="true">Amino</span><span aria-hidden="true">AtlasIED</span><span aria-hidden="true">Aurora</span><span aria-hidden="true">Avocor</span><span aria-hidden="true">Blustream</span><span aria-hidden="true">Bluefin</span><span aria-hidden="true">B-Tech</span><span aria-hidden="true">Cambium</span><span aria-hidden="true">Christie</span><span aria-hidden="true">Datapath</span><span aria-hidden="true">Delta</span><span aria-hidden="true">GoGet</span><span aria-hidden="true">Horion</span><span aria-hidden="true">Humelab</span><span aria-hidden="true">Iport</span><span aria-hidden="true">Kordz</span><span aria-hidden="true">Lemco</span><span aria-hidden="true">Magnum</span><span aria-hidden="true">MTC</span><span aria-hidden="true">Netgear</span><span aria-hidden="true">Polywall</span><span aria-hidden="true">PTZ Optics</span><span aria-hidden="true">RDL</span><span aria-hidden="true">RTI</span><span aria-hidden="true">SalrayWorks</span><span aria-hidden="true">Sapling</span><span aria-hidden="true">SCT</span><span aria-hidden="true">Smartsign</span><span aria-hidden="true">Sonance</span><span aria-hidden="true">T1V</span><span aria-hidden="true">Telycam</span><span aria-hidden="true">Vitec</span><span aria-hidden="true">Vizrt</span><span aria-hidden="true">Wavex</span>
         </div>
       </div>
 
