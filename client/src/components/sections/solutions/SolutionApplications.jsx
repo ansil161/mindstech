@@ -19,8 +19,9 @@ const SolutionApplications = ({ slug }) => {
         </div>
       </div>
       <ul className="industry-grid reveal-stagger">
-        {items.map((name) => (
-          <li className="industry-card" key={name}>
+        {items.map(([name, src]) => (
+          <li className="industry-card industry-card--photo" key={name}>
+            <img className="industry-photo" src={src} alt="" loading="lazy" />
             <span className="industry-name">{t(`solutions.applications_items.${name}`, name)}</span>
           </li>
         ))}
