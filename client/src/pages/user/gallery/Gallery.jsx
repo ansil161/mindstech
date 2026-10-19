@@ -7,6 +7,8 @@ import GalleryHero from './components/GalleryHero';
 import GalleryGrid from './components/GalleryGrid';
 import GalleryModal from './components/GalleryModal';
 import { usePageEntrance } from './hooks/useGalleryAnimations';
+import GallerySolutionsSection from '../../../components/sections/gallery/GallerySolutionsSection';
+import GalleryExperienceCentresSection from '../../../components/sections/gallery/GalleryExperienceCentresSection';
 import apiClient from '../../../api/axios';
 import { useDynamicTranslation } from '../../../hooks/useDynamicTranslation';
 
@@ -85,6 +87,9 @@ export default function Gallery() {
             <GalleryGrid items={items} onCardClick={openModal} />
           )}
         </AnimatePresence>
+
+        <GallerySolutionsSection />
+        <GalleryExperienceCentresSection />
 
         <CtaStrip />
       </div>

@@ -1,75 +1,73 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whenReady } from '../../utils/pageReveal';
 import { useTranslation } from 'react-i18next';
 import Button from '../../components/common/Button/Button.jsx';
-import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.jsx';
 import { useRegion } from '../../context/RegionContext.jsx';
-import { getRegionBrandNames } from '../../constants/regionBrands.js';
 import {
-  BRANDS as ALL_BRANDS,
-  PRODUCT_CATEGORIES,
-  getCategory,
-} from '../../constants/products.js';
+  BRAND_FILTER_REGIONS,
+  BRAND_FILTER_SOLUTIONS,
+  brandMatches,
+  getRegionBrandNames,
+} from '../../constants/regionBrands.js';
+import { BRANDS as ALL_BRANDS } from '../../constants/products.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
 /**
- * `/products` and `/products/category/:category`.
+ * `/products` — the brands page, filterable by solution and by region.
  *
- * The catalogue is organised by application first and brand second, which is
- * the order a specifier actually arrives in: they know the room they have to
- * fill, not the manufacturer they want. Picking a category is a real
- * navigation, not a client-side filter — each one has its own URL, so a
- * category can be linked from a proposal, a campaign or another page on this
- * site and land somewhere shareable.
- *
- * The category rail is sticky under the navbar. On a long grid that is the
+ * The filter rail is sticky under the navbar. On a long grid that is the
  * difference between "filter, scroll, scroll, lose the filter" and being able
  * to change your mind at any point without scrolling back up.
  */
 const Products = () => {
   const { t } = useTranslation();
-  const navigate = useNavigate();
-  const { category } = useParams();
   const { regionSlug, region } = useRegion();
   const [query, setQuery] = useState('');
   const containerRef = useRef(null);
 
-  const active = getCategory(category) || null;
-  // An unknown category in the URL falls back to the full list rather than
-  // rendering an empty grid under a heading for a category that doesn't exist.
-  const activeCode = active ? active.code : 'all';
+  const [solFilter, setSolFilter] = useState('all');
+  const [regFilter, setRegFilter] = useState('all');
+  const activeCode = solFilter;
+  const active = BRAND_FILTER_SOLUTIONS.find((s) => s.key === solFilter) || null;
 
-  // Only the brands the active region carries (per the brand sheet); regions
-  // the sheet doesn't cover keep the full catalogue.
+  // Picking a region in the rail searches the whole catalogue for that region;
+  // otherwise only the brands the site's active region carries (per the brand
+  // sheet), and regions the sheet doesn't cover keep the full catalogue.
   const BRANDS = useMemo(() => {
+    if (regFilter !== 'all') {
+      return ALL_BRANDS.filter((b) => brandMatches(b.name, null, regFilter));
+    }
     const names = getRegionBrandNames(regionSlug, region);
     return names ? ALL_BRANDS.filter((b) => names.has(b.name.toLowerCase())) : ALL_BRANDS;
-  }, [regionSlug, region]);
+  }, [regionSlug, region, regFilter]);
   const CATEGORY_COUNTS = useMemo(
-    () => PRODUCT_CATEGORIES.reduce((acc, c) => {
-      acc[c.code] = BRANDS.filter((b) => b.categories.includes(c.code)).length;
+    () => BRAND_FILTER_SOLUTIONS.reduce((acc, s) => {
+      acc[s.key] = BRANDS.filter((b) => brandMatches(b.name, s.key, regFilter === 'all' ? null : regFilter)).length;
       return acc;
     }, {}),
-    [BRANDS]
+    [BRANDS, regFilter]
   );
+  // Switching region can leave the chosen solution with no brands (Europe
+  // carries far fewer than India); fall back to All rather than an empty grid.
+  useEffect(() => {
+    if (solFilter !== 'all' && CATEGORY_COUNTS[solFilter] === 0) setSolFilter('all');
+  }, [CATEGORY_COUNTS, solFilter]);
   const brands = useMemo(() => {
     const q = query.trim().toLowerCase();
     return BRANDS.filter(
       (b) =>
-        (activeCode === 'all' || b.categories.includes(activeCode)) &&
+        (activeCode === 'all' || brandMatches(b.name, activeCode, regFilter === 'all' ? null : regFilter)) &&
         (!q || `${b.name} ${b.blurb}`.toLowerCase().includes(q))
     );
-  }, [BRANDS, activeCode, query]);
+  }, [BRANDS, activeCode, regFilter, query]);
 
   useEffect(() => {
-    document.title = active
-      ? `${active.name} — Products — Mindstec Distribution`
-      : 'Products — Mindstec Distribution';
-  }, [active]);
+    document.title = 'Brands — Mindstec Distribution';
+  }, []);
 
   useEffect(() => {
     let stopIntro = () => {};
@@ -123,11 +121,7 @@ const Products = () => {
       );
     }, containerRef);
     return () => ctx.revert();
-  }, [activeCode]);
-
-  const goToCategory = (code) => {
-    navigate(code === 'all' ? '/products' : `/products/category/${code}`);
-  };
+  }, [activeCode, regFilter]);
 
   return (
     <main id="top" ref={containerRef}>
@@ -156,7 +150,7 @@ const Products = () => {
           <span>{t('products.meta.brands', 'Brands distributed')}</span>
         </div>
         <div className="fact">
-          <b>{PRODUCT_CATEGORIES.length}</b>
+          <b>{BRAND_FILTER_SOLUTIONS.length}</b>
           <span>{t('products.meta.categories', 'Application categories')}</span>
         </div>
         <div className="fact">
@@ -175,28 +169,57 @@ const Products = () => {
               type="button"
               className={`pr-chip ${activeCode === 'all' ? 'is-active' : ''}`}
               aria-current={activeCode === 'all' ? 'true' : undefined}
-              onClick={() => goToCategory('all')}
+              onClick={() => setSolFilter('all')}
             >
-              {t('products.all', 'All brands')}
+              {t('partners.filter.all_solutions', 'All solutions')}
               <span className="pr-chip-count">{BRANDS.length}</span>
             </button>
-            {PRODUCT_CATEGORIES.map((cat) => (
+            {BRAND_FILTER_SOLUTIONS.map((s) => (
               <button
-                key={cat.code}
+                key={s.key}
                 type="button"
-                className={`pr-chip ${activeCode === cat.code ? 'is-active' : ''}`}
-                aria-current={activeCode === cat.code ? 'true' : undefined}
-                onClick={() => goToCategory(cat.code)}
+                className={`pr-chip ${activeCode === s.key ? 'is-active' : ''}`}
+                aria-current={activeCode === s.key ? 'true' : undefined}
+                disabled={CATEGORY_COUNTS[s.key] === 0}
+                onClick={() => setSolFilter(s.key)}
               >
-                {t(`products.categories.${cat.code}.short`, cat.short)}
-                <span className="pr-chip-count">{CATEGORY_COUNTS[cat.code]}</span>
+                {s.label}
+                <span className="pr-chip-count">{CATEGORY_COUNTS[s.key]}</span>
               </button>
             ))}
           </div>
         </div>
       </div>
 
-      {/* BRAND SEARCH — directly under the category rail. */}
+      {/* REGION FILTER — between the category rail and the search box. */}
+      <div className="pr-region-band">
+        <div className="pr-rail-inner">
+          <span className="pr-rail-label">{t('products.choose_region', 'Choose a region')}</span>
+          <div className="pr-chips" role="group" aria-label={t('products.choose_region', 'Choose a region')}>
+            <button
+              type="button"
+              className={`pr-chip ${regFilter === 'all' ? 'is-active' : ''}`}
+              aria-current={regFilter === 'all' ? 'true' : undefined}
+              onClick={() => setRegFilter('all')}
+            >
+              {t('partners.filter.all_regions', 'All regions')}
+            </button>
+            {BRAND_FILTER_REGIONS.map((r) => (
+              <button
+                key={r.key}
+                type="button"
+                className={`pr-chip ${regFilter === r.key ? 'is-active' : ''}`}
+                aria-current={regFilter === r.key ? 'true' : undefined}
+                onClick={() => setRegFilter(r.key)}
+              >
+                {r.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* BRAND SEARCH — directly under the region filter. */}
       <div className="pr-search-wrap">
         <div className="bsearch pr-search">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
@@ -227,12 +250,7 @@ const Products = () => {
         <div className="pr-head">
           <div className="pr-head-main">
             {active ? (
-              <>
-                <span className="pr-head-mark" aria-hidden="true">
-                  <SolutionIcon name={active.icon} />
-                </span>
-                <h2 className="display">{t(`products.categories.${active.code}.name`, active.name)}</h2>
-              </>
+              <h2 className="display">{active.label}</h2>
             ) : (
               <h2 className="display">
                 {t('products.all_title_main', 'Every brand we')} <em>{t('products.all_title_em', 'distribute')}</em>
@@ -241,7 +259,7 @@ const Products = () => {
           </div>
           <p className="lede side">
             {active
-              ? t(`products.categories.${active.code}.desc`, active.desc)
+              ? `${brands.length} ${t('products.brands_word', 'brands')}`
               : t(
                   'products.all_desc',
                   'Twenty-five manufacturers held under formal regional agreements, with the stock, spares and engineering support behind each one.'
@@ -251,7 +269,11 @@ const Products = () => {
 
 
         {brands.length === 0 && (
-          <p className="pr-empty">{t('brands.no_results', 'No brands match your search.')}</p>
+          <p className="pr-empty">
+            {query
+              ? t('brands.no_results', 'No brands match your search.')
+              : t('brands.no_results_filters', 'No brands for this combination yet.')}
+          </p>
         )}
 
         <div className="pr-grid">
@@ -274,38 +296,6 @@ const Products = () => {
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
                   <path d="M7 17L17 7M9 7h8v8" />
                 </svg>
-              </span>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ALL CATEGORIES — the same navigation as the rail, laid out so the
-          whole catalogue is visible at once rather than only in a scroller. */}
-      <section className="pr-cats" aria-label={t('products.cats_label', 'All application categories')}>
-        <div className="section-head">
-          <div>
-            <span className="label label--red">{t('products.cats_kicker', 'By application')}</span>
-            <h2 className="display" style={{ marginTop: '16px' }}>
-              {t('products.cats_title_main', 'Ten places this')} <em>{t('products.cats_title_em', 'gets used')}</em>
-            </h2>
-          </div>
-        </div>
-        <div className="pr-cat-grid">
-          {PRODUCT_CATEGORIES.map((cat, i) => (
-            <Link
-              key={cat.code}
-              to={`/products/category/${cat.code}`}
-              className={`pr-cat reveal ${activeCode === cat.code ? 'is-active' : ''}`}
-            >
-              <span className="pr-cat-num" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
-              <span className="pr-cat-mark" aria-hidden="true">
-                <SolutionIcon name={cat.icon} />
-              </span>
-              <h3>{t(`products.categories.${cat.code}.name`, cat.name)}</h3>
-              <p>{t(`products.categories.${cat.code}.desc`, cat.desc)}</p>
-              <span className="pr-cat-foot">
-                {CATEGORY_COUNTS[cat.code]} {t('products.brands_word', 'brands')}
               </span>
             </Link>
           ))}

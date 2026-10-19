@@ -1,0 +1,22 @@
+/* Shared layout for Training / Careers / Legal. Visual tokens come from the
+   Contact (.ct) page rules in index.css; this file only adds page layout. */
+.np-body { padding-top: clamp(40px, 5vw, 64px); padding-bottom: clamp(80px, 10vw, 140px); display: grid; gap: clamp(28px, 4vw, 48px); }
+.np-split { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(28px, 5vw, 64px); align-items: start; }
+.np-stack { display: grid; gap: 14px; }
+.np-card { padding: 20px; border: 1px solid var(--ct-edge); background: var(--ink-2); border-radius: 4px; }
+.np-card h3 { font-family: var(--display); font-size: 20px; font-weight: 700; color: var(--white); margin: 0 0 8px; }
+.np-card p { margin: 0; font-size: 14px; line-height: 1.55; color: var(--grey); }
+.np-card .ct-form { margin-top: 16px; padding: 0; border: 0; background: transparent; }
+.np-soon { margin-top: 12px; font-family: var(--ct-mono); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; color: #d98a86; }
+.np-eyebrow { display: block; font-family: var(--ct-mono); font-size: 12px; letter-spacing: .14em; text-transform: uppercase; color: var(--grey); margin-bottom: 14px; }
+.np-form { position: static; }
+.np-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.np-chip { font-family: var(--body); font-size: 13px; padding: 8px 14px; border: 1px solid var(--ct-edge); border-radius: 999px; background: transparent; color: var(--white); cursor: pointer; transition: border-color .25s, background .25s; }
+.np-chip:hover { border-color: var(--white); }
+.np-chip[aria-pressed="true"] { background: var(--red); border-color: var(--red); color: #fff; }
+.np-tabs { display: flex; flex-wrap: wrap; gap: 8px; border-bottom: 1px solid var(--ct-edge); padding-bottom: 12px; }
+.np-tab { display: inline-block; text-decoration: none; font-family: var(--body); font-size: 14px; font-weight: 600; padding: 10px 16px; border: 1px solid transparent; border-radius: 3px; background: transparent; color: var(--grey); cursor: pointer; }
+.np-tab:hover { color: var(--white); }
+.np-tab[aria-selected="true"] { color: var(--white); border-color: var(--red); }
+.np-legal { max-width: 880px; margin: 0 auto; display: grid; gap: 24px; width: 100%; }
+@media (max-width: 1000px) { .np-split { grid-template-columns: 1fr; } }

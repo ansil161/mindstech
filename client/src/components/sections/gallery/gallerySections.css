@@ -1,0 +1,17 @@
+.gsx { padding: var(--section-y) 0 0; background: var(--ink, #060608); }
+.gsx-grid, .gsx-xc { display: grid; gap: 16px; padding: 0 var(--pad); }
+.gsx-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+.gsx-xc { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+.gsx-card { text-decoration: none; color: inherit; }
+.gsx-cover { aspect-ratio: 16 / 9; overflow: hidden; border-radius: 6px; background: rgba(255,255,255,.03); margin-bottom: 8px; }
+.gsx-cover img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.gsx-note { color: var(--grey); font-size: 14px; line-height: 1.6; margin: 0; }
+.gsx-form { margin: 0 var(--pad); gap: 16px; }
+.gsx-form label { display: grid; gap: 6px; font-size: 13px; color: var(--grey); }
+.gsx-form input:not([type="checkbox"]) { background: transparent; border: 1px solid var(--line-soft); border-radius: 6px; padding: 12px 14px; color: var(--white); font: inherit; }
+.gsx-form input:focus { outline: none; border-color: var(--red); }
+.gsx-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.gsx-zones { border: 1px solid var(--line-soft); border-radius: 6px; padding: 12px 14px; display: flex; flex-wrap: wrap; gap: 8px 20px; margin: 0; }
+.gsx-zones legend { font-size: 13px; color: var(--grey); padding: 0 6px; }
+.gsx-form .gsx-ck { display: flex; align-items: center; gap: 8px; color: var(--white); }
+.gsx-actions { display: flex; gap: 14px; align-items: center; flex-wrap: wrap; }

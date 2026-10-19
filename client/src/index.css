@@ -451,7 +451,9 @@ blockquote {
    every other "clear the navbar" measurement in this file still hold. */
 .nav {
   position: fixed;
-  top: 0;
+  /* Sits under the announcement bar while it is on screen (0 once scrolled
+     past or dismissed). */
+  top: var(--bar-offset, 0px);
   left: 0;
   right: 0;
   z-index: 90;
@@ -11611,4 +11613,95 @@ footer {
 .filters--stack .filter-label {
   font-family: var(--mono, ui-monospace, monospace);
   margin-right: 2px;
+}
+
+/* Region filter band: sits between the sticky category rail and the search box.
+   Not sticky itself, so only one bar pins under the navbar. */
+.pr-region-band {
+  border-bottom: 1px solid var(--line-soft);
+}
+
+/* A solution with no brands in the chosen region (e.g. Europe): visibly
+   unavailable and not clickable, rather than leading to an empty grid. */
+.pr-chip:disabled {
+  opacity: .38;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* ── ANNOUNCEMENT BAR (next event, above the navbar) ── */
+.abar {
+  position: relative;
+  z-index: 95;
+  background: var(--red);
+  color: #fff;
+}
+
+.abar-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  min-height: 48px;
+  padding: 8px var(--pad);
+  max-width: 1440px;
+  margin-inline: auto;
+}
+
+.abar-text {
+  margin: 0;
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.35;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.abar-date {
+  margin-right: 14px;
+  font-family: var(--ct-mono, ui-monospace, 'JetBrains Mono', Menlo, Consolas, monospace);
+  font-size: 11px;
+  letter-spacing: .08em;
+  opacity: .85;
+}
+
+.abar-loc { opacity: .85; }
+
+.abar-cta {
+  flex: none;
+  padding: 8px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #0a0a0a;
+  background: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background .2s var(--ease, ease);
+}
+
+.abar-cta:hover { background: #f0ece6; }
+
+.abar-close {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  font-size: 20px;
+  line-height: 1;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+  opacity: .85;
+}
+
+.abar-close:hover { opacity: 1; background: rgba(255, 255, 255, .15); }
+
+@media (max-width: 720px) {
+  .abar-inner { justify-content: space-between; gap: 10px; }
+  .abar-text { font-size: 12px; }
+  .abar-date { display: block; margin: 0 0 2px; }
+  .abar-text strong, .abar-loc { white-space: normal; }
+  .abar-text { white-space: normal; }
 }

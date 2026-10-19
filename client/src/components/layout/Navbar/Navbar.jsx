@@ -161,7 +161,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
             </li>
             <li>
               <NavLink to="/products" className={isProductsActive ? 'active' : ''} onClick={closeMenus}>
-                {t('navbar.products', 'Products')}
+                {t('navbar.products', 'Brands')}
               </NavLink>
             </li>
             <li>

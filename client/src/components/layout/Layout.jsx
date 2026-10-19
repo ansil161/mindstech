@@ -3,6 +3,7 @@ import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
+import AnnouncementBar from './AnnouncementBar.jsx';
 import Navbar from './Navbar/Navbar.jsx';
 import Drawer from './Drawer/Drawer.jsx';
 import Footer from './Footer/Footer.jsx';
@@ -180,6 +181,9 @@ const Layout = ({ children }) => {
 
   return (
     <div className="min-h-screen bg-ink text-white font-body selection:bg-red selection:text-white antialiased">
+      {/* Next-event bar; in flow above the fixed navbar, which tracks it via --bar-offset. */}
+      <AnnouncementBar />
+
       {/* Dynamic site layout header nav */}
       <Navbar
         drawerOpen={drawerOpen}

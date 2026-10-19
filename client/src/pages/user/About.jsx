@@ -9,6 +9,8 @@ import { getPublicRegionData } from '../../api/regionApi.js';
 import { getPublicTeamMembers } from '../../api/teamApi.js';
 import { STATIC_TEAM, mergeTeam } from '../../constants/team.js';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
+import AboutServices from '../../components/sections/about/AboutServices.jsx';
+import AboutRegions from '../../components/sections/about/AboutRegions.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -461,6 +463,10 @@ const About = () => {
           ))}
         </div>
       </section>
+
+      <AboutServices />
+
+      <AboutRegions />
 
       {/* CTA */}
       <section className="cta" id="contact">

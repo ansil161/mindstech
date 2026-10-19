@@ -88,7 +88,7 @@ const Footer = () => {
           ))}
         </div>
         <div className="foot-col">
-          <h5>{t('navbar.products', 'Products')}</h5>
+          <h5>{t('navbar.products', 'Brands')}</h5>
           <Link to="/products">{t('products.all', 'All brands')}</Link>
           {PRODUCT_CATEGORIES.slice(0, 5).map((cat) => (
             <Link key={cat.code} to={`/products/category/${cat.code}`}>
@@ -106,6 +106,8 @@ const Footer = () => {
           <Link to="/clients">{t('navbar.clients', 'Clients')}</Link>
           <Link to="/experience">{t('footer.experience', 'Experience Centre')}</Link>
           <Link to="/projects">{t('navbar.projects', 'Projects')}</Link>
+          <Link to="/careers">{t('footer.careers', 'Careers')}</Link>
+          <Link to="/training">{t('footer.training', 'Training Academy')}</Link>
           <Link to="/contact">{t('footer.contact')}</Link>
         </div>
         <div className="foot-col">
@@ -140,9 +142,9 @@ const Footer = () => {
       <div className="foot-bottom">
         <p>{t('footer.rights', '© 2026 Mindstec Distribution. All rights reserved.')}</p>
         <div className="legal">
-          <a href="#">{t('footer.privacy', 'Privacy')}</a>
-          <a href="#">{t('footer.terms', 'Terms')}</a>
-          <a href="#">{t('footer.disclaimer', 'Disclaimer')}</a>
+          <Link to="/legal/privacy">{t('footer.privacy', 'Privacy')}</Link>
+          <Link to="/legal/terms">{t('footer.terms', 'Terms')}</Link>
+          <Link to="/legal">{t('footer.disclaimer', 'Disclaimer')}</Link>
         </div>
       </div>
     </footer>

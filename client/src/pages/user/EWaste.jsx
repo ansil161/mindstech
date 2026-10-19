@@ -6,6 +6,7 @@ import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import axios from '../../api/axios';
+import EWasteCollectionRequest from '../../components/sections/ewaste/EWasteCollectionRequest.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -414,6 +415,11 @@ const EWaste = () => {
           ))}
         </div>
       </section>
+
+      <div className="rule"></div>
+
+      {/* REQUEST A COLLECTION */}
+      <EWasteCollectionRequest />
 
       {/* CTA */}
       <section className="cta" id="contact">

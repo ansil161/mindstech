@@ -115,6 +115,22 @@ export const router = createBrowserRouter([
         path: '/events',
         lazy: page(() => import('../pages/user/Events')),
       },
+      {
+        path: '/training',
+        lazy: page(() => import('../pages/user/Training')),
+      },
+      {
+        path: '/careers',
+        lazy: page(() => import('../pages/user/Careers')),
+      },
+      {
+        path: '/legal',
+        lazy: page(() => import('../pages/user/Legal')),
+      },
+      {
+        path: '/legal/:doc',
+        lazy: page(() => import('../pages/user/Legal')),
+      },
     ],
   },
   {

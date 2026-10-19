@@ -8,6 +8,7 @@ import { useTranslation } from 'react-i18next';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation.js';
+import BookVisitForm from '../../components/sections/gallery/BookVisitForm.jsx';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -422,6 +423,8 @@ const Experience = () => {
           </div>
         </div>
       </section>
+
+      <BookVisitForm />
 
       {/* CTA */}
       <section className="cta" id="contact">

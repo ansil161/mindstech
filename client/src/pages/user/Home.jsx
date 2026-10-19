@@ -16,6 +16,7 @@ import WaveBackdrop from '../../components/common/WaveBackdrop/WaveBackdrop.jsx'
 import { safeFromTo } from '../../utils/gsapSafe';
 import UpcomingEvents from '../../components/common/UpcomingEvents/UpcomingEvents.jsx';
 import WhereWeOperate from '../../components/common/WhereWeOperate/WhereWeOperate.jsx';
+import TrainingBand from '../../components/sections/home/TrainingBand.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1017,6 +1018,8 @@ const Home = () => {
           </Link>
         </div>
       </section>
+
+      <TrainingBand />
 
       <div className="rule"></div>
 

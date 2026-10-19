@@ -6,6 +6,8 @@ import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.jsx';
 import NotFound from './NotFound.jsx';
+import SolutionApplications from '../../components/sections/solutions/SolutionApplications.jsx';
+import SolutionEnquiry from '../../components/sections/solutions/SolutionEnquiry.jsx';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
@@ -514,6 +516,9 @@ const SolutionDetails = () => {
         </div>
       </section>
 
+      {/* Applications (wireframe) */}
+      <SolutionApplications slug={slug} />
+
       {/* ── 2 · WHAT WE DELIVER ─────────────────────────────────────────── */}
       <section className="caps" id="capabilities" aria-label={t('solutions.capabilities', 'Capabilities')}>
         <div className="section-head">
@@ -819,6 +824,9 @@ const SolutionDetails = () => {
           </div>
         </div>
       </section>
+
+      {/* Talk to a specialist (wireframe) */}
+      <SolutionEnquiry solutionName={data.name} key={slug} />
 
       {/* ── 11 · RELATED SOLUTIONS ──────────────────────────────────────── */}
       <section className="related" aria-label={t('solutions.related_label', 'Related solutions')}>

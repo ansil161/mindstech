@@ -30,6 +30,9 @@ const slugTopic = {
   'visit': 'Visit the Experience Centre',
 };
 
+// Additional topics from the design wireframe, appended after the shared TOPICS.
+const EXTRA_TOPICS = ['Project or design support', 'Training', 'Partnership (OEM)', 'Careers', 'Other'];
+
 // Country preselected from the active region site.
 const regionCountry = {
   'Middle East': 'United Arab Emirates',
@@ -144,6 +147,16 @@ const Contact = () => {
 
   const route = routeFor(country);
 
+  // Active region's offices first (wireframe), the rest keep their order.
+  const regionFirst = CONTACT_OFFICES.some((o) => o.visit === region);
+  const orderedOffices = useMemo(() => {
+    if (!regionFirst) return CONTACT_OFFICES;
+    return [
+      ...CONTACT_OFFICES.filter((o) => o.visit === region),
+      ...CONTACT_OFFICES.filter((o) => o.visit !== region),
+    ];
+  }, [region, regionFirst]);
+
   const messageOffice = (office) => {
     setCountry(office.country);
     formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -210,7 +223,12 @@ const Contact = () => {
 
       <section className="ct-wrap ct-body">
         <div className="ct-offices">
-          {CONTACT_OFFICES.map((o) => {
+          {regionFirst && (
+            <p className="ct-note">
+              {t('contact.page.offices_first', '{{region}} offices first', { region })}
+            </p>
+          )}
+          {orderedOffices.map((o) => {
             const d = detailsFor[o.key];
             const hasDetails = d.address || d.phone || d.email;
             return (
@@ -292,7 +310,7 @@ const Contact = () => {
           <div className="ct-field">
             <label htmlFor="fTopic">{t('contact.page.topic', 'Topic')}</label>
             <select id="fTopic" value={topic} onChange={(e) => setTopic(e.target.value)}>
-              {TOPICS.map((tp) => <option key={tp} value={tp}>{tp}</option>)}
+              {[...TOPICS, ...EXTRA_TOPICS.filter((x) => !TOPICS.includes(x))].map((tp) => <option key={tp} value={tp}>{tp}</option>)}
             </select>
           </div>
 

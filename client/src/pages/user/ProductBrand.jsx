@@ -9,6 +9,7 @@ import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.js
 import NotFound from './NotFound.jsx';
 import { getBrand, getBrandCategories, getRelatedBrands } from '../../constants/products.js';
 import { getSolutionName } from '../../constants/solutions.js';
+import BrandExtras from '../../components/sections/brands/BrandExtras.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -88,7 +89,7 @@ const ProductBrand = () => {
       {/* HERO */}
       <section className="pb-hero">
         <nav className="pb-crumb" aria-label="Breadcrumb">
-          <Link to="/products">{t('navbar.products', 'Products')}</Link>
+          <Link to="/products">{t('navbar.products', 'Brands')}</Link>
           <span aria-hidden="true">/</span>
           <span aria-current="page">{brand.name}</span>
         </nav>
@@ -198,6 +199,8 @@ const ProductBrand = () => {
           ))}
         </div>
       </section>
+
+      <BrandExtras brandName={brand.name} />
 
       {/* CTA */}
       <section className="cta">
