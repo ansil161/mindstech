@@ -196,6 +196,28 @@ const Products = () => {
         </div>
       </div>
 
+      {/* BRAND SEARCH — directly under the category rail. */}
+      <div className="pr-search-wrap">
+        <div className="bsearch pr-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-3.6-3.6" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('brands.search_placeholder', 'Search brands…')}
+            aria-label={t('brands.search_aria', 'Search brands')}
+          />
+          {query && (
+            <button type="button" className="bsearch-clear" onClick={() => setQuery('')} aria-label={t('brands.search_clear', 'Clear search')}>
+              ×
+            </button>
+          )}
+        </div>
+      </div>
+
       {/* ACTIVE CATEGORY.
           Deliberately not an aria-live region: changing category is a route
           change, and announcing twenty-five re-rendered cards every time is
@@ -227,24 +249,6 @@ const Products = () => {
           </p>
         </div>
 
-        <div className="bsearch pr-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-            <circle cx="11" cy="11" r="7" />
-            <path d="M20 20l-3.6-3.6" />
-          </svg>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t('brands.search_placeholder', 'Search brands…')}
-            aria-label={t('brands.search_aria', 'Search brands')}
-          />
-          {query && (
-            <button type="button" className="bsearch-clear" onClick={() => setQuery('')} aria-label={t('brands.search_clear', 'Clear search')}>
-              ×
-            </button>
-          )}
-        </div>
 
         {brands.length === 0 && (
           <p className="pr-empty">{t('brands.no_results', 'No brands match your search.')}</p>
