@@ -10,14 +10,12 @@ import {
   CONTACT_OFFICES,
   COUNTRIES,
   COUNTRY_COUNT,
-  HQ,
-  MAP,
   OFFICE_COUNT,
   OTHER_COUNTRY,
   TOPICS,
-  mapPoint,
   routeFor,
 } from '../../constants/contactOffices';
+import WhereWeOperate from '../../components/common/WhereWeOperate/WhereWeOperate.jsx';
 
 // ?s=<slug> deep links (from solution pages, partner CTAs, …) preselect a topic.
 const slugTopic = {
@@ -40,22 +38,8 @@ const regionCountry = {
   Europe: 'Poland',
 };
 
-const GRID_LNGS = Array.from({ length: 11 }, (_, i) => MAP.lngMin + (i + 1) * 15);
-const GRID_LATS = [60, 45, 30, 15, 0, -15, -30];
-
-const pct = (v, total) => `${(v / total) * 100}%`;
-
 const localTime = (tz, now) =>
   new Intl.DateTimeFormat('en-GB', { hour: '2-digit', minute: '2-digit', hour12: false, timeZone: tz }).format(now);
-
-const arcPath = (from, to) => {
-  const a = mapPoint(from.lat, from.lng);
-  const b = mapPoint(to.lat, to.lng);
-  const dist = Math.hypot(b.x - a.x, b.y - a.y);
-  const cx = (a.x + b.x) / 2;
-  const cy = Math.min(a.y, b.y) - dist * 0.32;
-  return `M${a.x},${a.y} Q${cx},${cy} ${b.x},${b.y}`;
-};
 
 const Contact = () => {
   const { t } = useTranslation();
@@ -79,7 +63,6 @@ const Contact = () => {
 
   const [contacts, setContacts] = useState([]);
   const [now, setNow] = useState(() => new Date());
-  const [activeKey, setActiveKey] = useState(null);
 
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 30000);
@@ -136,8 +119,7 @@ const Contact = () => {
       intro
         .fromTo('.ct-hero .ct-crumb', { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6 })
         .fromTo('.ct-hero h1', { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 1 }, '-=.4')
-        .fromTo('.ct-hero p', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.6')
-        .fromTo('.ct-map', { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.9 }, '-=.5');
+        .fromTo('.ct-hero p', { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.8 }, '-=.6');
       stopIntro = whenReady(() => intro.play());
     }, containerRef);
     return () => { stopIntro(); ctx.revert(); };
@@ -161,14 +143,6 @@ const Contact = () => {
   }, [contacts]);
 
   const route = routeFor(country);
-
-  const jumpToOffice = (key) => {
-    const el = document.getElementById(`office-${key}`);
-    if (!el) return;
-    el.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    setActiveKey(key);
-    setTimeout(() => setActiveKey((k) => (k === key ? null : k)), 1800);
-  };
 
   const messageOffice = (office) => {
     setCountry(office.country);
@@ -220,8 +194,6 @@ const Contact = () => {
     }
   };
 
-  const hq = CONTACT_OFFICES.find((o) => o.key === HQ);
-
   return (
     <main id="top" ref={containerRef} className="ct">
       <section className="ct-hero" aria-label="Contact Mindstec">
@@ -234,51 +206,7 @@ const Contact = () => {
         </div>
       </section>
 
-      <section className="ct-wrap ct-map-section">
-        <div className="ct-map" role="group" aria-label={t('contact.page.map_label', 'Map of Mindstec offices')}>
-          <div className="ct-map-plane">
-            <svg viewBox={`0 0 ${MAP.w} ${MAP.h}`} preserveAspectRatio="none" aria-hidden="true">
-              {GRID_LNGS.map((lng) => {
-                const x = mapPoint(0, lng).x;
-                return <line key={lng} x1={x} x2={x} y1="0" y2={MAP.h} className="ct-grid" vectorEffect="non-scaling-stroke" />;
-              })}
-              {GRID_LATS.map((lat) => {
-                const y = mapPoint(lat, 0).y;
-                return (
-                  <line key={lat} x1="0" x2={MAP.w} y1={y} y2={y} className={lat === 0 ? 'ct-grid ct-grid--eq' : 'ct-grid'} vectorEffect="non-scaling-stroke" />
-                );
-              })}
-              {CONTACT_OFFICES.filter((o) => o.key !== HQ).map((o) => (
-                <path key={o.key} d={arcPath(hq, o)} className="ct-arc" vectorEffect="non-scaling-stroke" />
-              ))}
-            </svg>
-
-            {GRID_LATS.map((lat) => (
-              <span key={lat} className="ct-lat" style={{ top: pct(mapPoint(lat, 0).y, MAP.h) }}>
-                {lat === 0 ? '0°N' : `${Math.abs(lat)}°${lat > 0 ? 'N' : 'S'}`}
-              </span>
-            ))}
-
-            {CONTACT_OFFICES.map((o) => {
-              const p = mapPoint(o.lat, o.lng);
-              return (
-                <button
-                  key={o.key}
-                  type="button"
-                  className={`ct-pin ct-pin--${o.label}${o.key === HQ ? ' is-hq' : ''}`}
-                  style={{ left: pct(p.x, MAP.w), top: pct(p.y, MAP.h) }}
-                  onClick={() => jumpToOffice(o.key)}
-                  aria-label={t('contact.page.jump', 'Jump to {{city}} office', { city: o.city })}
-                >
-                  <i />
-                  <span>{o.city}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-        <p className="ct-map-cap">{t('contact.page.map_cap', 'Click a pin to jump to its office')}</p>
-      </section>
+      <WhereWeOperate />
 
       <section className="ct-wrap ct-body">
         <div className="ct-offices">
@@ -289,7 +217,7 @@ const Contact = () => {
               <article
                 key={o.key}
                 id={`office-${o.key}`}
-                className={`ct-card${activeKey === o.key ? ' is-active' : ''}`}
+                className="ct-card"
               >
                 <header>
                   <h2>{o.city}</h2>
