@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.utils.html import strip_tags
-from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem, Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial, EventNews
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Document, GalleryItem, Region, TeamMember, RegionContact, RegionBrand, ClientTestimonial, EventNews, HomeHighlight
 
 class EnquirySerializer(serializers.ModelSerializer):
     class Meta:
@@ -358,4 +358,35 @@ class EventNewsSerializer(serializers.ModelSerializer):
     def validate_type(self, value):
         if value not in dict(EventNews.TYPE_CHOICES):
             raise serializers.ValidationError('Type must be either "event" or "news".')
+        return value
+
+
+class HomeHighlightSerializer(serializers.ModelSerializer):
+    image = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    region = serializers.PrimaryKeyRelatedField(
+        queryset=Region.objects.all(), required=False, allow_null=True
+    )
+    region_slug = serializers.CharField(source='region.slug', read_only=True, default=None)
+    region_name = serializers.CharField(source='region.name', read_only=True, default=None)
+
+    class Meta:
+        model = HomeHighlight
+        fields = [
+            'id', 'kind', 'title', 'subtitle', 'image', 'link_url',
+            'region', 'region_slug', 'region_name',
+            'display_order', 'is_active', 'created_at',
+        ]
+        read_only_fields = ['id', 'created_at']
+
+    def validate_title(self, value):
+        return strip_tags(value).strip()
+
+    def validate_subtitle(self, value):
+        return strip_tags(value).strip()
+
+    def validate_link_url(self, value):
+        value = value.strip()
+        # Internal paths ("/projects") or absolute http(s) links only.
+        if value and not (value.startswith('/') or value.startswith(('http://', 'https://'))):
+            raise serializers.ValidationError('Use a path starting with "/" or an http(s) URL.')
         return value

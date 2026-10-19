@@ -9,6 +9,7 @@ import FieldworkTab from './tabs/FieldworkTab';
 import CollectionCentresTab from './tabs/CollectionCentresTab';
 import GalleryTab from './tabs/GalleryTab';
 import EventsTab from './tabs/EventsTab';
+import HomeHighlightsTab from './tabs/HomeHighlightsTab';
 import RegionsTab from './tabs/RegionsTab';
 import DocumentsTab from './tabs/DocumentsTab';
 import TeamTab from './tabs/TeamTab';
@@ -60,6 +61,8 @@ export default function AdminDashboard() {
         return <GalleryTab />;
       case ADMIN_TABS.EVENT_NEWS:
         return <EventsTab />;
+      case ADMIN_TABS.HOME_HIGHLIGHTS:
+        return <HomeHighlightsTab />;
       case ADMIN_TABS.REGIONS:
         return <RegionsTab />;
       case ADMIN_TABS.DOCUMENTS:

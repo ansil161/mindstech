@@ -22,8 +22,12 @@ from .region import (
     RegionContactListCreateView, RegionContactDetailView,
 )
 from .team import TeamMemberListCreateView, TeamMemberDetailView, PublicTeamMembersView
+from .highlights import HomeHighlightListCreateView, HomeHighlightDetailView, PublicHomeHighlightsView
 
 __all__ = [
+    "HomeHighlightListCreateView",
+    "HomeHighlightDetailView",
+    "PublicHomeHighlightsView",
     "DashboardStatsView",
     "EnquirySubmitView",
     "EnquiryAdminListView",

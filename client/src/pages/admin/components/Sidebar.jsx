@@ -87,6 +87,15 @@ export default function Sidebar({ activeTab, setActiveTab, onSelectRegion, user,
             <span>Events &amp; News</span>
           </button>
           <button
+            onClick={() => setActiveTab(ADMIN_TABS.HOME_HIGHLIGHTS)}
+            className={`admin-sidebar-link ${activeTab === ADMIN_TABS.HOME_HIGHLIGHTS ? 'active' : ''}`}
+          >
+            <svg fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h4v-6h4v6h4a1 1 0 001-1V10" />
+            </svg>
+            <span>Home: News &amp; Projects</span>
+          </button>
+          <button
             onClick={() => {
               setActiveTab(ADMIN_TABS.REGIONS);
               if (onSelectRegion) onSelectRegion(null);

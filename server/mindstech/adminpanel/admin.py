@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Region, RegionContact
+from .models import Enquiry, Fieldwork, Solution, Blog, CollectionCentre, Region, RegionContact, HomeHighlight
 
 
 @admin.register(Enquiry)
@@ -59,3 +59,9 @@ class RegionContactAdmin(admin.ModelAdmin):
     list_display = ('region', 'office_name', 'email', 'phone')
     list_filter = ('region',)
     search_fields = ('office_name', 'address', 'email', 'phone')
+
+
+@admin.register(HomeHighlight)
+class HomeHighlightAdmin(admin.ModelAdmin):
+    list_display = ('title', 'kind', 'region', 'display_order', 'is_active')
+    list_filter = ('kind', 'is_active', 'region')

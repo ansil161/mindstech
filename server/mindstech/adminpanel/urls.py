@@ -17,6 +17,7 @@ from .views import (
     EventNewsListCreateView, EventNewsDetailView,
     PublicUpcomingEventsView, PublicNewsView,
     TeamMemberListCreateView, TeamMemberDetailView, PublicTeamMembersView,
+    HomeHighlightListCreateView, HomeHighlightDetailView, PublicHomeHighlightsView,
 )
 
 urlpatterns = [
@@ -91,4 +92,9 @@ urlpatterns = [
     # Events & News (public — no auth)
     path('public/events/', PublicUpcomingEventsView.as_view(), name='public-upcoming-events'),
     path('public/news/', PublicNewsView.as_view(), name='public-news'),
+
+    # Home page "News and projects" cards
+    path('home-highlights/', HomeHighlightListCreateView.as_view(), name='home-highlight-list-create'),
+    path('home-highlights/<int:pk>/', HomeHighlightDetailView.as_view(), name='home-highlight-detail'),
+    path('public/home-highlights/', PublicHomeHighlightsView.as_view(), name='public-home-highlights'),
 ]

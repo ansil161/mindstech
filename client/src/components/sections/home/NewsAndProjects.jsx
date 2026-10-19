@@ -23,19 +23,19 @@ const formatDate = (iso, lang) => {
 /** Home "News and projects": latest two news items around the latest project. */
 const NewsAndProjects = () => {
   const { t, i18n } = useTranslation();
-  const [news, setNews] = useState([]);
-  const [projects, setProjects] = useState([]);
+  const [cards, setCards] = useState([]);
 
+  // Cards are managed in the admin (Home: News & Projects), already ordered.
   useEffect(() => {
     let cancelled = false;
-    axios.get('/admin/public/news/', { withCredentials: false })
-      .then((res) => { if (!cancelled) setNews(res.data || []); })
-      .catch(() => {});
-    axios.get('/admin/fieldwork/', { withCredentials: false })
-      .then((res) => { if (!cancelled) setProjects(res.data || []); })
+    axios.get('/admin/public/home-highlights/', { withCredentials: false })
+      .then((res) => { if (!cancelled) setCards(res.data || []); })
       .catch(() => {});
     return () => { cancelled = true; };
   }, []);
+
+  const news = cards.filter((c) => c.kind === 'news');
+  const projects = cards.filter((c) => c.kind === 'project');
 
   // News / Project / News, matching the wireframe order.
   const slots = [
@@ -77,10 +77,10 @@ const NewsAndProjects = () => {
             ? item.title
             : (isProject ? t('home.news_projects.project_placeholder', 'Featured project') : t('home.news_projects.news_placeholder', 'Latest news item'));
           const meta = item
-            ? (isProject ? item.location_meta : formatDate(item.created_at, i18n.language))
+            ? (item.subtitle || formatDate(item.created_at, i18n.language))
             : t('home.news_projects.soon', 'Coming soon');
-          const href = isProject ? '/projects' : '/events';
-          const external = !isProject && item?.external_url;
+          const link = item?.link_url || (isProject ? '/projects' : '/events');
+          const external = /^https?:\/\//.test(link);
           const body = (
             <>
               <div className="post-img">
@@ -97,9 +97,9 @@ const NewsAndProjects = () => {
             </>
           );
           return external ? (
-            <a className="post reveal" key={i} href={item.external_url} target="_blank" rel="noopener noreferrer">{body}</a>
+            <a className="post reveal" key={i} href={link} target="_blank" rel="noopener noreferrer">{body}</a>
           ) : (
-            <Link className="post reveal" key={i} to={href}>{body}</Link>
+            <Link className="post reveal" key={i} to={link}>{body}</Link>
           );
         })}
       </div>

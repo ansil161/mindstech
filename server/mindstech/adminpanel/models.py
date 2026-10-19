@@ -169,6 +169,37 @@ class EventNews(models.Model):
         return f"[{self.type.upper()}] {self.title}"
 
 
+class HomeHighlight(models.Model):
+    """A card in the home page "News and projects" section, managed from the admin."""
+
+    KIND_CHOICES = (
+        ('news', 'News'),
+        ('project', 'Project'),
+    )
+
+    kind = models.CharField(max_length=10, choices=KIND_CHOICES, default='news')
+    title = models.CharField(max_length=200)
+    # Short line under the title: a date, a location, a client name...
+    subtitle = models.CharField(max_length=200, blank=True, default='')
+    image = models.ImageField(upload_to='highlights/', blank=True, null=True)
+    link_url = models.CharField(
+        max_length=500, blank=True, default='',
+        help_text='Where the card links to. Empty falls back to /events or /projects.',
+    )
+    region = models.ForeignKey(
+        'Region', on_delete=models.SET_NULL, null=True, blank=True, related_name='home_highlights'
+    )
+    display_order = models.PositiveIntegerField(default=0, help_text='Lower numbers show first.')
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['display_order', '-created_at']
+
+    def __str__(self):
+        return f"[{self.kind.upper()}] {self.title}"
+
+
 class Region(models.Model):
     """A geographic region the company operates in (e.g. India, Middle East)."""
     name = models.CharField(max_length=100, unique=True)
