@@ -21,6 +21,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Partners = () => {
   const { t } = useTranslation();
   const [filter, setFilter] = useState('all');
+  const [query, setQuery] = useState('');
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
 
@@ -150,7 +151,7 @@ const Partners = () => {
     const visibleCards = cardsRef.current.filter(el => {
       if (!el) return false;
       const cardCat = el.getAttribute('data-cat');
-      return filter === 'all' || cardCat === filter;
+      return (filter === 'all' || cardCat === filter) && el.getAttribute('data-match') === '1';
     });
 
     if (visibleCards.length > 0) {
@@ -159,7 +160,10 @@ const Partners = () => {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.04, ease: 'power2.out', overwrite: 'auto' }
       );
     }
-  }, [filter]);
+  }, [filter, query]);
+
+  const q = query.trim().toLowerCase();
+  const matchesQuery = (brand) => !q || `${brand.name} ${t(brand.descKey)}`.toLowerCase().includes(q);
 
   return (
     <main id="top" ref={containerRef}>
@@ -193,12 +197,30 @@ const Partners = () => {
             {cat.code === 'all' && <span className="filter-count">{BRANDS.length}</span>}
           </button>
         ))}
+        <div className="bsearch p-search">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+            <circle cx="11" cy="11" r="7" />
+            <path d="M20 20l-3.6-3.6" />
+          </svg>
+          <input
+            type="search"
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder={t('brands.search_placeholder', 'Search brands…')}
+            aria-label={t('brands.search_aria', 'Search brands')}
+          />
+          {query && (
+            <button type="button" className="bsearch-clear" onClick={() => setQuery('')} aria-label={t('brands.search_clear', 'Clear search')}>
+              ×
+            </button>
+          )}
+        </div>
       </div>
 
       {/* PARTNER GRID */}
       <div className="pgrid" id="pgrid">
         {BRANDS.map((brand, i) => {
-          const isVisible = filter === 'all' || brand.cat === filter;
+          const isVisible = (filter === 'all' || brand.cat === filter) && matchesQuery(brand);
           return (
             // Each card now opens the brand's catalogue page. Before, the grid
             // was twenty-five dead ends — the logos were the only thing the
@@ -208,6 +230,7 @@ const Partners = () => {
               to={`/products/${brand.slug}`}
               className={`p-card ${isVisible ? '' : 'is-hidden'}`}
               data-cat={brand.cat}
+              data-match={matchesQuery(brand) ? '1' : '0'}
               ref={el => (cardsRef.current[i] = el)}
             >
               <div className="p-logo">

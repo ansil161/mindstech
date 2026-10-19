@@ -14,6 +14,7 @@ import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.js
 import { getFallbackSolutions, getSolutionMeta } from '../../constants/solutions.js';
 import WaveBackdrop from '../../components/common/WaveBackdrop/WaveBackdrop.jsx';
 import { safeFromTo } from '../../utils/gsapSafe';
+import UpcomingEvents from '../../components/common/UpcomingEvents/UpcomingEvents.jsx';
 import WhereWeOperate from '../../components/common/WhereWeOperate/WhereWeOperate.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -884,6 +885,8 @@ const Home = () => {
           <h2 className="display" id="bandH">{t('home.band.title_main')} <em>{t('home.band.title_em')}</em></h2>
         </div>
       </section>
+
+      <UpcomingEvents />
 
       <WhereWeOperate />
 
