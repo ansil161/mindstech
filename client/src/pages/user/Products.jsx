@@ -6,11 +6,11 @@ import { whenReady } from '../../utils/pageReveal';
 import { useTranslation } from 'react-i18next';
 import Button from '../../components/common/Button/Button.jsx';
 import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.jsx';
+import { useRegion } from '../../context/RegionContext.jsx';
+import { getRegionBrandNames } from '../../constants/regionBrands.js';
 import {
-  BRANDS,
-  CATEGORY_COUNTS,
+  BRANDS as ALL_BRANDS,
   PRODUCT_CATEGORIES,
-  getBrandsByCategory,
   getCategory,
 } from '../../constants/products.js';
 
@@ -34,13 +34,31 @@ const Products = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { category } = useParams();
+  const { regionSlug } = useRegion();
   const containerRef = useRef(null);
 
   const active = getCategory(category) || null;
   // An unknown category in the URL falls back to the full list rather than
   // rendering an empty grid under a heading for a category that doesn't exist.
   const activeCode = active ? active.code : 'all';
-  const brands = useMemo(() => getBrandsByCategory(activeCode), [activeCode]);
+
+  // Only the brands the active region carries (per the brand sheet); regions
+  // the sheet doesn't cover keep the full catalogue.
+  const BRANDS = useMemo(() => {
+    const names = getRegionBrandNames(regionSlug);
+    return names ? ALL_BRANDS.filter((b) => names.has(b.name.toLowerCase())) : ALL_BRANDS;
+  }, [regionSlug]);
+  const CATEGORY_COUNTS = useMemo(
+    () => PRODUCT_CATEGORIES.reduce((acc, c) => {
+      acc[c.code] = BRANDS.filter((b) => b.categories.includes(c.code)).length;
+      return acc;
+    }, {}),
+    [BRANDS]
+  );
+  const brands = useMemo(
+    () => (activeCode === 'all' ? BRANDS : BRANDS.filter((b) => b.categories.includes(activeCode))),
+    [BRANDS, activeCode]
+  );
 
   useEffect(() => {
     document.title = active

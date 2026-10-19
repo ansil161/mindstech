@@ -12,19 +12,21 @@ const FLAGSHIP = CLIENTS.filter((c) => c.flagship);
 
 // One logo tile. Without an approved logo it renders the dashed "slot" state
 // so the grid keeps its shape while the client list is being confirmed.
-const ClientTile = React.forwardRef(function ClientTile({ client, t, showSector }, ref) {
+const ClientTile = React.forwardRef(function ClientTile({ client, t, regionName }, ref) {
   return (
-    <div className="cl-tile" ref={ref} data-sector={client.sector}>
-      <div className={`cl-logo ${client.logo ? '' : 'is-empty'}`}>
+    <div className="pr-card cl-card" ref={ref} data-sector={client.sector}>
+      <div className={`pr-card-logo ${client.logo ? '' : 'is-empty'}`}>
         {client.logo ? (
           <img src={client.logo} alt={`${client.name} logo`} loading="lazy" />
         ) : (
           <span>{t('clients.slot', 'Client logo')}</span>
         )}
       </div>
-      {showSector && (
-        <span className="cl-sector">{t(`clients.sectors.${client.sector}`, client.sector)}</span>
-      )}
+      <div className="pr-card-body">
+        <h3>{client.name || t('clients.slot_name', 'Client name')}</h3>
+        <p>{t(`clients.sectors.${client.sector}`, client.sector)}</p>
+        <span className="pr-card-count">{regionName}</span>
+      </div>
     </div>
   );
 });
@@ -39,6 +41,7 @@ const Clients = () => {
   const regionClients = CLIENTS.filter((c) => c.region === region);
   const visible = regionClients.filter((c) => sector === 'all' || c.sector === sector);
   const regionLabel = (r) => t(r.labelKey, r.fallback);
+  const regionName = (code) => regionLabel(REGIONS.find((r) => r.code === code));
   const activeRegion = REGIONS.find((r) => r.code === region);
 
   useEffect(() => {
@@ -46,7 +49,7 @@ const Clients = () => {
     const ctx = gsap.context(() => {
       const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       if (reduceMotion) {
-        gsap.set(['.reveal', '.cl-tile'], { opacity: 1, y: 0 });
+        gsap.set(['.reveal', '.cl-card'], { opacity: 1, y: 0 });
         return;
       }
 
@@ -71,7 +74,7 @@ const Clients = () => {
         });
       });
 
-      gsap.fromTo('#flagGrid .cl-tile', { opacity: 0, y: 30 }, {
+      gsap.fromTo('#flagGrid .cl-card', { opacity: 0, y: 30 }, {
         opacity: 1, y: 0, duration: 0.7, stagger: 0.05, ease: 'power2.out',
         scrollTrigger: { trigger: '#flagGrid', start: 'top 88%', once: true },
       });
@@ -92,7 +95,7 @@ const Clients = () => {
 
   // Re-stagger the regional grid whenever the region or sector changes.
   useEffect(() => {
-    const tiles = regionGridRef.current?.querySelectorAll('.cl-tile');
+    const tiles = regionGridRef.current?.querySelectorAll('.cl-card');
     if (tiles?.length) {
       gsap.fromTo(tiles, { opacity: 0, y: 18 }, { opacity: 1, y: 0, duration: 0.5, stagger: 0.04, ease: 'power2.out', overwrite: 'auto' });
     }
@@ -136,8 +139,8 @@ const Clients = () => {
           </div>
           <p className="side">{t('clients.flagship.desc', 'Organisations that run on systems we supplied and supported, shown with their approval.')}</p>
         </div>
-        <div className="cl-grid" id="flagGrid">
-          {FLAGSHIP.map((c) => <ClientTile key={c.id} client={c} t={t} />)}
+        <div className="pr-grid" id="flagGrid">
+          {FLAGSHIP.map((c) => <ClientTile key={c.id} client={c} t={t} regionName={regionName(c.region)} />)}
         </div>
       </section>
 
@@ -174,17 +177,22 @@ const Clients = () => {
           })}
         </div>
 
-        <div className="filters cl-filters" role="group" aria-label={t('clients.filter_label', 'Filter clients by sector')}>
-          {SECTOR_CODES.map((code) => (
-            <button
-              key={code}
-              className={`filter-btn ${sector === code ? 'on' : ''}`}
-              aria-pressed={sector === code}
-              onClick={() => setSector(code)}
-            >
-              {t(`clients.sectors.${code}`, code === 'all' ? 'All sectors' : code)}
-            </button>
-          ))}
+        <div className="cl-chips pr-chips" role="group" aria-label={t('clients.filter_label', 'Filter clients by sector')}>
+          {SECTOR_CODES.map((code) => {
+            const count = code === 'all' ? regionClients.length : regionClients.filter((c) => c.sector === code).length;
+            return (
+              <button
+                key={code}
+                type="button"
+                className={`pr-chip ${sector === code ? 'is-active' : ''}`}
+                aria-pressed={sector === code}
+                onClick={() => setSector(code)}
+              >
+                {t(`clients.sectors.${code}`, code === 'all' ? 'All sectors' : code)}
+                <span className="pr-chip-count">{count}</span>
+              </button>
+            );
+          })}
         </div>
 
         <div className="cl-regional-head">
@@ -196,8 +204,8 @@ const Clients = () => {
           </span>
         </div>
 
-        <div className="cl-grid" ref={regionGridRef}>
-          {visible.map((c) => <ClientTile key={c.id} client={c} t={t} showSector />)}
+        <div className="pr-grid" ref={regionGridRef}>
+          {visible.map((c) => <ClientTile key={c.id} client={c} t={t} regionName={regionName(c.region)} />)}
         </div>
         {visible.length === 0 && (
           <p className="cl-empty">{t('clients.region.empty', 'No clients listed in this sector yet.')}</p>

@@ -24,7 +24,7 @@ export const OFFICES = [
     lng: 55.2708,
     role: 'hq',
     region: 'Middle East',
-    email: 'middleeast@mindstec.com',
+    email: 'info.me@mindstec.com',
   },
   {
     key: 'riyadh',
@@ -34,7 +34,7 @@ export const OFFICES = [
     lng: 46.6753,
     role: 'regional',
     region: 'Middle East',
-    email: 'middleeast@mindstec.com',
+    email: 'info.me@mindstec.com',
   },
   {
     key: 'doha',
@@ -44,7 +44,7 @@ export const OFFICES = [
     lng: 51.5310,
     role: 'regional',
     region: 'Middle East',
-    email: 'middleeast@mindstec.com',
+    email: 'info.me@mindstec.com',
   },
   {
     key: 'bangalore',
@@ -54,7 +54,7 @@ export const OFFICES = [
     lng: 77.5946,
     role: 'regional',
     region: 'India',
-    email: 'india@mindstec.com',
+    email: 'info.in@mindstec.com',
   },
   {
     key: 'bangkok',
@@ -64,7 +64,7 @@ export const OFFICES = [
     lng: 100.5018,
     role: 'regional',
     region: 'South Asia',
-    email: 'southasia@mindstec.com',
+    email: 'info@mindstec.com',
   },
   {
     key: 'johannesburg',
@@ -74,7 +74,7 @@ export const OFFICES = [
     lng: 28.0473,
     role: 'regional',
     region: 'Africa',
-    email: 'africa@mindstec.com',
+    email: 'info.af@mindstec.com',
   },
   {
     key: 'warsaw',
@@ -84,7 +84,7 @@ export const OFFICES = [
     lng: 21.0122,
     role: 'regional',
     region: 'Europe',
-    email: 'poland@mindstec.com',
+    email: 'info.eu@mindstec.com',
   },
   {
     // `mapLng` only: the dotted base map draws eastern Brazil several degrees

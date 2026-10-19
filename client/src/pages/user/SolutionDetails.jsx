@@ -10,6 +10,7 @@ import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionSolutionBrands } from '../../api/regionApi.js';
+import { getRegionSolutionBrands } from '../../constants/regionBrands.js';
 import {
   getSolution,
   getRelatedSolutions,
@@ -71,11 +72,18 @@ const SolutionDetails = () => {
   const ctaRef = useRef(null);
   const [showBackdrop, setShowBackdrop] = useState(false);
 
-  const [regionBrands, setRegionBrands] = useState([]);
+  const [cmsBrands, setRegionBrands] = useState([]);
+  // The brand sheet is authoritative for the regions it covers; other regions
+  // use whatever the CMS holds.
+  // Memoised: useDynamicTranslation re-runs on every new array identity.
+  const regionBrands = useMemo(
+    () => getRegionSolutionBrands(regionSlug, slug) || cmsBrands,
+    [regionSlug, slug, cmsBrands]
+  );
   const { translatedData: translatedBrands } = useDynamicTranslation(
     regionBrands,
     ['name'],
-    `solution_brands_${regionSlug}`
+    `solution_brands_${regionSlug}_${slug}`
   );
 
   useEffect(() => {
@@ -763,7 +771,7 @@ const SolutionDetails = () => {
                 rel="noopener noreferrer"
               >
                 <span className="bl-logo">
-                  <img src={brand.logo} alt={`${brand.name} logo`} loading="lazy" />
+                  {brand.logo && <img src={brand.logo} alt={`${brand.name} logo`} loading="lazy" />}
                 </span>
                 <span className="bl-name">{brand.name}</span>
               </a>

@@ -22,7 +22,7 @@ const renderWords = (str) => {
 const FALLBACK_CONTACT = {
   phone: '+918045256922',
   phone_display: '+91 80 4525 6922',
-  email: 'india@mindstec.com',
+  email: 'info.in@mindstec.com',
 };
 
 const About = () => {
