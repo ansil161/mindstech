@@ -67,7 +67,7 @@ const SolutionDetails = () => {
   const legacy = LEGACY_SOLUTION_SLUGS[rawSlug];
   const slug = legacy || rawSlug;
   const { t } = useTranslation();
-  const { regionSlug } = useRegion();
+  const { regionSlug, region } = useRegion();
   const containerRef = useRef(null);
   const ctaRef = useRef(null);
   const [showBackdrop, setShowBackdrop] = useState(false);
@@ -77,8 +77,8 @@ const SolutionDetails = () => {
   // use whatever the CMS holds.
   // Memoised: useDynamicTranslation re-runs on every new array identity.
   const regionBrands = useMemo(
-    () => getRegionSolutionBrands(regionSlug, slug) || cmsBrands,
-    [regionSlug, slug, cmsBrands]
+    () => getRegionSolutionBrands(regionSlug, slug, region) || cmsBrands,
+    [regionSlug, region, slug, cmsBrands]
   );
   const { translatedData: translatedBrands } = useDynamicTranslation(
     regionBrands,

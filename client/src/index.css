@@ -11473,3 +11473,142 @@ footer {
     justify-self: start;
   }
 }
+
+/* ── NEWS & EVENTS: region filter + past events archive ── */
+.nw-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: clamp(28px, 4vw, 44px);
+}
+
+.nw-cat--region {
+  background: transparent;
+  color: var(--grey);
+  border-color: var(--line);
+}
+
+.ev-past {
+  display: grid;
+  gap: 12px;
+}
+
+.ev-past-row {
+  display: grid;
+  grid-template-columns: 120px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(16px, 3vw, 32px);
+  padding: 18px clamp(18px, 2.4vw, 26px);
+  border: 1px solid var(--line-soft);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, .015);
+  opacity: .85;
+}
+
+.ev-past-date {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ev-past-date span {
+  font-family: var(--display);
+  font-size: 28px;
+  font-weight: 600;
+  line-height: 1;
+  color: var(--white);
+}
+
+.ev-past-date small {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+.ev-past-main h3 {
+  font-family: var(--display);
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--white);
+}
+
+.ev-past-main p {
+  margin-top: 4px;
+  font-size: var(--fs-body-sm);
+  color: var(--grey);
+}
+
+@media (max-width: 760px) {
+  .ev-past-row {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+}
+
+/* ── BRANDS PAGE: stacked filter toolbar (solution / search / region) ── */
+.filters--stack {
+  flex-direction: column;
+  gap: 18px;
+}
+
+.filters--stack .filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.filters--stack .filter-row {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.filters--stack .p-search {
+  margin-left: 0;
+  width: 100%;
+  max-width: 240px;
+}
+
+.filter-label {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+/* Chip look for the brands filters: small dark pills, red outline when active. */
+.filters--stack .filter-btn {
+  min-height: 0;
+  padding: 7px 14px;
+  font-size: 12px;
+  letter-spacing: .02em;
+  border-radius: 100px;
+  background: rgba(255, 255, 255, .03);
+  border: 1px solid var(--line);
+}
+
+.filters--stack .filter-btn:hover {
+  background: rgba(255, 255, 255, .06);
+}
+
+.filters--stack .filter-btn.on {
+  color: var(--white);
+  background: rgba(204, 0, 1, .14);
+  border-color: var(--red);
+  box-shadow: 0 0 0 2px rgba(204, 0, 1, .18);
+}
+
+.filters--stack .p-search input {
+  min-height: 40px;
+  border-radius: 6px;
+}
+
+.filters--stack .filter-label {
+  font-family: var(--mono, ui-monospace, monospace);
+  margin-right: 2px;
+}

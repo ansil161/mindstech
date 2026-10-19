@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import eventService from '../services/eventService';
+import regionService from '../services/regionService';
 import notify from '../utils/notify';
 
 export function useEvents() {
@@ -19,6 +20,8 @@ export function useEvents() {
   const [evLocation, setEvLocation] = useState('');
   const [evExternalUrl, setEvExternalUrl] = useState('');
   const [evRegisterUrl, setEvRegisterUrl] = useState('');
+  const [evRegion, setEvRegion] = useState('');
+  const [regions, setRegions] = useState([]);
 
   const fetchEventNews = useCallback(async () => {
     setLoading(true);
@@ -38,6 +41,18 @@ export function useEvents() {
     fetchEventNews();
   }, [fetchEventNews]);
 
+  // Flattened region list for the "Region" picker (sub-regions included).
+  useEffect(() => {
+    regionService.getRegions()
+      .then((res) => {
+        const flat = [];
+        const walk = (list) => (list || []).forEach((r) => { flat.push(r); walk(r.sub_regions); });
+        walk(res.data);
+        setRegions(flat);
+      })
+      .catch(() => setRegions([]));
+  }, []);
+
   const addEventNews = async (e) => {
     e.preventDefault();
     if (!evTitle.trim() || !evDescription.trim()) {
@@ -50,6 +65,7 @@ export function useEvents() {
     formData.append('title', evTitle.trim());
     formData.append('description', evDescription.trim());
     if (evImage) formData.append('image', evImage);
+    if (evRegion) formData.append('region', evRegion);
 
     if (evType === 'news') {
       if (evCategory) formData.append('category', evCategory.trim());
@@ -71,6 +87,7 @@ export function useEvents() {
       setEvLocation('');
       setEvExternalUrl('');
       setEvRegisterUrl('');
+      setEvRegion('');
       setShowAddForm(false);
       notify('Event/News item added successfully.');
     } catch (err) {
@@ -118,6 +135,9 @@ export function useEvents() {
     setEvExternalUrl,
     evRegisterUrl,
     setEvRegisterUrl,
+    evRegion,
+    setEvRegion,
+    regions,
     addEventNews,
     deleteEventNews,
     refresh: fetchEventNews,

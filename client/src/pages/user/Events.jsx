@@ -93,6 +93,7 @@ const NewsCard = ({ item, t, lang }) => {
       <div className="nw-card-body">
         <div className="nw-card-meta">
           {item.category && <span className="nw-cat">{item.category}</span>}
+          {item.region_name && <span className="nw-cat nw-cat--region">{item.region_name}</span>}
           <time dateTime={item.created_at}>{dateStr}</time>
         </div>
         <h3 className="nw-card-title">{item.title}</h3>
@@ -119,13 +120,14 @@ const NewsCard = ({ item, t, lang }) => {
 
 const Events = () => {
   const { t, i18n } = useTranslation();
-  const { regionSlug } = useRegion();
+  const { regionSlug, allRegions } = useRegion();
   const containerRef = useRef(null);
 
   const [rawEvents, setRawEvents] = useState([]);
   const [rawNews, setRawNews]     = useState([]);
   const [loading, setLoading]     = useState(true);
   const [activeTab, setActiveTab] = useState('all'); // 'all' | 'events' | 'news'
+  const [newsRegion, setNewsRegion] = useState('all'); // 'all' or a region slug
   const [regionContact, setRegionContact] = useState(null);
 
   const { translatedData: events } = useDynamicTranslation(rawEvents, ['title', 'description', 'location'], 'events_list');
@@ -251,6 +253,28 @@ const Events = () => {
     return () => { ctx.revert(); clearTimeout(t); };
   }, [loading, events, news, activeTab]);
 
+  // Events whose date has passed move to the archive automatically.
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  const isPast = (e) => e.event_date && new Date(e.event_date) < startOfToday;
+  const upcomingEvents = events.filter((e) => !isPast(e));
+  const pastEvents = events
+    .filter(isPast)
+    .sort((a, b) => new Date(b.event_date) - new Date(a.event_date));
+
+  // Region chips: every active region (sub-regions included), de-duplicated.
+  const regionChips = [];
+  const walkRegions = (list) => (list || []).forEach((r) => {
+    if (r.is_active !== false && !regionChips.some((c) => c.slug === r.slug)) regionChips.push(r);
+    walkRegions(r.sub_regions);
+  });
+  walkRegions(allRegions);
+
+  // A region view shows that region's items plus anything not tagged to a region.
+  const visibleNews = news.filter(
+    (n) => newsRegion === 'all' || !n.region_slug || n.region_slug === newsRegion
+  );
+
   const showEvents = activeTab === 'all' || activeTab === 'events';
   const showNews   = activeTab === 'all' || activeTab === 'news';
 
@@ -290,7 +314,7 @@ const Events = () => {
             {tab.label}
             {tab.key !== 'all' && (
               <span className="ev-tab-count">
-                {tab.key === 'events' ? events.length : news.length}
+                {tab.key === 'events' ? upcomingEvents.length : news.length}
               </span>
             )}
           </button>
@@ -318,11 +342,11 @@ const Events = () => {
             </p>
           </div>
 
-          {events.length === 0 ? (
+          {upcomingEvents.length === 0 ? (
             <p className="ev-empty">{t('events.upcoming.empty', 'No upcoming events at the moment — check back soon.')}</p>
           ) : (
             <div className="ev-grid">
-              {events.map((item, idx) => (
+              {upcomingEvents.map((item, idx) => (
                 <EventCard key={item.id} item={item} idx={idx} t={t} lang={i18n.language} />
               ))}
             </div>
@@ -347,16 +371,78 @@ const Events = () => {
             </p>
           </div>
 
-          {news.length === 0 ? (
+          {regionChips.length > 0 && (
+            <div className="nw-filters" role="group" aria-label={t('events.news.filter_aria', 'Filter news by region')}>
+              <button
+                type="button"
+                className={`filter-btn ${newsRegion === 'all' ? 'on' : ''}`}
+                aria-pressed={newsRegion === 'all'}
+                onClick={() => setNewsRegion('all')}
+              >
+                {t('events.news.all_regions', 'All regions')}
+              </button>
+              {regionChips.map((r) => (
+                <button
+                  key={r.slug}
+                  type="button"
+                  className={`filter-btn ${newsRegion === r.slug ? 'on' : ''}`}
+                  aria-pressed={newsRegion === r.slug}
+                  onClick={() => setNewsRegion(r.slug)}
+                >
+                  {r.name}
+                </button>
+              ))}
+            </div>
+          )}
+
+          {visibleNews.length === 0 ? (
             <p className="ev-empty">{t('events.news.empty', 'No news items yet — check back soon.')}</p>
           ) : (
             <div className="nw-grid">
-              {news.map(item => (
+              {visibleNews.map(item => (
                 <NewsCard key={item.id} item={item} t={t} lang={i18n.language} />
               ))}
             </div>
           )}
         </section>
+      )}
+
+      {/* ── PAST EVENTS ──────────────────────────────────────────────── */}
+      {!loading && showEvents && pastEvents.length > 0 && (
+        <>
+          <div className="rule" />
+          <section className="ev-section" aria-label="Past Events">
+            <div className="ev-section-head section-head">
+              <div>
+                <span className="label label--red">{t('events.past.label', 'Archive')}</span>
+                <h2 className="display" style={{ marginTop: '16px' }}>
+                  {t('events.past.title_main', 'Past')} <em>{t('events.past.title_em', 'events')}</em>
+                </h2>
+              </div>
+              <p className="lede side">
+                {t('events.past.desc', 'Events move here automatically after their end date.')}
+              </p>
+            </div>
+            <div className="ev-past">
+              {pastEvents.map((item) => {
+                const date = formatEventDate(item.event_date, i18n.language);
+                return (
+                  <article key={item.id} className="ev-past-row reveal">
+                    <div className="ev-past-date">
+                      <span>{date.day}</span>
+                      <small>{date.month} {date.year}</small>
+                    </div>
+                    <div className="ev-past-main">
+                      <h3>{item.title}</h3>
+                      {item.location && <p>{item.location}</p>}
+                    </div>
+                    {item.region_name && <span className="nw-cat nw-cat--region">{item.region_name}</span>}
+                  </article>
+                );
+              })}
+            </div>
+          </section>
+        </>
       )}
 
       {/* ── CTA ──────────────────────────────────────────────────────── */}

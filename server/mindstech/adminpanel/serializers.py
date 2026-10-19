@@ -323,12 +323,18 @@ class RegionBrandSerializer(serializers.ModelSerializer):
 
 class EventNewsSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(use_url=True, required=False, allow_null=True)
+    region = serializers.PrimaryKeyRelatedField(
+        queryset=Region.objects.all(), required=False, allow_null=True
+    )
+    region_slug = serializers.CharField(source='region.slug', read_only=True, default=None)
+    region_name = serializers.CharField(source='region.name', read_only=True, default=None)
 
     class Meta:
         model = EventNews
         fields = [
             'id', 'type', 'title', 'description', 'image',
             'category', 'event_date', 'location',
+            'region', 'region_slug', 'region_name',
             'external_url', 'register_url',
             'is_active', 'created_at',
         ]

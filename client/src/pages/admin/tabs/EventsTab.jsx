@@ -26,6 +26,9 @@ export default function EventsTab() {
     setEvExternalUrl,
     evRegisterUrl,
     setEvRegisterUrl,
+    evRegion,
+    setEvRegion,
+    regions,
     addEventNews,
     deleteEventNews,
   } = useEvents();
@@ -106,6 +109,18 @@ export default function EventsTab() {
               onChange={(e) => setEvImage(e.target.files[0])}
               style={{ color: 'var(--grey)', fontSize: '14px' }}
             />
+          </div>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            <label style={{ fontSize: '12px', color: 'var(--grey)' }}>Region</label>
+            <select
+              value={evRegion}
+              onChange={(e) => setEvRegion(e.target.value)}
+              style={{ background: 'var(--ink)', border: '1px solid var(--line)', padding: '10px', borderRadius: '6px', color: 'var(--white)', fontSize: '14px' }}
+            >
+              <option value="">All regions (global)</option>
+              {regions.map((r) => <option key={r.id} value={r.id}>{r.name}</option>)}
+            </select>
           </div>
 
           {evType === 'news' ? (
@@ -204,6 +219,9 @@ export default function EventsTab() {
                 <div style={{ display: 'flex', gap: '6px', marginBottom: '8px' }}>
                   <span className="admin-welcome-chip" style={{ color: item.type === 'event' ? '#3b82f6' : '#22c55e', background: item.type === 'event' ? 'rgba(59,130,246,0.08)' : 'rgba(34,197,94,0.08)', border: `1px solid ${item.type === 'event' ? 'rgba(59,130,246,0.2)' : 'rgba(34,197,94,0.2)'}`, fontSize: '9px', textTransform: 'uppercase', fontWeight: '700' }}>
                     {item.type}
+                  </span>
+                  <span className="admin-welcome-chip" style={{ color: 'var(--grey)', background: 'var(--line)', fontSize: '9px', textTransform: 'uppercase', fontWeight: '700' }}>
+                    {item.region_name || 'All regions'}
                   </span>
                   {item.category && (
                     <span className="admin-welcome-chip" style={{ color: 'var(--grey)', background: 'var(--line)', fontSize: '9px', textTransform: 'uppercase', fontWeight: '700' }}>

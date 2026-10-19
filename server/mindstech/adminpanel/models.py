@@ -150,6 +150,11 @@ class EventNews(models.Model):
     event_date = models.DateTimeField(blank=True, null=True)
     location = models.CharField(max_length=200, blank=True, default='')
 
+    # Region this item is tagged to; empty means it applies to every region.
+    region = models.ForeignKey(
+        'Region', on_delete=models.SET_NULL, null=True, blank=True, related_name='event_news'
+    )
+
     # Shared optional links
     external_url = models.URLField(max_length=500, blank=True, default='')
     register_url = models.URLField(max_length=500, blank=True, default='')

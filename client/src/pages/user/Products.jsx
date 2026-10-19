@@ -34,7 +34,7 @@ const Products = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { category } = useParams();
-  const { regionSlug } = useRegion();
+  const { regionSlug, region } = useRegion();
   const [query, setQuery] = useState('');
   const containerRef = useRef(null);
 
@@ -46,9 +46,9 @@ const Products = () => {
   // Only the brands the active region carries (per the brand sheet); regions
   // the sheet doesn't cover keep the full catalogue.
   const BRANDS = useMemo(() => {
-    const names = getRegionBrandNames(regionSlug);
+    const names = getRegionBrandNames(regionSlug, region);
     return names ? ALL_BRANDS.filter((b) => names.has(b.name.toLowerCase())) : ALL_BRANDS;
-  }, [regionSlug]);
+  }, [regionSlug, region]);
   const CATEGORY_COUNTS = useMemo(
     () => PRODUCT_CATEGORIES.reduce((acc, c) => {
       acc[c.code] = BRANDS.filter((b) => b.categories.includes(c.code)).length;

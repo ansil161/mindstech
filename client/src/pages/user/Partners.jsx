@@ -5,7 +5,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import { useTranslation } from 'react-i18next';
-import { BRANDS, PARTNER_CATEGORY_CODES } from '../../constants/products.js';
+import { BRANDS } from '../../constants/products.js';
+import { BRAND_FILTER_REGIONS, BRAND_FILTER_SOLUTIONS, brandMatches } from '../../constants/regionBrands.js';
 
 
 gsap.registerPlugin(ScrollTrigger);
@@ -20,12 +21,11 @@ gsap.registerPlugin(ScrollTrigger);
 
 const Partners = () => {
   const { t } = useTranslation();
-  const [filter, setFilter] = useState('all');
+  const [solFilter, setSolFilter] = useState('all');
+  const [regFilter, setRegFilter] = useState('all');
   const [query, setQuery] = useState('');
   const containerRef = useRef(null);
   const cardsRef = useRef([]);
-
-  const categories = PARTNER_CATEGORY_CODES.map(code => ({ code, label: t(`partners.categories.${code}`) }));
 
   useEffect(() => {
     cardsRef.current = cardsRef.current.slice(0, BRANDS.length);
@@ -150,8 +150,7 @@ const Partners = () => {
   useEffect(() => {
     const visibleCards = cardsRef.current.filter(el => {
       if (!el) return false;
-      const cardCat = el.getAttribute('data-cat');
-      return (filter === 'all' || cardCat === filter) && el.getAttribute('data-match') === '1';
+      return el.getAttribute('data-match') === '1';
     });
 
     if (visibleCards.length > 0) {
@@ -160,10 +159,13 @@ const Partners = () => {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.04, ease: 'power2.out', overwrite: 'auto' }
       );
     }
-  }, [filter, query]);
+  }, [solFilter, regFilter, query]);
 
   const q = query.trim().toLowerCase();
-  const matchesQuery = (brand) => !q || `${brand.name} ${t(brand.descKey)}`.toLowerCase().includes(q);
+  const matches = (brand) =>
+    brandMatches(brand.name, solFilter === 'all' ? null : solFilter, regFilter === 'all' ? null : regFilter) &&
+    (!q || `${brand.name} ${t(brand.descKey)}`.toLowerCase().includes(q));
+  const resultCount = BRANDS.filter(matches).length;
 
   return (
     <main id="top" ref={containerRef}>
@@ -185,42 +187,59 @@ const Partners = () => {
         <div className="fact"><b>{t('partners.meta.fact3_b')}</b><span>{t('partners.meta.fact3_s')}</span></div>
       </div>
 
-      {/* FILTERS */}
-      <div className="filters" id="filters" role="group" aria-label="Filter partners by category">
-        {categories.map(cat => (
-          <button
-            key={cat.code}
-            className={`filter-btn ${filter === cat.code ? 'on' : ''}`}
-            onClick={() => setFilter(cat.code)}
-          >
-            {cat.label}
-            {cat.code === 'all' && <span className="filter-count">{BRANDS.length}</span>}
+      {/* FILTERS: solution, region and free-text search. */}
+      <div className="filters filters--stack" id="filters">
+        <div className="filter-group" role="group" aria-label={t('partners.filter.solution', 'Filter brands by solution')}>
+          <button type="button" className={`filter-btn ${solFilter === 'all' ? 'on' : ''}`} aria-pressed={solFilter === 'all'} onClick={() => setSolFilter('all')}>
+            {t('partners.filter.all_solutions', 'All solutions')}
           </button>
-        ))}
-        <div className="bsearch p-search">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-            <circle cx="11" cy="11" r="7" />
-            <path d="M20 20l-3.6-3.6" />
-          </svg>
-          <input
-            type="search"
-            value={query}
-            onChange={(e) => setQuery(e.target.value)}
-            placeholder={t('brands.search_placeholder', 'Search brands…')}
-            aria-label={t('brands.search_aria', 'Search brands')}
-          />
-          {query && (
-            <button type="button" className="bsearch-clear" onClick={() => setQuery('')} aria-label={t('brands.search_clear', 'Clear search')}>
-              ×
+          {BRAND_FILTER_SOLUTIONS.map((s) => (
+            <button key={s.key} type="button" className={`filter-btn ${solFilter === s.key ? 'on' : ''}`} aria-pressed={solFilter === s.key} onClick={() => setSolFilter(s.key)}>
+              {s.label}
             </button>
-          )}
+          ))}
+        </div>
+        <div className="filter-row">
+          <div className="bsearch p-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" />
+              <path d="M20 20l-3.6-3.6" />
+            </svg>
+            <input
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={t('brands.search_placeholder', 'Search brands…')}
+              aria-label={t('brands.search_aria', 'Search brands')}
+            />
+            {query && (
+              <button type="button" className="bsearch-clear" onClick={() => setQuery('')} aria-label={t('brands.search_clear', 'Clear search')}>
+                ×
+              </button>
+            )}
+          </div>
+          <div className="filter-group" role="group" aria-label={t('partners.filter.region', 'Filter brands by region')}>
+            <span className="filter-label">{t('partners.filter.region_label', 'Region')}</span>
+            <button type="button" className={`filter-btn ${regFilter === 'all' ? 'on' : ''}`} aria-pressed={regFilter === 'all'} onClick={() => setRegFilter('all')}>
+              {t('partners.filter.all', 'All')}
+            </button>
+            {BRAND_FILTER_REGIONS.map((r) => (
+              <button key={r.key} type="button" className={`filter-btn ${regFilter === r.key ? 'on' : ''}`} aria-pressed={regFilter === r.key} onClick={() => setRegFilter(r.key)}>
+                {r.label}
+              </button>
+            ))}
+          </div>
         </div>
       </div>
+
+      {resultCount === 0 && (
+        <p className="ev-empty" style={{ padding: '0 var(--pad) 48px' }}>{t('brands.no_results', 'No brands match your search.')}</p>
+      )}
 
       {/* PARTNER GRID */}
       <div className="pgrid" id="pgrid">
         {BRANDS.map((brand, i) => {
-          const isVisible = (filter === 'all' || brand.cat === filter) && matchesQuery(brand);
+          const isVisible = matches(brand);
           return (
             // Each card now opens the brand's catalogue page. Before, the grid
             // was twenty-five dead ends — the logos were the only thing the
@@ -230,7 +249,7 @@ const Partners = () => {
               to={`/products/${brand.slug}`}
               className={`p-card ${isVisible ? '' : 'is-hidden'}`}
               data-cat={brand.cat}
-              data-match={matchesQuery(brand) ? '1' : '0'}
+              data-match={isVisible ? '1' : '0'}
               ref={el => (cardsRef.current[i] = el)}
             >
               <div className="p-logo">

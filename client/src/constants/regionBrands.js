@@ -12,6 +12,19 @@ import { BRANDS } from './products.js';
  */
 const REGION_LETTER = { india: 'I', 'middle-east': 'M', africa: 'A', europe: 'E' };
 
+// The CMS slug can drift from the canonical one (a sub-region such as
+// "middle-east-uae", or a differently spelled name), so match on the slug or
+// the display name containing the region word.
+function regionLetter(slugOrName) {
+  const v = String(slugOrName || '').toLowerCase().replace(/[\s_/]+/g, '-');
+  if (REGION_LETTER[v]) return REGION_LETTER[v];
+  if (v.includes('middle-east')) return 'M';
+  if (v.includes('india')) return 'I';
+  if (v.includes('africa')) return 'A';
+  if (v.includes('europe')) return 'E';
+  return null;
+}
+
 const SHEET = {
   'control-rooms-critical-environments': [
     ['Datapath', 'IMAE'], ['Christie', 'I'], ['Delta', 'M'], ['Horion', 'A'],
@@ -45,7 +58,49 @@ const SHEET = {
   'information-and-communication-technology': [
     ['Cambium', 'M'], ['Kordz', 'IMAE'],
   ],
+  'professional-audio-systems': [
+    ['Sonance', 'I'], ['AtlasIED', 'M'], ['SCT', 'IM'],
+  ],
+  // Not a column in the brand sheet: the cabling, mounting, distribution and
+  // transport lines that sit under every other vertical.
+  'av-infrastructure': [
+    ['Kordz', 'IMAE'], ['B-Tech', 'IMAE'], ['Blustream', 'IMA'], ['MTC', 'IMAE'],
+  ],
 };
+
+/** Filter options for the brands page, in display order. */
+export const BRAND_FILTER_SOLUTIONS = [
+  { key: 'control-rooms-critical-environments', label: 'Control Rooms' },
+  { key: 'conferencing-collaboration', label: 'Conferencing' },
+  { key: 'immersive-experience', label: 'Immersive' },
+  { key: 'broadcast-production-streaming', label: 'Broadcast' },
+  { key: 'digital-signage-dooh', label: 'Signage & DOOH' },
+  { key: 'professional-audio-systems', label: 'Pro Audio' },
+  { key: 'hospitality-guest-experience', label: 'Hospitality' },
+  { key: 'av-infrastructure', label: 'AV Infrastructure' },
+  { key: 'information-and-communication-technology', label: 'ICT' },
+];
+
+export const BRAND_FILTER_REGIONS = [
+  { key: 'middle-east', label: 'Middle East' },
+  { key: 'india', label: 'India' },
+  { key: 'africa', label: 'Africa' },
+  { key: 'europe', label: 'Europe' },
+];
+
+/**
+ * Whether a brand (by name) is offered under a solution and/or in a region.
+ * `null` for either filter means "any".
+ */
+export function brandMatches(name, solutionKey, regionSlug) {
+  const letter = regionSlug ? regionLetter(regionSlug) : null;
+  const keys = solutionKey ? [solutionKey] : Object.keys(SHEET);
+  return keys.some((k) =>
+    (SHEET[k] || []).some(
+      ([n, regions]) => n.toLowerCase() === name.toLowerCase() && (!letter || regions.includes(letter))
+    )
+  );
+}
 
 const URLS = {
   Datapath: 'https://www.datapath.co.uk',
@@ -88,12 +143,14 @@ const logoFor = (name) => BRANDS.find((b) => b.name.toLowerCase() === name.toLow
  * Brands for a vertical in a region, as `{ name, logo, website_url }`, or null
  * when the sheet doesn't cover that region (caller falls back to the CMS).
  */
-export function getRegionSolutionBrands(regionSlug, solutionSlug) {
-  const letter = REGION_LETTER[regionSlug];
-  if (!letter) return null;
+export function getRegionSolutionBrands(regionSlug, solutionSlug, regionName) {
+  const letter = regionLetter(regionSlug) || regionLetter(regionName);
+  const isGlobal = !letter && /global/i.test(`${regionSlug} ${regionName}`);
+  // Global is the whole portfolio; any other uncovered region defers to the CMS.
+  if (!letter && !isGlobal) return null;
   const rows = SHEET[solutionSlug] || [];
   return rows
-    .filter(([, regions]) => regions.includes(letter))
+    .filter(([, regions]) => isGlobal || regions.includes(letter))
     .map(([name]) => ({ name, logo: logoFor(name), website_url: URLS[name] || '' }));
 }
 
@@ -101,8 +158,8 @@ export function getRegionSolutionBrands(regionSlug, solutionSlug) {
  * Lower-cased names of every brand offered in a region (any vertical), or null
  * when the sheet doesn't cover that region.
  */
-export function getRegionBrandNames(regionSlug) {
-  const letter = REGION_LETTER[regionSlug];
+export function getRegionBrandNames(regionSlug, regionName) {
+  const letter = regionLetter(regionSlug) || regionLetter(regionName);
   if (!letter) return null;
   const names = new Set();
   Object.values(SHEET).forEach((rows) => {
