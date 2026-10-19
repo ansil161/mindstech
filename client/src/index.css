@@ -11477,6 +11477,24 @@ footer {
 }
 
 /* ── NEWS & EVENTS: region filter + past events archive ── */
+.rg-group + .rg-group {
+  margin-top: clamp(32px, 5vw, 56px);
+}
+
+.rg-group-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid currentColor;
+  border-color: color-mix(in srgb, currentColor 15%, transparent);
+}
+
+.rg-placeholder {
+  padding: 28px 0;
+  font-style: italic;
+}
+
 .nw-filters {
   display: flex;
   flex-wrap: wrap;

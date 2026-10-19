@@ -300,6 +300,16 @@ const Events = () => {
     </div>
   );
 
+  // Region category: everything the backend has tagged to a region, grouped by
+  // region. Until some item carries a region, a single placeholder is shown.
+  const regionGroups = regionChips
+    .map((r) => ({
+      region: r,
+      events: upcomingEvents.filter((e) => e.region_slug === r.slug),
+      news: news.filter((n) => n.region_slug === r.slug),
+    }))
+    .filter((g) => g.events.length > 0 || g.news.length > 0);
+
   const showEvents = activeTab === 'all' || activeTab === 'events';
   const showNews   = activeTab === 'all' || activeTab === 'news';
 
@@ -446,6 +456,52 @@ const Events = () => {
                 );
               })}
             </div>
+          </section>
+        </>
+      )}
+
+      {/* ── REGION CATEGORY ──────────────────────────────────────────── */}
+      {!loading && activeTab === 'all' && (
+        <>
+          <div className="rule" />
+          <section className="ev-section" aria-label="Region">
+            <div className="ev-section-head section-head">
+              <div>
+                <span className="label label--red">{t('events.region.label', 'Region')}</span>
+                <h2 className="display" style={{ marginTop: '16px' }}>
+                  {t('events.region.title_main', 'By')} <em>{t('events.region.title_em', 'region.')}</em>
+                </h2>
+              </div>
+              <p className="lede side">
+                {t('events.region.desc', 'Events and news from each of our regions.')}
+              </p>
+            </div>
+
+            {regionGroups.length === 0 ? (
+              <p className="ev-empty rg-placeholder">
+                {t('events.region.empty', 'Regional events and news will appear here soon.')}
+              </p>
+            ) : (
+              regionGroups.map(({ region, events: rEvents, news: rNews }) => (
+                <div className="rg-group" key={region.slug}>
+                  <h3 className="rg-group-title">{region.name}</h3>
+                  {rEvents.length > 0 && (
+                    <div className="ev-grid">
+                      {rEvents.map((item, idx) => (
+                        <EventCard key={`e-${item.id}`} item={item} idx={idx} t={t} lang={i18n.language} />
+                      ))}
+                    </div>
+                  )}
+                  {rNews.length > 0 && (
+                    <div className="nw-grid">
+                      {rNews.map((item) => (
+                        <NewsCard key={`n-${item.id}`} item={item} t={t} lang={i18n.language} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
           </section>
         </>
       )}
