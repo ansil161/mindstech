@@ -10,6 +10,13 @@ class EnquirySerializer(serializers.ModelSerializer):
             'subject', 'message', 'source', 'status', 'created_at',
         ]
         read_only_fields = ['id', 'status', 'created_at']
+        # The contact page no longer asks for a phone number.
+        extra_kwargs = {'phone': {'required': False, 'allow_blank': True}}
+
+    def validate(self, attrs):
+        if not attrs.get('phone'):
+            attrs['phone'] = 'N/A'
+        return attrs
 
     def validate_name(self, value):
         value = strip_tags(value).strip()
@@ -31,6 +38,8 @@ class EnquirySerializer(serializers.ModelSerializer):
 
     def validate_phone(self, value):
         cleaned = strip_tags(value).strip()
+        if cleaned in ('', 'N/A'):
+            return cleaned
         if not any(char.isdigit() for char in cleaned):
             raise serializers.ValidationError("Phone number must contain digits.")
         return cleaned

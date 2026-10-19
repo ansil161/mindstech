@@ -6,7 +6,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Button from '../../common/Button/Button.jsx';
 import LanguageSwitcher from '../../common/LanguageSwitcher.jsx';
 import { getSolutionLinks } from '../../../constants/solutions.js';
-import { PRODUCT_CATEGORIES } from '../../../constants/products.js';
 
 /**
  * Primary navigation.
@@ -159,40 +158,10 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
                 ))}
               </div>
             </li>
-            {/* Products is a peer of Solutions, not a child of Company: the two
-                are the site's two ways into the same catalogue — by what the
-                room has to do, and by whose hardware does it. */}
-            <li
-              className={`nav-item ${activeDropdown === 'products' ? 'open' : ''}`}
-              onMouseEnter={() => handleMouseEnter('products')}
-              onMouseLeave={handleMouseLeave}
-            >
-              <Link to="/products" className={isProductsActive ? 'active' : ''} onClick={(e) => handleItemClick('products', e)}>
+            <li>
+              <NavLink to="/products" className={isProductsActive ? 'active' : ''} onClick={closeMenus}>
                 {t('navbar.products', 'Products')}
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </Link>
-              <div className={`sub sub--wide ${activeDropdown === 'products' ? 'open' : ''}`}>
-                <NavLink
-                  to="/products"
-                  end
-                  className={({ isActive }) => `sub-all${isActive ? ' sub-active' : ''}`}
-                  onClick={closeMenus}
-                >
-                  {t('products.all', 'All brands')}
-                </NavLink>
-                {PRODUCT_CATEGORIES.map((cat) => (
-                  <NavLink
-                    key={cat.code}
-                    to={`/products/category/${cat.code}`}
-                    className={subClass}
-                    onClick={closeMenus}
-                  >
-                    {t(`products.categories.${cat.code}.name`, cat.name)}
-                  </NavLink>
-                ))}
-              </div>
+              </NavLink>
             </li>
             <li>
               <NavLink to="/projects" className={isProjectsActive ? 'active' : ''} onClick={closeMenus}>
