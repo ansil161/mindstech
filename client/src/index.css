@@ -11752,3 +11752,10 @@ footer {
   .abar-text strong, .abar-loc { white-space: normal; }
   .abar-text { white-space: normal; }
 }
+
+/* Home: News and projects header links */
+.np-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 28px;
+}

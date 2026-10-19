@@ -1,10 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { whenReady } from '../../utils/pageReveal';
 import Button from '../../components/common/Button/Button.jsx';
 import axios from '../../api/axios';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 import { getPublicTestimonials } from '../../api/testimonialApi.js';
@@ -17,6 +17,7 @@ import { safeFromTo } from '../../utils/gsapSafe';
 import UpcomingEvents from '../../components/common/UpcomingEvents/UpcomingEvents.jsx';
 import WhereWeOperate from '../../components/common/WhereWeOperate/WhereWeOperate.jsx';
 import TrainingBand from '../../components/sections/home/TrainingBand.jsx';
+import NewsAndProjects from '../../components/sections/home/NewsAndProjects.jsx';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -1018,6 +1019,9 @@ const Home = () => {
           </Link>
         </div>
       </section>
+
+      {/* NEWS AND PROJECTS */}
+      <NewsAndProjects />
 
       <TrainingBand />
 
