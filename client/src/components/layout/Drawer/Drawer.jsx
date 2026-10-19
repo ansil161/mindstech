@@ -50,6 +50,7 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
       <span className="drawer-group">{t('navbar.company', 'Company')}</span>
       <NavLink to="/about" className="drawer-sub" onClick={close}>{t('navbar.about_us')}</NavLink>
       <NavLink to="/partners" className="drawer-sub" onClick={close}>{t('navbar.partners')}</NavLink>
+      <NavLink to="/clients" className="drawer-sub" onClick={close}>{t('navbar.clients', 'Clients')}</NavLink>
       <NavLink to="/experience" className="drawer-sub" onClick={close}>
         {t('navbar.experience', 'Experience Centre')}
       </NavLink>

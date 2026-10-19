@@ -84,7 +84,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
   const path = location.pathname;
   const isSolutionsActive = path.startsWith('/solutions');
   const isProductsActive = path.startsWith('/products');
-  const isCompanyActive = path === '/about' || path === '/partners' || path === '/experience';
+  const isCompanyActive = path === '/about' || path === '/partners' || path === '/clients' || path === '/experience';
   const isProjectsActive = path.startsWith('/projects');
   const isInsightsActive =
     path === '/blogs' || path === '/gallery' || path === '/events' || path === '/ewaste';
@@ -123,6 +123,7 @@ const Navbar = ({ drawerOpen, setDrawerOpen }) => {
               <div className={`sub ${activeDropdown === 'company' ? 'open' : ''}`}>
                 <NavLink to="/about" end className={subClass} onClick={closeMenus}>{t('navbar.about_us')}</NavLink>
                 <NavLink to="/partners" className={subClass} onClick={closeMenus}>{t('navbar.partners')}</NavLink>
+                <NavLink to="/clients" className={subClass} onClick={closeMenus}>{t('navbar.clients', 'Clients')}</NavLink>
                 <NavLink to="/experience" className={subClass} onClick={closeMenus}>
                   {t('navbar.experience', 'Experience Centre')}
                 </NavLink>

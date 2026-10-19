@@ -188,7 +188,7 @@ const SOLUTIONS = {
       primary: { text: 'Get a quote', to: '/contact' },
       secondary: { text: 'See ICT brands', to: '/products' },
     },
-    brands: ['Kordz', 'NETGEAR AV', 'Blustream', 'MTC'],
+    brands: ['Cambium', 'Kordz'],
     next: 'hospitality-guest-experience',
   },
   'digital-signage-dooh': {
@@ -276,7 +276,7 @@ const SOLUTIONS = {
       primary: { text: 'Scope my network', to: '/contact' },
       secondary: { text: 'See signage brands', to: '/partners' },
     },
-    brands: ['Amino', 'Humelab', 'Blustream', 'Kordz', 'Wavex', 'B-Tech'],
+    brands: ['Kordz', 'B-Tech', 'Blustream', 'Amino', 'Wavex', 'Smartsign', 'Bluefin'],
     next: 'control-rooms-critical-environments',
   },
 
@@ -365,7 +365,7 @@ const SOLUTIONS = {
       primary: { text: 'Request a design review', to: '/contact' },
       secondary: { text: 'See control room brands', to: '/partners' },
     },
-    brands: ['RTI', 'Datapath', 'Sapling', 'Blustream', 'Christie', 'Kordz', 'NETGEAR AV', 'MTC', 'Wavex', 'Polywall'],
+    brands: ['Datapath', 'Christie', 'Delta', 'Horion', 'Polywall', 'NETGEAR AV', 'Cambium', 'MTC', 'Kordz', 'B-Tech', 'Blustream', 'RTI', 'Sapling', 'Wavex', 'AtlasIED', 'Aurora'],
     next: 'conferencing-collaboration',
   },
 
@@ -454,7 +454,7 @@ const SOLUTIONS = {
       primary: { text: 'Get a room standard', to: '/contact' },
       secondary: { text: 'See collaboration brands', to: '/partners' },
     },
-    brands: ['RTI', 'Sonance', 'Blustream', 'Kordz', 'T1V', 'MTC', 'Wavex', 'GoGet', 'B-Tech', 'Magnum'],
+    brands: ['T1V', 'MTC', 'Avocor', 'Sonance', 'Kordz', 'B-Tech', 'GoGet', 'iPort', 'Magnum', 'Blustream', 'RTI', 'SCT', 'Wavex', 'Aurora'],
     next: 'information-and-communication-technology',
   },
 
@@ -543,7 +543,7 @@ const SOLUTIONS = {
       primary: { text: 'Plan the property', to: '/contact' },
       secondary: { text: 'See hospitality brands', to: '/partners' },
     },
-    brands: ['Lemco', 'RTI', 'Sonance', 'Blustream', 'Kordz', 'MTC', 'RDL', 'B-Tech'],
+    brands: ['Lemco', 'Sonance', 'RDL', 'Kordz', 'B-Tech', 'Blustream', 'RTI', 'MTC', 'Humelab'],
     next: 'immersive-experience',
   },
 
@@ -632,7 +632,7 @@ const SOLUTIONS = {
       primary: { text: 'Spec the chain', to: '/contact' },
       secondary: { text: 'See broadcast brands', to: '/partners' },
     },
-    brands: ['Datapath', 'Blustream', 'Kordz', 'RDL', 'B-Tech', 'Vizrt', 'SalrayWorks', 'Telycam'],
+    brands: ['Vizrt', 'Telycam', 'PTZ Optics', 'Kordz', 'B-Tech', 'Blustream', 'SalrayWorks'],
     next: 'digital-signage-dooh',
   },
 
@@ -721,7 +721,7 @@ const SOLUTIONS = {
       primary: { text: 'Build a kit list', to: '/contact' },
       secondary: { text: 'See event brands', to: '/partners' },
     },
-    brands: ['RTI', 'Datapath', 'Sonance', 'Blustream', 'Christie', 'Kordz', 'T1V', 'MTC', 'Wavex', 'B-Tech'],
+    brands: ['Datapath', 'T1V', 'MTC', 'Christie', 'Sonance', 'Kordz', 'B-Tech', 'Blustream', 'RTI', 'Wavex', 'Vizrt'],
     next: 'broadcast-production-streaming',
   },
 };

@@ -103,6 +103,7 @@ const Footer = () => {
           <h5>{t('navbar.company', 'Company')}</h5>
           <Link to="/about">{t('navbar.about_us')}</Link>
           <Link to="/partners">{t('navbar.partners')}</Link>
+          <Link to="/clients">{t('navbar.clients', 'Clients')}</Link>
           <Link to="/experience">{t('footer.experience', 'Experience Centre')}</Link>
           <Link to="/projects">{t('navbar.projects', 'Projects')}</Link>
           <Link to="/contact">{t('footer.contact')}</Link>

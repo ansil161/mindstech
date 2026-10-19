@@ -11259,3 +11259,172 @@ footer {
     transition: none;
   }
 }
+
+/* ── CLIENTS ── */
+.cl-section {
+  padding: var(--section-y) 0 var(--section-y-sm);
+}
+
+.cl-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 1.8vw, 24px);
+  padding: 0 var(--pad);
+}
+
+.cl-tile {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.cl-logo {
+  background: #f7f6f3;
+  border: 1px solid var(--line-soft);
+  border-radius: 2px;
+  aspect-ratio: 16/9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 12%;
+  overflow: hidden;
+  transition: border-color .35s, transform .5s var(--ease);
+}
+
+.cl-logo img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  filter: grayscale(1);
+  opacity: .82;
+  transition: filter .5s var(--ease), opacity .5s;
+}
+
+.cl-tile:hover .cl-logo {
+  transform: translateY(-3px);
+}
+
+.cl-tile:hover .cl-logo img {
+  filter: grayscale(0);
+  opacity: 1;
+}
+
+/* Awaiting an approved logo: a dark dashed slot, not a fake white logo card. */
+.cl-logo.is-empty {
+  background: var(--ink-2);
+  border: 1px dashed var(--line);
+}
+
+.cl-logo.is-empty span {
+  font-size: 11.5px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--grey-dark);
+}
+
+.cl-sector {
+  font-size: 11.5px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--grey);
+  padding-left: 2px;
+}
+
+.cl-regions {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: clamp(14px, 1.8vw, 24px);
+  padding: 0 var(--pad);
+}
+
+.cl-region {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  text-align: left;
+  padding: 22px 22px 20px;
+  background: var(--ink-2);
+  border: 1px solid var(--line-soft);
+  border-radius: 2px;
+  min-height: 44px;
+  transition: border-color .3s, background .3s;
+}
+
+.cl-region:hover {
+  border-color: rgba(255, 255, 255, .3);
+}
+
+.cl-region.on {
+  border-color: var(--red);
+  background: linear-gradient(180deg, rgba(204, 0, 1, .14), var(--ink-2));
+}
+
+.cl-region-num {
+  font-family: var(--display);
+  font-size: 11px;
+  letter-spacing: .14em;
+  color: var(--grey-dark);
+}
+
+.cl-region.on .cl-region-num {
+  color: var(--red);
+}
+
+.cl-region-name {
+  font-family: var(--display);
+  font-size: var(--fs-h3);
+  font-weight: 600;
+  letter-spacing: -.015em;
+  color: var(--white);
+}
+
+.cl-region-count {
+  font-size: 12px;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.cl-filters {
+  padding-bottom: clamp(24px, 3vw, 36px);
+}
+
+.cl-regional-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  padding: 0 var(--pad) 24px;
+}
+
+.cl-regional-head h3 {
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 600;
+  letter-spacing: -.015em;
+}
+
+.cl-live {
+  font-size: 12px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--grey);
+}
+
+.cl-empty {
+  padding: 24px var(--pad);
+  color: var(--grey);
+}
+
+@media (max-width: 1100px) {
+  .cl-grid { grid-template-columns: repeat(3, 1fr); }
+  .cl-regions { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 720px) {
+  .cl-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 420px) {
+  .cl-regions { grid-template-columns: 1fr; }
+}
