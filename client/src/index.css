@@ -1827,20 +1827,19 @@ blockquote {
 .strip {
   border-top: 1px solid var(--line-soft);
   border-bottom: 1px solid var(--line-soft);
-  padding: 18px 0;
+  padding: 22px 0;
   overflow: hidden;
-  /* Fade both ends instead of hard-cutting names at the viewport edge. A
-     marquee that clips mid-letterform is the detail that makes an otherwise
-     fine strip look unfinished. */
+  /* Fade both ends instead of hard-cutting tiles at the viewport edge. */
   -webkit-mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
   mask-image: linear-gradient(to right, transparent, #000 8%, #000 92%, transparent);
 }
 
 .strip-track {
   display: flex;
-  gap: 64px;
+  align-items: center;
+  gap: 16px;
   width: max-content;
-  animation: strip 108s linear infinite;
+  animation: strip 80s linear infinite;
 }
 
 .strip:hover .strip-track {
@@ -1849,35 +1848,35 @@ blockquote {
 
 @keyframes strip {
   to {
-    transform: translateX(-50%);
+    /* Half the track plus half a gap: the list is rendered twice. */
+    transform: translateX(calc(-50% - 8px));
   }
 }
 
-.strip span {
-  font-family: var(--display);
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: .04em;
-  color: var(--grey-dark);
-  white-space: nowrap;
+/* Each logo on its own white tile, in its original colours. The logo files are
+   trimmed to the artwork, so the tile padding (not the file) sets the breathing
+   room and the mark fills the tile. */
+.strip-logo {
+  flex-shrink: 0;
+  height: 68px;
+  padding: 0 28px;
   display: flex;
   align-items: center;
-  gap: 64px;
+  justify-content: center;
+  border-radius: 10px;
+  background: #fff;
+  transition: transform .3s var(--ease);
 }
 
-.strip span::after {
-  content: '';
-  width: 5px;
-  height: 5px;
-  background: var(--red);
-  border-radius: 50%;
-  flex-shrink: 0;
+.strip-logo img {
+  height: 34px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
 }
 
-/* The track already pauses on hover; lifting the names out of --grey-dark at
-   the same time makes that pause feel deliberate rather than like a stall. */
-.strip:hover span {
-  color: var(--grey);
+.strip-logo:hover {
+  transform: translateY(-2px);
 }
 
 /* A permanently-scrolling strip is exactly what reduced-motion is for. Holding
