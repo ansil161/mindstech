@@ -1,0 +1,5 @@
+.cr-roles { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.cr-role { display: grid; gap: 4px; padding: 14px 16px; border: 1px dashed var(--ct-edge); border-radius: 4px; color: var(--grey); font-size: 14px; }
+.cr-role strong { color: var(--white); font-family: var(--display); font-size: 16px; }
+.cr-file { margin-top: 16px; }
+.cr-file__name { font-size: 12px; color: var(--grey); }

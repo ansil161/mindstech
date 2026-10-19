@@ -18,3 +18,4 @@
 }
 .ax-region:hover { color: var(--red); }
 .ax-region h3 { font-size: clamp(18px, 1.8vw, 24px); }
+.ax-region-countries { display: block; margin-top: 8px; font-size: 14px; color: var(--grey); }

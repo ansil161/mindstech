@@ -6,7 +6,7 @@ import Button from '../Button/Button.jsx';
  * Trade-show and hosted events Mindstec is attending. `start`/`end` are
  * ISO dates (inclusive); an event drops off the list the day after it ends.
  */
-const EVENTS = [
+export const EVENTS = [
   {
     name: 'Mindstec Connect at GITEX Global 2026',
     start: '2026-12-07',

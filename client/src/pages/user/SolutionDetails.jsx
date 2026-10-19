@@ -7,6 +7,7 @@ import Button from '../../components/common/Button/Button.jsx';
 import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.jsx';
 import NotFound from './NotFound.jsx';
 import SolutionApplications from '../../components/sections/solutions/SolutionApplications.jsx';
+import SolutionProjects from '../../components/sections/solutions/SolutionProjects.jsx';
 import SolutionEnquiry from '../../components/sections/solutions/SolutionEnquiry.jsx';
 import { useTranslation } from 'react-i18next';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
@@ -784,6 +785,9 @@ const SolutionDetails = () => {
           </div>
         </section>
       )}
+
+      {/* Projects / In action (wireframe) */}
+      <SolutionProjects slug={slug} />
 
       {/* ── 10 · CLOSING CTA ────────────────────────────────────────────────
           Deliberately ahead of "Related solutions". The ask should land while

@@ -1,0 +1,2 @@
+.cln-note { margin-top: 24px; padding: 16px 20px; border: 1px dashed rgba(255,255,255,.25); border-radius: 4px; display: flex; flex-wrap: wrap; gap: 6px 14px; font-size: 14px; color: var(--grey); }
+.cln-note strong { color: var(--white); font-weight: 600; }

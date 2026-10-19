@@ -1,14 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { useRegion } from '../../../context/RegionContext.jsx';
+import { REGION_ABOUT, uniqueCountries } from './regionAbout.js';
 import './about-extras.css';
 
+// "Regional sites" from the wireframe's About page: one card per regional
+// team, each opening that region's About page.
 const AboutRegions = () => {
   const { t } = useTranslation();
-  const { allRegions, setRegion } = useRegion();
-  const regions = (Array.isArray(allRegions) ? allRegions : []).filter((r) => r && r.name);
-  if (!regions.length) return null;
 
   return (
     <section className="ax-sec" aria-label="Regional sites">
@@ -21,14 +20,10 @@ const AboutRegions = () => {
         </div>
       </div>
       <div className="ax-regions">
-        {regions.map((r) => (
-          <Link
-            key={r.slug || r.name}
-            to="/contact"
-            className="ax-region reveal"
-            onClick={() => setRegion(r.name)}
-          >
+        {Object.entries(REGION_ABOUT).map(([slug, r]) => (
+          <Link key={slug} to={`/about/${slug}`} className="ax-region reveal">
             <h3>{r.name}</h3>
+            <span className="ax-region-countries">{uniqueCountries(r.offices).join(' · ')}</span>
           </Link>
         ))}
       </div>

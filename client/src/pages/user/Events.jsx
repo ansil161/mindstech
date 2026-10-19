@@ -257,9 +257,12 @@ const Events = () => {
   const startOfToday = new Date();
   startOfToday.setHours(0, 0, 0, 0);
   const isPast = (e) => e.event_date && new Date(e.event_date) < startOfToday;
-  const upcomingEvents = events.filter((e) => !isPast(e));
+  // One region choice drives both lists: a region view shows that region's
+  // items plus anything not tagged to a region.
+  const inRegion = (item) => newsRegion === 'all' || !item.region_slug || item.region_slug === newsRegion;
+  const upcomingEvents = events.filter((e) => !isPast(e) && inRegion(e));
   const pastEvents = events
-    .filter(isPast)
+    .filter((e) => isPast(e) && inRegion(e))
     .sort((a, b) => new Date(b.event_date) - new Date(a.event_date));
 
   // Region chips: every active region (sub-regions included), de-duplicated.
@@ -271,8 +274,30 @@ const Events = () => {
   walkRegions(allRegions);
 
   // A region view shows that region's items plus anything not tagged to a region.
-  const visibleNews = news.filter(
-    (n) => newsRegion === 'all' || !n.region_slug || n.region_slug === newsRegion
+  const visibleNews = news.filter(inRegion);
+
+  const regionFilter = regionChips.length > 0 && (
+    <div className="nw-filters" role="group" aria-label={t('events.filter_aria', 'Filter by region')}>
+      <button
+        type="button"
+        className={`filter-btn ${newsRegion === 'all' ? 'on' : ''}`}
+        aria-pressed={newsRegion === 'all'}
+        onClick={() => setNewsRegion('all')}
+      >
+        {t('events.all_regions', 'All regions')}
+      </button>
+      {regionChips.map((r) => (
+        <button
+          key={r.slug}
+          type="button"
+          className={`filter-btn ${newsRegion === r.slug ? 'on' : ''}`}
+          aria-pressed={newsRegion === r.slug}
+          onClick={() => setNewsRegion(r.slug)}
+        >
+          {r.name}
+        </button>
+      ))}
+    </div>
   );
 
   const showEvents = activeTab === 'all' || activeTab === 'events';
@@ -342,6 +367,8 @@ const Events = () => {
             </p>
           </div>
 
+          {regionFilter}
+
           {upcomingEvents.length === 0 ? (
             <p className="ev-empty">{t('events.upcoming.empty', 'No upcoming events at the moment — check back soon.')}</p>
           ) : (
@@ -371,29 +398,7 @@ const Events = () => {
             </p>
           </div>
 
-          {regionChips.length > 0 && (
-            <div className="nw-filters" role="group" aria-label={t('events.news.filter_aria', 'Filter news by region')}>
-              <button
-                type="button"
-                className={`filter-btn ${newsRegion === 'all' ? 'on' : ''}`}
-                aria-pressed={newsRegion === 'all'}
-                onClick={() => setNewsRegion('all')}
-              >
-                {t('events.news.all_regions', 'All regions')}
-              </button>
-              {regionChips.map((r) => (
-                <button
-                  key={r.slug}
-                  type="button"
-                  className={`filter-btn ${newsRegion === r.slug ? 'on' : ''}`}
-                  aria-pressed={newsRegion === r.slug}
-                  onClick={() => setNewsRegion(r.slug)}
-                >
-                  {r.name}
-                </button>
-              ))}
-            </div>
-          )}
+          {regionFilter}
 
           {visibleNews.length === 0 ? (
             <p className="ev-empty">{t('events.news.empty', 'No news items yet — check back soon.')}</p>

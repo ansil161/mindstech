@@ -1,0 +1,20 @@
+.spi { padding: clamp(56px, 8vw, 110px) 0; }
+.spi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  padding: 0 var(--pad);
+}
+.spi-card {
+  display: flex; flex-direction: column; gap: 14px;
+  padding: 28px; color: inherit; text-decoration: none;
+  border: 1px solid var(--line-soft);
+  transition: border-color .3s;
+}
+a.spi-card:hover { border-color: var(--red); }
+.spi-idx { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--red); }
+.spi-card h3 { font-size: 20px; line-height: 1.25; margin: 0; }
+.spi-card p { margin: 0; opacity: .7; font-size: 15px; line-height: 1.55; flex: 1; }
+.spi-more { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; }
+.spi-card--soon { border-style: dashed; border-color: var(--line); }
+.spi-soon { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; opacity: .55; }

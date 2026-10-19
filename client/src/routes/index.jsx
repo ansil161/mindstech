@@ -116,6 +116,10 @@ export const router = createBrowserRouter([
         lazy: page(() => import('../pages/user/Events')),
       },
       {
+        path: '/about/:region',
+        lazy: page(() => import('../pages/user/RegionAbout')),
+      },
+      {
         path: '/training',
         lazy: page(() => import('../pages/user/Training')),
       },
