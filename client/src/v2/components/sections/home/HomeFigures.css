@@ -1,0 +1,37 @@
+.home-figs {
+  padding: var(--section-y) var(--pad) 0;
+}
+.home-figs__head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 28px;
+}
+.home-figs__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  border: 1px solid var(--line-soft);
+}
+.home-figs__cell {
+  display: grid;
+  gap: 6px;
+  padding: 24px 22px;
+  border-right: 1px solid var(--line-soft);
+}
+.home-figs__cell:last-child {
+  border-right: 0;
+}
+.home-figs__cell b {
+  font-size: clamp(32px, 4vw, 52px);
+  font-weight: 300;
+  line-height: 1;
+  color: #fafafa;
+}
+.home-figs__cell span {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--grey);
+}

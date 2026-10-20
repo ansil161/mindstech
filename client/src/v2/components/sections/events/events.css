@@ -1,0 +1,14 @@
+.evfb-row { grid-template-columns: 140px minmax(0, 1fr) auto; }
+.evfb-row--up { opacity: 1; }
+.evfb-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+.evfb-past-label {
+  font-size: 11px; font-weight: 700; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--grey-dark);
+}
+.evfb-slot { border-style: dashed; opacity: .6; }
+.evfb-img {
+  width: 100%; aspect-ratio: 16 / 10;
+  background: rgba(255, 255, 255, .03);
+}
+.evfb-news .nw-card-title, .evfb-news .nw-card-desc { color: var(--grey); }
+@media (max-width: 760px) { .evfb-row { grid-template-columns: 1fr; } }

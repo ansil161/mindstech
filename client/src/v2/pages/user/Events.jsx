@@ -1,0 +1,656 @@
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { whenReady } from '../../utils/pageReveal';
+import Button from '../../components/common/Button/Button.jsx';
+import { useTranslation } from 'react-i18next';
+import axios from '../../api/axios';
+import { useRegion } from '../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../api/regionApi.js';
+import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
+
+gsap.registerPlugin(ScrollTrigger);
+
+// ── helpers ─────────────────────────────────────────────────────────────────
+
+const formatEventDate = (iso, lang = 'en') => {
+  if (!iso) return { day: '', month: '', year: '', full: '' };
+  const d = new Date(iso);
+  const locale = lang === 'zh' ? 'zh-CN' : lang === 'ar' ? 'ar-EG' : lang === 'fr' ? 'fr-FR' : lang === 'de' ? 'de-DE' : 'en';
+  return {
+    day:   d.getDate().toString().padStart(2, '0'),
+    month: d.toLocaleString(locale, { month: 'short' }).toUpperCase(),
+    year:  d.getFullYear(),
+    full:  d.toLocaleString(locale, { dateStyle: 'long', timeStyle: 'short' }),
+  };
+};
+
+const formatNewsDate = (iso, lang = 'en') => {
+  if (!iso) return '';
+  const locale = lang === 'zh' ? 'zh-CN' : lang === 'ar' ? 'ar-EG' : lang === 'fr' ? 'fr-FR' : lang === 'de' ? 'de-DE' : 'en';
+  return new Date(iso).toLocaleDateString(locale, { year: 'numeric', month: 'long', day: 'numeric' });
+};
+
+// ── sub-components ──────────────────────────────────────────────────────────
+
+const EventCard = ({ item, t, lang }) => {
+  const date = formatEventDate(item.event_date, lang);
+  return (
+    <article className="ev-card reveal">
+      {/* Image */}
+      <div className="ev-card-media">
+        {item.image
+          ? <img src={item.image} alt={item.title} loading="lazy" />
+          : <div className="ev-card-placeholder" aria-hidden="true" />
+        }
+        {/* Date Badge */}
+        <div className="ev-date-badge" aria-label={`Event date: ${date.full}`}>
+          <span className="ev-date-day">{date.day}</span>
+          <span className="ev-date-month">{date.month}</span>
+        </div>
+      </div>
+
+      {/* Body */}
+      <div className="ev-card-body">
+        {item.location && (
+          <div className="ev-location">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+              <path d="M12 21c-4.4-4.4-6.6-8.1-6.6-10.8a6.6 6.6 0 1113.2 0C18.6 12.9 16.4 16.6 12 21z" />
+              <circle cx="12" cy="10.2" r="2.4" />
+            </svg>
+            <span>{item.location}</span>
+          </div>
+        )}
+        <h3 className="ev-card-title">{item.title}</h3>
+        <p className="ev-card-desc">{item.description}</p>
+        {item.register_url && (
+          <a
+            href={item.register_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="ev-register-btn"
+          >
+            <span>{t('events.card.register_now', 'Register Now')}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M7 17L17 7M9 7h8v8" />
+            </svg>
+          </a>
+        )}
+      </div>
+    </article>
+  );
+};
+
+const NewsCard = ({ item, t, lang }) => {
+  const dateStr = formatNewsDate(item.created_at, lang);
+  return (
+    <article className="nw-card reveal">
+      {item.image && (
+        <div className="nw-card-media">
+          <img src={item.image} alt={item.title} loading="lazy" />
+        </div>
+      )}
+      <div className="nw-card-body">
+        <div className="nw-card-meta">
+          {item.category && <span className="nw-cat">{item.category}</span>}
+          {item.region_name && <span className="nw-cat nw-cat--region">{item.region_name}</span>}
+          <time dateTime={item.created_at}>{dateStr}</time>
+        </div>
+        <h3 className="nw-card-title">{item.title}</h3>
+        <p className="nw-card-desc">{item.description}</p>
+        {item.external_url && (
+          <a
+            href={item.external_url}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="nw-read-more"
+          >
+            {t('events.card.read_more', 'Read More')}
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <path d="M5 12h14M13 6l6 6-6 6" />
+            </svg>
+          </a>
+        )}
+      </div>
+    </article>
+  );
+};
+
+const PinIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+    <path d="M12 21c-4.4-4.4-6.6-8.1-6.6-10.8a6.6 6.6 0 1113.2 0C18.6 12.9 16.4 16.6 12 21z" />
+    <circle cx="12" cy="10.2" r="2.4" />
+  </svg>
+);
+
+const ArrowIcon = () => (
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+    <path d="M7 17L17 7M9 7h8v8" />
+  </svg>
+);
+
+// Next event: one large split card.
+const EventFeature = ({ item, t, lang }) => {
+  const date = formatEventDate(item.event_date, lang);
+  return (
+    <article className="ev2-feature reveal">
+      <div className="ev2-feature-media">
+        {item.image
+          ? <img src={item.image} alt={item.title} loading="lazy" />
+          : <div className="ev-card-placeholder" aria-hidden="true" />}
+      </div>
+      <div className="ev2-feature-body">
+        <div className="ev2-date" aria-label={`Event date: ${date.full}`}>
+          <b>{date.day}</b>
+          <span>{date.month} {date.year}</span>
+        </div>
+        {item.location && <div className="ev-location"><PinIcon /><span>{item.location}</span></div>}
+        <h3>{item.title}</h3>
+        <p>{item.description}</p>
+        {item.register_url && (
+          <a href={item.register_url} target="_blank" rel="noopener noreferrer" className="ev-register-btn">
+            <span>{t('events.card.register_now', 'Register Now')}</span>
+            <ArrowIcon />
+          </a>
+        )}
+      </div>
+    </article>
+  );
+};
+
+// Every other upcoming event: one agenda row.
+const EventRow = ({ item, t, lang }) => {
+  const date = formatEventDate(item.event_date, lang);
+  return (
+    <article className="ev2-row reveal">
+      <div className="ev2-date ev2-date--row" aria-label={`Event date: ${date.full}`}>
+        <b>{date.day}</b>
+        <span>{date.month}</span>
+      </div>
+      <div className="ev2-row-main">
+        <h3>{item.title}</h3>
+        {item.location && <div className="ev-location"><PinIcon /><span>{item.location}</span></div>}
+        <p>{item.description}</p>
+      </div>
+      {item.register_url && (
+        <a href={item.register_url} target="_blank" rel="noopener noreferrer" className="ev-register-btn">
+          <span>{t('events.card.register_now', 'Register Now')}</span>
+          <ArrowIcon />
+        </a>
+      )}
+    </article>
+  );
+};
+
+// Newest story: image and headline side by side.
+const NewsLead = ({ item, t, lang }) => (
+  <article className="ev2-lead reveal">
+    {item.image && (
+      <div className="ev2-lead-media">
+        <img src={item.image} alt={item.title} loading="lazy" />
+      </div>
+    )}
+    <div className="ev2-lead-body">
+      <div className="nw-card-meta">
+        {item.category && <span className="nw-cat">{item.category}</span>}
+        {item.region_name && <span className="nw-cat nw-cat--region">{item.region_name}</span>}
+        <time dateTime={item.created_at}>{formatNewsDate(item.created_at, lang)}</time>
+      </div>
+      <h3>{item.title}</h3>
+      <p>{item.description}</p>
+      {item.external_url && (
+        <a href={item.external_url} target="_blank" rel="noopener noreferrer" className="nw-read-more">
+          {t('events.card.read_more', 'Read More')}
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+            <path d="M5 12h14M13 6l6 6-6 6" />
+          </svg>
+        </a>
+      )}
+    </div>
+  </article>
+);
+
+// ── main page ───────────────────────────────────────────────────────────────
+
+const Events = () => {
+  const { t, i18n } = useTranslation();
+  const { regionSlug, allRegions } = useRegion();
+  const containerRef = useRef(null);
+
+  const [rawEvents, setRawEvents] = useState([]);
+  const [rawNews, setRawNews]     = useState([]);
+  const [loading, setLoading]     = useState(true);
+  const [activeTab, setActiveTab] = useState('all'); // 'all' | 'events' | 'news'
+  const [newsRegion, setNewsRegion] = useState('all'); // 'all' or a region slug
+  const [regionContact, setRegionContact] = useState(null);
+
+  const { translatedData: events } = useDynamicTranslation(rawEvents, ['title', 'description', 'location'], 'events_list');
+  const { translatedData: news }   = useDynamicTranslation(rawNews, ['title', 'description', 'category'], 'news_list');
+
+  // ── fetch data ─────────────────────────────────────────────────────────────
+  useEffect(() => {
+    const load = async () => {
+      setLoading(true);
+      try {
+        const [evRes, nwRes] = await Promise.all([
+          axios.get('/admin/public/events/', { withCredentials: false }),
+          axios.get('/admin/public/news/',   { withCredentials: false }),
+        ]);
+        setRawEvents(evRes.data || []);
+        setRawNews(nwRes.data   || []);
+      } catch (err) {
+        console.error('Failed to load events/news:', err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    load();
+  }, []);
+
+  // Fetch region contact for CTA
+  useEffect(() => {
+    let cancelled = false;
+    getPublicRegionData(regionSlug)
+      .then(res => {
+        if (!cancelled) {
+          setRegionContact(Array.isArray(res.data.contact_info)
+            ? res.data.contact_info[0]
+            : (res.data.contact_info || null));
+        }
+      })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [regionSlug]);
+
+  const telHref  = (regionContact?.phone_display || regionContact?.phone || t('contact_info.tel_href')).replace(/[^+\d]/g, '');
+  const telLabel = regionContact?.phone_display  || regionContact?.phone  || t('contact_info.tel_label');
+  const email    = regionContact?.email || t('contact_info.email');
+
+  // ── GSAP entrance ──────────────────────────────────────────────────────────
+  useEffect(() => {
+    let stopIntro = () => {};
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduceMotion) {
+        gsap.set('.reveal', { opacity: 1, y: 0 });
+        return;
+      }
+
+      // Hero. paused: fromTo applies the hidden state immediately (no flash) but
+      // the intro only plays once the active loader has revealed the page.
+      const intro = gsap.timeline({ paused: true, defaults: { ease: 'power3.out' } })
+        .fromTo('#evheroH .w',
+          { yPercent: 115, rotate: 2 },
+          { yPercent: 0, rotate: 0, duration: 1.4, stagger: 0.1, ease: 'power4.out' })
+        .fromTo('#evheroSide',
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 1.0 }, '-=.8')
+        .fromTo('.ev-tabs',
+          { opacity: 0, y: 16 },
+          { opacity: 1, y: 0, duration: 0.7 }, '-=.5');
+      stopIntro = whenReady(() => intro.play());
+
+      // NOTE: the .section-head stagger lives in the data-dependent effect
+      // below. Both section heads render inside `!loading && showEvents/showNews`
+      // blocks, so at mount they do not exist yet and binding here matched
+      // nothing — the animation had never once run.
+
+      // CTA
+      gsap.fromTo('#ctaH .w', { yPercent: 110 }, {
+        yPercent: 0, duration: 1.1, stagger: 0.1, ease: 'power4.out',
+        scrollTrigger: { trigger: '#contact', start: 'top 72%', once: true },
+      });
+      gsap.fromTo('.cta-bg img', { yPercent: -6 }, {
+        yPercent: 6, ease: 'none',
+        scrollTrigger: { trigger: '.cta', start: 'top bottom', end: 'bottom top', scrub: true },
+      });
+    }, containerRef);
+
+    return () => { stopIntro(); ctx.revert(); };
+  }, []);
+
+  // ── card entrance when data loads ─────────────────────────────────────────
+  useEffect(() => {
+    if (loading || (events.length === 0 && news.length === 0)) return;
+
+    const ctx = gsap.context(() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Section heads — bound here, not at mount, because these nodes only
+      // exist once the events/news fetch has resolved.
+      gsap.utils.toArray('.section-head').forEach(head => {
+        const parts = head.querySelectorAll('h2, .label');
+        if (reduceMotion) { gsap.set(parts, { opacity: 1, y: 0 }); return; }
+        gsap.fromTo(parts,
+          { opacity: 0, y: 30 },
+          {
+            opacity: 1, y: 0, duration: 0.9, stagger: 0.08, ease: 'power3.out',
+            scrollTrigger: { trigger: head, start: 'top 84%', once: true },
+          });
+      });
+
+      // fromTo, not to: no CSS hidden start state exists, so a `to` tween
+      // animated 1 -> 1 and the cards never moved.
+      gsap.utils.toArray('.reveal').forEach(el => {
+        if (reduceMotion) { gsap.set(el, { opacity: 1, y: 0 }); return; }
+        gsap.fromTo(el,
+          { opacity: 0, y: 36 },
+          {
+            opacity: 1, y: 0, duration: 1, ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          }
+        );
+      });
+    }, containerRef);
+
+    const t = setTimeout(() => ScrollTrigger.refresh(), 100);
+    return () => { ctx.revert(); clearTimeout(t); };
+  }, [loading, events, news, activeTab]);
+
+  // Events whose date has passed move to the archive automatically.
+  const startOfToday = new Date();
+  startOfToday.setHours(0, 0, 0, 0);
+  const isPast = (e) => e.event_date && new Date(e.event_date) < startOfToday;
+  // One region choice drives both lists: a region view shows that region's
+  // items plus anything not tagged to a region.
+  const inRegion = (item) => newsRegion === 'all' || !item.region_slug || item.region_slug === newsRegion;
+  const upcomingEvents = events.filter((e) => !isPast(e) && inRegion(e));
+  const pastEvents = events
+    .filter((e) => isPast(e) && inRegion(e))
+    .sort((a, b) => new Date(b.event_date) - new Date(a.event_date));
+
+  // Region chips: every active region (sub-regions included), de-duplicated.
+  const regionChips = [];
+  const walkRegions = (list) => (list || []).forEach((r) => {
+    if (r.is_active !== false && !regionChips.some((c) => c.slug === r.slug)) regionChips.push(r);
+    walkRegions(r.sub_regions);
+  });
+  walkRegions(allRegions);
+
+  // A region view shows that region's items plus anything not tagged to a region.
+  const visibleNews = news.filter(inRegion);
+
+  const regionFilter = regionChips.length > 0 && (
+    <div className="nw-filters ev2-regions" role="group" aria-label={t('events.filter_aria', 'Filter by region')}>
+      <button
+        type="button"
+        className={`filter-btn ${newsRegion === 'all' ? 'on' : ''}`}
+        aria-pressed={newsRegion === 'all'}
+        onClick={() => setNewsRegion('all')}
+      >
+        {t('events.all_regions', 'All regions')}
+      </button>
+      {regionChips.map((r) => (
+        <button
+          key={r.slug}
+          type="button"
+          className={`filter-btn ${newsRegion === r.slug ? 'on' : ''}`}
+          aria-pressed={newsRegion === r.slug}
+          onClick={() => setNewsRegion(r.slug)}
+        >
+          {r.name}
+        </button>
+      ))}
+    </div>
+  );
+
+  // Region category: everything the backend has tagged to a region, grouped by
+  // region. Until some item carries a region, a single placeholder is shown.
+  const regionGroups = regionChips
+    .map((r) => ({
+      region: r,
+      events: upcomingEvents.filter((e) => e.region_slug === r.slug),
+      news: news.filter((n) => n.region_slug === r.slug),
+    }))
+    .filter((g) => g.events.length > 0 || g.news.length > 0);
+
+  const showEvents = activeTab === 'all' || activeTab === 'events';
+  const showNews   = activeTab === 'all' || activeTab === 'news';
+
+  return (
+    <main id="top" ref={containerRef} className="evp">
+
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
+      <section className="shero" aria-label="Events and News">
+        <h1 className="display" id="evheroH">
+          <span className="line-mask"><span className="w">{t('events.hero.title_main', 'Events &')}</span></span>
+          <span className="line-mask"><span className="w"><em>{t('events.hero.title_em', 'News')}</em></span></span>
+        </h1>
+        <div className="shero-side" id="evheroSide">
+          <span className="label label--red" style={{ display: 'block', marginBottom: '18px' }}>
+            {t('events.hero.label', "What's happening")}
+          </span>
+          <p>
+            {t('events.hero.desc', 'Upcoming events from Mindstec — product launches, industry shows, and partner conferences — alongside the latest news and press from across our regions.')}
+          </p>
+        </div>
+      </section>
+
+      {/* ── TAB FILTER ───────────────────────────────────────────────── */}
+      <div className="ev2-bar">
+      <div className="ev-tabs" role="tablist" aria-label="Filter events and news">
+        {[
+          { key: 'all',    label: t('events.tabs.all', 'All') },
+          { key: 'events', label: t('events.tabs.events', 'Events') },
+          { key: 'news',   label: t('events.tabs.news', 'News')  },
+        ].map(tab => (
+          <button
+            key={tab.key}
+            role="tab"
+            aria-selected={activeTab === tab.key}
+            className={`ev-tab-btn ${activeTab === tab.key ? 'on' : ''}`}
+            onClick={() => setActiveTab(tab.key)}
+          >
+            {tab.label}
+            {tab.key !== 'all' && (
+              <span className="ev-tab-count">
+                {tab.key === 'events' ? upcomingEvents.length : news.length}
+              </span>
+            )}
+          </button>
+        ))}
+      </div>
+      {regionFilter}
+      </div>
+
+
+      {loading && (
+        <p style={{ color: 'var(--grey)', textAlign: 'center', padding: '80px 0' }}>
+          Loading…
+        </p>
+      )}
+
+      {/* ── UPCOMING EVENTS ──────────────────────────────────────────── */}
+      {!loading && showEvents && (
+        <section className="ev-section" aria-label="Upcoming Events">
+          <div className="ev-section-head section-head">
+            <div>
+              <span className="label label--red">{t('events.upcoming.label', 'Upcoming Events')}</span>
+              <h2 className="display" style={{ marginTop: '16px' }}>
+                {t('events.upcoming.title_main', 'See us')} <em>{t('events.upcoming.title_em', 'live.')}</em>
+              </h2>
+            </div>
+            <p className="lede side">
+              {t('events.upcoming.desc', 'Meet the Mindstec team at trade shows, launch events, and partner conferences across our regions.')}
+            </p>
+          </div>
+
+          {upcomingEvents.length === 0 ? (
+            <p className="ev-empty">{t('events.upcoming.empty', 'No upcoming events at the moment — check back soon.')}</p>
+          ) : (
+            <>
+              <EventFeature item={upcomingEvents[0]} t={t} lang={i18n.language} />
+              {upcomingEvents.length > 1 && (
+                <div className="ev2-agenda">
+                  {upcomingEvents.slice(1).map((item) => (
+                    <EventRow key={item.id} item={item} t={t} lang={i18n.language} />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </section>
+      )}
+
+      {!loading && showEvents && showNews && <div className="rule" />}
+
+      {/* ── LATEST NEWS ──────────────────────────────────────────────── */}
+      {!loading && showNews && (
+        <section className="ev-section" aria-label="Latest News">
+          <div className="ev-section-head section-head">
+            <div>
+              <span className="label label--red">{t('events.news.label', 'Latest News')}</span>
+              <h2 className="display" style={{ marginTop: '16px' }}>
+                {t('events.news.title_main', 'Stay')} <em>{t('events.news.title_em', 'informed.')}</em>
+              </h2>
+            </div>
+            <p className="lede side">
+              {t('events.news.desc', 'Press releases, industry partnerships, and product announcements from Mindstec Distribution.')}
+            </p>
+          </div>
+
+          {visibleNews.length === 0 ? (
+            <p className="ev-empty">{t('events.news.empty', 'No news items yet — check back soon.')}</p>
+          ) : (
+            <>
+              <NewsLead item={visibleNews[0]} t={t} lang={i18n.language} />
+              {visibleNews.length > 1 && (
+                <div className="nw-grid">
+                  {visibleNews.slice(1).map(item => (
+                    <NewsCard key={item.id} item={item} t={t} lang={i18n.language} />
+                  ))}
+                </div>
+              )}
+            </>
+          )}
+        </section>
+      )}
+
+      {/* ── PAST EVENTS ──────────────────────────────────────────────── */}
+      {!loading && showEvents && pastEvents.length > 0 && (
+        <>
+          <div className="rule" />
+          <section className="ev-section" aria-label="Past Events">
+            <div className="ev-section-head section-head">
+              <div>
+                <span className="label label--red">{t('events.past.label', 'Archive')}</span>
+                <h2 className="display" style={{ marginTop: '16px' }}>
+                  {t('events.past.title_main', 'Past')} <em>{t('events.past.title_em', 'events')}</em>
+                </h2>
+              </div>
+              <p className="lede side">
+                {t('events.past.desc', 'Events move here automatically after their end date.')}
+              </p>
+            </div>
+            <div className="ev-past">
+              {pastEvents.map((item, i) => {
+                const date = formatEventDate(item.event_date, i18n.language);
+                const newYear = i === 0 || formatEventDate(pastEvents[i - 1].event_date, i18n.language).year !== date.year;
+                return (
+                  <React.Fragment key={item.id}>
+                  {newYear && <h3 className="ev2-year">{date.year}</h3>}
+                  <article className="ev-past-row reveal">
+                    <div className="ev-past-date">
+                      <span>{date.day}</span>
+                      <small>{date.month} {date.year}</small>
+                    </div>
+                    <div className="ev-past-main">
+                      <h3>{item.title}</h3>
+                      {item.location && <p>{item.location}</p>}
+                    </div>
+                    {item.region_name && <span className="nw-cat nw-cat--region">{item.region_name}</span>}
+                  </article>
+                  </React.Fragment>
+                );
+              })}
+            </div>
+          </section>
+        </>
+      )}
+
+      {/* ── REGION CATEGORY ──────────────────────────────────────────── */}
+      {!loading && activeTab === 'all' && (
+        <>
+          <div className="rule" />
+          <section className="ev-section" aria-label="Region">
+            <div className="ev-section-head section-head">
+              <div>
+                <span className="label label--red">{t('events.region.label', 'Region')}</span>
+                <h2 className="display" style={{ marginTop: '16px' }}>
+                  {t('events.region.title_main', 'By')} <em>{t('events.region.title_em', 'region.')}</em>
+                </h2>
+              </div>
+              <p className="lede side">
+                {t('events.region.desc', 'Events and news from each of our regions.')}
+              </p>
+            </div>
+
+            {regionGroups.length === 0 ? (
+              <p className="ev-empty rg-placeholder">
+                {t('events.region.empty', 'Regional events and news will appear here soon.')}
+              </p>
+            ) : (
+              regionGroups.map(({ region, events: rEvents, news: rNews }) => (
+                <div className="rg-group" key={region.slug}>
+                  <h3 className="rg-group-title">{region.name}</h3>
+                  {rEvents.length > 0 && (
+                    <div className="ev-grid">
+                      {rEvents.map((item) => (
+                        <EventCard key={`e-${item.id}`} item={item} t={t} lang={i18n.language} />
+                      ))}
+                    </div>
+                  )}
+                  {rNews.length > 0 && (
+                    <div className="nw-grid">
+                      {rNews.map((item) => (
+                        <NewsCard key={`n-${item.id}`} item={item} t={t} lang={i18n.language} />
+                      ))}
+                    </div>
+                  )}
+                </div>
+              ))
+            )}
+          </section>
+        </>
+      )}
+
+      {/* ── CTA ──────────────────────────────────────────────────────── */}
+      <section className="cta" id="contact">
+        <div className="cta-bg" aria-hidden="true">
+          <img src="/assets/uploads/2025/03/cta-bg.jpg" alt="" loading="lazy" />
+        </div>
+        <div className="cta-inner">
+          <span className="label label--red">{t('events.cta.label', 'Stay connected')}</span>
+          <h2 className="display" id="ctaH" style={{ marginTop: '20px' }}>
+            <span className="line-mask"><span className="w">{t('events.cta.title_main', 'Want to be')}</span></span>
+            <span className="line-mask"><span className="w"><em>{t('events.cta.title_em', 'at the next one?')}</em></span></span>
+          </h2>
+          <div className="cta-row reveal">
+            <div className="cta-actions">
+              <Button to="/contact" className="btn btn--solid">
+                <span>{t('events.cta.btn_contact', 'Get in touch')}</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                  <path d="M7 17L17 7M9 7h8v8" />
+                </svg>
+              </Button>
+              <Button to="/partners" className="btn"><span>{t('events.cta.btn_partners', 'Our partners')}</span></Button>
+            </div>
+            <div className="cta-contacts">
+              <div className="c-item">
+                <span>{t('contact_info.label')}</span>
+                <a href={`tel:${telHref}`}>{telLabel}</a>
+              </div>
+              <div className="c-item">
+                <span>{t('contact_info.email_label')}</span>
+                <a href={`mailto:${email}`}>{email}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  );
+};
+
+export default Events;

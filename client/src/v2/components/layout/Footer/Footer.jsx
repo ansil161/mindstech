@@ -1,0 +1,154 @@
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { useRegion } from '../../../context/RegionContext.jsx';
+import { getPublicRegionData } from '../../../api/regionApi.js';
+import { useDynamicTranslation } from '../../../hooks/useDynamicTranslation.js';
+import { getSolutionLinks } from '../../../constants/solutions.js';
+import { PRODUCT_CATEGORIES } from '../../../constants/products.js';
+
+const Footer = () => {
+  const { t } = useTranslation();
+  const { regionSlug, isPageEnabled } = useRegion();
+  const [regionContact, setRegionContact] = useState(null);
+  const showEwaste = isPageEnabled('ewaste') === true;
+
+  const { translatedData: translatedContact } = useDynamicTranslation(
+    regionContact,
+    ['office_name', 'address'],
+    `footer_contact_${regionSlug}`
+  );
+  const activeContact = translatedContact || regionContact;
+
+  useEffect(() => {
+    let cancelled = false;
+    const fetchRegionContact = async () => {
+      if (!regionSlug) return;
+      try {
+        const res = await getPublicRegionData(regionSlug);
+        if (!cancelled) {
+          setRegionContact(Array.isArray(res.data.contact_info) ? res.data.contact_info[0] : (res.data.contact_info || null));
+        }
+      } catch (err) {
+        if (!cancelled) setRegionContact(null);
+      }
+    };
+    fetchRegionContact();
+    return () => { cancelled = true; };
+  }, [regionSlug]);
+
+  useEffect(() => {
+    // Ported footer mark animation scroll trigger
+    const trigger = ScrollTrigger.create({
+      trigger: 'footer',
+      start: 'top 90%',
+      end: 'bottom bottom',
+      scrub: true,
+      animation: gsap.fromTo('.foot-mark', { yPercent: 30, opacity: 0.4 }, { yPercent: 0, opacity: 1, ease: 'none' })
+    });
+
+    return () => {
+      trigger.kill();
+    };
+  }, []);
+
+  return (
+    <footer>
+      <div className="foot-grid">
+        <div className="foot-brand">
+          <Link to="/" className="logo" aria-label="Mindstec home">
+            <img src="/mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today" />
+          </Link>
+          <p>{t('footer.brief', 'Mindstec Distribution bridges the gap between the manufacturer and the dealer, increasing the efficiency of overall operations.')}</p>
+          <div className="foot-social" style={{ marginTop: '20px' }}>
+            <a href="https://www.linkedin.com/company/mindstec/" target="_blank" rel="noopener noreferrer" aria-label="Mindstec on LinkedIn">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.45 20.45h-3.55v-5.57c0-1.33-.03-3.04-1.85-3.04-1.86 0-2.14 1.45-2.14 2.94v5.67H9.35V9h3.41v1.56h.05c.47-.9 1.63-1.85 3.36-1.85 3.6 0 4.27 2.37 4.27 5.46v6.28zM5.34 7.43a2.06 2.06 0 1 1 0-4.12 2.06 2.06 0 0 1 0 4.12zM7.12 20.45H3.56V9h3.56v11.45z"/></svg>
+            </a>
+            {/* TODO(mindstec): confirm the Facebook page URL before release —
+                added on client request, and no Facebook handle exists anywhere
+                else in the codebase to derive it from. The slug below mirrors
+                the Instagram account name and is a placeholder. */}
+            <a href="https://www.facebook.com/mindstecdistribution" target="_blank" rel="noopener noreferrer" aria-label="Mindstec on Facebook">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5h1.65V3.6c-.3-.04-1.28-.13-2.42-.13-2.4 0-4.03 1.46-4.03 4.14V9.9H7.5V13h2.75v8h3.25z"/></svg>
+            </a>
+            <a href="https://www.instagram.com/mindstec.distribution/" target="_blank" rel="noopener noreferrer" aria-label="Mindstec on Instagram">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r=".9" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://www.youtube.com/channel/UCrmKbX0DP9TZBP2zJ5PHiXA" target="_blank" rel="noopener noreferrer" aria-label="Mindstec on YouTube">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6"><path d="M2.7 8.1c.2-1.6 1.4-2.7 3-2.8C7.7 5.1 10 5 12 5s4.3.1 6.3.3c1.6.1 2.8 1.2 3 2.8.1 1.2.2 2.6.2 3.9s-.1 2.7-.2 3.9c-.2 1.6-1.4 2.7-3 2.8-2 .2-4.3.3-6.3.3s-4.3-.1-6.3-.3c-1.6-.1-2.8-1.2-3-2.8-.1-1.2-.2-2.6-.2-3.9s.1-2.7.2-3.9z"/><path d="M10 9.5l5 2.5-5 2.5v-5z" fill="currentColor" stroke="none"/></svg>
+            </a>
+          </div>
+        </div>
+        <div className="foot-col">
+          <h5>{t('navbar.solutions')}</h5>
+          {getSolutionLinks(t).map(({ slug, name }) => (
+            <Link key={slug} to={`/solutions/${slug}`}>{name}</Link>
+          ))}
+        </div>
+        <div className="foot-col">
+          <h5>{t('navbar.products', 'Brands')}</h5>
+          <Link to="/products">{t('products.all', 'All brands')}</Link>
+          {PRODUCT_CATEGORIES.slice(0, 5).map((cat) => (
+            <Link key={cat.code} to={`/products/category/${cat.code}`}>
+              {t(`products.categories.${cat.code}.name`, cat.name)}
+            </Link>
+          ))}
+        </div>
+        {/* Mirrors the navbar's Company / Resources split rather than the old
+            single seven-link column, so the footer and the header agree on
+            where a page lives. */}
+        <div className="foot-col">
+          <h5>{t('navbar.company', 'Company')}</h5>
+          <Link to="/about">{t('navbar.about_us')}</Link>
+          <Link to="/partners">{t('navbar.partners')}</Link>
+          <Link to="/clients">{t('navbar.clients', 'Clients')}</Link>
+          <Link to="/experience">{t('footer.experience', 'Experience Centre')}</Link>
+          <Link to="/projects">{t('navbar.projects', 'Projects')}</Link>
+          <Link to="/careers">{t('footer.careers', 'Careers')}</Link>
+          <Link to="/training">{t('footer.training', 'Training Academy')}</Link>
+          <Link to="/contact">{t('footer.contact')}</Link>
+        </div>
+        <div className="foot-col">
+          <h5>{t('navbar.resources')}</h5>
+          <Link to="/blogs">{t('navbar.blogs')}</Link>
+          <Link to="/gallery">{t('navbar.gallery', 'Gallery')}</Link>
+          <Link to="/events">{t('navbar.events', 'Events & News')}</Link>
+          {showEwaste && <Link to="/ewaste">{t('footer.ewaste', 'E-Waste Management')}</Link>}
+        </div>
+        {activeContact && (activeContact.office_name || activeContact.address || activeContact.phone || activeContact.phone_display || activeContact.email) && (
+          <div className="foot-col">
+            {activeContact.office_name && <h5>{activeContact.office_name}</h5>}
+            {activeContact.address && <address style={{ whiteSpace: 'pre-wrap' }}>{activeContact.address}</address>}
+            {(activeContact.phone_display || activeContact.phone) && (
+              <a href={`tel:${(activeContact.phone_display || activeContact.phone).replace(/[^+\d]/g, '')}`} style={{ marginTop: '10px' }}>
+                {activeContact.phone_display || activeContact.phone}
+              </a>
+            )}
+            {activeContact.email && (
+              <a href={`mailto:${activeContact.email}`}>
+                {activeContact.email}
+              </a>
+            )}
+          </div>
+        )}
+      </div>
+      {/* No trailing full stop. It was a decorative flourish in a second
+          colour, but at this size it reads as punctuation on the company name
+          and a client review asked what it was for. The wordmark is the
+          company's name, not a sentence. */}
+      <div className="foot-mark" aria-hidden="true">MINDSTEC</div>
+      <div className="foot-bottom">
+        <p>{t('footer.rights', '© 2026 Mindstec Distribution. All rights reserved.')}</p>
+        <div className="legal">
+          <Link to="/legal/privacy">{t('footer.privacy', 'Privacy')}</Link>
+          <Link to="/legal/terms">{t('footer.terms', 'Terms')}</Link>
+          <Link to="/legal">{t('footer.disclaimer', 'Disclaimer')}</Link>
+        </div>
+      </div>
+    </footer>
+  );
+};
+
+export default Footer;

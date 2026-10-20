@@ -1,0 +1,118 @@
+import React, { createContext, useState, useContext, useCallback, useEffect } from 'react';
+import { getPublicRegionData, getPublicRegions } from '../api/regionApi';
+
+const RegionContext = createContext();
+
+export const RegionProvider = ({ children }) => {
+  const [region, setRegionState] = useState(() => {
+    return localStorage.getItem('mindstec_region') || 'Global'; // default to Global if India not there, but let's keep previous logic if possible, wait, previously it was 'India'.
+  });
+
+  const [enabledPages, setEnabledPages] = useState(null);
+  const [regionLoading, setRegionLoading] = useState(true);
+  
+  // NEW: Store all dynamic regions for Navbar
+  const [allRegions, setAllRegions] = useState([]);
+
+  // Fetch all regions on mount
+  useEffect(() => {
+    getPublicRegions().then(res => {
+      // Never trust the shape here. A 2xx doesn't guarantee an array: DRF may
+      // paginate ({ results: [...] }), and when the API isn't reachable the
+      // dev server / SPA fallback answers with index.html, which resolves as a
+      // *string* — .length passes the Navbar's truthiness check and .map then
+      // throws, taking the whole page down via the router error boundary.
+      const data = res?.data;
+      const regions = Array.isArray(data)
+        ? data
+        : Array.isArray(data?.results)
+          ? data.results
+          : [];
+      if (!Array.isArray(data) && !Array.isArray(data?.results)) {
+        console.error('[RegionContext] Unexpected regions payload, falling back to []:', data);
+      }
+      setAllRegions(regions);
+
+      // If the currently stored region isn't in the list (e.g. they changed it in DB),
+      // we might want to default to the first one, but let's leave that to the UI.
+    }).catch(err => console.error("Failed to fetch regions", err));
+  }, []);
+
+  const setRegion = useCallback((r) => {
+    const name = typeof r === 'object' ? r.name : r;
+    setRegionState(name);
+    localStorage.setItem('mindstec_region', name);
+  }, []);
+
+  // Helper to find region object by name from allRegions tree
+  const findRegionInTree = (regions, targetName) => {
+    for (const r of regions) {
+      if (r.name === targetName || r.slug === targetName) return r;
+      if (r.sub_regions && r.sub_regions.length > 0) {
+        const found = findRegionInTree(r.sub_regions, targetName);
+        if (found) return found;
+      }
+    }
+    return null;
+  };
+
+  const currentRegionObj = findRegionInTree(allRegions, region);
+  const regionSlug = currentRegionObj?.slug || region.toLowerCase().replace(/ \/ /g, '-').replace(/ /g, '-');
+
+  // Fetch region data (including enabled_pages) whenever the slug changes
+  useEffect(() => {
+    let cancelled = false;
+    setRegionLoading(true);
+
+    getPublicRegionData(regionSlug)
+      .then((res) => {
+        if (!cancelled) {
+          setEnabledPages(res.data.enabled_pages ?? []);
+        }
+      })
+      .catch((err) => {
+        if (!cancelled) {
+          console.error('[RegionContext] Failed to load region data for slug:', regionSlug, err);
+          // On error fall back to empty — guard will redirect gated pages
+          setEnabledPages([]);
+        }
+      })
+      .finally(() => {
+        if (!cancelled) setRegionLoading(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [regionSlug]);
+
+  /**
+   * Returns true if the given page key is enabled for the current region.
+   * While loading, returns null so callers can distinguish "unknown" from false.
+   */
+  const isPageEnabled = useCallback(
+    (pageKey) => {
+      if (enabledPages === null) return null; // still loading
+      return enabledPages.includes(pageKey);
+    },
+    [enabledPages],
+  );
+
+  return (
+    <RegionContext.Provider
+      value={{ region, setRegion, regionSlug, enabledPages, regionLoading, isPageEnabled, allRegions, currentRegionObj }}
+    >
+      {children}
+    </RegionContext.Provider>
+  );
+};
+
+export const useRegion = () => {
+  const context = useContext(RegionContext);
+  if (!context) {
+    throw new Error('useRegion must be used within a RegionProvider');
+  }
+  return context;
+};
+
+export default RegionContext;

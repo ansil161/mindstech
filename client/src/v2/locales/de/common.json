@@ -1,0 +1,1272 @@
+{
+  "navbar": {
+    "home": "Startseite",
+    "about": "Über",
+    "about_us": "Über uns",
+    "partners": "Partner",
+    "solutions": "Lösungen",
+    "resources": "Ressourcen",
+    "blogs": "Blogs",
+    "installations": "Installationen",
+    "talk_to_us": "Sprechen Sie mit uns",
+    "ewaste": "E-Waste-Management",
+    "experience": "Erlebniszentrum",
+    "gallery": "Galerie",
+    "events": "Events & News",
+    "regions": {
+      "global": "Global",
+      "india": "Indien",
+      "middle_east": "Naher Osten",
+      "africa": "Afrika",
+      "south_asia": "Südasien",
+      "hong_kong_china": "Hongkong / China"
+    },
+    "company": "Unternehmen",
+    "projects": "Projekte",
+    "all_solutions": "Alle Lösungen",
+    "select_region": "Region wählen",
+    "products": "Marken"
+  },
+  "footer": {
+    "contact": "Kontakt",
+    "address": "Adresse",
+    "follow_us": "Folgen Sie uns",
+    "brief": "Globales Unternehmen, regionale Präsenz. Mindstec ist ein Distributor mit Mehrwert — kein Kartonschieber — und bringt die Technologie von morgen schon heute in Ihren Raum.",
+    "company": "Unternehmen",
+    "experience": "Erlebniszentrum",
+    "ewaste": "E-Waste-Management",
+    "rights": "© 2026 Mindstec Distribution. Alle Rechte vorbehalten.",
+    "privacy": "Datenschutz",
+    "terms": "Nutzungsbedingungen",
+    "disclaimer": "Haftungsausschluss"
+  },
+  "about": {
+    "hero": {
+      "line1": "Hingabe.",
+      "line2": "Zweck.",
+      "line3": "Fortschritt.",
+      "label": "Über uns",
+      "brief": "Mindstec Distribution ist ein führender Beschaffungs- und Vertriebsspezialist für hochwertige audiovisuelle Lösungen im Nahen Osten, Afrika und Asien – und bringt modernste AV-Technologie zu erschwinglichen Preisen in diese Regionen.",
+      "meet_team_btn": "Lernen Sie das Team kennen",
+      "fact1_b": "Naher Osten · Afrika · Asien",
+      "fact1_s": "Regionen bedient",
+      "fact2_b": "Globales Partnernetzwerk",
+      "fact2_s": "Vom Hersteller zum Händler",
+      "fact3_b": "Hauptquartier in Bangalore",
+      "fact3_s": "Indien – SAARC-Operationen",
+      "caption": "High-End-AV, geliefert"
+    },
+    "story": {
+      "more_p1": "Wir engagieren uns für Innovation und Kundenunterstützung und investieren kontinuierlich in technisches Fachwissen, um eine nahtlose Integration von AV-Lösungen in hochkarätige Projekte weltweit sicherzustellen.",
+      "more_p2": "Angetrieben von Exzellenz und Innovation ermöglichen wir Unternehmen, an der Spitze der sich entwickelnden AV-Branche zu bleiben.",
+      "cap1": "Fachwissen auf Pixelebene",
+      "cap2": "Display-Technologie",
+      "p1": "Wir schließen die Lücke zwischen globalen AV-Herstellern und regionalen Händlern – optimieren Lieferketten, senken Kosten und verbessern die Effizienz aller dazwischen liegenden Abläufe.",
+      "p2": "Mit fundierten Marktkenntnissen und einem technologiebegeisterten Team helfen wir den AV-Marken der Welt, in neue Märkte zu expandieren, und unterstützen unsere Händler bei Vertrieb, Marketing und Werbung – für Wachstum ohne Konkurrenz."
+    },
+    "pillars": {
+      "label": "Was wir tun",
+      "title_main": "Auf drei gebaut",
+      "title_em": "Säulen.",
+      "p1_title": "Marktzugang für Hersteller",
+      "p1_desc": "Wir unterstützen globale AV-Hersteller bei der Expansion in den Nahen Osten, Afrika und Asien – mit lokalem Wissen, einem etablierten Händlernetzwerk und regionaler Logistik.",
+      "p2_title": "Optimierte Lieferketten",
+      "p2_desc": "Beschaffung, Lagerung und Vertrieb sind auf die Region abgestimmt – Kosten senken, Durchlaufzeiten verkürzen und die Effizienz jedes Projekts verbessern.",
+      "p3_title": "Händleraktivierung",
+      "p3_desc": "Vertriebs-, Marketing- und Werbeunterstützung für unsere Händler sowie das technische Know-how zur Integration von AV-Lösungen in hochkarätige Projekte – Wachstum ohne Konkurrenz."
+    },
+    "vm": {
+      "vision_title": "Unser",
+      "vision_em": "Vision",
+      "vision_desc": "Ein Vertriebsführer für zukunftsweisende, konvergente, technologiegetriebene Systemlösungen zu sein.",
+      "mission_title": "Unser",
+      "mission_em": "Mission",
+      "mission_desc": "Wir wollen ein regionaler Marktführer im Vertrieb hochmoderner audiovisueller Systemlösungen sein und so einen immensen Mehrwert für unsere Lieferanten-Händler-Netzwerke schaffen und gleichzeitig als Erster und Schnellster die neueste Technologie in die Region bringen."
+    },
+    "team": {
+      "label": "Unser Team",
+      "title_main": "Einen Eindruck hinterlassen,",
+      "title_em": "einen Schritt nach dem anderen",
+      "lede": "Branchenexperten, Innovatoren und Problemlöser – wir arbeiten zusammen, um unseren Partnern erstklassige AV-Lösungen und nahtlose Erlebnisse zu bieten.",
+      "roles": {
+        "founder": "Gründer & Vorsitzender",
+        "md": "Geschäftsführer – Indien & SAARC",
+        "finance_dir": "Finanzdirektor",
+        "sales_south": "Vertriebsleiter – Süd",
+        "hr": "HR-Manager",
+        "country_head": "Länderchef – Indien",
+        "finance_mgr": "Finanzmanager",
+        "sales_mgr": "Verkaufsleiter"
+      },
+      "names": {
+        "founder": "Syed Abdul Wahab",
+        "md": "Sabarishan N.",
+        "finance_dir": "Manasa Iyer",
+        "sales_south": "Karthikeyan Sekar",
+        "hr": "Sneha Shenoy",
+        "country_head": "Karthikeyan Selvaraj",
+        "finance_mgr": "Flavia Robert",
+        "sales_mgr": "Sajid Ali Kazi"
+      },
+      "loading": "Team wird geladen...",
+      "empty": "Für diese Region sind noch keine Teammitglieder aufgeführt."
+    },
+    "cta": {
+      "label": "Werden Sie Wiederverkäufer",
+      "title_main1": "Beginnen Sie mit dem Verkauf.",
+      "title_main2": "Fangen Sie an zu wachsen.",
+      "btn1": "Werden Sie Wiederverkäufer",
+      "btn2": "Kontaktieren Sie uns",
+      "contacts": {
+        "india": "Indien-Operationen",
+        "email": "+91 80 4525 6922"
+      }
+    },
+    "hero_facts": {
+      "india": [
+        {
+          "bold": "Indien · SAARC",
+          "sub": "Betreute Regionen"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Zentrale Bangalore",
+          "sub": "Betrieb Indien — SAARC"
+        }
+      ],
+      "middle-east": [
+        {
+          "bold": "Naher Osten",
+          "sub": "Betreute Region"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Drehkreuz Dubai",
+          "sub": "Betrieb Naher Osten"
+        }
+      ],
+      "africa": [
+        {
+          "bold": "Afrika",
+          "sub": "Betreute Region"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Drehkreuz Nairobi",
+          "sub": "Betrieb Afrika"
+        }
+      ],
+      "south-asia": [
+        {
+          "bold": "Südasien",
+          "sub": "Betreute Region"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Zentrale Bangalore",
+          "sub": "Betrieb SAARC"
+        }
+      ],
+      "hong-kong-china": [
+        {
+          "bold": "Hongkong · China",
+          "sub": "Betreute Region"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Drehkreuz Hongkong",
+          "sub": "Betrieb Asien-Pazifik"
+        }
+      ],
+      "default": [
+        {
+          "bold": "Naher Osten · Afrika · Asien",
+          "sub": "Betreute Regionen"
+        },
+        {
+          "bold": "Globales Partnernetzwerk",
+          "sub": "Von Herstellern zu Händlern"
+        },
+        {
+          "bold": "Zentrale Bangalore",
+          "sub": "Betrieb Indien — SAARC"
+        }
+      ]
+    }
+  },
+  "home": {
+    "hero": {
+      "eyebrow": "Globale Präsenz. Lokale Wirkung.",
+      "hl1": "Die Technologie",
+      "hl2": "von morgen,",
+      "hl3": "heute.",
+      "lede": "Wir liefern durchgängige AV-, Technologie- und Distributionslösungen, die Unternehmen stärken, Menschen verbinden und Innovation vorantreiben ",
+      "lede_accent": "in der gesamten Region.",
+      "cta_primary": "Lösungen entdecken",
+      "cta_secondary": "Unsere globale Präsenz",
+      "scroll_cue": "Scrollen zum Entdecken",
+      "stats": {
+        "countries": {
+          "value": "20+",
+          "label": "Länder",
+          "sub": "In denen wir tätig sind"
+        },
+        "brands": {
+          "value": "34+",
+          "label": "Marken",
+          "sub": "Die wir vertreten"
+        },
+        "projects": {
+          "value": "10K+",
+          "label": "Projekte",
+          "sub": "Umgesetzt"
+        },
+        "years": {
+          "value": "20+",
+          "label": "Jahre",
+          "sub": "Exzellenz"
+        }
+      },
+      "line1": "Globales Unternehmen.",
+      "line2": "Regionale Präsenz.",
+      "line3": "Die Technologie von morgen, heute.",
+      "brief": "Distribution mit Unterschied. Mindstec bewegt nicht einfach Kartons — wir beschaffen, spezifizieren, bevorraten und betreuen professionelle AV-Technik von über fünfzig globalen Herstellern, mit Team und Lager in Ihrer Region.",
+      "explore_btn": "Lösungen entdecken",
+      "fact1_b": "Globales Unternehmen",
+      "fact1_s": "Regionale Präsenz",
+      "fact2_b": "Keine Kartonschieber",
+      "fact2_s": "Distribution mit Mehrwert",
+      "fact3_b": "Technologie von morgen",
+      "fact3_s": "Heute verfügbar",
+      "scroll": "Scrollen"
+    },
+    "statement": {
+      "side_text": "Distribution ist nur auf dem Papier Logistik. In der Praxis sind es Produktwissen, Demogeräte, technische Unterstützung und jemand, der ans Telefon geht.",
+      "text": "Ein Bildschirm im Sitzungssaal. Eine Pixelwand im Terminal. Eine Stimme, die bis in die letzte Reihe trägt. ",
+      "emText": "Jemand muss diese Technik dorthin bringen",
+      "postText": " — beschafft, spezifiziert, bevorratet und betreut, in Ihrer Region. Das ist unsere Arbeit."
+    },
+    "solutions": {
+      "label": "Lösungen",
+      "title_main": "Was wir",
+      "title_em": "verteilen",
+      "lede": "Sechs Branchen, eine Lieferkette. Bewegen Sie den Mauszeiger über eine Kategorie, um sie im Feld anzuzeigen."
+    },
+    "stats": {
+      "years_desc": "Jahrelange Erfahrung im Vertrieb professioneller AV-Technik",
+      "brands_desc": "Herstellermarken im Portfolio",
+      "ops_desc": "Regionale Aktivitäten – Indien, Afrika, Polen",
+      "installs_desc": "Bisher gelieferte und unterstützte Installationen"
+    },
+    "edge": {
+      "label": "Warum Mindstec",
+      "title_main": "Ein Händler, der handelt",
+      "title_em": "wie ein"
+    },
+    "band": {
+      "label": "Unsere Reichweite",
+      "title_main": "Globales Unternehmen.",
+      "title_em": "Regionale Präsenz."
+    },
+    "regions": {
+      "label": "Globale Präsenz",
+      "title_main": "Wo wir",
+      "title_em": "tätig sind",
+      "lede": "Elf Städte, eine Lieferkette. Lager, Währung, Garantie und Menschen — alles in der Region abgewickelt.",
+      "hq_suffix": "(Zentrale)",
+      "office_hq": "Globale Zentrale",
+      "office_regional": "Regionalbüro",
+      "soon_suffix": "— Demnächst",
+      "office_soon": "Demnächst",
+      "legend_label": "Kartenlegende",
+      "foot": "Jede Route auf dieser Karte startet in unserer Zentrale in Dubai — mit Lager, Garantie und Engineering in der Region.",
+      "foot_btn": "Ihren lokalen Ansprechpartner finden"
+    },
+    "work": {
+      "label": "Installationen",
+      "title_main": "Jüngste",
+      "title_em": "Feldarbeit",
+      "lede": "Eine Auswahl von Projekten, die unsere Partner mit der von uns gelieferten Ausrüstung durchgeführt haben.",
+      "btn": "Alle Projekte ansehen"
+    },
+    "journal": {
+      "label": "Zeitschrift",
+      "title_main": "Notizen aus dem",
+      "title_em": "Feld",
+      "btn": "Alle Artikel",
+      "posts": {
+        "post1": {
+          "cat": "Zeigt an",
+          "read": "5 Minuten gelesen",
+          "title": "Warum interaktive Panels Projektoren im Besprechungsraum ersetzen",
+          "date": "12. Mai 2026"
+        },
+        "post2": {
+          "cat": "Infrastruktur",
+          "read": "7 Min. gelesen",
+          "title": "AV-over-IP im Jahr 2026: Worauf Integratoren standardisieren sollten",
+          "date": "28. April 2026"
+        },
+        "post3": {
+          "cat": "Kaufratgeber",
+          "read": "9 Min. gelesen",
+          "title": "Spezifizierung eines interaktiven Whiteboards: eine Checkliste für Schulen und Büros",
+          "date": "10. April 2026"
+        }
+      }
+    },
+    "cta": {
+      "label": "Kontakt",
+      "title_main1": "Lasst uns das Richtige tun",
+      "title_main2": "Technologie",
+      "title_em": "im Zimmer.",
+      "btn1": "Holen Sie sich ein Angebot",
+      "btn2": "Werden Sie Partner",
+      "global_label": "Globale Anfragen"
+    },
+    "testimonials": {
+      "label": "Kundenstimmen",
+      "title_main": "Was unsere",
+      "title_em": "Kunden sagen"
+    },
+    "cities": {
+      "dubai": "Dubai",
+      "riyadh": "Riad",
+      "doha": "Doha",
+      "bangalore": "Bangalore",
+      "bangkok": "Bangkok",
+      "johannesburg": "Johannesburg",
+      "warsaw": "Warschau",
+      "sao-paulo": "São Paulo"
+    },
+    "edgeItems": [
+      {
+        "title": "Ein über fünfzehn Jahre aufgebautes Portfolio",
+        "desc": "Wir vertreten mehr als fünfzig Hersteller – von Crestron bis Samsung Professional – so ausgewählt, dass ein Integrator ein gesamtes Projekt aus einer einzigen Preisliste spezifizieren kann. Keine Lücken, keine Grauimporte.",
+        "caption": "Markennetzwerk"
+      },
+      {
+        "title": "Ingenieure, keine Bestellannahme",
+        "desc": "Hinter jeder Kategorie, die wir führen, steht ein Produktspezialist. Wir führen Systemdesign-Reviews durch, zeigen Demos aus unserem eigenen Bestand und bleiben auch lange nach Rechnungsbegleichung auf dem Eskalationsweg.",
+        "caption": "Technische Tiefe"
+      },
+      {
+        "title": "Lokale Teams in drei Märkten",
+        "desc": "Bangalore deckt Indien und die SAARC-Region ab, unser Afrika-Büro bedient die Handelszentren des Kontinents und Warschau kümmert sich um Mittel- und Osteuropa – lokale Währung, lokale Garantie, lokale Ansprechpartner.",
+        "caption": "Regionale Teams"
+      },
+      {
+        "title": "Support von der Anfrage bis zur Installation",
+        "desc": "Pre-Sales-Beratung, Beschaffung, Logistik, Inbetriebnahmehilfe und After-Sales-Service unter einem Dach. Jeder Partner erhält einen festen Ansprechpartner und einen direkten Draht zu den technischen Mitarbeitern.",
+        "caption": "End-to-End-Support"
+      }
+    ],
+    "pillars": {
+      "label": "Was uns auszeichnet",
+      "title_main": "Drei Dinge, an denen",
+      "title_em": "wir festhalten",
+      "items": [
+        {
+          "title": "Globales Unternehmen. Regionale Präsenz.",
+          "desc": "Eine Lieferkette, lokal gehalten. Lager, Währung, Garantie und Menschen sitzen in Ihrer Region — nicht in einem Lagerhaus acht Zeitzonen entfernt.",
+          "tag": "Lieferkette"
+        },
+        {
+          "title": "Distribution mit Unterschied.",
+          "desc": "Wir sind keine bloßen Kartonschieber. Spezifikationsunterstützung, Demogeräte, Inbetriebnahmehilfe und After-Sales-Engineering gehören zum Produkt, nicht zum Aufpreis.",
+          "tag": "Mehrwert"
+        },
+        {
+          "title": "Die Technologie von morgen, heute.",
+          "desc": "Über fünfzig globale Hersteller, kuratiert und bevorratet — damit die Technik, die Sie spezifizieren, jetzt verfügbar ist und nicht nächstes Quartal.",
+          "tag": "Portfolio"
+        }
+      ]
+    },
+    "countries": {
+      "dubai": "Vereinigte Arabische Emirate",
+      "riyadh": "Saudi-Arabien",
+      "doha": "Katar",
+      "bangalore": "Indien",
+      "bangkok": "Thailand",
+      "johannesburg": "Südafrika",
+      "warsaw": "Polen",
+      "sao-paulo": "Brasilien"
+    },
+    "offices": {
+      "dubai": "Globaler Hauptsitz und Drehkreuz aller Handelsrouten – Golfregion, weiterer Naher Osten und Re-Export.",
+      "riyadh": "Zentralsaudi-Arabien – Behörden, Unternehmen und Giga-Projekte.",
+      "doha": "Katar und der nördliche Golf, gemeinsam mit dem Hauptsitz in Dubai betreut.",
+      "bangalore": "Indien-Betrieb: Lager, Service und Engineering-Team für Südasien.",
+      "bangkok": "Distribution in Südostasien und Unterstützung für Integrationspartner.",
+      "johannesburg": "Distribution im südlichen Afrika und Integratoren-Support.",
+      "warsaw": "Distribution in Mittel- und Osteuropa.",
+      "sao-paulo": "Brasilien und der übrige südamerikanische Markt."
+    }
+  },
+  "partners": {
+    "hero": {
+      "line1": "Weltklasse-Marken.",
+      "line2": "Ein Händler.",
+      "label": "Unsere Partner",
+      "brief": "25 Hersteller, eine Preisliste. Wir vertreten die weltweit führenden AV-Marken in den Bereichen Displays, Audio, Übertragung, Zusammenarbeit und Konnektivität – sodass unsere Händler ein komplettes Projekt von einem einzigen Partner spezifizieren können."
+    },
+    "meta": {
+      "fact1_b": "25 Marken",
+      "fact1_s": "Dargestelltes Portfolio",
+      "fact2_b": "5 Kategorien",
+      "fact2_s": "Jede AV-Branche abgedeckt",
+      "fact3_b": "3 Regionen",
+      "fact3_s": "Naher Osten · Afrika · Asien"
+    },
+    "why": {
+      "label": "Für Hersteller &amp; Händler",
+      "title_main": "Warum Marken wählen",
+      "title_em": "Mindstec",
+      "p1_title": "Eine Preisliste, jede Kategorie",
+      "p1_desc": "Ein kuratiertes Portfolio, mit dem Integratoren ein gesamtes Projekt – Displays, Audio, Steuerung, Konnektivität – von einem einzigen Vertriebspartner spezifizieren können.",
+      "p2_title": "Echter Marktzugang",
+      "p2_desc": "Etablierte Händlernetzwerke im Nahen Osten, in Afrika und Asien mit Lagerbeständen in der Region, lokaler Währung und Logistik für jeden Markt.",
+      "p3_title": "Wachstum ohne Konkurrenz",
+      "p3_desc": "Wir unterstützen Händler mit Verkauf, Marketing und Werbung – und konkurrieren niemals mit ihnen. Produktspezialisten unterstützen jede Marke, die wir führen."
+    },
+    "cta": {
+      "label": "Arbeiten Sie mit uns zusammen",
+      "title_main1": "Ihre Marke,",
+      "title_main2": "unsere Region.",
+      "btn1": "Werden Sie Partner",
+      "btn2": "Werden Sie Wiederverkäufer",
+      "contacts": {
+        "partnerships": "Partnerschaften",
+        "india": "Partners@mindstec.com"
+      }
+    },
+    "categories": {
+      "all": "Alle",
+      "displays": "Displays & Videowände",
+      "audio": "Audio",
+      "broadcast": "Rundfunk & Medien",
+      "collab": "Zusammenarbeit & Steuerung",
+      "infra": "Konnektivität & Infrastruktur"
+    },
+    "brands": {
+      "b1": "Interaktive Displays",
+      "b2": "Projektion",
+      "b3": "Videowandsteuerung",
+      "b4": "Videowand-Software",
+      "b5": "Projektionswände",
+      "b6": "Architektonisches Audio",
+      "b7": "Professionelle Audioschnittstellen",
+      "b8": "IPTV & Streaming",
+      "b9": "Rundfunkkameras",
+      "b10": "PTZ-Kameras",
+      "b11": "Hoteltechnologie",
+      "b12": "Live-Produktion",
+      "b13": "RF- & IPTV-Kopfstelle",
+      "b14": "Visuelle Zusammenarbeit",
+      "b15": "Arbeitsplatzbuchung",
+      "b16": "iPad-Gehäuse",
+      "b17": "Steuerung & Automatisierung",
+      "b18": "Kameraschnittstellen",
+      "b19": "AV-Distribution",
+      "b20": "AV-Netzwerke",
+      "b21": "Konnektivität",
+      "b22": "AV-Halterungen",
+      "b23": "Montagelösungen",
+      "b24": "Synchronisierte Uhren",
+      "b25": "AV-Zubehör"
+    }
+  },
+  "ewaste": {
+    "hero": {
+      "title": "E-Waste-Management",
+      "subtitle": "Verantwortungsvolles Recycling für eine nachhaltige Zukunft.",
+      "line1": "Ende des Lebenszyklus.",
+      "line2": "Nicht das Ende der Geschichte.",
+      "brief": "Rund 90 % der elektronischen Geräte sind recycelbar. Unser autorisiertes Programm mit Deshwal Waste Management nimmt Altgeräte überall in Indien zurück – völlig kostenlos für Sie."
+    },
+    "recyclers": {
+      "title": "Unsere autorisierten Recycler",
+      "desc": "Wir haben mit führenden Entsorgungsunternehmen für Elektroschrott zusammengearbeitet, um eine sichere und gesetzeskonforme Entsorgung von Elektroschrott in ganz Indien zu gewährleisten.",
+      "why_recycle": "Warum recyceln",
+      "gives_back_main": "Was verantwortungsvolles Recycling",
+      "gives_back_em": "zurückgibt.",
+      "b1_title": "Schont natürliche Ressourcen",
+      "b1_desc": "Aus Platinen rückgewonnene Metalle sowie Kunststoffe und Glas aus Displays fließen in neue Produkte ein – das reduziert den Abbau neuer Rohstoffe.",
+      "b2_title": "Unterstützt die Gemeinschaft",
+      "b2_desc": "Aufbereitete Elektronik geht als gespendete PCs an einkommensschwache Familien, Schulen und gemeinnützige Vereine für digitale Teilhabe.",
+      "b3_title": "Schafft lokale Arbeitsplätze",
+      "b3_desc": "Da fast 90 % der Komponenten recycelbar sind, schafft die Recyclingbranche neue Unternehmen, Arbeitsplätze und einen Sekundärmarkt.",
+      "b4_title": "Schützt Gesundheit & Umwelt",
+      "b4_desc": "Displays enthalten Blei; Platinen enthalten Cadmium, Quecksilber und Chrom. Sicheres Recycling hält diese Toxine aus Böden und Grundwasser fern."
+    },
+    "centres": {
+      "title": "Sammelstellen",
+      "desc": "Finden Sie eine Sammelstelle in Ihrer Nähe.",
+      "label": "Annahmestellen",
+      "title_main": "Sammelstellen",
+      "title_em": "in ganz Indien.",
+      "pickup_label": "Hotline",
+      "loading": "Sammelstellen werden geladen...",
+      "empty": "Für diesen Betreiber sind keine Sammelstellen verfügbar."
+    },
+    "filter": {
+      "all": "Alle Sammelstellen"
+    },
+    "contact_person": "Ansprechpartner",
+    "tel": "Tel",
+    "meta": {
+      "pickup_label": "Gebührenfreie Abhol-Hotline",
+      "drop_points": "27 Annahmestellen",
+      "across_india": "In ganz Indien",
+      "recycler_label": "Zertifizierter Recycler",
+      "cost_label": "Kosten für den Verbraucher"
+    },
+    "ov": {
+      "label": "Übersicht",
+      "lede_main": "Auf Mülldeponien setzen alte Elektrogeräte Blei und Quecksilber in Boden und Grundwasser frei. Richtig recycelt hingegen",
+      "lede_em": "erhalten sie ein zweites Leben.",
+      "p1": "E-Waste ist die Bezeichnung für Elektronikprodukte am Ende ihrer Nutzungsdauer – Computer, Fernseher, Displays, Telefone, Audiogeräte und Batterien. Viele Komponenten enthalten Schadstoffe, die bei unsachgemäßer Entsorgung die Gesundheit und Umwelt gefährden.",
+      "p2": "Die meisten dieser Produkte können umweltgerecht wiederverwendet, aufbereitet oder recycelt werden. Unter Indiens E-Waste-Richtlinien betreibt Mindstec ein konformes Rücknahmeprogramm, damit die vertriebene Hardware sicher verarbeitet wird."
+    },
+    "dd": {
+      "label": "Sorgsam behandeln",
+      "title_main": "Gebote &",
+      "title_em": "Verbote.",
+      "do_title": "Immer",
+      "dos": [
+        "Prüfen Sie vor der Entsorgung das Produkthandbuch auf Informationen zur Handhabung am Lebensende.",
+        "Stellen Sie sicher, dass nur zertifizierte Recycler Ihre Elektronikprodukte verarbeiten.",
+        "Rufen Sie die gebührenfreie Nummer an, um ausgediente Geräte abholen zu lassen.",
+        "Geben Sie Altgeräte, Batterien und Zubehör an der nächsten autorisierten E-Waste-Sammelstelle ab.",
+        "Trennen Sie Akkus und schützen Sie Glasflächen vor Bruch, bevor Sie Geräte übergeben."
+      ],
+      "dont_title": "Niemals",
+      "donts": [
+        "Zerlegen Sie Elektronikprodukte nicht eigenmächtig.",
+        "Werfen Sie Elektrogeräte nicht in Mülltonnen mit dem Symbol \"Nicht wegwerfen\".",
+        "Geben Sie E-Waste nicht an inoffizielle Sammler wie lokale Schrotthändler weiter.",
+        "Mischen Sie Elektronik nicht unter den Hausmüll, der auf Deponien landet."
+      ]
+    },
+    "plan": {
+      "media_tag": "Zertifiziertes Recycling — Deshwal Waste Management",
+      "label": "Das Programm",
+      "title_main": "Wie Ihre Hardware",
+      "title_em": "wiederverwertet wird.",
+      "brief": "In Indien landet der meiste Elektromüll im informellen Sektor und wird ohne Schutz für Gesundheit und Umwelt verarbeitet. Mindstec kooperiert mit Deshwal Waste Management, um Annahmestellen und eine umweltgerechte Entsorgung anzubieten.",
+      "steps": [
+        {
+          "title": "Abholauftrag erteilen",
+          "desc": "Rufen Sie die Hotline 1800 102 9077 an (Mo–Fr, 10:00 – 17:30 Uhr) – oder geben Sie Ihren E-Waste an einer der Sammelstellen ab."
+        },
+        {
+          "title": "Erfassung & Transport",
+          "desc": "Deshwal Waste Management holt die Altgeräte ab und transportiert sie sicher zur nächsten Annahmestelle."
+        },
+        {
+          "title": "Umweltgerechtes Recycling",
+          "desc": "Die Geräte werden in staatlich zugelassenen Anlagen gemäß den E-Waste-Richtlinien verarbeitet."
+        }
+      ],
+      "note_bold": "Völlig kostenlos.",
+      "note": "Für die Abgabe zum Recycling werden keine Gebühren erhoben und keine finanziellen Vergütungen angeboten – Ziel ist der Umweltschutz."
+    },
+    "cta": {
+      "label": "Helfen Sie mit",
+      "title_main": "Richtig recyceln.",
+      "title_em": "Es kostet Sie nichts.",
+      "btn1": "Anrufen: 1800 102 9077",
+      "btn2": "Mindstec kontaktieren"
+    }
+  },
+  "contact": {
+    "label": "Kontaktieren Sie uns",
+    "hero": {
+      "line1": "Haben Sie ein Projekt?",
+      "line2": "Nehmen Sie Kontakt auf."
+    },
+    "form": {
+      "name": "Name",
+      "name_ph": "Ihr Name",
+      "phone": "Telefon",
+      "email": "E-Mail-Adresse",
+      "subject": "Thema",
+      "message": "Nachricht",
+      "message_ph": "Wie können wir Ihnen helfen? Nehmen Sie gerne Kontakt auf!",
+      "submit": "Nachricht senden",
+      "submitting": "Senden...",
+      "success": "Vielen Dank für Ihre Kontaktaufnahme! Wir werden uns in Kürze bei Ihnen melden.",
+      "opt": {
+        "general": "Allgemeine Anfragen",
+        "partner": "Werden Sie Partner",
+        "reseller": "Werden Sie Wiederverkäufer",
+        "experience": "Besuchen Sie das Experience Center",
+        "digital": "Digitale Beschilderung",
+        "control": "Kontrollräume",
+        "conferencing": "Konferenzen und Zusammenarbeit",
+        "hospitality": "Gastgewerbe AV",
+        "broadcast": "Rundfunk und Produktion",
+        "live": "Live-Events und Immersive"
+      },
+      "error_generic": "Etwas ist schiefgelaufen. Bitte versuchen Sie es erneut."
+    },
+    "offices": {
+      "title": "Büros",
+      "desc": "Unser Netzwerk erstreckt sich über wichtige Märkte im Nahen Osten, in Afrika und Asien und stellt sicher, dass wir immer erreichbar sind, um Ihre Projekte zu unterstützen."
+    },
+    "general": {
+      "title": "Allgemein",
+      "desc": "Schreiben Sie uns und wir leiten es an die richtige Person weiter."
+    },
+    "info": {
+      "call": "Rufen Sie uns an",
+      "visit": "Besuchen Sie uns",
+      "write": "Schreiben Sie uns",
+      "regional_desks": "Regionale Kontakte",
+      "partnerships": "Partnerschaften",
+      "phone_label": "Telefon",
+      "email_label": "E-Mail",
+      "open_maps": "In Google Maps öffnen",
+      "note": "Ihre Anfrage wird sicher an unser {{region}}-Büro{{office}} übermittelt."
+    }
+  },
+  "experience": {
+    "hero": {
+      "label": "Erlebniszentrum – Bengaluru",
+      "line1": "Stell es dir nicht vor.",
+      "line2": "Gehen Sie hinein.",
+      "desc": "Eine praktische Etage, in der Technologie auf Funktionalität trifft – Live-Kontrollräume, Kollaborationsräume, Beschilderung und Übertragung, die nebeneinander laufen, damit Sie sie so beurteilen können, wie es Ihre Kunden wollen.",
+      "book": "Buchen Sie einen Besuch",
+      "film": "Sehen Sie sich den Film an"
+    },
+    "meta": {
+      "zones_b": "6 Live-Zonen",
+      "zones_s": "Tägliche Demos",
+      "brands_b": "25 Marken",
+      "brands_s": "Auf dem Boden",
+      "loc_b": "OMBR-Layout",
+      "loc_s": "Bangalore, Indien",
+      "appt_b": "Nach Vereinbarung",
+      "appt_s": "Geführte Komplettlösungen"
+    },
+    "ov": {
+      "label": "Überblick",
+      "lede": "In Datenblättern erfahren Sie, was ein System leisten soll. Das Experience Center zeigt Ihnen, was es <em>tatsächlich leistet</em> – live, integriert und unter realen Bedingungen.",
+      "p1": "Unser Bengaluru Experience Center ist eine dynamische, praktische Umgebung, die darauf ausgelegt ist, die Leistungsfähigkeit integrierter AV zu demonstrieren. Auf dem Boden werden Live-Demonstrationen von Kontrollraumsystemen, kollaborativen Besprechungstechnologien, Digital Signage und mehr durchgeführt – echte Produkte von 25 globalen Marken, die so miteinander verbunden sind, wie sie vor Ort eingesetzt würden.",
+      "p2": "Besucher erkunden reale Anwendungen, testen die Systeminteroperabilität zwischen Marken und arbeiten direkt mit unseren technischen Experten zusammen. Ob Sie als Berater eine Spezifikation schreiben, als Integrator ein Design validieren oder als Unternehmenskunde einen Standard auswählen – dies ist der kürzeste Weg von der engeren Wahl zur Gewissheit."
+    },
+    "zones": {
+      "label": "Auf dem Boden",
+      "title_em": "live",
+      "desc": "Jede Zone zeigt echte, lieferbare Produkte – keine Attrappen, keine Renderings. Gehen Sie von einem Bereich zum nächsten und sehen Sie, wie alles zusammenspielt.",
+      "title": "Sechs Zonen. Alle ",
+      "explore": "Bereich erkunden"
+    },
+    "film": {
+      "title": "Sehen Sie es in Aktion.",
+      "desc": "Machen Sie einen kurzen Rundgang durch den Boden.",
+      "play": "Film abspielen",
+      "label": "Der Film",
+      "line1": "Treten Sie ein, bevor ",
+      "line2": "Sie eintreten.",
+      "tag": "Mindstec Erlebniszentrum — Bengaluru",
+      "note": "Gefilmt in unserem Zentrum in Bengaluru. Streams auf Abruf – drücken Sie Play."
+    },
+    "cta": {
+      "label": "Besuchen Sie uns",
+      "line1": "Erfolge erzielen.",
+      "line2": "Gemeinsam wachsen.",
+      "next": "Nächster Schritt",
+      "solutions": "Alle Lösungen ansehen"
+    },
+    "zones_arr": [
+      {
+        "name": "Leitstand-Videowand",
+        "desc": "Eine für den 24/7-Betrieb ausgelegte Videowand, betrieben mit Live-Prozessoren – wechseln Sie Quellen, teilen Sie Layouts und testen Sie die Arbeitsabläufe."
+      },
+      {
+        "name": "Kollaborations-Suite",
+        "desc": "Ein voll verkabelter hybrider Meetingraum – interaktives Display, PTZ-Kameras, Deckenmikrofon und Raumbuchung, verbunden mit einem echten Anruf."
+      },
+      {
+        "name": "Signage-Galerie",
+        "desc": "Indoor-LED, professionelle Displays und Wegeleitsysteme mit geplanten Inhalten aus einem Live-CMS – vergleichen Sie Helligkeit und Auflösung."
+      },
+      {
+        "name": "Rundfunk-Ecke",
+        "desc": "Kameras, Bildmischer und Live-Grafiken in einem kompakten Produktions-Setup – erleben Sie eine Multikamera-Produktion live."
+      },
+      {
+        "name": "Audio- & Hospitality-Lounge",
+        "desc": "Unsichtbare und architektonische Lautsprecher, Zimmer-IPTV und Hintergrundmusik als Lounge inszeniert – Technik, die unsichtbar bleibt, bis Sie Play drücken."
+      },
+      {
+        "name": "AV-over-IP-Netzwerk",
+        "desc": "Der Technikraum, der das gesamte Stockwerk verbindet – AV-over-IP-Umschaltung, Verlängerung und Steuerung zur lückenlosen Signalverfolgung."
+      }
+    ],
+    "who": {
+      "label": "Für wen",
+      "title": "Gebaut für die Menschen, ",
+      "title_em": "die entscheiden.",
+      "arr": [
+        {
+          "name": "Fachplaner & Consultants",
+          "desc": "Prüfen Sie Spezifikationen an echter Hardware vor der Ausschreibung – vergleichen Sie Marken im selben Raum, unter demselben Licht."
+        },
+        {
+          "name": "Systemintegratoren",
+          "desc": "Präsentieren Sie Designs ohne eigenen Demoraum. Bringen Sie Ihre Kunden mit, gehen Sie durch die Zonen und schließen Sie das Projekt ab."
+        },
+        {
+          "name": "Unternehmenskunden",
+          "desc": "Sie wählen einen Standard für hundert Räume? Testen Sie ihn zuerst. Prüfen Sie Workflow, Audio und Ergonomie vor Budgetfreigabe."
+        }
+      ]
+    },
+    "visit": {
+      "label": "Besuch planen",
+      "line1": "Erleben Sie es live, ",
+      "line2": "vor Ort.",
+      "desc": "Besuche werden geführt und nach Terminabsprache durchgeführt, damit die Vorführung auf Ihre Evaluierung abgestimmt ist. Sagen Sie uns einfach Bescheid.",
+      "maps": "In Google Maps öffnen",
+      "arr": [
+        {
+          "title": "Wo",
+          "desc": "Nr. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, Indien"
+        },
+        {
+          "title": "Bitte vorher anmelden",
+          "desc": "Mo–Fr, Bürozeiten IST"
+        },
+        {
+          "title": "Schreiben Sie uns",
+          "desc": "Teilen Sie uns mit, welche Zonen Sie sehen möchten"
+        },
+        {
+          "title": "Format",
+          "desc": "Geführter Rundgang, 60–90 Minuten",
+          "sub": "Mit einem Produktspezialisten für Ihre Branche"
+        }
+      ]
+    }
+  },
+  "solutions": {
+    "hero": {
+      "label": "Lösungen",
+      "line1": "Jede Vertikale.",
+      "line2": "Ein Partner.",
+      "desc": "Von einem einzelnen Besprechungsraum bis hin zu einer nationalen Kommandozentrale – sechs AV-Branchen, eine Preisliste und Produktspezialisten hinter jeder Kategorie, die wir vertreiben."
+    },
+    "meta": {
+      "vert_b": "7 Vertikalen",
+      "vert_s": "Vollständige AV-Abdeckung",
+      "brands_b": "25 Marken",
+      "brands_s": "Kuratiertes Portfolio",
+      "installs_b": "Über 1.000 Installationen",
+      "installs_s": "Geliefert und unterstützt"
+    },
+    "explore": "Erkunden",
+    "next": "Nächste Lösung",
+    "primary_verticals": "Hauptbranchen",
+    "get_solution": "Lösung anfragen",
+    "all_solutions": "Alle Lösungen",
+    "capabilities": "Funktionen",
+    "what_we_deliver_main": "Was wir",
+    "what_we_deliver_em": "liefern",
+    "brands_we_distribute": "Marken, die wir vertreiben",
+    "for_this_vertical": "für diese Branche",
+    "details": {
+      "information-and-communication-technology": {
+        "name": "Informations- und Kommunikationstechnik",
+        "title": "Informations- und <em>Kommunikationstechnik</em>"
+      },
+      "hospitality-guest-experience": {
+        "name": "Hotellerie & Gästeerlebnis",
+        "title": "Hotellerie &amp; <em>Gästeerlebnis</em>",
+        "fact": "Hotels · Restaurants · Veranstaltungsorte",
+        "capsSide": "Die beste Hospitality-Technik ist die, die man nicht sieht – bis das Licht ausgeht und die Show beginnt.",
+        "caps": [
+          {
+            "title": "Gästezimmer-Entertainment",
+            "desc": "IPTV-Kopfstellen, Streaming-Lösungen und Raumsteuerungen – maßgeschneidert auf das Design des Hotels."
+          },
+          {
+            "title": "Ballsäle & Eventbereiche",
+            "desc": "Audio- und Projektionstechnik für teilbare Räume sowie LED-Systeme für Konferenzen, Hochzeiten und Events."
+          },
+          {
+            "title": "Hintergrundmusik & Durchsagen",
+            "desc": "Zonenbeschallung, die sich vom Frühstück bis zum Ausschank anpasst, inklusive integrierter Durchsagefunktion."
+          },
+          {
+            "title": "Interaktive Tablets",
+            "desc": "Smarte Kiosk-Systeme und Zimmer-Tablets für Bestellungen, Concierge- und Gästeservices."
+          }
+        ],
+        "cat": "Hotels · Restaurants · Veranstaltungsorte",
+        "desc": "Gästezimmer-Entertainment, Ballsaal-Systeme und Hintergrundbeschallung für Hotels, Restaurants und Veranstaltungsorte – Technik, die unsichtbar bleibt, bis es darauf ankommt.",
+        "tags": [
+          "Zimmer-IPTV",
+          "Ballsaal-AV",
+          "Hintergrundmusik",
+          "Zimmer-Tablets"
+        ]
+      },
+      "immersive-experience": {
+        "name": "Immersive Erlebnisse",
+        "title": "Immersive <em>Erlebnisse</em>",
+        "fact": "Konzerte · Messen · XR",
+        "capsSide": "Aufbau, Show und Abbau innerhalb weniger Stunden – im Event-Bereich gibt es keine zweite Chance, daher planen wir entsprechend sicher.",
+        "caps": [
+          {
+            "title": "Touring- & Rental-LED",
+            "desc": "LED-Module mit Schnellverschluss, gebogene Arrays und LED-Böden für den dauerhaften Vermieteinsatz."
+          },
+          {
+            "title": "Projektionsmapping",
+            "desc": "Lichtstarke Projektoren und Warping-Software für Architektur, Bühnen und Kunstinstallationen."
+          },
+          {
+            "title": "Raumakustik & Konzert-Audio",
+            "desc": "Skalierbare Tonsysteme und immersive Audiotechnik für Ausstellungen, Galerien und Stadien."
+          },
+          {
+            "title": "Show-Steuerung",
+            "desc": "Timecode-Synchronisation, Trigger-Systeme und Medienserver, die Licht, Video und Ton im Takt halten."
+          }
+        ],
+        "cat": "Konzerte · Messen · XR",
+        "desc": "Tour-taugliche LED-Systeme, Projektionsmapping und Raumklangsysteme für Konzerte, Messen und Erlebniswelten – gebaut für die harten Anforderungen auf Tour.",
+        "tags": [
+          "Touring-LED",
+          "Projektionsmapping",
+          "Raumakustik",
+          "Show-Steuerung"
+        ]
+      },
+      "broadcast-production-streaming": {
+        "name": "Broadcast, Produktion & Streaming",
+        "title": "Broadcast, Produktion &amp; <em>Streaming</em>",
+        "fact": "Studios · Streaming · Content-Ersteller",
+        "capsSide": "Vom Einzel-Streaming-Arbeitsplatz bis zum Nachrichtensender – es gelten dieselben Signalstandards.",
+        "caps": [
+          {
+            "title": "Studio- & PTZ-Kameras",
+            "desc": "Broadcast-Bildqualität von fest installierten Studiokameras bis hin zu ferngesteuerten PTZ-Kamerasystemen."
+          },
+          {
+            "title": "Bildmischung & Signalverteilung",
+            "desc": "Produktionsmischer und Kreuzschienen für Live-Sendungen, sport und Live-Events."
+          },
+          {
+            "title": "Live-Grafiken & virtuelle Sets",
+            "desc": "Echtzeitgrafiken, Augmented Reality und virtuelle Kulissen, die weltweit von Fernsehsendern eingesetzt werden."
+          },
+          {
+            "title": "Streaming & Signalübertragung",
+            "desc": "Encoder, IPTV- und OTT-Übertragungswege, die Sendungen zuverlässig auf jeden Bildschirm bringen."
+          }
+        ],
+        "cat": "Studios · Streaming · Content-Ersteller",
+        "desc": "Kameras, Bildmischer, Live-Grafiken und Streaming-Infrastruktur für Fernsehsender, studios und Content-Ersteller – vom mobilen Setup bis zum Vollstudio.",
+        "tags": [
+          "Studio-Kameras",
+          "Bildmischung",
+          "Live-Grafiken",
+          "Streaming"
+        ]
+      },
+      "digital-signage-dooh": {
+        "name": "Digital Signage & DOOH",
+        "title": "Digital Signage &amp; <em>DOOH</em>",
+        "fact": "Einzelhandel · Transport · Öffentlicher Raum",
+        "capsSide": "Vom einzelnen Menüboard bis zur Stadionfassade – Hardware, Software und Halterungen aus einer Hand.",
+        "caps": [
+          {
+            "title": "LED für Innen- und Außenbereiche",
+            "desc": "Hochauflösende LED-Wände für Innenräume und ultra-helle Außenfassaden, inklusive Empfängerkarte, Ersatzteilen und Wartung."
+          },
+          {
+            "title": "Professionelle Displays",
+            "desc": "Gewerbliche Displays ausgelegt für den 24/7-Betrieb – Hochformat, Querformat, tageslichttauglich und mit Touch-Funktion."
+          },
+          {
+            "title": "Wegeleitsysteme & Kioske",
+            "desc": "Interaktive Stelen und Selbstbedienungsterminals für Einkaufszentren, Flughäfen, Krankenhäuser und Campus-Bereiche."
+          },
+          {
+            "title": "CMS & Inhaltsplanung",
+            "desc": "Content Management, zeitgesteuerte Wiedergabe und Fernüberwachung für Netzwerke von einem bis zu Tausenden Displays."
+          }
+        ],
+        "cat": "Einzelhandel · Transport · Öffentlicher Raum",
+        "desc": "LED-Wände, professionelle Displays und Wegeleitsysteme, die Verkaufsflächen, Terminals und öffentliche Bereiche in Medienflächen verwandeln – mitsamt der Software zur Steuerung.",
+        "tags": [
+          "LED für Innen- & Außenbereiche",
+          "Displays",
+          "Wegeleitsysteme",
+          "CMS & Inhaltsplanung"
+        ]
+      },
+      "control-rooms-critical-environments": {
+        "name": "Leitstellen & kritische Umgebungen",
+        "title": "Leitstellen &amp; <em>kritische Umgebungen</em>",
+        "fact": "Kommando · Überwachung · NOC",
+        "capsSide": "Ausfallsicherheit bedeutet kein Single-Point-of-Failure – wir planen Redundanz von der Quelle bis zum Display.",
+        "caps": [
+          {
+            "title": "Videowand-Prozessoren",
+            "desc": "Hardware- und Software-Processing, das jede Quelle verlustfrei, in jeder Größe und auf jedem Display darstellt."
+          },
+          {
+            "title": "24/7 Mission-Critical Displays",
+            "desc": "Displays und LED-Wände ausgelegt für den Dauerbetrieb, mit redundanten Netzteilen und Einbrennschutz."
+          },
+          {
+            "title": "KVM & Leitstand-Möbel",
+            "desc": "Latenzfreies KVM, um alle Systeme von einem Arbeitsplatz aus zu steuern, sowie ergonomische Konsolenmöbel."
+          },
+          {
+            "title": "Quellen- & Layout-Management",
+            "desc": "Vordefinierte Layouts, alarmgesteuerte Ansichten und Multi-Operator-Workflows für kritische Situationen."
+          }
+        ],
+        "cat": "Kommando · Überwachung · NOC",
+        "desc": "24/7-Videowände, Prozessoren und Bediener-Arbeitsabläufe für Kommandozentralen, Überwachungseinheiten und Netzwerkbetrieb – ausgelegt auf maximale Ausfallsicherheit.",
+        "tags": [
+          "Videowand-Prozessoren",
+          "24/7 Displays",
+          "KVM",
+          "Quellen-Management"
+        ]
+      },
+      "conferencing-collaboration": {
+        "name": "Konferenz & Zusammenarbeit",
+        "title": "Konferenz &amp; <em>Zusammenarbeit</em>",
+        "intro": "Hybride Besprechungsräume mit perfektem Klang und Bild – interaktive Displays, Kameras, Deckenmikrofone und die AV-over-IP-Infrastruktur dahinter.",
+        "fact": "Arbeitsplatz · Bildung · Hybrid",
+        "capsSide": "Räume, die man gerne bucht – von Huddle Spaces bis zu Sitzungssälen und Hörsälen.",
+        "caps": [
+          {
+            "title": "Interaktive Displays",
+            "desc": "Touch-Displays für kollaboratives Arbeiten, Anmerkungen und kabellose Präsentationen in jeder Raumgröße."
+          },
+          {
+            "title": "Kameras & Tracking",
+            "desc": "PTZ-, ePTZ- und Auto-Framing-Kameras, die jeden Teilnehmer im Bild halten – unabhängig vom Raumlayout."
+          },
+          {
+            "title": "Decken- & Beamforming-Audio",
+            "desc": "Deckenmikrofone und Lautsprecher, die sich unsichtbar integrieren und selbst leiseste Stimmen erfassen."
+          },
+          {
+            "title": "Raumbuchung & Raumanalytik",
+            "desc": "Buchungsbildschirme, Belegungsstatistiken und Wegeleitsysteme für eine effiziente Nutzung Ihrer Büroflächen."
+          }
+        ],
+        "cat": "Arbeitsplatz · Bildung · Hybrid",
+        "desc": "Hybride Besprechungsräume mit perfektem Klang und Bild – interaktive Displays, Kameras, Deckenmikrofone und die AV-over-IP-Infrastruktur dahinter.",
+        "tags": [
+          "Interaktive Displays",
+          "PTZ-Kameras",
+          "Decken-Audio",
+          "Raumbuchung"
+        ]
+      }
+    },
+    "brands_empty": "Für diese Region sind noch keine Marken aufgeführt."
+  },
+  "blogs": {
+    "hero": {
+      "line1": "Notizen aus der",
+      "line2": "AV-Praxis.",
+      "label": "Blogs — Das Mindstec-Journal",
+      "brief": "Kaufberater, Erklärungen und Feldnotizen unserer Produktspezialisten."
+    },
+    "featured": "Hervorgehoben",
+    "read_article": "Artikel lesen",
+    "read_article_short": "Artikel lesen",
+    "browse_all": "Alle Artikel auf mindstec.com durchsuchen",
+    "cta": {
+      "label": "Sprechen wir Fachliches",
+      "title1": "Fragen, die der Blog",
+      "title2_em": "nicht beantwortet hat?",
+      "btn_ask": "Einen Spezialisten fragen",
+      "btn_solutions": "Unsere Lösungen ansehen"
+    },
+    "modal": {
+      "tag": "Artikel",
+      "back": "Zurück zum Blog",
+      "retry": "Erneut versuchen",
+      "error": "Dieser Artikel konnte nicht geladen werden. Bitte versuchen Sie es erneut."
+    },
+    "search_placeholder": "Artikel durchsuchen…",
+    "search_aria": "Artikel durchsuchen",
+    "search_clear": "Suche löschen",
+    "filter_aria": "Nach Kategorie filtern",
+    "all_categories": "Alle Themen",
+    "showing": "{{count}} von {{total}} Artikeln werden angezeigt",
+    "empty_title": "Keine passenden Artikel",
+    "empty_body": "Versuchen Sie ein anderes Thema oder einen kürzeren Suchbegriff.",
+    "empty_btn": "Filter zurücksetzen"
+  },
+  "chat": {
+    "header": {
+      "title": "Mindstec Support",
+      "online": "Online",
+      "avg_response": "Durchschn. Antwortzeit < 30 Sek."
+    },
+    "input": {
+      "placeholder": "Schreiben Sie Ihre Nachricht..."
+    },
+    "launcher": {
+      "label": "KI fragen",
+      "placeholder": "Fragen Sie mich etwas...",
+      "panel_label": "KI fragen"
+    },
+    "quick_actions": {
+      "company_info": {
+        "title": "Unternehmensinfo",
+        "desc": "Erfahren Sie mehr über Mindstec",
+        "query": "Erzählen Sie mir von Mindstec"
+      },
+      "products": {
+        "title": "Produkte",
+        "desc": "Produkte durchsuchen",
+        "query": "Welche Produkte bietet Mindstec an?"
+      },
+      "solutions": {
+        "title": "Lösungen",
+        "desc": "Geschäftslösungen finden",
+        "query": "Welche Lösungen bietet Mindstec an?"
+      },
+      "technical_support": {
+        "title": "Technischer Support",
+        "desc": "Fehlerbehebung für Produkte",
+        "query": "Ich benötige technischen Support für Produkte"
+      }
+    }
+  },
+  "contact_info": {
+    "tel_label": "+48 22 266 0244",
+    "tel_href": "+48222660244",
+    "email": "info.eu@mindstec.com",
+    "label": "Europa-Aktivitäten",
+    "partner_email": "partners@mindstec.com",
+    "partner_label": "Partnerschaften",
+    "email_label": "E-Mail"
+  },
+  "events": {
+    "hero": {
+      "title_main": "Events &",
+      "title_em": "News",
+      "label": "Was passiert",
+      "desc": "Kommende Events von Mindstec — Produkteinführungen, Messen und Partnerkonferenzen — zusammen mit den neuesten Nachrichten aus unseren Regionen."
+    },
+    "tabs": {
+      "all": "Alle",
+      "events": "Events",
+      "news": "News"
+    },
+    "upcoming": {
+      "label": "Kommende Events",
+      "title_main": "Erleben Sie uns",
+      "title_em": "live.",
+      "desc": "Treffen Sie das Mindstec-Team auf Messen, Launch-Events und Partnerkonferenzen in unseren Regionen.",
+      "empty": "Derzeit keine kommenden Events — schauen Sie bald wieder vorbei."
+    },
+    "news": {
+      "label": "Neueste Nachrichten",
+      "title_main": "Bleiben Sie",
+      "title_em": "informiert.",
+      "desc": "Pressemitteilungen, Branchenpartnerschaften und Produktankündigungen von Mindstec Distribution.",
+      "empty": "Noch keine Nachrichten vorhanden — schauen Sie bald wieder vorbei."
+    },
+    "card": {
+      "register_now": "Jetzt registrieren",
+      "read_more": "Mehr lesen"
+    },
+    "cta": {
+      "label": "In Verbindung bleiben",
+      "title_main": "Möchten Sie beim",
+      "title_em": "nächsten Mal dabei sein?",
+      "btn_contact": "Kontakt aufnehmen",
+      "btn_partners": "Unsere Partner"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "meta_label": "Community & Events",
+      "meta_subtitle": "Mindstec Galerie",
+      "eyebrow": "Menschen · Kultur · Meilensteine",
+      "title_our": "Unsere",
+      "title_community": "Gemeinschaft",
+      "desc": "Hinter jedem großen Technologieunternehmen stehen die Menschen und Momente, die seine Kultur prägen. Hier ist ein Einblick in Mindstec — unsere Summits, Workshops, Ausflüge und Feiern.",
+      "stat_moments": "Moments",
+      "stat_events": "Events",
+      "stat_people": "Personen",
+      "scroll_cue": "Scrollen zum Erkunden"
+    },
+    "cta": {
+      "label": "Der Community beitreten",
+      "title_main": "Möchten Sie Teil unseres",
+      "title_em": "nächsten Kapitels sein?",
+      "desc": "Egal ob potenzieller Partner, Technologiebegeisterter oder jemand, der mit uns arbeiten möchte — wir freuen uns auf Sie.",
+      "btn_contact": "Kontakt aufnehmen",
+      "btn_solutions": "Lösungen anzeigen"
+    },
+    "loading": "Galerie wird geladen…",
+    "error": "Fehler beim Laden der Galerie."
+  },
+  "language": {
+    "select": "Sprache wählen",
+    "change_aria": "Sprache ändern, aktuelle Sprache {{language}}",
+    "prompt": {
+      "label": "Region geändert",
+      "title": "Sie sehen jetzt {{region}}",
+      "body": "Diese Region wird üblicherweise auf {{language}} gelesen. Möchten Sie die Sprache der Website wechseln oder {{current}} beibehalten?",
+      "accept": "Zu {{language}} wechseln",
+      "decline": "{{current}} beibehalten",
+      "switching": "Wird gewechselt…",
+      "note": "Sie können die Sprache jederzeit über das Menü ändern."
+    }
+  },
+  "projects": {
+    "hero": {
+      "label": "Projekte & Fallstudien",
+      "line1": "Belege statt",
+      "line2": "Versprechen.",
+      "brief": "Räume, Leitstände und Veranstaltungsorte, die unsere Integrationspartner mit Technik umgesetzt haben, die wir beschafft, spezifiziert und betreut haben — abgeschlossen und laufend."
+    },
+    "filter": {
+      "all": "Alle Projekte",
+      "completed": "Abgeschlossen",
+      "ongoing": "Laufend",
+      "all_categories": "Alle Branchen",
+      "aria": "Projekte filtern"
+    },
+    "status": {
+      "completed": "Abgeschlossen",
+      "ongoing": "Laufend"
+    },
+    "showing": "{{count}} von {{total}} Projekten werden angezeigt",
+    "empty": {
+      "title": "Fallstudien in Vorbereitung",
+      "body": "Zu diesem Filter ist noch nichts veröffentlicht. Sprechen Sie uns auf Ihre Branche an — wir teilen Referenzen gerne direkt.",
+      "btn": "Referenzen anfragen"
+    },
+    "cta": {
+      "label": "Ihr Projekt als Nächstes",
+      "title_main": "Spezifizieren Sie etwas",
+      "title_em": "Ähnliches?",
+      "btn1": "Mit Spezialist sprechen",
+      "btn2": "Lösungen ansehen"
+    }
+  },
+  "products": {
+    "hero": {
+      "aria": "Our product catalogue",
+      "label": "Produkte",
+      "line1": "Über fünfzig Marken.",
+      "line2": "Eine Preisliste.",
+      "desc": "Beginnen Sie mit dem Raum, den Sie ausstatten müssen. Jede Anwendung listet die Hersteller, die wir dafür bevorraten und unterstützen — und jede Markenseite zeigt die Produktfamilien hinter dem Logo."
+    },
+    "meta": {
+      "brands": "Marken im Vertrieb",
+      "categories": "Anwendungskategorien",
+      "support_b": "Vor Ort",
+      "support_s": "Lager & Support"
+    },
+    "all": "Alle Marken",
+    "choose": "Kategorie wählen",
+    "all_title_main": "Jede Marke, die wir",
+    "all_title_em": "vertreiben",
+    "all_desc": "Fünfundzwanzig Hersteller unter festen regionalen Vereinbarungen — mit Lagerbestand, Ersatzteilen und technischem Support hinter jeder einzelnen.",
+    "cats_kicker": "Nach Anwendung",
+    "cats_title_main": "Zehn Orte, an denen",
+    "cats_title_em": "das zum Einsatz kommt",
+    "cats_label": "Alle Anwendungskategorien",
+    "about_label": "Der Hersteller",
+    "families_label": "Produktfamilien",
+    "families_title_main": "Was hinter",
+    "families_title_em": "dem Logo steckt",
+    "families_side": "Kategorien, keine Artikelnummern. Beschreiben Sie den Raum, wir liefern die Modelle, die Halterung und die Ersatzteile.",
+    "solutions_label": "Wo es spezifiziert wird",
+    "solutions_title_main": "Lösungen, in denen",
+    "solutions_title_em": "es vorkommt",
+    "apps_label": "Anwendungen",
+    "apps_title_main": "Räume, für die es",
+    "apps_title_em": "gebaut wurde",
+    "next_label": "Weitere Marken",
+    "brand_cta_main": "Sie spezifizieren",
+    "categories": {
+      "meeting-collaboration": {
+        "name": "Besprechungs- und Schulungsräume",
+        "short": "Besprechungsräume"
+      },
+      "command-video-wall": {
+        "name": "Leitstellen & Videowände",
+        "short": "Leitstellen"
+      },
+      "media-distribution-signage": {
+        "name": "Mediendistribution & Digital Signage",
+        "short": "Signage"
+      },
+      "hospitality-real-estate": {
+        "name": "Hotellerie, Immobilien & Gastronomie",
+        "short": "Hotellerie"
+      },
+      "events-exhibition": {
+        "name": "Events & Ausstellungen",
+        "short": "Events"
+      },
+      "retail-chain-store": {
+        "name": "Einzelhandel & Filialisten",
+        "short": "Einzelhandel"
+      },
+      "smart-home": {
+        "name": "Smart Home",
+        "short": "Smart Home"
+      },
+      "education": {
+        "name": "Bildung",
+        "short": "Bildung"
+      },
+      "display-mounting": {
+        "name": "Displayhalterungen",
+        "short": "Halterungen"
+      },
+      "lighting-control": {
+        "name": "Licht- & Dimmsteuerung",
+        "short": "Licht"
+      }
+    },
+    "cta": {
+      "label": "Projekt starten",
+      "title_main": "Beschreiben Sie den Raum.",
+      "title_em": "Nicht die Artikelnummer.",
+      "btn1": "Spezifikation anfragen",
+      "btn2": "Nach Lösung suchen",
+      "btn3": "Zurück zum Katalog"
+    },
+    "brands_word": "Marken",
+    "families_word": "Produktfamilien"
+  }
+}

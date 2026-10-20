@@ -1,0 +1,29 @@
+.home-training {
+  padding: 0 var(--pad) var(--section-y);
+}
+
+.home-training__band {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 22px 28px;
+  border: 1px solid var(--line-soft);
+}
+
+.home-training__tag {
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--red);
+}
+
+.home-training__text {
+  color: var(--grey);
+  font-size: 15px;
+}
+
+.home-training__text b {
+  color: #fafafa;
+  font-weight: 500;
+}

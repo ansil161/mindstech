@@ -1,0 +1,13 @@
+.sdx { padding: clamp(32px, 5vw, 64px) var(--gutter, clamp(20px, 4vw, 56px)); }
+.sdx > .label { display: block; margin-bottom: 14px; }
+.sdx-tiles { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+.sdx-tile { display: grid; gap: 10px; align-content: start; height: 100%; padding: 18px; border: 1px solid var(--ct-edge, rgba(255,255,255,.14)); border-radius: 4px; background: var(--ink-2, transparent); color: var(--white, inherit); text-decoration: none; transition: border-color .25s; }
+.sdx-tile:hover, .sdx-tile:focus-visible { border-color: var(--red, #e5322d); }
+.sdx-tile b { font-family: var(--display); font-size: 18px; font-weight: 700; }
+.sdx-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.sdx-tags i { font-style: normal; font-size: 11px; letter-spacing: .06em; padding: 3px 8px; border: 1px solid var(--ct-edge, rgba(255,255,255,.14)); border-radius: 999px; color: var(--grey, inherit); }
+.sdx-tags--region i { border-style: dashed; }
+.sdx-cols { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.sdx-project { display: grid; gap: 8px; align-content: start; }
+.sdx-photo { aspect-ratio: 16 / 10; display: grid; place-items: center; border: 1px dashed var(--ct-edge, rgba(255,255,255,.2)); border-radius: 4px; color: var(--grey, inherit); font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.sdx-pager { display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }

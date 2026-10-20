@@ -1,0 +1,32 @@
+/* ── SPLASH CURSOR ──
+   Full-viewport WebGL overlay for the fluid cursor trail. Purely decorative:
+   `pointer-events: none` keeps every click, hover and scroll going through to
+   the real UI underneath.
+
+   z-index 50 sits above page content but below the site's fixed chrome —
+   drawer (80), nav (90), map tooltip (70), blog modal (200), preloader and
+   route loader (300), chat widget (99999) — so the fluid never washes out
+   navigation or dialogs. */
+.splash-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 50;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.splash-cursor__canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* Belt and braces: the component already bails out of the simulation for
+   reduced-motion users, so make sure nothing is painted either. */
+@media (prefers-reduced-motion: reduce) {
+  .splash-cursor {
+    display: none;
+  }
+}

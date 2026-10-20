@@ -1,0 +1,231 @@
+import React, { useEffect, useRef, useState } from 'react';
+import { Link, NavLink, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
+import { useRegion } from '../../../context/RegionContext.jsx';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Button from '../../common/Button/Button.jsx';
+import LanguageSwitcher from '../../common/LanguageSwitcher.jsx';
+import { getSolutionLinks } from '../../../constants/solutions.js';
+
+/**
+ * Primary navigation.
+ *
+ * Two deliberate changes from the previous version:
+ *
+ * 1. Five top-level items became four, each answering one visitor question —
+ *    who are you (Company), what do you sell (Solutions), have you done it
+ *    before (Projects), what can I read (Insights). The old standalone
+ *    "Installations" entry was an in-page anchor to the home page's #work
+ *    section that behaved differently depending on which page you were already
+ *    on; /projects is a real page and supersedes it.
+ *
+ * 2. Choosing a region no longer changes the language. It used to call
+ *    changeLanguage() right here, so switching to Middle East for pricing
+ *    silently translated the whole site to Arabic. Language now has its own
+ *    control (LanguageSwitcher) and RegionLanguagePrompt asks first.
+ */
+const Navbar = ({ drawerOpen, setDrawerOpen }) => {
+  const navRef = useRef(null);
+  const location = useLocation();
+  const { t } = useTranslation();
+  const { region, setRegion, isPageEnabled, allRegions } = useRegion();
+
+  const [activeDropdown, setActiveDropdown] = useState(null);
+
+  useEffect(() => {
+    const nav = navRef.current;
+    if (!nav) return;
+
+    const trigger = ScrollTrigger.create({
+      start: 0,
+      end: 'max',
+      onUpdate(self) {
+        const y = self.scroll();
+        nav.classList.toggle('is-solid', y > 40);
+      },
+    });
+
+    return () => {
+      trigger.kill();
+    };
+  }, []);
+
+  // Close dropdown on route change
+  useEffect(() => {
+    setActiveDropdown(null);
+  }, [location.pathname]);
+
+  // Click outside to close dropdowns
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (navRef.current && !navRef.current.contains(e.target)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
+  const handleMouseEnter = (name) => {
+    setActiveDropdown(name);
+  };
+
+  const handleMouseLeave = () => {
+    setActiveDropdown(null);
+  };
+
+  const handleItemClick = (name, e) => {
+    e.stopPropagation();
+    setActiveDropdown((prev) => (prev === name ? null : name));
+  };
+
+  const path = location.pathname;
+  const isSolutionsActive = path.startsWith('/solutions');
+  const isProductsActive = path.startsWith('/products');
+  const isCompanyActive = path === '/about' || path === '/partners' || path === '/clients' || path === '/experience';
+  const isProjectsActive = path.startsWith('/projects');
+  const isInsightsActive =
+    path === '/blogs' || path === '/gallery' || path === '/events' || path === '/ewaste';
+
+  // Only E-Waste is region-gated — null while loading (hidden until confirmed)
+  const showEwaste = isPageEnabled('ewaste') === true;
+
+  const closeMenus = () => setActiveDropdown(null);
+  const subClass = ({ isActive }) => (isActive ? 'sub-active' : '');
+  const solutionLinks = getSolutionLinks(t);
+
+  return (
+    <header ref={navRef} className="nav" id="nav">
+      <div className="nav-inner">
+        <Link to="/" className="logo" aria-label="Mindstec home" onClick={closeMenus}>
+          <img src="/mindstec-logo-web.png" alt="Mindstec — Technology of the Future, Today" />
+        </Link>
+        <nav aria-label="Primary">
+          <ul className="nav-links">
+            <li>
+              <NavLink to="/about" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenus}>
+                {t('navbar.about_us')}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/clients" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenus}>
+                {t('navbar.clients', 'Clients')}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/experience" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenus}>
+                {t('navbar.experience', 'Experience Centre')}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/events" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenus}>
+                {t('navbar.events', 'Events & News')}
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/contact" className={({ isActive }) => (isActive ? 'active' : '')} onClick={closeMenus}>
+                {t('footer.contact', 'Contact Us')}
+              </NavLink>
+            </li>
+          </ul>
+        </nav>
+        <div className="nav-cta">
+          <li
+            className={`nav-item ${activeDropdown === 'region' ? 'open' : ''}`}
+            style={{ listStyle: 'none' }}
+            onMouseEnter={() => handleMouseEnter('region')}
+            onMouseLeave={handleMouseLeave}
+          >
+            <button className="nav-region" id="regionBtn" aria-label={`Change region, current region ${region}`} onClick={(e) => handleItemClick('region', e)}>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                <circle cx="12" cy="12" r="9" />
+                <path d="M3 12h18M12 3c2.5 2.6 3.9 5.7 3.9 9S14.5 18.4 12 21c-2.5-2.6-3.9-5.7-3.9-9S9.5 5.6 12 3z" />
+              </svg>
+              <span id="regionLabel">{t(`navbar.regions.${region.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, region)}</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginLeft: '4px', transition: 'transform .3s' }}>
+                <path d="M6 9l6 6 6-6" />
+              </svg>
+            </button>
+            <div className={`sub ${activeDropdown === 'region' ? 'open' : ''}`} style={{ right: 0, left: 'auto' }}>
+              <span className="sub-heading">{t('navbar.select_region', 'Select region')}</span>
+              {allRegions && allRegions.length > 0 ? (
+                allRegions.map((r) => (
+                  <React.Fragment key={r.name}>
+                    <a
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setRegion(r.name);
+                        setActiveDropdown(null);
+                      }}
+                      className={region === r.name ? 'sub-active' : ''}
+                      style={{ fontWeight: r.sub_regions?.length > 0 ? '600' : 'normal' }}
+                    >
+                      {t(`navbar.regions.${r.name.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, r.name)}
+                    </a>
+                    {r.sub_regions && r.sub_regions.map(sub => (
+                      <a
+                        key={sub.name}
+                        href="#"
+                        onClick={(e) => {
+                          e.preventDefault();
+                          setRegion(sub.name);
+                          setActiveDropdown(null);
+                        }}
+                        className={region === sub.name ? 'sub-active' : ''}
+                        style={{ paddingLeft: '24px', fontSize: '0.95em' }}
+                      >
+                        - {t(`navbar.regions.${sub.name.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`, sub.name)}
+                      </a>
+                    ))}
+                  </React.Fragment>
+                ))
+              ) : (
+                ['Global', 'India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) => {
+                  const regKey = `navbar.regions.${r.toLowerCase().replace(/ \/ /g, '_').replace(/ /g, '_')}`;
+                  return (
+                    <a
+                      key={r}
+                      href="#"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        setRegion(r);
+                        setActiveDropdown(null);
+                      }}
+                      className={region === r ? 'sub-active' : ''}
+                    >
+                      {t(regKey, r)}
+                    </a>
+                  );
+                })
+              )}
+            </div>
+          </li>
+          <LanguageSwitcher
+            activeDropdown={activeDropdown}
+            setActiveDropdown={setActiveDropdown}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          />
+          <Button solid to="/contact" onClick={closeMenus}>
+            <span>{t('navbar.talk_to_us')}</span>
+          </Button>
+          <button
+            className="burger"
+            id="burger"
+            onClick={() => setDrawerOpen((prev) => !prev)}
+            aria-label={drawerOpen ? 'Close menu' : 'Open menu'}
+            aria-expanded={drawerOpen ? 'true' : 'false'}
+            aria-controls="drawer"
+          >
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+  );
+};
+
+export default Navbar;

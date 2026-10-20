@@ -1,0 +1,1259 @@
+{
+  "navbar": {
+    "home": "Home",
+    "about": "About",
+    "about_us": "About Us",
+    "partners": "Partners",
+    "clients": "Clients",
+    "solutions": "Solutions",
+    "resources": "Resources",
+    "blogs": "Blogs",
+    "installations": "Installations",
+    "talk_to_us": "Talk to us",
+    "ewaste": "E-Waste Management",
+    "experience": "Experience Centre",
+    "gallery": "Gallery",
+    "events": "Events & News",
+    "regions": {
+      "global": "Global",
+      "india": "India",
+      "middle_east": "Middle East",
+      "africa": "Africa",
+      "south_asia": "South Asia",
+      "hong_kong_china": "Hong Kong / China"
+    },
+    "company": "Company",
+    "projects": "Projects",
+    "all_solutions": "All solutions",
+    "select_region": "Select region",
+    "products": "Brands"
+  },
+  "footer": {
+    "contact": "Contact Us",
+    "address": "Address",
+    "follow_us": "Follow Us",
+    "brief": "Global company, regional presence. Mindstec is a value-added distributor — not a box mover — putting the technology of the future in the room today.",
+    "company": "Company",
+    "experience": "Experience Centre",
+    "ewaste": "E-Waste Management",
+    "rights": "© 2026 Mindstec Distribution. All rights reserved.",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "disclaimer": "Disclaimer"
+  },
+  "about": {
+    "hero": {
+      "line1": "Passion.",
+      "line2": "Purpose.",
+      "line3": "Progress.",
+      "label": "About Us",
+      "brief": "Mindstec Distribution is a leading procurement and distribution specialist for high-end audio-visual solutions across the Middle East, Africa and Asia — bringing cutting-edge AV technology to these regions at accessible prices.",
+      "meet_team_btn": "Meet the team",
+      "caption": "High-end AV, delivered"
+    },
+    "story": {
+      "p1": "We bridge the gap between global AV manufacturers and regional dealers — optimising supply chains, reducing costs and improving the efficiency of every operation in between.",
+      "p2": "With deep market knowledge and a tech-savvy team, we help the world's AV brands expand into new markets, and we support our dealers with sales, marketing and promotion — fostering growth without competition.",
+      "more_p1": "Committed to innovation and customer support, we continuously invest in technical expertise, ensuring seamless integration of AV solutions in high-profile projects worldwide.",
+      "more_p2": "Driven by excellence and innovation, we empower businesses to stay at the forefront of the evolving AV industry.",
+      "cap1": "Pixel-level expertise",
+      "cap2": "Display technology"
+    },
+    "pillars": {
+      "label": "What we do",
+      "title_main": "Built on three",
+      "title_em": "pillars.",
+      "p1_title": "Market access for manufacturers",
+      "p1_desc": "We help global AV manufacturers expand into the Middle East, Africa and Asia — with local knowledge, an established dealer network and in-region logistics.",
+      "p2_title": "Optimised supply chains",
+      "p2_desc": "Procurement, warehousing and distribution tuned for the region — reducing costs, shortening lead times and improving the efficiency of every project.",
+      "p3_title": "Dealer enablement",
+      "p3_desc": "Sales, marketing and promotional support for our dealers, plus the technical expertise to integrate AV solutions in high-profile projects — growth without competition."
+    },
+    "vm": {
+      "vision_title": "Our",
+      "vision_em": "Vision",
+      "vision_desc": "To be a distribution leader in futuristic, convergent, technology-driven system solutions.",
+      "mission_title": "Our",
+      "mission_em": "Mission",
+      "mission_desc": "To be a regional leader in cutting-edge audio-visual system solution distribution — creating immense value for our supplier-dealer networks while being first and fastest in bringing the latest technology to the region."
+    },
+    "team": {
+      "label": "Our team",
+      "title_main": "Making an impact,",
+      "title_em": "one step at a time",
+      "lede": "Industry experts, innovators and problem-solvers — collaborating to deliver top-tier AV solutions and seamless experiences for our partners.",
+      "roles": {
+        "founder": "Founder & Chairman",
+        "md": "Managing Director — India & SAARC",
+        "finance_dir": "Director of Finance",
+        "sales_south": "Head of Sales — South",
+        "hr": "HR Manager",
+        "country_head": "Country Head — India",
+        "finance_mgr": "Finance Manager",
+        "sales_mgr": "Sales Manager"
+      },
+      "names": {
+        "founder": "Syed Abdul Wahab",
+        "md": "Sabarishan N.",
+        "finance_dir": "Manasa Iyer",
+        "sales_south": "Karthikeyan Sekar",
+        "hr": "Sneha Shenoy",
+        "country_head": "Karthikeyan Selvaraj",
+        "finance_mgr": "Flavia Robert",
+        "sales_mgr": "Sajid Ali Kazi"
+      },
+      "loading": "Loading team...",
+      "empty": "No team members listed for this region yet.",
+      "error": "The team list could not be loaded just now. Please refresh the page."
+    },
+    "cta": {
+      "label": "Become a reseller",
+      "title_main1": "Start selling.",
+      "title_main2": "Start growing.",
+      "btn1": "Become a reseller",
+      "btn2": "Contact us",
+      "contacts": {
+        "india": "India operations",
+        "email": "+91 80 4525 6922"
+      }
+    },
+    "hero_facts": {
+      "india": [
+        {
+          "bold": "India · SAARC",
+          "sub": "Regions served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Bangalore HQ",
+          "sub": "India — SAARC operations"
+        }
+      ],
+      "middle-east": [
+        {
+          "bold": "Middle East",
+          "sub": "Region served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Dubai hub",
+          "sub": "Middle East operations"
+        }
+      ],
+      "africa": [
+        {
+          "bold": "Africa",
+          "sub": "Region served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Nairobi hub",
+          "sub": "Africa operations"
+        }
+      ],
+      "south-asia": [
+        {
+          "bold": "South Asia",
+          "sub": "Region served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Bangalore HQ",
+          "sub": "SAARC operations"
+        }
+      ],
+      "hong-kong-china": [
+        {
+          "bold": "Hong Kong · China",
+          "sub": "Region served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Hong Kong hub",
+          "sub": "Asia-Pacific operations"
+        }
+      ],
+      "default": [
+        {
+          "bold": "Middle East · Africa · Asia",
+          "sub": "Regions served"
+        },
+        {
+          "bold": "Global partner network",
+          "sub": "Manufacturers to dealers"
+        },
+        {
+          "bold": "Bangalore HQ",
+          "sub": "India — SAARC operations"
+        }
+      ]
+    }
+  },
+  "home": {
+    "cities": {
+      "dubai": "Dubai",
+      "riyadh": "Riyadh",
+      "doha": "Doha",
+      "bangalore": "Bangalore",
+      "bangkok": "Bangkok",
+      "johannesburg": "Johannesburg",
+      "warsaw": "Warsaw",
+      "sao-paulo": "São Paulo"
+    },
+    "hero": {
+      "eyebrow": "Global presence. Local impact.",
+      "hl1": "Technology",
+      "hl2": "of the future,",
+      "hl3": "today.",
+      "lede": "We deliver end-to-end AV, technology, and distribution solutions that empower businesses, connect people, and drive innovation ",
+      "lede_accent": "across the region.",
+      "cta_primary": "Explore solutions",
+      "cta_secondary": "Our global presence",
+      "scroll_cue": "Scroll to explore",
+      "stats": {
+        "countries": { "value": "20+", "label": "Countries", "sub": "We operate in" },
+        "brands": { "value": "34+", "label": "Brands", "sub": "We represent" },
+        "projects": { "value": "10K+", "label": "Projects", "sub": "Delivered" },
+        "years": { "value": "20+", "label": "Years", "sub": "Of excellence" }
+      },
+      "line1": "Global company.",
+      "line2": "Regional presence.",
+      "line3": "Technology of the future, today.",
+      "brief": "Distribution with a difference. Mindstec is not a box mover — we source, specify, stock and support professional AV technology from fifty-plus global manufacturers, with the people and the inventory held in your region.",
+      "explore_btn": "Explore solutions",
+      "fact1_b": "Global company",
+      "fact1_s": "Regional presence",
+      "fact2_b": "Not box movers",
+      "fact2_s": "Value-added distribution",
+      "fact3_b": "Future technology",
+      "fact3_s": "Available today",
+      "scroll": "Scroll"
+    },
+    "statement": {
+      "side_text": "Distribution is logistics only on paper. In practice it is product knowledge, demo stock, engineering support and someone who answers the phone.",
+      "text": "A screen in a boardroom. A wall of pixels in a terminal. A voice that carries to the last row. ",
+      "emText": "Someone has to get that technology there",
+      "postText": " — sourced, specified, stocked and supported, in your region. That is the work we do."
+    },
+    "solutions": {
+      "label": "Solutions",
+      "title_main": "What we",
+      "title_em": "distribute",
+      "lede": "Six verticals, one supply chain. Hover a category to see it in the field."
+    },
+    "stats": {
+      "years_desc": "Years distributing professional AV technology",
+      "brands_desc": "Manufacturer brands in the portfolio",
+      "ops_desc": "Regional operations — India, Africa, Poland",
+      "installs_desc": "Installations supplied and supported to date"
+    },
+    "edge": {
+      "label": "Why Mindstec",
+      "title_main": "A distributor that acts",
+      "title_em": "like a"
+    },
+    "edgeItems": [
+      {
+        "title": "A portfolio built over fifteen years",
+        "desc": "We represent more than fifty manufacturers — Crestron to Samsung Professional — chosen so that an integrator can specify an entire project from one price list. No gaps, no grey imports.",
+        "caption": "Brand network"
+      },
+      {
+        "title": "Engineers, not order-takers",
+        "desc": "Every category we carry has a product specialist behind it. We do system design reviews, run demos from our own stock, and stay on the escalation path long after the invoice is paid.",
+        "caption": "Technical depth"
+      },
+      {
+        "title": "Local teams in three markets",
+        "desc": "Bangalore covers India and the SAARC region, our Africa office serves the continent's commercial hubs, and Warsaw handles Central and Eastern Europe — local currency, local warranty, local people.",
+        "caption": "Regional teams"
+      },
+      {
+        "title": "Support from enquiry to install",
+        "desc": "Pre-sales consultation, procurement, logistics, commissioning help and after-sales service under one roof. Each partner gets a named account manager and a direct line to technical staff.",
+        "caption": "End-to-end support"
+      }
+    ],
+    "band": {
+      "label": "Our reach",
+      "title_main": "Global company.",
+      "title_em": "Regional presence."
+    },
+    "regions": {
+      "label": "Global presence",
+      "title_main": "Where we",
+      "title_em": "operate",
+      "lede": "Eleven cities, one supply chain. Stock, currency, warranty and people — all handled in-region.",
+      "hq_suffix": "(HQ)",
+      "office_hq": "Global Headquarters",
+      "office_regional": "Regional Office",
+      "soon_suffix": "— Coming soon",
+      "office_soon": "Coming soon",
+      "legend_label": "Map key",
+      "foot": "Every lane on this map runs from our Dubai headquarters — with the stock, warranty and engineering held in-region.",
+      "foot_btn": "Find your local desk"
+    },
+    "work": {
+      "label": "Installations",
+      "title_main": "Recent",
+      "title_em": "field work",
+      "lede": "A sample of projects our partners have delivered with equipment we supplied.",
+      "btn": "See all projects"
+    },
+    "journal": {
+      "label": "Journal",
+      "title_main": "Notes from the",
+      "title_em": "field",
+      "btn": "All articles",
+      "posts": {
+        "post1": {
+          "cat": "Displays",
+          "read": "5 min read",
+          "title": "Why interactive panels are replacing projectors in the meeting room",
+          "date": "12 May 2026"
+        },
+        "post2": {
+          "cat": "Infrastructure",
+          "read": "7 min read",
+          "title": "AV-over-IP in 2026: what integrators should standardise on",
+          "date": "28 Apr 2026"
+        },
+        "post3": {
+          "cat": "Buying guide",
+          "read": "9 min read",
+          "title": "Specifying an interactive whiteboard: a checklist for schools and offices",
+          "date": "10 Apr 2026"
+        }
+      }
+    },
+    "cta": {
+      "label": "Contact",
+      "title_main1": "Let's put the right",
+      "title_main2": "technology",
+      "title_em": "in the room.",
+      "btn1": "Get a quote",
+      "btn2": "Become a partner",
+      "global_label": "Global enquiries"
+    },
+    "testimonials": {
+      "label": "Client voices",
+      "title_main": "What our",
+      "title_em": "clients say"
+    },
+    "pillars": {
+      "label": "What sets us apart",
+      "title_main": "Three things we",
+      "title_em": "hold to",
+      "items": [
+        {
+          "title": "Global company. Regional presence.",
+          "desc": "One supply chain, held locally. Stock, currency, warranty and people sit in your region — not in a warehouse eight time zones away.",
+          "tag": "Supply chain"
+        },
+        {
+          "title": "Distribution with a difference.",
+          "desc": "We are not merely box movers. Specification support, demo stock, commissioning help and after-sales engineering come with the product, not as an extra.",
+          "tag": "Value added"
+        },
+        {
+          "title": "Technology of the future, today.",
+          "desc": "Fifty-plus global manufacturers, curated and stocked — so the technology you specify is available now, not next quarter.",
+          "tag": "Portfolio"
+        }
+      ]
+    },
+    "countries": {
+      "dubai": "United Arab Emirates",
+      "riyadh": "Saudi Arabia",
+      "doha": "Qatar",
+      "bangalore": "India",
+      "bangkok": "Thailand",
+      "johannesburg": "South Africa",
+      "warsaw": "Poland",
+      "sao-paulo": "Brazil"
+    },
+    "offices": {
+      "dubai": "Global headquarters and the hub every trade lane runs from — the Gulf, the wider Middle East and re-export.",
+      "riyadh": "Central Saudi Arabia — government, enterprise and giga-project programmes.",
+      "doha": "Qatar and the northern Gulf, run alongside the Dubai HQ.",
+      "bangalore": "India operations: stock, service and the engineering bench for South Asia.",
+      "bangkok": "South-East Asian distribution and integration partner support.",
+      "johannesburg": "Southern African distribution and integrator support.",
+      "warsaw": "Central and Eastern European distribution.",
+      "sao-paulo": "Brazil and the wider South American market."
+    }
+  },
+  "partners": {
+    "hero": {
+      "line1": "World-class brands.",
+      "line2": "One distributor.",
+      "label": "Our Partners",
+      "brief": "Twenty-five manufacturers, one price list. We represent the world's leading AV brands across displays, audio, broadcast, collaboration and connectivity — so our dealers can specify an entire project from a single partner."
+    },
+    "meta": {
+      "fact1_b": "25 brands",
+      "fact1_s": "Represented portfolio",
+      "fact2_b": "5 categories",
+      "fact2_s": "Every AV vertical covered",
+      "fact3_b": "3 regions",
+      "fact3_s": "Middle East · Africa · Asia"
+    },
+    "categories": {
+      "all": "All",
+      "displays": "Displays & Video Walls",
+      "audio": "Audio",
+      "broadcast": "Broadcast & Media",
+      "collab": "Collaboration & Control",
+      "infra": "Connectivity & Infrastructure"
+    },
+    "brands": {
+      "b1": "Interactive displays",
+      "b2": "Projection",
+      "b3": "Video wall control",
+      "b4": "Videowall software",
+      "b5": "Projection screens",
+      "b6": "Architectural audio",
+      "b7": "Pro audio interfaces",
+      "b8": "IPTV & streaming",
+      "b9": "Broadcast cameras",
+      "b10": "PTZ cameras",
+      "b11": "Hospitality tech",
+      "b12": "Live production",
+      "b13": "RF & IPTV headend",
+      "b14": "Visual collaboration",
+      "b15": "Workspace booking",
+      "b16": "iPad enclosures",
+      "b17": "Control & automation",
+      "b18": "Camera interfaces",
+      "b19": "AV distribution",
+      "b20": "AV networking",
+      "b21": "Connectivity",
+      "b22": "AV mounts",
+      "b23": "Mounting solutions",
+      "b24": "Synchronised clocks",
+      "b25": "AV accessories"
+    },
+    "why": {
+      "label": "For manufacturers & dealers",
+      "title_main": "Why brands choose",
+      "title_em": "Mindstec",
+      "p1_title": "One price list, every category",
+      "p1_desc": "A curated portfolio that lets integrators specify an entire project — displays, audio, control, connectivity — from a single distribution partner.",
+      "p2_title": "Real market access",
+      "p2_desc": "Established dealer networks across the Middle East, Africa and Asia, with in-region stock, local currency and logistics built for each market.",
+      "p3_title": "Growth without competition",
+      "p3_desc": "We support dealers with sales, marketing and promotion — and we never compete with them. Product specialists back every brand we carry."
+    },
+    "cta": {
+      "label": "Partner with us",
+      "title_main1": "Your brand,",
+      "title_main2": "our region.",
+      "btn1": "Become a partner",
+      "btn2": "Become a reseller",
+      "contacts": {
+        "partnerships": "Partnerships",
+        "india": "partners@mindstec.com"
+      }
+    }
+  },
+  "ewaste": {
+    "hero": {
+      "title": "E-Waste Management",
+      "line1": "End of life.",
+      "line2": "Not end of story.",
+      "brief": "Around 90% of electronic equipment is recyclable. Our authorized programme with Deshwal Waste Management takes back end-of-life electronics anywhere in India — at zero cost to you."
+    },
+    "meta": {
+      "pickup_label": "Toll-free pickup line",
+      "drop_points": "27 drop points",
+      "across_india": "Across India",
+      "recycler_label": "Authorized recycler",
+      "cost_label": "Cost to the consumer"
+    },
+    "ov": {
+      "label": "Overview",
+      "lede_main": "Dumped in a landfill, old electronics leach lead and mercury into soil and groundwater. Recycled right, almost all of them",
+      "lede_em": "get a second life.",
+      "p1": "E-waste is the informal name for electronic products nearing the end of their useful life — computers, televisions, displays, copiers, phones, audio equipment and batteries. Many of their components contain hazardous materials that pose a real threat to human health and the environment when disposed of improperly.",
+      "p2": "Most of these products can be reused, refurbished or recycled in an environmentally sound manner. Under India's E-Waste (Management & Handling) Rules, Mindstec runs a compliant take-back programme so the hardware we distribute never ends up where it shouldn't."
+    },
+    "recyclers": {
+      "why_recycle": "Why recycle",
+      "gives_back_main": "What responsible recycling",
+      "gives_back_em": "gives back.",
+      "b1_title": "Conserves natural resources",
+      "b1_desc": "Metals recovered from circuit boards, and the plastics and glass in monitors and televisions, go into new products — reducing the need to mine new raw materials.",
+      "b2_title": "Supports the community",
+      "b2_desc": "Donated electronics become refurbished computers and phones for low-income families, schools and non-profits — access to technology they couldn't otherwise afford.",
+      "b3_title": "Creates local employment",
+      "b3_desc": "With around 90% of electronic equipment recyclable, demand for recycling builds new firms and new jobs — and a second market for the recovered materials.",
+      "b4_title": "Protects health & environment",
+      "b4_desc": "CRTs and monitors contain lead; circuit boards carry cadmium, mercury and chromium. Safe recycling keeps these toxins out of trashcans, landfills and groundwater."
+    },
+    "dd": {
+      "label": "Handle with care",
+      "title_main": "Do's &",
+      "title_em": "don'ts.",
+      "do_title": "Always",
+      "dos": [
+        "Check the product catalogue for end-of-life handling information before you dispose of anything.",
+        "Make sure only authorized recyclers and dismantlers handle your electronic products.",
+        "Call the toll-free line to dispose of products that have reached end of life.",
+        "Drop used electronics, batteries and accessories at your nearest authorized e-waste collection point.",
+        "Disconnect batteries and protect any glass surfaces against breakage before handing equipment over."
+      ],
+      "dont_title": "Never",
+      "donts": [
+        "Dismantle electronic products on your own.",
+        "Throw electronics into bins marked with the \"Do not dispose\" sign.",
+        "Hand e-waste to informal, unorganized collectors like local scrap dealers or rag pickers.",
+        "Mix electronics with municipal garbage that ultimately reaches landfills."
+      ]
+    },
+    "plan": {
+      "media_tag": "Authorized recycling — Deshwal Waste Management",
+      "label": "The programme",
+      "title_main": "How your hardware",
+      "title_em": "comes back around.",
+      "brief": "In India, most e-waste ends up in the informal sector, recycled with no consideration for health or the environment. Abiding by all pertinent e-waste laws, Mindstec has partnered with Deshwal Waste Management Pvt. Ltd. — a recycler authorized by the appropriate government agencies — to provide drop-off centres and environmentally sound processing of end-of-life electronics.",
+      "steps": [
+        {
+          "title": "Raise a pickup request",
+          "desc": "Call the toll-free line 1800 102 9077, Monday to Friday, 10:00 AM – 5:30 PM — or drop your e-waste at any collection centre below."
+        },
+        {
+          "title": "Collection & transport",
+          "desc": "Deshwal Waste Management, our authorized recycler, collects the equipment and transports it to the nearest collection centre."
+        },
+        {
+          "title": "Environmentally sound recycling",
+          "desc": "Equipment is processed at government-authorized facilities in compliance with India's E-Waste Management & Handling Rules."
+        }
+      ],
+      "note_bold": "Free of charge.",
+      "note": "No fee is charged for giving goods for recycling, and no monetary benefit is offered in return — the sole aim of the programme is to keep the environment clean."
+    },
+    "centres": {
+      "label": "Drop points",
+      "title_main": "Collection centres",
+      "title_em": "across India.",
+      "pickup_label": "Toll-free pickup",
+      "loading": "Loading collection centres...",
+      "empty": "No collection centres are available for this operator."
+    },
+    "filter": {
+      "all": "All centres"
+    },
+    "contact_person": "Contact Person",
+    "tel": "Tel",
+    "cta": {
+      "label": "Do your part",
+      "title_main": "Recycle it right.",
+      "title_em": "It costs nothing.",
+      "btn1": "Call 1800 102 9077",
+      "btn2": "Talk to Mindstec"
+    }
+  },
+  "contact": {
+    "label": "Contact us",
+    "hero": {
+      "line1": "Have a project?",
+      "line2": "Get in touch."
+    },
+    "form": {
+      "name": "Name",
+      "name_ph": "Your name",
+      "phone": "Phone",
+      "email": "Email address",
+      "subject": "Subject",
+      "message": "Message",
+      "message_ph": "How can we help you? Feel free to get in touch!",
+      "submit": "Send message",
+      "submitting": "Sending...",
+      "success": "Thanks for reaching out! We'll get back to you shortly.",
+      "opt": {
+        "general": "General enquiries",
+        "partner": "Become a partner",
+        "reseller": "Become a reseller",
+        "experience": "Visit the Experience Centre",
+        "digital": "Digital Signage",
+        "control": "Control Rooms",
+        "conferencing": "Conferencing & Collaboration",
+        "hospitality": "Hospitality AV",
+        "broadcast": "Broadcast & Production",
+        "live": "Live Events & Immersive"
+      },
+      "error_generic": "Something went wrong. Please try again."
+    },
+    "offices": {
+      "title": "Offices",
+      "desc": "Our network spans key markets in the Middle East, Africa, and Asia, ensuring we're always within reach to support your projects."
+    },
+    "general": {
+      "title": "General",
+      "desc": "Drop us a line and we'll route it to the right person."
+    },
+    "info": {
+      "call": "Call us",
+      "visit": "Visit us",
+      "write": "Write to us",
+      "regional_desks": "Regional desks",
+      "partnerships": "Partnerships",
+      "phone_label": "Phone",
+      "email_label": "Email",
+      "open_maps": "Open in Google Maps",
+      "note": "Your inquiry is transmitted securely to our {{region}} office{{office}}."
+    }
+  },
+  "experience": {
+    "hero": {
+      "label": "Experience Centre — Bengaluru",
+      "line1": "Don't imagine it.",
+      "line2": "Walk into it.",
+      "desc": "A hands-on floor where technology meets functionality — live control rooms, collaboration suites, signage and broadcast, running side by side so you can judge them the way your clients will.",
+      "book": "Book a visit",
+      "film": "Watch the film"
+    },
+    "meta": {
+      "zones_b": "6 live zones",
+      "zones_s": "Running demos daily",
+      "brands_b": "25 brands",
+      "brands_s": "On the floor",
+      "loc_b": "OMBR Layout",
+      "loc_s": "Bangalore, India",
+      "appt_b": "By appointment",
+      "appt_s": "Guided walkthroughs"
+    },
+    "ov": {
+      "label": "Overview",
+      "lede": "Spec sheets tell you what a system should do. The Experience Centre shows you what it <em>actually does</em> — live, integrated, and under real conditions.",
+      "p1": "Our Bengaluru Experience Centre is a dynamic, hands-on environment designed to showcase the power of integrated AV. The floor runs live demonstrations of control room systems, collaborative meeting technologies, digital signage and more — real products from 25 global brands, wired together the way they'd be deployed on site.",
+      "p2": "Visitors explore real-world applications, test system interoperability across brands, and work directly with our technical experts. Whether you're a consultant writing a spec, an integrator validating a design, or an enterprise client choosing a standard — this is the shortest path from shortlist to certainty."
+    },
+    "zones": {
+      "label": "On the floor",
+      "title": "Six zones. All ",
+      "title_em": "live",
+      "desc": "Every zone runs shipping product — no mock-ups, no renders. Walk from one vertical to the next and see how the pieces interoperate.",
+      "explore": "Explore the vertical"
+    },
+    "zones_arr": [
+      {
+        "name": "Control Room Wall",
+        "desc": "A 24/7-rated video wall driven by live processors — switch sources, split layouts and stress-test the workflow your operators will actually use."
+      },
+      {
+        "name": "Collaboration Suite",
+        "desc": "A fully wired hybrid meeting room — interactive display, PTZ cameras, ceiling audio and room booking, joined to a real call so you can hear the difference."
+      },
+      {
+        "name": "Signage Gallery",
+        "desc": "Indoor LED, professional panels and wayfinding running scheduled content from a live CMS — compare brightness, pitch and processing side by side."
+      },
+      {
+        "name": "Broadcast Corner",
+        "desc": "Cameras, vision mixing and live graphics in a compact production setup — see a multi-camera stream go from lens to output in one take."
+      },
+      {
+        "name": "Audio & Hospitality Lounge",
+        "desc": "Invisible and architectural speakers, guest-room IPTV and background audio staged as a lounge — technology that disappears until you press play."
+      },
+      {
+        "name": "AV-over-IP Backbone",
+        "desc": "The rack room that ties the floor together — AV-over-IP switching, extension and control, so you can trace every signal path end to end."
+      }
+    ],
+    "film": {
+      "label": "The film",
+      "line1": "Step inside before ",
+      "line2": "you step inside.",
+      "tag": "Mindstec Experience Centre — Bengaluru",
+      "note": "Filmed on the floor of our Bengaluru centre. Streams on demand — press play."
+    },
+    "who": {
+      "label": "Who it's for",
+      "title": "Built for the people ",
+      "title_em": "who decide.",
+      "arr": [
+        {
+          "name": "Consultants",
+          "desc": "Validate a specification against live hardware before it goes to tender — compare brands in the same room, under the same light, on the same network."
+        },
+        {
+          "name": "System Integrators",
+          "desc": "Prove a design to your client without building a demo room of your own. Bring them in, walk the floor, and close on what they've already seen working."
+        },
+        {
+          "name": "Enterprise Clients",
+          "desc": "Choosing a standard for a hundred rooms? Sit in one first. Test the workflow, the audio and the ergonomics before you commit the budget."
+        }
+      ]
+    },
+    "visit": {
+      "label": "Plan your visit",
+      "line1": "See it running, ",
+      "line2": "in person.",
+      "desc": "Visits are guided and by appointment, so the floor is set up around what you're evaluating. Tell us what you want to see and we'll have it live when you arrive.",
+      "maps": "Open in Google Maps",
+      "arr": [
+        {
+          "title": "Where",
+          "desc": "No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India"
+        },
+        {
+          "title": "Call ahead",
+          "desc": "Mon–Fri, business hours IST"
+        },
+        {
+          "title": "Write to us",
+          "desc": "Tell us which zones you want live"
+        },
+        {
+          "title": "Format",
+          "desc": "Guided walkthrough, 60–90 minutes",
+          "sub": "With a product specialist for your vertical"
+        }
+      ]
+    },
+    "cta": {
+      "next": "Next step",
+      "line1": "Start selling.",
+      "line2": "Start growing.",
+      "solutions": "See all solutions"
+    }
+  },
+  "solutions": {
+    "primary_verticals": "Primary verticals",
+    "get_solution": "Get this solution",
+    "all_solutions": "All solutions",
+    "capabilities": "Capabilities",
+    "what_we_deliver_main": "What we",
+    "what_we_deliver_em": "deliver",
+    "brands_we_distribute": "Brands we distribute",
+    "for_this_vertical": "for this vertical",
+    "details": {
+      "information-and-communication-technology": {
+        "name": "Information & Communication Technology",
+        "title": "Information &amp; <em>Communication Technology</em>",
+        "intro": "Connectivity, efficiency and digital transformation for modern business environments. Networking infrastructure, secure communication systems, cloud technologies and data management platforms, integrated so operations and collaboration hold together — reliable data exchange, real-time communication and IT environments that scale across enterprises, campuses and public infrastructure. From structured cabling and unified communications to network management, every layer is specified for performance, security and flexibility.",
+        "fact": "Enterprise · Campus · Public infrastructure",
+        "cat": "Enterprise · Campus · Public infrastructure",
+        "desc": "Networking, structured cabling, unified communications and data management — the transport layer every other vertical on this page runs over.",
+        "tags": [
+          "Structured cabling",
+          "AV-over-IP",
+          "Unified comms",
+          "Network management"
+        ],
+        "capsSide": "AV and IT stopped being separate procurement long ago. We spec the transport layer with the same discipline as the screens hanging off it."
+      },
+      "hospitality-guest-experience": {
+        "name": "Hospitality & Guest Experience",
+        "title": "Hospitality &amp; <em>Guest Experience</em>",
+        "intro": "Comfort, convenience and engagement at every stage of the guest journey. Audio-visual systems, digital displays and smart technologies turn a space into a welcoming, interactive environment — personalised communication, seamless navigation and real-time information across hotels, resorts and public venues. From digital signage and in-room experiences to centralised content management, every touchpoint is tuned to guest satisfaction.",
+        "fact": "Hotels · Restaurants · Venues",
+        "capsSide": "The best hospitality AV is the kind guests never notice — until the lights dim and the show starts.",
+        "caps": [
+          {
+            "title": "Guest-room entertainment",
+            "desc": "IPTV headends, casting and in-room control that feel like home — branded for the property."
+          },
+          {
+            "title": "Ballroom & event spaces",
+            "desc": "Divisible-room audio, projection and LED for conferences, weddings and everything between."
+          },
+          {
+            "title": "Background music & paging",
+            "desc": "Zoned audio that follows the mood from breakfast to last orders, with paging built in."
+          },
+          {
+            "title": "Interactive hospitality tablets",
+            "desc": "Smart tables and in-room tablets for ordering, concierge and guest services."
+          }
+        ],
+        "cat": "Hotels · Resorts · Venues",
+        "desc": "In-room entertainment, digital displays and smart control across the guest journey — technology that stays invisible until it matters.",
+        "tags": [
+          "Guest-room IPTV",
+          "Ballroom AV",
+          "Background audio",
+          "Room control"
+        ]
+      },
+      "immersive-experience": {
+        "name": "Immersive Experience",
+        "title": "Immersive <em>Experience</em>",
+        "intro": "Environments built to engage, inspire and hold an audience. Advanced audio-visual technologies, interactive displays and dynamic content turn ordinary spaces into highly engaging digital experiences — storytelling that runs across multiple touchpoints in museums, retail, corporate environments and public venues. Synchronised visuals, sound and real-time interactivity make the content land, and every element is specified to work together from concept to execution.",
+        "fact": "Concerts · Exhibitions · XR",
+        "capsSide": "Rigged, run and struck in hours — event technology has no second chances, so we spec accordingly.",
+        "caps": [
+          {
+            "title": "Touring & rental LED",
+            "desc": "Fast-lock touring frames, curved arrays and floor systems built for load-in after load-in."
+          },
+          {
+            "title": "Projection mapping",
+            "desc": "High-output projection and warping tools for architecture, stages and art installations."
+          },
+          {
+            "title": "Spatial & concert audio",
+            "desc": "Point-source and immersive audio systems that scale from galleries to arenas."
+          },
+          {
+            "title": "Show control",
+            "desc": "Timecode, triggering and media servers keeping lights, video and sound on the same beat."
+          }
+        ],
+        "cat": "Museums · Retail · Public venues",
+        "desc": "Interactive displays, projection and synchronised sound that turn ordinary spaces into environments an audience stays inside.",
+        "tags": [
+          "Interactive walls",
+          "Projection mapping",
+          "Spatial audio",
+          "Show control"
+        ]
+      },
+      "broadcast-production-streaming": {
+        "name": "Broadcast, Production & Streaming",
+        "title": "Broadcast, Production &amp; <em>Streaming</em>",
+        "intro": "Media distribution at your fingertips. Distribution over IP is one of the most powerful tools available where a lot of content has to reach a lot of locations — and the same backbone drives synchronous clock systems, where IP clocks stay locked to the second across sites and time zones. Cameras, switching, live graphics and streaming infrastructure sit on top of it, from a single-operator setup to a full facility.",
+        "fact": "Studios · Streaming · Creators",
+        "capsSide": "From a one-person streaming desk to a national newsroom — the same signal discipline applies.",
+        "caps": [
+          {
+            "title": "Studio & PTZ cameras",
+            "desc": "Broadcast-grade imaging from fixed studio chains to remotely operated PTZ fleets."
+          },
+          {
+            "title": "Vision mixing & switching",
+            "desc": "Production switchers and routing for live programmes, sport and events."
+          },
+          {
+            "title": "Live graphics & virtual sets",
+            "desc": "Real-time graphics, augmented reality and virtual studio tools used by the world's broadcasters."
+          },
+          {
+            "title": "Streaming & delivery",
+            "desc": "Encoders, IPTV and OTT delivery that get the programme to every screen, reliably."
+          }
+        ],
+        "cat": "Studios · Streaming · Media distribution",
+        "desc": "Media distribution over IP, cameras, switching and live graphics — from a single-operator setup to a full facility.",
+        "tags": [
+          "Media distribution",
+          "Studio cameras",
+          "Vision mixing",
+          "IP clocks"
+        ]
+      },
+      "digital-signage-dooh": {
+        "name": "Digital Signage & DOOH",
+        "title": "Digital Signage &amp; <em>DOOH</em>",
+        "intro": "Sending the message to the right person at the right place at the right time is what advertising and marketing turn on. We carry a niche of audio-visual products built for indoor and outdoor marketing — signage software clubbed with media players across multiple sites, scheduled, changed or stopped remotely, and made interactive where the brief calls for it.",
+        "fact": "Retail · Transport · Public space",
+        "capsSide": "From a single menu board to a stadium facade — hardware, software and mounting from one price list.",
+        "caps": [
+          {
+            "title": "Indoor & outdoor LED",
+            "desc": "Fine-pitch indoor walls to high-brightness outdoor facades, with the receiving cards, spares and service to keep them lit."
+          },
+          {
+            "title": "Professional display panels",
+            "desc": "Commercial-grade panels rated for continuous operation — portrait, landscape, high-brightness and touch."
+          },
+          {
+            "title": "Wayfinding & kiosks",
+            "desc": "Interactive totems and self-service kiosks for malls, airports, hospitals and campuses."
+          },
+          {
+            "title": "CMS & scheduling",
+            "desc": "Content management, day-parting and remote monitoring for networks of one screen or one thousand."
+          }
+        ],
+        "cat": "Retail · Transport · Public space",
+        "desc": "Indoor and outdoor signage with the software behind it — scheduled, changed or stopped remotely, and interactive where the brief calls for it.",
+        "tags": [
+          "Indoor & outdoor LED",
+          "Display panels",
+          "Wayfinding",
+          "CMS & scheduling"
+        ]
+      },
+      "control-rooms-critical-environments": {
+        "name": "Control Rooms & Critical Environments",
+        "title": "Control Rooms &amp; <em>Critical Environments</em>",
+        "intro": "Complete NOC solutions for business organisations, public utilities, universities and government agencies overseeing complex networking environments that require continuous supervision. We give NOC personnel the technology to monitor one network or many for the conditions that need attention before service degrades — video wall displays, processors, and the controlling hardware and software behind them.",
+        "fact": "Command · Surveillance · NOC",
+        "capsSide": "Mission-critical means no single point of failure — we spec redundancy from source to screen.",
+        "caps": [
+          {
+            "title": "Video wall processors",
+            "desc": "Hardware and software processing that puts any source on any display, at any size, without dropped frames."
+          },
+          {
+            "title": "24/7 mission-critical displays",
+            "desc": "Panels and LED rated for round-the-clock duty cycles, with redundant power and burn-in management."
+          },
+          {
+            "title": "KVM & operator desks",
+            "desc": "Low-latency KVM so operators control every system from one seat, plus console furniture and ergonomics."
+          },
+          {
+            "title": "Source & layout management",
+            "desc": "Preset layouts, alarm-triggered views and multi-operator workflows for the moments that matter."
+          }
+        ],
+        "cat": "Command · Surveillance · NOC",
+        "desc": "Complete NOC solutions — video wall displays, processors and controlling hardware for environments under continuous supervision.",
+        "tags": [
+          "Video wall processors",
+          "24/7 displays",
+          "KVM",
+          "Source management"
+        ]
+      },
+      "conferencing-collaboration": {
+        "name": "Conferencing & Collaboration",
+        "title": "Conferencing &amp; <em>Collaboration</em>",
+        "intro": "Every business benefits from collaboration — when people share ideas and work together, productivity and results follow. Our meeting room solutions open that up by letting you work with information in more meaningful ways: displays, conference systems, table management and BYOD, tied together with room management. Whatever the meeting, presentation or demonstration is for, the room should make the day more productive, not less.",
+        "fact": "Workplace · Education · Hybrid",
+        "capsSide": "Rooms people actually want to book — from huddle spaces to boardrooms and lecture theatres.",
+        "caps": [
+          {
+            "title": "Interactive displays",
+            "desc": "Touch collaboration displays for ideation, annotation and wireless presentation in any room size."
+          },
+          {
+            "title": "Cameras & tracking",
+            "desc": "PTZ, ePTZ and auto-framing cameras that keep every participant in the shot, in any layout."
+          },
+          {
+            "title": "Ceiling & beamforming audio",
+            "desc": "Microphones and speakers that disappear into the ceiling and still pick up the quietest voice."
+          },
+          {
+            "title": "Booking & room intelligence",
+            "desc": "Scheduling panels, occupancy analytics and wayfinding that make the whole floor work harder."
+          }
+        ],
+        "cat": "Workplace · Education · Hybrid",
+        "desc": "Displays, conference systems, table management and BYOD tied together with room management, so a booked room actually works.",
+        "tags": [
+          "Interactive displays",
+          "PTZ cameras",
+          "Ceiling audio",
+          "Room booking"
+        ]
+      }
+    },
+    "hero": {
+      "label": "Solutions",
+      "line1": "Every vertical.",
+      "line2": "One partner.",
+      "desc": "From a single meeting room to a national command centre — seven AV verticals, one price list, and product specialists behind every category we distribute."
+    },
+    "meta": {
+      "vert_b": "7 verticals",
+      "vert_s": "Complete AV coverage",
+      "brands_b": "25 brands",
+      "brands_s": "Curated portfolio",
+      "installs_b": "1,000+ installs",
+      "installs_s": "Supplied & supported"
+    },
+    "explore": "Explore",
+    "next": "Next solution",
+    "brands_empty": "No brands listed for this region yet."
+  },
+  "blogs": {
+    "hero": {
+      "line1": "Notes from",
+      "line2": "the AV floor.",
+      "label": "Blogs — The Mindstec Journal",
+      "brief": "Buying guides, explainers and field notes from our product specialists — the same advice we give integrators and enterprise clients every day, written down."
+    },
+    "featured": "Featured",
+    "read_article": "Read the article",
+    "read_article_short": "Read article",
+    "browse_all": "Browse all articles on mindstec.com",
+    "cta": {
+      "label": "Talk shop with us",
+      "title1": "Questions the blog",
+      "title2_em": "didn't answer?",
+      "btn_ask": "Ask a specialist",
+      "btn_solutions": "See our solutions"
+    },
+    "modal": {
+      "tag": "Article",
+      "back": "Back to Blogs",
+      "retry": "Retry",
+      "error": "Could not load this article. Please try again."
+    },
+    "search_placeholder": "Search articles…",
+    "search_aria": "Search articles",
+    "search_clear": "Clear search",
+    "filter_aria": "Filter by category",
+    "all_categories": "All topics",
+    "showing": "Showing {{count}} of {{total}} articles",
+    "empty_title": "No articles match that",
+    "empty_body": "Try a different topic or a shorter search term.",
+    "empty_btn": "Clear filters"
+  },
+  "chat": {
+    "header": {
+      "title": "Mindstec Support",
+      "online": "Online",
+      "avg_response": "Avg. response <30 sec"
+    },
+    "input": {
+      "placeholder": "Type your message..."
+    },
+    "launcher": {
+      "label": "Ask AI",
+      "placeholder": "Ask me anything...",
+      "panel_label": "Ask AI"
+    },
+    "quick_actions": {
+      "company_info": {
+        "title": "Company Info",
+        "desc": "Learn about Mindstec",
+        "query": "Tell me about Mindstec"
+      },
+      "products": {
+        "title": "Products",
+        "desc": "Browse products",
+        "query": "What products does Mindstec offer?"
+      },
+      "solutions": {
+        "title": "Solutions",
+        "desc": "Find business solutions",
+        "query": "What solutions does Mindstec provide?"
+      },
+      "technical_support": {
+        "title": "Technical Support",
+        "desc": "Troubleshoot products",
+        "query": "I need technical support for products"
+      }
+    }
+  },
+  "contact_info": {
+    "tel_label": "+91 80 4525 6922",
+    "tel_href": "+918045256922",
+    "email": "info.in@mindstec.com",
+    "label": "India operations",
+    "partner_email": "partners@mindstec.com",
+    "partner_label": "Partnerships",
+    "email_label": "Email"
+  },
+  "events": {
+    "hero": {
+      "title_main": "Events &",
+      "title_em": "News",
+      "label": "What's happening",
+      "desc": "Upcoming events from Mindstec — product launches, industry shows, and partner conferences — alongside the latest news and press from across our regions."
+    },
+    "tabs": {
+      "all": "All",
+      "events": "Events",
+      "news": "News"
+    },
+    "upcoming": {
+      "label": "Upcoming Events",
+      "title_main": "See us",
+      "title_em": "live.",
+      "desc": "Meet the Mindstec team at trade shows, launch events, and partner conferences across our regions.",
+      "empty": "No upcoming events at the moment — check back soon."
+    },
+    "news": {
+      "label": "Latest News",
+      "title_main": "Stay",
+      "title_em": "informed.",
+      "desc": "Press releases, industry partnerships, and product announcements from Mindstec Distribution.",
+      "empty": "No news items yet — check back soon."
+    },
+    "card": {
+      "register_now": "Register Now",
+      "read_more": "Read More"
+    },
+    "cta": {
+      "label": "Stay connected",
+      "title_main": "Want to be",
+      "title_em": "at the next one?",
+      "btn_contact": "Get in touch",
+      "btn_partners": "Our partners"
+    }
+  },
+  "gallery": {
+    "hero": {
+      "meta_label": "Community & Events",
+      "meta_subtitle": "Mindstec Gallery",
+      "eyebrow": "People · Culture · Milestones",
+      "title_our": "Our",
+      "title_community": "Community",
+      "desc": "Behind every great technology company are the people and moments that define its culture. Here's a look at Mindstec — our summits, workshops, outings and celebrations.",
+      "stat_moments": "Moments",
+      "stat_events": "Events",
+      "stat_people": "People",
+      "scroll_cue": "Scroll to explore"
+    },
+    "cta": {
+      "label": "Join the Community",
+      "title_main": "Want to be part of our",
+      "title_em": "next chapter?",
+      "desc": "Whether you're a prospective partner, a technology enthusiast, or someone who wants to work with us — we'd love to hear from you.",
+      "btn_contact": "Get in touch",
+      "btn_solutions": "View Solutions"
+    },
+    "loading": "Loading gallery…",
+    "error": "Failed to load gallery."
+  },
+  "language": {
+    "select": "Select language",
+    "change_aria": "Change language, current language {{language}}",
+    "prompt": {
+      "label": "Region changed",
+      "title": "You are now browsing {{region}}",
+      "body": "This region normally reads in {{language}}. Would you like to switch the site language, or keep {{current}}?",
+      "accept": "Switch to {{language}}",
+      "decline": "Keep {{current}}",
+      "switching": "Switching…",
+      "note": "You can change the language any time from the menu."
+    }
+  },
+  "projects": {
+    "hero": {
+      "label": "Projects & case studies",
+      "line1": "Proof, not",
+      "line2": "promises.",
+      "brief": "Rooms, control centres and venues our integration partners have delivered with technology we sourced, specified and supported — delivered and in progress."
+    },
+    "filter": {
+      "all": "All projects",
+      "completed": "Completed",
+      "ongoing": "Ongoing",
+      "all_categories": "All sectors",
+      "aria": "Filter projects"
+    },
+    "status": {
+      "completed": "Completed",
+      "ongoing": "Ongoing"
+    },
+    "showing": "Showing {{count}} of {{total}} projects",
+    "empty": {
+      "title": "Case studies in preparation",
+      "body": "Nothing published under this filter yet. Talk to us about work in your sector — we can share references directly.",
+      "btn": "Ask for references"
+    },
+    "cta": {
+      "label": "Your project next",
+      "title_main": "Specifying something",
+      "title_em": "similar?",
+      "btn1": "Talk to a specialist",
+      "btn2": "Browse solutions"
+    }
+  },
+  "products": {
+    "hero": {
+      "aria": "Our product catalogue",
+      "label": "Products",
+      "line1": "Fifty-plus brands.",
+      "line2": "One price list.",
+      "desc": "Start with the space you have to fill. Every application below lists the manufacturers we stock and support for it — and every brand page sets out the product families behind the logo."
+    },
+    "meta": {
+      "brands": "Brands distributed",
+      "categories": "Application categories",
+      "support_b": "In-region",
+      "support_s": "Stock & support"
+    },
+    "all": "All brands",
+    "choose": "Choose a category",
+    "all_title_main": "Every brand we",
+    "all_title_em": "distribute",
+    "all_desc": "Twenty-five manufacturers held under formal regional agreements, with the stock, spares and engineering support behind each one.",
+    "cats_kicker": "By application",
+    "cats_title_main": "Ten places this",
+    "cats_title_em": "gets used",
+    "cats_label": "All application categories",
+    "about_label": "The manufacturer",
+    "families_label": "Product families",
+    "families_title_main": "What sits under",
+    "families_title_em": "the logo",
+    "families_side": "Categories, not part numbers. Tell us the room and we come back with the specific models, the mounting and the spares.",
+    "solutions_label": "Where it is specified",
+    "solutions_title_main": "Solutions it",
+    "solutions_title_em": "shows up in",
+    "apps_label": "Applications",
+    "apps_title_main": "Rooms it was",
+    "apps_title_em": "built for",
+    "next_label": "Other brands",
+    "brand_cta_main": "Specifying",
+    "categories": {
+      "meeting-collaboration": {
+        "name": "Meeting & Training Rooms",
+        "short": "Meeting rooms"
+      },
+      "command-video-wall": {
+        "name": "Command Centres & Video Walls",
+        "short": "Command centres"
+      },
+      "media-distribution-signage": {
+        "name": "Media Distribution & Digital Signage",
+        "short": "Signage"
+      },
+      "hospitality-real-estate": {
+        "name": "Hospitality, Real Estate & Catering",
+        "short": "Hospitality"
+      },
+      "events-exhibition": {
+        "name": "Events & Exhibition",
+        "short": "Events"
+      },
+      "retail-chain-store": {
+        "name": "Retail & Chain Store",
+        "short": "Retail"
+      },
+      "smart-home": {
+        "name": "Smart Home",
+        "short": "Smart home"
+      },
+      "education": {
+        "name": "Education",
+        "short": "Education"
+      },
+      "display-mounting": {
+        "name": "Display Mounting",
+        "short": "Mounting"
+      },
+      "lighting-control": {
+        "name": "Lighting & Dimming Control",
+        "short": "Lighting"
+      }
+    },
+    "cta": {
+      "label": "Start a project",
+      "title_main": "Know the room.",
+      "title_em": "Not the part number.",
+      "btn1": "Ask for a specification",
+      "btn2": "Browse by solution",
+      "btn3": "Back to catalogue"
+    },
+    "brands_word": "brands",
+    "families_word": "product families"
+  }
+}

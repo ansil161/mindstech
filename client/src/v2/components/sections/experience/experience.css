@@ -1,0 +1,22 @@
+.xw-wrap { padding: clamp(40px, 5vw, 72px) var(--gutter, clamp(20px, 5vw, 64px)); display: grid; gap: 28px; }
+.xw-crumb { display: flex; flex-wrap: wrap; gap: 8px; font-family: var(--ct-mono, monospace); font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--grey); padding: 96px var(--gutter, clamp(20px, 5vw, 64px)) 0; }
+.xw-crumb a { color: var(--grey); text-decoration: none; }
+.xw-crumb a:hover { color: var(--white); }
+.xw-crumb [aria-current] { color: var(--white); }
+.xw-ph { border: 1px dashed var(--ct-edge, rgba(255,255,255,.25)); border-radius: 4px; padding: 20px; color: var(--grey); font-size: 14px; display: grid; gap: 6px; }
+.xw-ph b { font-family: var(--ct-mono, monospace); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: #d98a86; font-weight: 400; }
+.xw-split { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(24px, 4vw, 56px); align-items: start; }
+.xw-stack { display: grid; gap: 14px; align-content: start; }
+.xw-thumbs { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.xw-thumbs .xw-ph { aspect-ratio: 4/3; place-items: center; }
+.xw-tour { aspect-ratio: 16/9; place-items: center; text-align: center; }
+.xw-zone { display: grid; grid-template-columns: 1.2fr 1fr; gap: clamp(20px, 3vw, 40px); padding: 28px 0; border-top: 1px solid var(--ct-edge, rgba(255,255,255,.15)); }
+.xw-strip { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.xw-strip .xw-ph { aspect-ratio: 4/3; place-items: center; padding: 8px; }
+.xw-zone h3 { font-family: var(--display); font-size: 24px; margin: 0 0 8px; color: var(--white); }
+.xw-sub { font-family: var(--ct-mono, monospace); font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--grey); display: block; margin: 14px 0 6px; }
+.xw-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.xw-chip { font-size: 13px; padding: 7px 14px; border: 1px solid var(--ct-edge, rgba(255,255,255,.25)); border-radius: 999px; color: var(--white); text-decoration: none; transition: border-color .25s; }
+.xw-chip:hover { border-color: var(--red); }
+.xw-note { font-family: var(--ct-mono, monospace); font-size: 12px; color: var(--grey); }
+@media (max-width: 900px) { .xw-split, .xw-zone { grid-template-columns: 1fr; } }
