@@ -2,6 +2,7 @@ import { RouterProvider } from 'react-router-dom';
 import { router } from './routes/index.jsx';
 import { AuthProvider } from './context/AuthContext';
 import { RegionProvider } from './context/RegionContext';
+import VersionToggle from './components/common/VersionToggle.jsx';
 import SplashCursor from './components/common/SplashCursor/SplashCursor.jsx';
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
           RAINBOW_MODE
         />
         <RouterProvider router={router} />
+        <VersionToggle />
       </RegionProvider>
     </AuthProvider>
   );
