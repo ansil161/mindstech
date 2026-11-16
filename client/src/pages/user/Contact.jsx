@@ -27,8 +27,8 @@ const FALLBACK_CONTACT = {
   phone: '+918045256922',
   phone_display: '+91 80 4525 6922',
   email: 'india@mindstec.com',
-  address: 'No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India',
-  office_name: 'Mindstec Distribution — Bangalore HQ',
+  address: 'No. 5M-645, Banaswadi Village, OMBR Layout, Bengaluru 560043, India',
+  office_name: 'Mindstec Distribution — Bengaluru HQ',
   map_embed_url: 'https://maps.google.com/maps?q=MINDSTEC%20DISTRIBUTION%20PRIVATE%20LIMITED%2C%20OMBR%20Layout%2C%20Bangalore&z=15&output=embed',
   map_link: 'https://www.google.com/maps/place/MINDSTEC+DISTRIBUTION+PRIVATE+LIMITED/@13.0108201,77.6558671,849m/data=!3m2!1e3!4b1!4m6!3m5!1s0x3bae171505942e5f:0x89ccc127b403eb0e!8m2!3d13.0108201!4d77.658442!16s%2Fg%2F11ckqsxnqv',
 };
@@ -350,7 +350,7 @@ const Contact = () => {
               </svg>
             </button>
             <p className="fnote">
-              {t('contact.info.note', { region, office: officeName ? ` — ${officeName}` : '' })}
+              {t('contact.info.note', { region: region === 'Global' ? 'global' : region, office:officeName ? ` — ${officeName}` : '' })}
             </p>
           </div>
         </form>

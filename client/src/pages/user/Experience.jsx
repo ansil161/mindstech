@@ -265,7 +265,7 @@ const Experience = () => {
             <span className="label label--red">{t('experience.meta.brands_s')}</span>
             <h2 className="display">{t('experience.zones.title', 'Six zones. All ')}<em>{t('experience.zones.title_em')}</em>.</h2>
           </div>
-          <p className="reveal">{t('experience.zones.desc', 'Every zone runs shipping product — no mock-ups, no renders. Walk from one vertical to the next and see how the pieces interoperate.')}</p>
+          <p className="reveal">{t('experience.zones.desc', 'Every zone uses commercially available products — no mock-ups, no renders. Walk from one vertical to the next and see how the pieces interoperate.')}</p>
         </div>
         <div className="zgrid">
           {zones.map((zone) => (
@@ -389,7 +389,7 @@ const Experience = () => {
             <span className="num">01</span>
             <div>
               <h4>{activeContact?.office_name || t('experience.visit.arr.0.title', 'Where')}</h4>
-              <p style={{ whiteSpace: 'pre-wrap' }}>{activeContact?.address || t('experience.visit.arr.0.desc', 'No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India')}</p>
+              <p style={{ whiteSpace: 'pre-wrap' }}>{activeContact?.address || t('experience.visit.arr.0.desc', 'No. 5M-645, Banaswadi Village, OMBR Layout, Bengaluru 560043, India')}</p>
             </div>
           </div>
           <div className="vrow reveal">

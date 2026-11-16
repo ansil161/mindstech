@@ -712,7 +712,7 @@ const SolutionDetails = () => {
             </h2>
           </div>
           <p className="lede side">
-            {t('solutions.process_side', 'The same five stages on a single meeting room and on a command centre — the depth changes, the sequence does not.')}
+            {t('solutions.process_side', 'We follow the same five stages for a single meeting room or a command centre — the depth changes, the sequence does not.')}
           </p>
         </div>
 

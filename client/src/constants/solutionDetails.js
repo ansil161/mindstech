@@ -111,7 +111,7 @@ const SOLUTIONS = {
       'Connectivity, efficiency and digital transformation for modern business environments. Networking infrastructure, secure communication systems, cloud technologies and data management platforms, integrated so operations and collaboration hold together — reliable data exchange, real-time communication and IT environments that scale across enterprises, campuses and public infrastructure. From structured cabling and unified communications to network management, every layer is specified for performance, security and flexibility.',
     fact: 'Enterprise · Campus · Public infrastructure',
     capsSide:
-      'AV and IT stopped being separate procurement long ago. We spec the transport layer with the same discipline as the screens hanging off it.',
+      'AV and IT are no longer procured separately. We spec the transport layer with the same discipline as the screens hanging off it.',
     hero: {
       src: '/assets/img/unsplash-1558494949-ef010cbdcc31-w1400.jpg',
       alt: 'Server racks with dense structured cabling in a dark room',
@@ -196,7 +196,7 @@ const SOLUTIONS = {
     title: 'Digital Signage &amp; <em>DOOH</em>',
     kicker: 'The right message, the right place',
     intro:
-      'Sending the message to the right person at the right place at the right time is what advertising and marketing turn on. We carry a niche of audio-visual products built for indoor and outdoor marketing — signage software clubbed with media players across multiple sites, scheduled, changed or stopped remotely, and made interactive where the brief calls for it.',
+      'Sending the message to the right person at the right place at the right time is what advertising and marketing turn on. We offer a specialised range of audio-visual products built for indoor and outdoor marketing — signage software integrated with media players across multiple sites, scheduled, changed or stopped remotely, and made interactive where the brief calls for it.',
     fact: 'Retail · Transport · Public space',
     capsSide:
       'From a single menu board to a stadium facade — hardware, software and mounting from one price list.',
@@ -283,9 +283,9 @@ const SOLUTIONS = {
   'control-rooms-critical-environments': {
     name: 'Control Rooms & Critical Environments',
     title: 'Control Rooms &amp; <em>Critical Environments</em>',
-    kicker: 'Mission-critical visualization',
+    kicker: 'Mission-critical visualisation',
     intro:
-      'Complete NOC solutions for business organisations, public utilities, universities and government agencies overseeing complex networking environments that require continuous supervision. We give NOC personnel the technology to monitor one network or many for the conditions that need attention before service degrades — video wall displays, processors, and the controlling hardware and software behind them.',
+      'Complete NOC solutions for business organisations, public utilities, universities and government agencies overseeing complex networking environments that require continuous supervision. We give NOC personnel the technology to monitor one network or many for the conditions that need attention before service degrades — video wall displays, processors, and the control hardware and software behind them.',
     fact: 'Command · Surveillance · NOC',
     capsSide:
       'Mission-critical means no single point of failure — we spec redundancy from source to screen.',
@@ -307,7 +307,7 @@ const SOLUTIONS = {
     ],
     showcase: {
       label: 'In the field',
-      title: 'Mission-critical <em>visualization</em>',
+      title: 'Mission-critical <em>visualisation</em>',
       desc:
         'An operator watching a wall is watching thousands of data points at once — camera feeds, SCADA, network health, incident queues. The room\'s job is to make the one that matters impossible to miss, and to keep showing it when a source, a card or a panel fails.',
       src: '/assets/img/pexels-17323801-w1920.jpg',
@@ -322,7 +322,7 @@ const SOLUTIONS = {
       { icon: 'source', title: 'Sources', desc: 'Cameras, SCADA and workstations' },
       { icon: 'processing', title: 'Processing', desc: 'Capture, scaling and compositing' },
       { icon: 'routing', title: 'Routing', desc: 'Any input to any window' },
-      { icon: 'display', title: 'Video wall', desc: 'Continuously-rated canvas' },
+      { icon: 'display', title: 'Video wall', desc: 'Video wall rated for continuous operation' },
       { icon: 'operator', title: 'Operator', desc: 'KVM and layout presets' },
       { icon: 'analytics', title: 'Analytics', desc: 'Logging and incident review' },
     ],
@@ -374,7 +374,7 @@ const SOLUTIONS = {
     title: 'Conferencing &amp; <em>Collaboration</em>',
     kicker: 'Rooms that just work',
     intro:
-      'Every business benefits from collaboration — when people share ideas and work together, productivity and results follow. Our meeting room solutions open that up by letting you work with information in more meaningful ways: displays, conference systems, table management and BYOD, tied together with room management. Whatever the meeting, presentation or demonstration is for, the room should make the day more productive, not less.',
+      'Every business benefits from collaboration — when people share ideas and work together, productivity and results follow. Our meeting room solutions open that up by letting you work with information in more meaningful ways: displays, conference systems, table connectivity and cable management, and BYOD, tied together with room management. Whatever the meeting, presentation or demonstration is for, the room should make the day more productive, not less.',
     fact: 'Workplace · Education · Hybrid',
     capsSide:
       'Rooms people actually want to book — from huddle spaces to boardrooms and lecture theatres.',
@@ -384,14 +384,14 @@ const SOLUTIONS = {
     },
     trust: ['Hybrid room specialists', ...SHARED_TRUST],
     heroStats: [
-      { value: 'AV/IP', label: '1Gb transport' },
+      { value: 'AV/IP', label: '1 Gbps transport' },
       { value: '4K60', label: 'End to end' },
       { value: 'Sub-frame', label: 'Switching latency' },
     ],
     caps: [
       ['Interactive displays', 'Touch collaboration displays for ideation, annotation and wireless presentation in any room size.', '/assets/img/unsplash-1497366811353-6870744d04b2-w1400.jpg', 'A modern glass and concrete meeting room with a wall-mounted display'],
       ['Cameras & tracking', 'PTZ, ePTZ and auto-framing cameras that keep every participant in the shot, in any layout.', '/assets/img/unsplash-1516035069371-29a1b244cc32-w700.jpg', 'Professional camera bodies and lenses laid out on a dark surface'],
-      ['Ceiling & beamforming audio', 'Microphones and speakers that disappear into the ceiling and still pick up the quietest voice.', '/assets/img/pexels-13323673-w1400.jpg', 'A dark-toned conference room with a wall-mounted display and leather chairs'],
+      ['Ceiling & beamforming audio', 'Ceiling microphones capture quiet voices, while discreet speakers deliver clear audio throughout the room.', '/assets/img/pexels-13323673-w1400.jpg', 'A dark-toned conference room with a wall-mounted display and leather chairs'],
       ['Booking & room intelligence', 'Scheduling panels, occupancy analytics and wayfinding that make the whole floor work harder.', '/assets/img/unsplash-1517245386807-bb43f82c33c4-w1100.jpg', 'People in a meeting with a laptop on the table'],
     ],
     showcase: {
@@ -410,7 +410,7 @@ const SOLUTIONS = {
     flow: [
       { icon: 'source', title: 'Room devices', desc: 'Cameras, mics and laptops' },
       { icon: 'processing', title: 'Encode', desc: 'AV-over-IP and DSP' },
-      { icon: 'network', title: 'Transport', desc: 'Standard 1Gb network' },
+      { icon: 'network', title: 'Transport', desc: 'Standard 1 Gbps network' },
       { icon: 'display', title: 'Display & audio', desc: 'Interactive panels and arrays' },
       { icon: 'operator', title: 'Participants', desc: 'In-room and far end' },
       { icon: 'analytics', title: 'Room analytics', desc: 'Occupancy and utilisation' },

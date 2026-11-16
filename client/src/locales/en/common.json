@@ -52,7 +52,7 @@
     },
     "story": {
       "p1": "We bridge the gap between global AV manufacturers and regional dealers — optimising supply chains, reducing costs and improving the efficiency of every operation in between.",
-      "p2": "With deep market knowledge and a tech-savvy team, we help the world's AV brands expand into new markets, and we support our dealers with sales, marketing and promotion — fostering growth without competition.",
+      "p2": "With deep market knowledge and a tech-savvy team, we help the world's AV brands expand into new markets, and we support our dealers with sales, marketing and promotion — helping our dealers grow without competing with them.",
       "more_p1": "Committed to innovation and customer support, we continuously invest in technical expertise, ensuring seamless integration of AV solutions in high-profile projects worldwide.",
       "more_p2": "Driven by excellence and innovation, we empower businesses to stay at the forefront of the evolving AV industry.",
       "cap1": "Pixel-level expertise",
@@ -67,7 +67,7 @@
       "p2_title": "Optimised supply chains",
       "p2_desc": "Procurement, warehousing and distribution tuned for the region — reducing costs, shortening lead times and improving the efficiency of every project.",
       "p3_title": "Dealer enablement",
-      "p3_desc": "Sales, marketing and promotional support for our dealers, plus the technical expertise to integrate AV solutions in high-profile projects — growth without competition."
+      "p3_desc": "Sales, marketing and promotional support for our dealers, plus the technical expertise to integrate AV solutions in high-profile projects — we help our dealers grow without competing with them."
     },
     "vm": {
       "vision_title": "Our",
@@ -75,7 +75,7 @@
       "vision_desc": "To be a distribution leader in futuristic, convergent, technology-driven system solutions.",
       "mission_title": "Our",
       "mission_em": "Mission",
-      "mission_desc": "To be a regional leader in cutting-edge audio-visual system solution distribution — creating immense value for our supplier-dealer networks while being first and fastest in bringing the latest technology to the region."
+      "mission_desc": "To be a regional leader in the distribution of advanced audio-visual systems and solutions — creating immense value for our supplier-dealer networks while being first and fastest in bringing the latest technology to the region."
     },
     "team": {
       "label": "Our team",
@@ -128,7 +128,7 @@
           "sub": "Manufacturers to dealers"
         },
         {
-          "bold": "Bangalore HQ",
+          "bold": "Bengaluru HQ",
           "sub": "India — SAARC operations"
         }
       ],
@@ -170,7 +170,7 @@
           "sub": "Manufacturers to dealers"
         },
         {
-          "bold": "Bangalore HQ",
+          "bold": "Bengaluru HQ",
           "sub": "SAARC operations"
         }
       ],
@@ -198,7 +198,7 @@
           "sub": "Manufacturers to dealers"
         },
         {
-          "bold": "Bangalore HQ",
+          "bold": "Bengaluru HQ",
           "sub": "India — SAARC operations"
         }
       ]
@@ -209,7 +209,7 @@
       "dubai": "Dubai",
       "riyadh": "Riyadh",
       "doha": "Doha",
-      "bangalore": "Bangalore",
+      "bangalore": "Bengaluru",
       "bangkok": "Bangkok",
       "johannesburg": "Johannesburg",
       "warsaw": "Warsaw",
@@ -254,7 +254,7 @@
       "label": "Solutions",
       "title_main": "What we",
       "title_em": "distribute",
-      "lede": "Six verticals, one supply chain. Hover a category to see it in the field."
+      "lede": "Seven verticals, one supply chain. Hover a category to see it in the field."
     },
     "stats": {
       "years_desc": "Years distributing professional AV technology",
@@ -280,7 +280,7 @@
       },
       {
         "title": "Local teams in three markets",
-        "desc": "Bangalore covers India and the SAARC region, our Africa office serves the continent's commercial hubs, and Warsaw handles Central and Eastern Europe — local currency, local warranty, local people.",
+        "desc": "Bengaluru covers India and the SAARC region, our Africa office serves the continent's commercial hubs, and Warsaw handles Central and Eastern Europe — local currency, local warranty, local people.",
         "caption": "Regional teams"
       },
       {
@@ -357,12 +357,12 @@
     },
     "pillars": {
       "label": "What sets us apart",
-      "title_main": "Three things we",
-      "title_em": "hold to",
+      "title_main": "Three principles that",
+      "title_em": "guide us",
       "items": [
         {
           "title": "Global company. Regional presence.",
-          "desc": "One supply chain, held locally. Stock, currency, warranty and people sit in your region — not in a warehouse eight time zones away.",
+          "desc": "One supply chain, supported by local stock and teams. Local stock, local-currency transactions, warranty support and regional teams — not a warehouse eight time zones away.",
           "tag": "Supply chain"
         },
         {
@@ -425,7 +425,7 @@
       "b1": "Interactive displays",
       "b2": "Projection",
       "b3": "Video wall control",
-      "b4": "Videowall software",
+      "b4": "Video wall software",
       "b5": "Projection screens",
       "b6": "Architectural audio",
       "b7": "Pro audio interfaces",
@@ -456,7 +456,7 @@
       "p1_desc": "A curated portfolio that lets integrators specify an entire project — displays, audio, control, connectivity — from a single distribution partner.",
       "p2_title": "Real market access",
       "p2_desc": "Established dealer networks across the Middle East, Africa and Asia, with in-region stock, local currency and logistics built for each market.",
-      "p3_title": "Growth without competition",
+      "p3_title": "Growth without competing with our dealers",
       "p3_desc": "We support dealers with sales, marketing and promotion — and we never compete with them. Product specialists back every brand we carry."
     },
     "cta": {
@@ -617,7 +617,7 @@
       "phone_label": "Phone",
       "email_label": "Email",
       "open_maps": "Open in Google Maps",
-      "note": "Your inquiry is transmitted securely to our {{region}} office{{office}}."
+      "note": "Your enquiry is sent securely to our {{region}} office{{office}}."
     }
   },
   "experience": {
@@ -635,7 +635,7 @@
       "brands_b": "25 brands",
       "brands_s": "On the floor",
       "loc_b": "OMBR Layout",
-      "loc_s": "Bangalore, India",
+      "loc_s": "Bengaluru, India",
       "appt_b": "By appointment",
       "appt_s": "Guided walkthroughs"
     },
@@ -649,7 +649,7 @@
       "label": "On the floor",
       "title": "Six zones. All ",
       "title_em": "live",
-      "desc": "Every zone runs shipping product — no mock-ups, no renders. Walk from one vertical to the next and see how the pieces interoperate.",
+      "desc": "Every zone uses commercially available products — no mock-ups, no renders. Walk from one vertical to the next and see how the pieces interoperate.",
       "explore": "Explore the vertical"
     },
     "zones_arr": [
@@ -713,7 +713,7 @@
       "arr": [
         {
           "title": "Where",
-          "desc": "No. 5M-645, Banaswadi Village, OMBR Layout, Bangalore 560043, India"
+          "desc": "No. 5M-645, Banaswadi Village, OMBR Layout, Bengaluru 560043, India"
         },
         {
           "title": "Call ahead",
@@ -760,7 +760,7 @@
           "Unified comms",
           "Network management"
         ],
-        "capsSide": "AV and IT stopped being separate procurement long ago. We spec the transport layer with the same discipline as the screens hanging off it."
+        "capsSide": "AV and IT are no longer procured separately. We spec the transport layer with the same discipline as the screens hanging off it."
       },
       "hospitality-guest-experience": {
         "name": "Hospitality & Guest Experience",
@@ -820,7 +820,7 @@
           }
         ],
         "cat": "Museums · Retail · Public venues",
-        "desc": "Interactive displays, projection and synchronised sound that turn ordinary spaces into environments an audience stays inside.",
+        "desc": "Interactive displays, projection and synchronised sound that turn ordinary spaces into immersive environments that engage audiences.",
         "tags": [
           "Interactive walls",
           "Projection mapping",
@@ -864,7 +864,7 @@
       "digital-signage-dooh": {
         "name": "Digital Signage & DOOH",
         "title": "Digital Signage &amp; <em>DOOH</em>",
-        "intro": "Sending the message to the right person at the right place at the right time is what advertising and marketing turn on. We carry a niche of audio-visual products built for indoor and outdoor marketing — signage software clubbed with media players across multiple sites, scheduled, changed or stopped remotely, and made interactive where the brief calls for it.",
+        "intro": "Sending the message to the right person at the right place at the right time is what advertising and marketing turn on. We offer a specialised range of audio-visual products built for indoor and outdoor marketing — signage software integrated with media players across multiple sites, scheduled, changed or stopped remotely, and made interactive where the brief calls for it.",
         "fact": "Retail · Transport · Public space",
         "capsSide": "From a single menu board to a stadium facade — hardware, software and mounting from one price list.",
         "caps": [
@@ -897,7 +897,7 @@
       "control-rooms-critical-environments": {
         "name": "Control Rooms & Critical Environments",
         "title": "Control Rooms &amp; <em>Critical Environments</em>",
-        "intro": "Complete NOC solutions for business organisations, public utilities, universities and government agencies overseeing complex networking environments that require continuous supervision. We give NOC personnel the technology to monitor one network or many for the conditions that need attention before service degrades — video wall displays, processors, and the controlling hardware and software behind them.",
+        "intro": "Complete NOC solutions for business organisations, public utilities, universities and government agencies overseeing complex networking environments that require continuous supervision. We give NOC personnel the technology to monitor one network or many for the conditions that need attention before service degrades — video wall displays, processors, and the control hardware and software behind them.",
         "fact": "Command · Surveillance · NOC",
         "capsSide": "Mission-critical means no single point of failure — we spec redundancy from source to screen.",
         "caps": [
@@ -919,7 +919,7 @@
           }
         ],
         "cat": "Command · Surveillance · NOC",
-        "desc": "Complete NOC solutions — video wall displays, processors and controlling hardware for environments under continuous supervision.",
+        "desc": "Complete NOC solutions — video wall displays, processors and control hardware for environments under continuous supervision.",
         "tags": [
           "Video wall processors",
           "24/7 displays",
@@ -930,7 +930,7 @@
       "conferencing-collaboration": {
         "name": "Conferencing & Collaboration",
         "title": "Conferencing &amp; <em>Collaboration</em>",
-        "intro": "Every business benefits from collaboration — when people share ideas and work together, productivity and results follow. Our meeting room solutions open that up by letting you work with information in more meaningful ways: displays, conference systems, table management and BYOD, tied together with room management. Whatever the meeting, presentation or demonstration is for, the room should make the day more productive, not less.",
+        "intro": "Every business benefits from collaboration — when people share ideas and work together, productivity and results follow. Our meeting room solutions open that up by letting you work with information in more meaningful ways: displays, conference systems, table connectivity and cable management, and BYOD, tied together with room management. Whatever the meeting, presentation or demonstration is for, the room should make the day more productive, not less.",
         "fact": "Workplace · Education · Hybrid",
         "capsSide": "Rooms people actually want to book — from huddle spaces to boardrooms and lecture theatres.",
         "caps": [
@@ -944,7 +944,7 @@
           },
           {
             "title": "Ceiling & beamforming audio",
-            "desc": "Microphones and speakers that disappear into the ceiling and still pick up the quietest voice."
+            "desc": "Ceiling microphones capture quiet voices, while discreet speakers deliver clear audio throughout the room."
           },
           {
             "title": "Booking & room intelligence",
@@ -952,7 +952,7 @@
           }
         ],
         "cat": "Workplace · Education · Hybrid",
-        "desc": "Displays, conference systems, table management and BYOD tied together with room management, so a booked room actually works.",
+        "desc": "Displays, conference systems, table connectivity and cable management, and BYOD tied together with room management, so a booked room actually works.",
         "tags": [
           "Interactive displays",
           "PTZ cameras",
@@ -1139,7 +1139,7 @@
       "label": "Projects & case studies",
       "line1": "Proof, not",
       "line2": "promises.",
-      "brief": "Rooms, control centres and venues our integration partners have delivered with technology we sourced, specified and supported — delivered and in progress."
+      "brief": "Completed and ongoing projects delivered by our integration partners using technology we source, specify and support."
     },
     "filter": {
       "all": "All projects",
@@ -1220,11 +1220,11 @@
         "short": "Hospitality"
       },
       "events-exhibition": {
-        "name": "Events & Exhibition",
+        "name": "Events & Exhibitions",
         "short": "Events"
       },
       "retail-chain-store": {
-        "name": "Retail & Chain Store",
+        "name": "Retail & Chain Stores",
         "short": "Retail"
       },
       "smart-home": {
@@ -1253,6 +1253,7 @@
       "btn3": "Back to catalogue"
     },
     "brands_word": "brands",
+    "brand_word": "brand",
     "families_word": "product families"
   }
 }

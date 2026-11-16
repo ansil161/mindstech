@@ -65,14 +65,14 @@ export const PRODUCT_CATEGORIES = [
   {
     code: 'events-exhibition',
     icon: 'venue',
-    name: 'Events & Exhibition',
+    name: 'Events & Exhibitions',
     short: 'Events',
     desc: 'Projection, large-format interactive surfaces and touring-grade hardware for shows, stands and installations.',
   },
   {
     code: 'retail-chain-store',
     icon: 'retail',
-    name: 'Retail & Chain Store',
+    name: 'Retail & Chain Stores',
     short: 'Retail',
     desc: 'Storefront and in-store technology that runs unattended and is administered across an estate.',
   },
@@ -255,7 +255,7 @@ export const BRANDS = [
     cat: 'broadcast',
     descKey: 'partners.brands.b8',
     img: '/assets/uploads/2026/04/Untitled-design-27.png',
-    blurb: 'IPTV, set-top and media delivery for operators and venues.',
+    blurb: 'IPTV, set-top boxes and media delivery for operators and venues.',
     about:
       'Amino specialises in media and entertainment delivery: IPTV and Android TV endpoints, device management and the cloud services behind them, deployed by operators, hotels and enterprise venues that need a managed estate rather than a shelf of consumer boxes.',
     categories: ['media-distribution-signage', 'hospitality-real-estate', 'retail-chain-store'],

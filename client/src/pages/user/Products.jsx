@@ -255,7 +255,10 @@ const Products = () => {
               <h3>{t(`products.categories.${cat.code}.name`, cat.name)}</h3>
               <p>{t(`products.categories.${cat.code}.desc`, cat.desc)}</p>
               <span className="pr-cat-foot">
-                {CATEGORY_COUNTS[cat.code]} {t('products.brands_word', 'brands')}
+                {CATEGORY_COUNTS[cat.code]}{' '}
+                {CATEGORY_COUNTS[cat.code] === 1
+                  ? t('products.brand_word', 'brand')
+                  : t('products.brands_word', 'brands')}
               </span>
             </Link>
           ))}

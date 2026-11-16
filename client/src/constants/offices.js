@@ -48,7 +48,7 @@ export const OFFICES = [
   },
   {
     key: 'bangalore',
-    city: 'Bangalore',
+    city: 'Bengaluru',
     country: 'India',
     lat: 12.9716,
     lng: 77.5946,

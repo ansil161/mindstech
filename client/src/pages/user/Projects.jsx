@@ -159,7 +159,7 @@ const Projects = () => {
           <p>
             {t(
               'projects.hero.brief',
-              'Rooms, control centres and venues our integration partners have delivered with technology we sourced, specified and supported — delivered and in progress.',
+              'Completed and ongoing projects delivered by our integration partners using technology we source, specify and support.',
             )}
           </p>
         </div>

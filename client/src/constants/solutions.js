@@ -47,7 +47,7 @@ const CARDS = {
   'immersive-experience': {
     name: 'Immersive Experience',
     cat: 'Museums · Retail · Public venues',
-    desc: 'Interactive displays, projection and synchronised sound that turn ordinary spaces into environments an audience stays inside.',
+    desc: 'Interactive displays, projection and synchronised sound that turn ordinary spaces into immersive environments that engage audiences.',
     tags: ['Interactive walls', 'Projection mapping', 'Spatial audio', 'Show control'],
     image: '/assets/img/pexels-13230484-w1400.jpg',
   },
@@ -68,14 +68,14 @@ const CARDS = {
   'control-rooms-critical-environments': {
     name: 'Control Rooms & Critical Environments',
     cat: 'Command · Surveillance · NOC',
-    desc: 'Complete NOC solutions — video wall displays, processors and controlling hardware for environments under continuous supervision.',
+    desc: 'Complete NOC solutions — video wall displays, processors and control hardware for environments under continuous supervision.',
     tags: ['Video wall processors', '24/7 displays', 'KVM', 'Source management'],
     image: '/assets/img/pexels-11783119-w1400.jpg',
   },
   'conferencing-collaboration': {
     name: 'Conferencing & Collaboration',
     cat: 'Workplace · Education · Hybrid',
-    desc: 'Displays, conference systems, table management and BYOD tied together with room management, so a booked room actually works.',
+    desc: 'Displays, conference systems, table connectivity and cable management, and BYOD tied together with room management, so a booked room actually works.',
     tags: ['Interactive displays', 'PTZ cameras', 'Ceiling audio', 'Room booking'],
     image: '/assets/img/pexels-13323673-w1400.jpg',
   },
