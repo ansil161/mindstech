@@ -227,12 +227,12 @@
           "sub": "In denen wir tätig sind"
         },
         "brands": {
-          "value": "34+",
+          "value": "25+",
           "label": "Marken",
           "sub": "Die wir vertreten"
         },
         "projects": {
-          "value": "10K+",
+          "value": "973+",
           "label": "Projekte",
           "sub": "Umgesetzt"
         },
@@ -245,7 +245,7 @@
       "line1": "Globales Unternehmen.",
       "line2": "Regionale Präsenz.",
       "line3": "Die Technologie von morgen, heute.",
-      "brief": "Distribution mit Unterschied. Mindstec bewegt nicht einfach Kartons — wir beschaffen, spezifizieren, bevorraten und betreuen professionelle AV-Technik von über fünfzig globalen Herstellern, mit Team und Lager in Ihrer Region.",
+      "brief": "Distribution mit Unterschied. Mindstec bewegt nicht einfach Kartons — wir beschaffen, spezifizieren, bevorraten und betreuen professionelle AV-Technik von über 25 globalen Herstellern, mit Team und Lager in Ihrer Region.",
       "explore_btn": "Lösungen entdecken",
       "fact1_b": "Globales Unternehmen",
       "fact1_s": "Regionale Präsenz",
@@ -270,7 +270,7 @@
     "stats": {
       "years_desc": "Jahrelange Erfahrung im Vertrieb professioneller AV-Technik",
       "brands_desc": "Herstellermarken im Portfolio",
-      "ops_desc": "Regionale Aktivitäten – Indien, Afrika, Polen",
+      "ops_desc": "Büros im Nahen Osten, in Afrika, Asien, Europa und Südamerika",
       "installs_desc": "Bisher gelieferte und unterstützte Installationen"
     },
     "edge": {
@@ -287,7 +287,7 @@
       "label": "Globale Präsenz",
       "title_main": "Wo wir",
       "title_em": "tätig sind",
-      "lede": "Elf Städte, eine Lieferkette. Lager, Währung, Garantie und Menschen — alles in der Region abgewickelt.",
+      "lede": "Acht Städte, eine Lieferkette. Lager, Währung, Garantie und Menschen — alles in der Region abgewickelt.",
       "hq_suffix": "(Zentrale)",
       "office_hq": "Globale Zentrale",
       "office_regional": "Regionalbüro",
@@ -357,7 +357,7 @@
     "edgeItems": [
       {
         "title": "Ein über fünfzehn Jahre aufgebautes Portfolio",
-        "desc": "Wir vertreten mehr als fünfzig Hersteller – von Crestron bis Samsung Professional – so ausgewählt, dass ein Integrator ein gesamtes Projekt aus einer einzigen Preisliste spezifizieren kann. Keine Lücken, keine Grauimporte.",
+        "desc": "Wir vertreten mehr als 25 Hersteller – von Crestron bis Samsung Professional – so ausgewählt, dass ein Integrator ein gesamtes Projekt aus einer einzigen Preisliste spezifizieren kann. Keine Lücken, keine Grauimporte.",
         "caption": "Markennetzwerk"
       },
       {
@@ -366,7 +366,7 @@
         "caption": "Technische Tiefe"
       },
       {
-        "title": "Lokale Teams in drei Märkten",
+        "title": "Lokale Teams in acht Städten",
         "desc": "Bangalore deckt Indien und die SAARC-Region ab, unser Afrika-Büro bedient die Handelszentren des Kontinents und Warschau kümmert sich um Mittel- und Osteuropa – lokale Währung, lokale Garantie, lokale Ansprechpartner.",
         "caption": "Regionale Teams"
       },
@@ -393,7 +393,7 @@
         },
         {
           "title": "Die Technologie von morgen, heute.",
-          "desc": "Über fünfzig globale Hersteller, kuratiert und bevorratet — damit die Technik, die Sie spezifizieren, jetzt verfügbar ist und nicht nächstes Quartal.",
+          "desc": "Über 25 globale Hersteller, kuratiert und bevorratet — damit die Technik, die Sie spezifizieren, jetzt verfügbar ist und nicht nächstes Quartal.",
           "tag": "Portfolio"
         }
       ]
@@ -469,7 +469,7 @@
       "b2": "Projektion",
       "b3": "Videowandsteuerung",
       "b4": "Videowand-Software",
-      "b5": "Projektionswände",
+      "b5": "Tischanschlusstechnik",
       "b6": "Architektonisches Audio",
       "b7": "Professionelle Audioschnittstellen",
       "b8": "IPTV & Streaming",
@@ -482,12 +482,12 @@
       "b15": "Arbeitsplatzbuchung",
       "b16": "iPad-Gehäuse",
       "b17": "Steuerung & Automatisierung",
-      "b18": "Kameraschnittstellen",
+      "b18": "Interaktiver Unterricht",
       "b19": "AV-Distribution",
       "b20": "AV-Netzwerke",
       "b21": "Konnektivität",
       "b22": "AV-Halterungen",
-      "b23": "Montagelösungen",
+      "b23": "Drahtlose Präsentation",
       "b24": "Synchronisierte Uhren",
       "b25": "AV-Zubehör"
     }
@@ -779,7 +779,7 @@
       "vert_s": "Vollständige AV-Abdeckung",
       "brands_b": "25 Marken",
       "brands_s": "Kuratiertes Portfolio",
-      "installs_b": "Über 1.000 Installationen",
+      "installs_b": "Über 973 Installationen",
       "installs_s": "Geliefert und unterstützt"
     },
     "explore": "Erkunden",
@@ -1184,7 +1184,7 @@
     "hero": {
       "aria": "Our product catalogue",
       "label": "Produkte",
-      "line1": "Über fünfzig Marken.",
+      "line1": "Über 25 Marken.",
       "line2": "Eine Preisliste.",
       "desc": "Beginnen Sie mit dem Raum, den Sie ausstatten müssen. Jede Anwendung listet die Hersteller, die wir dafür bevorraten und unterstützen — und jede Markenseite zeigt die Produktfamilien hinter dem Logo."
     },

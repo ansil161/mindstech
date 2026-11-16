@@ -46,7 +46,7 @@
       "line2": "Purpose.",
       "line3": "Progress.",
       "label": "About Us",
-      "brief": "Mindstec Distribution is a leading procurement and distribution specialist for high-end audio-visual solutions across the Middle East, Africa and Asia — bringing cutting-edge AV technology to these regions at accessible prices.",
+      "brief": "Mindstec Distribution is a leading procurement and distribution specialist for high-end audio-visual solutions across the Middle East, Africa, Asia, Europe and South America — bringing cutting-edge AV technology to these regions at accessible prices.",
       "meet_team_btn": "Meet the team",
       "caption": "High-end AV, delivered"
     },
@@ -63,7 +63,7 @@
       "title_main": "Built on three",
       "title_em": "pillars.",
       "p1_title": "Market access for manufacturers",
-      "p1_desc": "We help global AV manufacturers expand into the Middle East, Africa and Asia — with local knowledge, an established dealer network and in-region logistics.",
+      "p1_desc": "We help global AV manufacturers expand into the Middle East, Africa, Asia, Europe and South America — with local knowledge, an established dealer network and in-region logistics.",
       "p2_title": "Optimised supply chains",
       "p2_desc": "Procurement, warehousing and distribution tuned for the region — reducing costs, shortening lead times and improving the efficiency of every project.",
       "p3_title": "Dealer enablement",
@@ -190,7 +190,7 @@
       ],
       "default": [
         {
-          "bold": "Middle East · Africa · Asia",
+          "bold": "Middle East · Africa · Asia · Europe · South America",
           "sub": "Regions served"
         },
         {
@@ -227,14 +227,14 @@
       "scroll_cue": "Scroll to explore",
       "stats": {
         "countries": { "value": "20+", "label": "Countries", "sub": "We operate in" },
-        "brands": { "value": "34+", "label": "Brands", "sub": "We represent" },
-        "projects": { "value": "10K+", "label": "Projects", "sub": "Delivered" },
+        "brands": { "value": "25+", "label": "Brands", "sub": "We represent" },
+        "projects": { "value": "973+", "label": "Projects", "sub": "Delivered" },
         "years": { "value": "20+", "label": "Years", "sub": "Of excellence" }
       },
       "line1": "Global company.",
       "line2": "Regional presence.",
       "line3": "Technology of the future, today.",
-      "brief": "Distribution with a difference. Mindstec is not a box mover — we source, specify, stock and support professional AV technology from fifty-plus global manufacturers, with the people and the inventory held in your region.",
+      "brief": "Distribution with a difference. Mindstec is not a box mover — we source, specify, stock and support professional AV technology from 25+ global manufacturers, with the people and the inventory held in your region.",
       "explore_btn": "Explore solutions",
       "fact1_b": "Global company",
       "fact1_s": "Regional presence",
@@ -259,7 +259,7 @@
     "stats": {
       "years_desc": "Years distributing professional AV technology",
       "brands_desc": "Manufacturer brands in the portfolio",
-      "ops_desc": "Regional operations — India, Africa, Poland",
+      "ops_desc": "Offices across the Middle East, Africa, Asia, Europe and South America",
       "installs_desc": "Installations supplied and supported to date"
     },
     "edge": {
@@ -270,7 +270,7 @@
     "edgeItems": [
       {
         "title": "A portfolio built over fifteen years",
-        "desc": "We represent more than fifty manufacturers — Crestron to Samsung Professional — chosen so that an integrator can specify an entire project from one price list. No gaps, no grey imports.",
+        "desc": "We represent more than 25 manufacturers — Crestron to Samsung Professional — chosen so that an integrator can specify an entire project from one price list. No gaps, no grey imports.",
         "caption": "Brand network"
       },
       {
@@ -279,8 +279,8 @@
         "caption": "Technical depth"
       },
       {
-        "title": "Local teams in three markets",
-        "desc": "Bengaluru covers India and the SAARC region, our Africa office serves the continent's commercial hubs, and Warsaw handles Central and Eastern Europe — local currency, local warranty, local people.",
+        "title": "Local teams in eight cities",
+        "desc": "Dubai, Riyadh and Doha cover the Gulf, Bengaluru covers India and South Asia, Bangkok serves South-East Asia, Johannesburg serves southern Africa, Warsaw handles Central and Eastern Europe and São Paulo covers South America — local currency, local warranty, local people.",
         "caption": "Regional teams"
       },
       {
@@ -298,7 +298,7 @@
       "label": "Global presence",
       "title_main": "Where we",
       "title_em": "operate",
-      "lede": "Eleven cities, one supply chain. Stock, currency, warranty and people — all handled in-region.",
+      "lede": "Eight cities, one supply chain. Stock, currency, warranty and people — all handled in-region.",
       "hq_suffix": "(HQ)",
       "office_hq": "Global Headquarters",
       "office_regional": "Regional Office",
@@ -372,7 +372,7 @@
         },
         {
           "title": "Technology of the future, today.",
-          "desc": "Fifty-plus global manufacturers, curated and stocked — so the technology you specify is available now, not next quarter.",
+          "desc": "25+ global manufacturers, curated and stocked — so the technology you specify is available now, not next quarter.",
           "tag": "Portfolio"
         }
       ]
@@ -410,8 +410,8 @@
       "fact1_s": "Represented portfolio",
       "fact2_b": "5 categories",
       "fact2_s": "Every AV vertical covered",
-      "fact3_b": "3 regions",
-      "fact3_s": "Middle East · Africa · Asia"
+      "fact3_b": "5 regions",
+      "fact3_s": "Middle East · Africa · Asia · Europe · South America"
     },
     "categories": {
       "all": "All",
@@ -426,7 +426,7 @@
       "b2": "Projection",
       "b3": "Video wall control",
       "b4": "Video wall software",
-      "b5": "Projection screens",
+      "b5": "Table connectivity",
       "b6": "Architectural audio",
       "b7": "Pro audio interfaces",
       "b8": "IPTV & streaming",
@@ -439,12 +439,12 @@
       "b15": "Workspace booking",
       "b16": "iPad enclosures",
       "b17": "Control & automation",
-      "b18": "Camera interfaces",
+      "b18": "Interactive teaching",
       "b19": "AV distribution",
       "b20": "AV networking",
       "b21": "Connectivity",
       "b22": "AV mounts",
-      "b23": "Mounting solutions",
+      "b23": "Wireless presentation",
       "b24": "Synchronised clocks",
       "b25": "AV accessories"
     },
@@ -455,7 +455,7 @@
       "p1_title": "One price list, every category",
       "p1_desc": "A curated portfolio that lets integrators specify an entire project — displays, audio, control, connectivity — from a single distribution partner.",
       "p2_title": "Real market access",
-      "p2_desc": "Established dealer networks across the Middle East, Africa and Asia, with in-region stock, local currency and logistics built for each market.",
+      "p2_desc": "Established dealer networks across the Middle East, Africa, Asia, Europe and South America, with in-region stock, local currency and logistics built for each market.",
       "p3_title": "Growth without competing with our dealers",
       "p3_desc": "We support dealers with sales, marketing and promotion — and we never compete with them. Product specialists back every brand we carry."
     },
@@ -602,7 +602,7 @@
     },
     "offices": {
       "title": "Offices",
-      "desc": "Our network spans key markets in the Middle East, Africa, and Asia, ensuring we're always within reach to support your projects."
+      "desc": "Our network spans key markets in the Middle East, Africa, Asia, Europe and South America, ensuring we're always within reach to support your projects."
     },
     "general": {
       "title": "General",
@@ -972,7 +972,7 @@
       "vert_s": "Complete AV coverage",
       "brands_b": "25 brands",
       "brands_s": "Curated portfolio",
-      "installs_b": "1,000+ installs",
+      "installs_b": "973+ installs",
       "installs_s": "Supplied & supported"
     },
     "explore": "Explore",
@@ -1170,7 +1170,7 @@
     "hero": {
       "aria": "Our product catalogue",
       "label": "Products",
-      "line1": "Fifty-plus brands.",
+      "line1": "25+ brands.",
       "line2": "One price list.",
       "desc": "Start with the space you have to fill. Every application below lists the manufacturers we stock and support for it — and every brand page sets out the product families behind the logo."
     },

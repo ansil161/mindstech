@@ -111,7 +111,7 @@ const Products = () => {
       {/* HERO */}
       <section className="prhero" aria-label={t('products.hero.aria', 'Our product catalogue')}>
         <h1 className="display" id="prheroH">
-          <span className="line-mask"><span className="w">{t('products.hero.line1', 'Fifty-plus brands.')}</span></span>
+          <span className="line-mask"><span className="w">{t('products.hero.line1', '25+ brands.')}</span></span>
           <span className="line-mask"><span className="w"><em>{t('products.hero.line2', 'One price list.')}</em></span></span>
         </h1>
         <div className="prhero-side" id="prheroSide">

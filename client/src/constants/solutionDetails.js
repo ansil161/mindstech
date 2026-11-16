@@ -10,11 +10,10 @@
  * BEFORE THIS GOES LIVE — two blocks below are unverified marketing copy that
  * needs a human sign-off, and they are grouped here so they are easy to find:
  *
- *   1. COMPANY_METRICS — the counter band ("450+ projects delivered",
- *      "99.99% system reliability"). These are the figures from the design
- *      brief, not numbers anyone measured. Published on a distributor's site
- *      they read as contractual claims. Replace with real figures or drop the
- *      band; do not ship them because they happened to be in a mockup.
+ *   1. COMPANY_METRICS — the counter band. Aligned with the site-wide figures
+ *      (973+ projects, 25+ brands, 8 offices) per the content review; the
+ *      unmeasured "99.99% system reliability" claim was removed. Keep these in
+ *      step with the home page stats if the totals change.
  *
  *   2. `installations` — deliberately NOT real projects. Each entry describes a
  *      facility *type* ("Regional transport interchange"), never a named client,
@@ -85,9 +84,9 @@ export const PROCESS_STEPS = [
  * the numeric part without mangling the "+", "%" or "24/7".
  */
 export const COMPANY_METRICS = [
-  { count: 450, suffix: '+', label: 'Projects delivered', desc: 'Across retail, transport, government and enterprise.' },
-  { count: 99.99, suffix: '%', decimals: 2, label: 'System reliability', desc: 'Measured on mission-critical installations under contract.' },
-  { count: 20, suffix: '+', label: 'Global brands', desc: 'Distributed under formal regional agreements.' },
+  { count: 973, suffix: '+', label: 'Projects delivered', desc: 'Installations supplied and supported to date, across all regions.' },
+  { count: 8, suffix: '', label: 'Regional offices', desc: 'Across the Middle East, Africa, Asia, Europe and South America.' },
+  { count: 25, suffix: '+', label: 'Global brands', desc: 'Distributed under formal regional agreements.' },
   { count: null, display: '24/7', label: 'Monitoring support', desc: 'Escalation paths that stay open outside business hours.' },
 ];
 

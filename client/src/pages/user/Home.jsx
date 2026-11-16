@@ -46,16 +46,14 @@ const PILLAR_MARKS = [
  * through i18n at `home.hero.stats.<key>.*`, so a locale that has not been
  * updated renders these rather than a raw key.
  *
- * NOTE for review: these four figures do not currently agree with the numbers
- * published elsewhere on this site — the stats band lower down the page reads
- * 15+ years / 49+ brands / 973+ installations, and /partners and /solutions
- * both say 25 brands. They were supplied as-is for this redesign; they need
- * reconciling before launch, not silently diverging.
+ * Brand (25+) and project (973+) totals are kept in step with the stats band
+ * below, /products, /partners, /solutions and COMPANY_METRICS — change them
+ * everywhere together. Years still differ (20+ here vs 15+ in the stats band).
  */
 const HERO_STATS = [
   { key: 'countries', value: '20+', label: 'Countries', sub: 'We operate in', icon: 'globe' },
-  { key: 'brands', value: '34+', label: 'Brands', sub: 'We represent', icon: 'building' },
-  { key: 'projects', value: '10K+', label: 'Projects', sub: 'Delivered', icon: 'chart' },
+  { key: 'brands', value: '25+', label: 'Brands', sub: 'We represent', icon: 'building' },
+  { key: 'projects', value: '973+', label: 'Projects', sub: 'Delivered', icon: 'chart' },
   { key: 'years', value: '20+', label: 'Years', sub: 'Of excellence', icon: 'shield' },
 ];
 
@@ -1193,11 +1191,11 @@ const Home = () => {
             <p className="desc">{t('home.stats.years_desc')}</p>
           </div>
           <div className="stat-cell reveal">
-            <div className="value"><span className="count" data-to="49">0</span><sup>+</sup></div>
+            <div className="value"><span className="count" data-to="25">0</span><sup>+</sup></div>
             <p className="desc">{t('home.stats.brands_desc')}</p>
           </div>
           <div className="stat-cell reveal">
-            <div className="value"><span className="count" data-to="3">0</span></div>
+            <div className="value"><span className="count" data-to="8">0</span></div>
             <p className="desc">{t('home.stats.ops_desc')}</p>
           </div>
           <div className="stat-cell reveal">

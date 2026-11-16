@@ -227,12 +227,12 @@
           "sub": "Où nous opérons"
         },
         "brands": {
-          "value": "34+",
+          "value": "25+",
           "label": "Marques",
           "sub": "Que nous représentons"
         },
         "projects": {
-          "value": "10K+",
+          "value": "973+",
           "label": "Projets",
           "sub": "Réalisés"
         },
@@ -245,7 +245,7 @@
       "line1": "Entreprise mondiale.",
       "line2": "Présence régionale.",
       "line3": "La technologie de demain, aujourd'hui.",
-      "brief": "Une distribution qui fait la différence. Mindstec ne déplace pas des cartons : nous sourçons, spécifions, stockons et accompagnons les technologies audiovisuelles professionnelles de plus de cinquante fabricants mondiaux, avec les équipes et les stocks présents dans votre région.",
+      "brief": "Une distribution qui fait la différence. Mindstec ne déplace pas des cartons : nous sourçons, spécifions, stockons et accompagnons les technologies audiovisuelles professionnelles de plus de 25 fabricants mondiaux, avec les équipes et les stocks présents dans votre région.",
       "explore_btn": "Découvrir nos solutions",
       "fact1_b": "Entreprise mondiale",
       "fact1_s": "Présence régionale",
@@ -270,7 +270,7 @@
     "stats": {
       "years_desc": "Années à distribuer de la technologie audiovisuelle professionnelle",
       "brands_desc": "Marques du fabricant en portefeuille",
-      "ops_desc": "Opérations régionales – Inde, Afrique, Pologne",
+      "ops_desc": "Bureaux au Moyen-Orient, en Afrique, en Asie, en Europe et en Amérique du Sud",
       "installs_desc": "Installations fournies et prises en charge à ce jour"
     },
     "edge": {
@@ -287,7 +287,7 @@
       "label": "Présence mondiale",
       "title_main": "Où nous",
       "title_em": "opérons",
-      "lede": "Onze villes, une seule chaîne d'approvisionnement. Stock, devise, garantie et équipes — tout est traité en région.",
+      "lede": "Huit villes, une seule chaîne d'approvisionnement. Stock, devise, garantie et équipes — tout est traité en région.",
       "hq_suffix": "(siège)",
       "office_hq": "Siège mondial",
       "office_regional": "Bureau régional",
@@ -357,7 +357,7 @@
     "edgeItems": [
       {
         "title": "Un portefeuille bâti sur quinze ans",
-        "desc": "We represent more than fifty manufacturers — from Crestron to Samsung Professional — chosen so that an integrator can specify an entire project from a single price list. No gaps, no gray imports.",
+        "desc": "Nous représentons plus de 25 fabricants — de Crestron à Samsung Professional — choisis pour qu'un intégrateur puisse spécifier un projet entier à partir d'une seule liste de prix. Aucun manque, aucune importation parallèle.",
         "caption": "Réseau de marques"
       },
       {
@@ -366,8 +366,8 @@
         "caption": "Profondeur technique"
       },
       {
-        "title": "Des équipes locales sur trois marchés",
-        "desc": "Bangalore covers India and the SAARC region, our Africa office serves the continent's commercial hubs, and Warsaw handles Central & Eastern Europe — local currency, local warranty, local staff.",
+        "title": "Des équipes locales dans huit villes",
+        "desc": "Dubaï, Riyad et Doha couvrent le Golfe, Bengaluru couvre l'Inde et l'Asie du Sud, Bangkok dessert l'Asie du Sud-Est, Johannesburg l'Afrique australe, Varsovie l'Europe centrale et orientale et São Paulo l'Amérique du Sud — devise locale, garantie locale, équipes locales.",
         "caption": "Équipes REGIONALES"
       },
       {
@@ -393,7 +393,7 @@
         },
         {
           "title": "La technologie de demain, aujourd'hui.",
-          "desc": "Plus de cinquante fabricants mondiaux, sélectionnés et stockés — la technologie que vous spécifiez est disponible maintenant, pas au trimestre prochain.",
+          "desc": "Plus de 25 fabricants mondiaux, sélectionnés et stockés — la technologie que vous spécifiez est disponible maintenant, pas au trimestre prochain.",
           "tag": "Portefeuille"
         }
       ]
@@ -469,7 +469,7 @@
       "b2": "Projection",
       "b3": "Contrôle de mur vidéo",
       "b4": "Logiciel de mur vidéo",
-      "b5": "Écrans de projection",
+      "b5": "Connectivité de table",
       "b6": "Audio architectural",
       "b7": "Interfaces audio professionnelles",
       "b8": "IPTV & streaming",
@@ -482,12 +482,12 @@
       "b15": "Réservation d'espace de travail",
       "b16": "Boîtiers iPad",
       "b17": "Contrôle & automatisation",
-      "b18": "Interfaces de caméra",
+      "b18": "Enseignement interactif",
       "b19": "Distribution audiovisuelle",
       "b20": "Réseau audiovisuel",
       "b21": "Connectivité",
       "b22": "Supports audiovisuels",
-      "b23": "Solutions de montage",
+      "b23": "Présentation sans fil",
       "b24": "Horloges synchronisées",
       "b25": "Accessoires audiovisuels"
     }
@@ -779,7 +779,7 @@
       "vert_s": "Couverture audiovisuelle complète",
       "brands_b": "25 marques",
       "brands_s": "Portefeuille organisé",
-      "installs_b": "Plus de 1 000 installations",
+      "installs_b": "Plus de 973 installations",
       "installs_s": "Fourni et pris en charge"
     },
     "explore": "Explorer",
@@ -1184,7 +1184,7 @@
     "hero": {
       "aria": "Our product catalogue",
       "label": "Produits",
-      "line1": "Plus de cinquante marques.",
+      "line1": "Plus de 25 marques.",
       "line2": "Une seule liste de prix.",
       "desc": "Partez de l’espace à équiper. Chaque application ci-dessous liste les fabricants que nous stockons et supportons — et chaque page de marque détaille les gammes derrière le logo."
     },
