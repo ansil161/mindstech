@@ -435,6 +435,9 @@ const SolutionDetails = () => {
   // the fetch came back empty, which read as a broken page rather than a
   // deliberate one.
   const hasCmsBrands = translatedBrands.length > 0;
+  const sortedBrands = [...translatedBrands].sort((a, b) =>
+    (a.name || '').localeCompare(b.name || '', undefined, { sensitivity: 'base' })
+  );
 
   return (
     <main id="top" ref={containerRef} className="sdetail">
@@ -755,7 +758,7 @@ const SolutionDetails = () => {
           </div>
 
           <div className="dbrands-row">
-            {translatedBrands.map((brand) => (
+            {sortedBrands.map((brand) => (
               <a
                 key={brand.name}
                 href={brand.website_url || '/partners'}
