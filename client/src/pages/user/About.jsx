@@ -7,7 +7,7 @@ import { useTranslation } from 'react-i18next';
 import { useRegion } from '../../context/RegionContext.jsx';
 import { getPublicRegionData } from '../../api/regionApi.js';
 import { getPublicTeamMembers } from '../../api/teamApi.js';
-import { STATIC_TEAM, mergeTeam } from '../../constants/team.js';
+import { STATIC_TEAM, mergeTeam, teamForRegion } from '../../constants/team.js';
 import { useDynamicTranslation } from '../../hooks/useDynamicTranslation';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -36,7 +36,10 @@ const About = () => {
   const [team, setTeam] = useState([]);
   const [contactInfo, setContactInfo] = useState(null);
 
-  const mergedTeam = useMemo(() => mergeTeam(STATIC_TEAM, team), [team]);
+  const mergedTeam = useMemo(
+    () => teamForRegion(regionSlug, mergeTeam(STATIC_TEAM, team)),
+    [regionSlug, team]
+  );
 
   // The cache key has to follow the roster: the static-only list and the
   // merged list are different datasets and must not share a cached translation.

@@ -43,3 +43,16 @@ export const mergeTeam = (staticTeam, apiTeam) => {
 
   return merged;
 };
+
+/**
+ * Per-region roster. The full team belongs to India; Global shows only the
+ * members listed in GLOBAL_TEAM (matched by name). Add names here to show
+ * more people on Global. Any other region keeps the full roster.
+ */
+const GLOBAL_TEAM = ['Syed Abdul Wahab', 'Sabarishan N.'];
+
+export const teamForRegion = (regionSlug, team) => {
+  if (regionSlug !== 'global') return team;
+  const allowed = new Set(GLOBAL_TEAM.map(nameKey));
+  return team.filter((m) => allowed.has(nameKey(m.name)));
+};
