@@ -1,0 +1,11 @@
+# Build context for nginx/Dockerfile is the repo root; keep it small.
+**/node_modules
+**/.venv
+**/venv
+**/__pycache__
+**/.env
+.git
+client/dist
+server
+ai_service
+*.pdf

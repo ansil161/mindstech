@@ -92,8 +92,10 @@ services:
 
   nginx:
     build:
-      context: ./nginx
-      dockerfile: Dockerfile
+      context: .
+      dockerfile: nginx/Dockerfile
+      args:
+        VITE_API_URL: ${VITE_API_URL:-}
     container_name: mindstec-nginx-proxy
     ports:
       - "80:80"

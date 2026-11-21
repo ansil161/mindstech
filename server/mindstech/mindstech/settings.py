@@ -219,6 +219,14 @@ REST_FRAMEWORK = {
     'EXCEPTION_HANDLER': 'accounts.utils.custom_exception_handler',
 }
 
+# Cookie security. Defaults to Secure + SameSite=None (the Vercel -> Render
+# cross-site setup). A same-origin deployment served over plain HTTP (e.g. the
+# VPS reached by IP before a domain/TLS is attached) sets COOKIE_SECURE=False:
+# browsers drop Secure cookies on http://, and SameSite=None requires Secure,
+# so it falls back to Lax, which is correct for same-origin requests.
+COOKIE_SECURE = os.getenv("COOKIE_SECURE", "True").lower() in ("true", "1", "t", "yes")
+COOKIE_SAMESITE = 'None' if COOKIE_SECURE else 'Lax'
+
 # Simple JWT Settings
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(minutes=15),
@@ -234,10 +242,10 @@ SIMPLE_JWT = {
     'AUTH_COOKIE': 'access_token',
     'AUTH_COOKIE_REFRESH': 'refresh_token',
     'AUTH_COOKIE_DOMAIN': None,
-    'AUTH_COOKIE_SECURE': True,       # Always True for cross-site SameSite=None cookies over HTTPS
+    'AUTH_COOKIE_SECURE': COOKIE_SECURE,  # True for cross-site SameSite=None cookies over HTTPS
     'AUTH_COOKIE_HTTP_ONLY': True,    # HttpOnly since JS cannot read cross-site cookies anyway
     'AUTH_COOKIE_PATH': '/',
-    'AUTH_COOKIE_SAMESITE': 'None',   # Required for cross-domain cookies (Vercel -> Render)
+    'AUTH_COOKIE_SAMESITE': COOKIE_SAMESITE,  # 'None' for cross-domain cookies (Vercel -> Render)
 }
 
 # CORS Configuration
@@ -252,20 +260,24 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173",
 ]
 
+# Extra origins per deployment, comma-separated (e.g. the VPS's own origin).
+EXTRA_ORIGINS = [o.strip() for o in os.getenv("EXTRA_ALLOWED_ORIGINS", "").split(",") if o.strip()]
+CORS_ALLOWED_ORIGINS += EXTRA_ORIGINS
+
 # CSRF Configuration
 CSRF_COOKIE_HTTPONLY = False          # Must be False so frontend JS can read CSRF token
-CSRF_COOKIE_SAMESITE = 'None'         # Required for cross-domain CSRF cookie sending
-CSRF_COOKIE_SECURE = True             # Required when SameSite is None
+CSRF_COOKIE_SAMESITE = COOKIE_SAMESITE  # 'None' for cross-domain CSRF cookie sending
+CSRF_COOKIE_SECURE = COOKIE_SECURE      # Required when SameSite is None
 
 # Session Configuration
-SESSION_COOKIE_SAMESITE = 'None'      # Required for cross-domain session cookies
-SESSION_COOKIE_SECURE = True          # Required when SameSite is None
+SESSION_COOKIE_SAMESITE = COOKIE_SAMESITE  # 'None' for cross-domain session cookies
+SESSION_COOKIE_SECURE = COOKIE_SECURE      # Required when SameSite is None
 
 CSRF_TRUSTED_ORIGINS = [
     "https://mindstech.vercel.app",
     "https://mindstech-7zm2rsg5k-ansil161s-projects.vercel.app",
     "http://localhost:5173",
-]
+] + EXTRA_ORIGINS
 
 
 # Celery & Redis Configurations
@@ -289,8 +301,8 @@ AI_SERVICE_API_KEY = os.getenv('AI_SERVICE_API_KEY', 'secret-key')
 # Production Security Headers (Active when DEBUG is False)
 if not DEBUG:
     SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True").lower() in ("true", "1", "t", "yes")
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = COOKIE_SECURE
+    CSRF_COOKIE_SECURE = COOKIE_SECURE
     SECURE_BROWSER_XSS_FILTER = True
     SECURE_CONTENT_TYPE_NOSNIFF = True
     SECURE_HSTS_SECONDS = int(os.getenv("SECURE_HSTS_SECONDS", "31536000"))  # 1 year
