@@ -13,7 +13,9 @@ ARG VITE_API_URL=""
 ENV VITE_API_URL=$VITE_API_URL
 
 COPY client/package.json client/package-lock.json ./
-RUN npm ci
+# npm install, not npm ci: the committed lock file is not fully in sync with
+# package.json (missing optional @emnapi/runtime), which npm ci rejects.
+RUN npm install --no-audit --no-fund
 
 COPY client/ ./
 RUN npm run build
