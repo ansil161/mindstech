@@ -33,3 +33,5 @@ client/dist-ssr
 *.env
 __pycache__/
 *.pyc
+# Let's Encrypt state on the server
+certbot/

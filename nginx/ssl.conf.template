@@ -1,0 +1,44 @@
+# Rendered by 40-ssl-config.sh (envsubst on ${SSL_DOMAIN}) when the
+# certificate for SSL_DOMAIN exists. ${SSL_DOMAIN} is the canonical host;
+# www.${SSL_DOMAIN} and any other host name redirect to it.
+
+# HTTP: certificate renewals, everything else to HTTPS.
+server {
+    listen 80 default_server;
+    server_name _;
+
+    location /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+    }
+
+    location / {
+        return 301 https://${SSL_DOMAIN}$request_uri;
+    }
+}
+
+# HTTPS on www (or any other name on this certificate): redirect to the main host.
+server {
+    listen 443 ssl default_server;
+    http2 on;
+    server_name _;
+
+    ssl_certificate     /etc/letsencrypt/live/${SSL_DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${SSL_DOMAIN}/privkey.pem;
+
+    return 301 https://${SSL_DOMAIN}$request_uri;
+}
+
+server {
+    listen 443 ssl;
+    http2 on;
+    server_name ${SSL_DOMAIN};
+
+    ssl_certificate     /etc/letsencrypt/live/${SSL_DOMAIN}/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/${SSL_DOMAIN}/privkey.pem;
+    ssl_protocols TLSv1.2 TLSv1.3;
+    ssl_prefer_server_ciphers off;
+    ssl_session_cache shared:SSL:10m;
+    ssl_session_timeout 1d;
+
+    include /etc/nginx/app.conf;
+}

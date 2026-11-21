@@ -98,8 +98,16 @@ services:
     container_name: mindstec-nginx-proxy
     ports:
       - "80:80"
+      - "443:443"
+    environment:
+      # Main host name for HTTPS. Leave unset to serve plain HTTP only.
+      - SSL_DOMAIN=${SSL_DOMAIN:-}
     volumes:
       - media_data:/app/media:ro
+      # Let's Encrypt certificates and the HTTP-01 challenge webroot, written
+      # by certbot on the host (see deploy notes); both may be empty.
+      - ./certbot/conf:/etc/letsencrypt:ro
+      - ./certbot/www:/var/www/certbot:ro
     depends_on:
       - django-backend
       - ai-service

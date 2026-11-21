@@ -26,8 +26,11 @@ RUN npm run build
 FROM nginx:1.25-alpine
 
 COPY nginx/nginx.conf /etc/nginx/conf.d/default.conf
+COPY nginx/app.conf /etc/nginx/app.conf
+COPY nginx/ssl.conf.template /etc/nginx/ssl.conf.template
+COPY --chmod=755 nginx/40-ssl-config.sh /docker-entrypoint.d/40-ssl-config.sh
 COPY --from=client-build /client/dist /usr/share/nginx/html
 
-EXPOSE 80
+EXPOSE 80 443
 
 CMD ["nginx", "-g", "daemon off;"]
