@@ -298,6 +298,15 @@ AI_SERVICE_URL = os.getenv('AI_SERVICE_URL', 'http://ai-service:8000').rstrip('/
 AI_SERVICE_API_KEY = os.getenv('AI_SERVICE_API_KEY', 'secret-key')
 
 
+# Outbound email via Microsoft Graph (see adminpanel/services/email_service.py)
+MS_GRAPH_TENANT_ID = os.getenv('MS_GRAPH_TENANT_ID', '')
+MS_GRAPH_CLIENT_ID = os.getenv('MS_GRAPH_CLIENT_ID', '')
+MS_GRAPH_CLIENT_SECRET = os.getenv('MS_GRAPH_CLIENT_SECRET', '')
+MS_GRAPH_SENDER = os.getenv('MS_GRAPH_SENDER', '')
+ENQUIRY_EMAIL_TO = os.getenv('ENQUIRY_EMAIL_TO', '')
+ENQUIRY_EMAIL_ROUTES = os.getenv('ENQUIRY_EMAIL_ROUTES', '')
+
+
 # Production Security Headers (Active when DEBUG is False)
 if not DEBUG:
     SECURE_SSL_REDIRECT = os.getenv("SECURE_SSL_REDIRECT", "True").lower() in ("true", "1", "t", "yes")
