@@ -4,6 +4,11 @@ import './index.css'
 import App from './App.jsx'
 import { LanguageProvider } from './context/LanguageContext'
 import i18n, { loadLanguage } from './i18n' // Import to initialize i18next
+import { router } from './routes/index.jsx'
+import { initAppUpdates } from './utils/appUpdate'
+
+// Reload tabs that were left open across a deploy (see utils/appUpdate.js).
+initAppUpdates(router)
 
 const mount = () =>
   createRoot(document.getElementById('root')).render(

@@ -62,10 +62,34 @@ const CHUNK_GROUPS = {
   ],
 }
 
+/**
+ * Stamps each production build with an id (exposed as __APP_BUILD_ID__) and
+ * emits /version.json carrying the same id. src/utils/appUpdate.js polls that
+ * file so tabs left open across a deploy notice the new build.
+ */
+const BUILD_ID = new Date().toISOString()
+function buildVersion() {
+  return {
+    name: 'build-version',
+    generateBundle() {
+      this.emitFile({
+        type: 'asset',
+        fileName: 'version.json',
+        source: JSON.stringify({ buildId: BUILD_ID }),
+      })
+    },
+  }
+}
+
 export default defineConfig(({ mode }) => ({
+  define: {
+    __APP_BUILD_ID__: JSON.stringify(BUILD_ID),
+  },
+
   plugins: [
     react(),
     tailwindcss(),
+    buildVersion(),
     // Opt-in so ordinary builds don't pay the visualizer's cost (~47% of build
     // time) or emit stats.html. Use `npm run build:analyze`.
     //
