@@ -263,6 +263,7 @@ const Contact = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                minLength={2}
               />
             </div>
             <div className="field">
@@ -313,6 +314,9 @@ const Contact = () => {
               value={msg}
               onChange={(e) => setMsg(e.target.value)}
               required
+              /* Mirrors the server's minimum so the browser flags a too-short
+                 message before submitting, instead of a failed send. */
+              minLength={10}
             ></textarea>
           </div>
 
