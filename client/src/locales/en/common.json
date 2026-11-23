@@ -18,8 +18,8 @@
       "india": "India",
       "middle_east": "Middle East",
       "africa": "Africa",
-      "south_asia": "South Asia",
-      "hong_kong_china": "Hong Kong / China"
+      "southeast_asia": "Southeast Asia",
+      "europe": "Europe"
     },
     "company": "Company",
     "projects": "Projects",
@@ -160,9 +160,9 @@
           "sub": "Africa operations"
         }
       ],
-      "south-asia": [
+      "southeast-asia": [
         {
-          "bold": "South Asia",
+          "bold": "Southeast Asia",
           "sub": "Region served"
         },
         {
@@ -170,13 +170,13 @@
           "sub": "Manufacturers to dealers"
         },
         {
-          "bold": "Bengaluru HQ",
-          "sub": "SAARC operations"
+          "bold": "Bangkok hub",
+          "sub": "Southeast Asia operations"
         }
       ],
-      "hong-kong-china": [
+      "europe": [
         {
-          "bold": "Hong Kong · China",
+          "bold": "Europe",
           "sub": "Region served"
         },
         {
@@ -184,8 +184,8 @@
           "sub": "Manufacturers to dealers"
         },
         {
-          "bold": "Hong Kong hub",
-          "sub": "Asia-Pacific operations"
+          "bold": "Warsaw hub",
+          "sub": "European operations"
         }
       ],
       "default": [

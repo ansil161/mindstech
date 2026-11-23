@@ -24,8 +24,8 @@
       "india": "印度",
       "middle_east": "中东",
       "africa": "非洲",
-      "south_asia": "南亚",
-      "hong_kong_china": "香港 / 中国"
+      "southeast_asia": "东南亚",
+      "europe": "欧洲"
     },
     "company": "公司",
     "projects": "项目案例",
@@ -172,9 +172,9 @@
           "sub": "非洲业务"
         }
       ],
-      "south-asia": [
+      "southeast-asia": [
         {
-          "bold": "南亚",
+          "bold": "东南亚",
           "sub": "服务地区"
         },
         {
@@ -182,13 +182,13 @@
           "sub": "从制造商到经销商"
         },
         {
-          "bold": "班加罗尔总部",
-          "sub": "南盟业务"
+          "bold": "曼谷枢纽",
+          "sub": "东南亚业务"
         }
       ],
-      "hong-kong-china": [
+      "europe": [
         {
-          "bold": "香港 · 中国",
+          "bold": "欧洲",
           "sub": "服务地区"
         },
         {
@@ -196,8 +196,8 @@
           "sub": "从制造商到经销商"
         },
         {
-          "bold": "香港中心",
-          "sub": "亚太业务"
+          "bold": "华沙枢纽",
+          "sub": "欧洲业务"
         }
       ],
       "default": [

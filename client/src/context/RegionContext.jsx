@@ -5,7 +5,19 @@ const RegionContext = createContext();
 
 export const RegionProvider = ({ children }) => {
   const [region, setRegionState] = useState(() => {
-    return localStorage.getItem('mindstec_region') || 'Global'; // default to Global if India not there, but let's keep previous logic if possible, wait, previously it was 'India'.
+    let stored = null;
+    try {
+      stored = localStorage.getItem('mindstec_region');
+    } catch {
+      // Storage blocked: fall back to Global.
+    }
+    // Regions renamed in Nov 2026; carry returning visitors over.
+    const RENAMED = { 'South Asia': 'Southeast Asia', 'Hong Kong / China': 'Europe' };
+    if (stored && RENAMED[stored]) {
+      stored = RENAMED[stored];
+      try { localStorage.setItem('mindstec_region', stored); } catch { /* ignore */ }
+    }
+    return stored || 'Global';
   });
 
   const [enabledPages, setEnabledPages] = useState(null);

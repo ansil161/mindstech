@@ -63,8 +63,8 @@ export const OFFICES = [
     lat: 13.7563,
     lng: 100.5018,
     role: 'regional',
-    region: 'South Asia',
-    email: 'southasia@mindstec.com',
+    region: 'Southeast Asia',
+    email: 'info@mindstec.com',
   },
   {
     key: 'johannesburg',

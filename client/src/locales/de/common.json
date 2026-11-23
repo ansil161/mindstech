@@ -18,8 +18,8 @@
       "india": "Indien",
       "middle_east": "Naher Osten",
       "africa": "Afrika",
-      "south_asia": "Südasien",
-      "hong_kong_china": "Hongkong / China"
+      "southeast_asia": "Südostasien",
+      "europe": "Europa"
     },
     "company": "Unternehmen",
     "projects": "Projekte",
@@ -165,9 +165,9 @@
           "sub": "Betrieb Afrika"
         }
       ],
-      "south-asia": [
+      "southeast-asia": [
         {
-          "bold": "Südasien",
+          "bold": "Südostasien",
           "sub": "Betreute Region"
         },
         {
@@ -175,13 +175,13 @@
           "sub": "Von Herstellern zu Händlern"
         },
         {
-          "bold": "Zentrale Bangalore",
-          "sub": "Betrieb SAARC"
+          "bold": "Drehkreuz Bangkok",
+          "sub": "Betrieb Südostasien"
         }
       ],
-      "hong-kong-china": [
+      "europe": [
         {
-          "bold": "Hongkong · China",
+          "bold": "Europa",
           "sub": "Betreute Region"
         },
         {
@@ -189,8 +189,8 @@
           "sub": "Von Herstellern zu Händlern"
         },
         {
-          "bold": "Drehkreuz Hongkong",
-          "sub": "Betrieb Asien-Pazifik"
+          "bold": "Drehkreuz Warschau",
+          "sub": "Betrieb Europa"
         }
       ],
       "default": [

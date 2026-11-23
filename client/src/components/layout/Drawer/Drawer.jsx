@@ -97,7 +97,7 @@ const Drawer = ({ drawerOpen, setDrawerOpen }) => {
                   {r.sub_regions && r.sub_regions.map((sub) => regionButton(sub.name, true))}
                 </React.Fragment>
               ))
-            : ['Global', 'India', 'Middle East', 'Africa', 'South Asia', 'Hong Kong / China'].map((r) =>
+            : ['Global', 'India', 'Middle East', 'Africa', 'Southeast Asia', 'Europe'].map((r) =>
                 regionButton(r),
               )}
         </div>
