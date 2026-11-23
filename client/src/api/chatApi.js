@@ -91,10 +91,10 @@ export const chatApi = {
    * Submit a chatbot enquiry to the Django REST API.
    * Maps to POST /api/v1/admin/enquiries/submit/ (AllowAny, rate-limited).
    *
-   * @param {Object} enquiry - { name, email, phone, company, message }
+   * @param {Object} enquiry - { name, email, phone, region }
    * @returns {Promise<Object>} - { message, data } on success
    */
-  submitEnquiry: async ({ name, email, phone }) => {
+  submitEnquiry: async ({ name, email, phone, region = '' }) => {
     const payload = {
       name:    name.trim(),
       email:   email.trim(),
@@ -102,6 +102,7 @@ export const chatApi = {
       subject: 'General Enquiry',
       message: `Chatbot enquiry submitted by ${name.trim()}.`,
       source:  'chatbot',
+      region,
     };
 
     const response = await apiClient.post('/admin/enquiries/submit/', payload);

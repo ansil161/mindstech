@@ -7,9 +7,12 @@ class EnquirySerializer(serializers.ModelSerializer):
         model = Enquiry
         fields = [
             'id', 'name', 'email', 'phone', 'company',
-            'subject', 'message', 'source', 'status', 'created_at',
+            'subject', 'message', 'source', 'region', 'status', 'created_at',
         ]
         read_only_fields = ['id', 'status', 'created_at']
+
+    def validate_region(self, value):
+        return strip_tags(value or '').strip().lower()[:50]
 
     def validate_name(self, value):
         value = strip_tags(value).strip()

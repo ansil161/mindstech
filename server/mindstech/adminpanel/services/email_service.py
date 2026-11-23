@@ -12,8 +12,14 @@ Configuration (all from the environment, see settings.py):
     MS_GRAPH_CLIENT_SECRET  Client secret *value* (not the secret ID)
     MS_GRAPH_SENDER         Mailbox to send from, e.g. info@example.com
     ENQUIRY_EMAIL_TO        Comma-separated default recipients for enquiries
+    ENQUIRY_EMAIL_REGION_ROUTES
+                            Optional JSON {"<region slug>": "a@x.com,b@x.com"}
+                            sending each region's enquiries to its own inbox
     ENQUIRY_EMAIL_ROUTES    Optional JSON {"<form subject>": "a@x.com,b@x.com"}
                             sending specific subjects to different inboxes
+
+Routing order for an enquiry: its region's inbox, else its subject's inbox,
+else ENQUIRY_EMAIL_TO (the Global inbox).
 """
 
 import json
@@ -115,20 +121,34 @@ def send_mail(to, subject, html_body, reply_to=None, cc=None):
         raise EmailSendError(f'sendMail failed ({resp.status_code}): {resp.text[:500]}')
 
 
+def _route(setting_name, key):
+    """Addresses for `key` in a JSON {key: "a@x,b@x"} setting, or []."""
+    raw = getattr(settings, setting_name, '')
+    key = (key or '').strip().lower()
+    if not raw or not key:
+        return []
+    try:
+        routes = json.loads(raw)
+    except ValueError:
+        logger.error('%s is not valid JSON; ignoring it.', setting_name)
+        return []
+    for route_key, addresses in routes.items():
+        if route_key.strip().lower() == key:
+            return _split(addresses)
+    return []
+
+
 def recipients_for_subject(subject):
-    """Inbox(es) for an enquiry: a subject-specific route if set, else the default."""
-    raw = settings.ENQUIRY_EMAIL_ROUTES
-    if raw:
-        try:
-            routes = json.loads(raw)
-        except ValueError:
-            logger.error('ENQUIRY_EMAIL_ROUTES is not valid JSON; using ENQUIRY_EMAIL_TO.')
-            routes = {}
-        key = (subject or '').strip().lower()
-        for route_subject, addresses in routes.items():
-            if route_subject.strip().lower() == key and _split(addresses):
-                return _split(addresses)
-    return _split(settings.ENQUIRY_EMAIL_TO)
+    """Inbox(es) for a subject: a subject-specific route if set, else the default."""
+    return _route('ENQUIRY_EMAIL_ROUTES', subject) or _split(settings.ENQUIRY_EMAIL_TO)
+
+
+def recipients_for_enquiry(enquiry):
+    """Region inbox, else subject inbox, else the default (Global) inbox."""
+    return (
+        _route('ENQUIRY_EMAIL_REGION_ROUTES', getattr(enquiry, 'region', ''))
+        or recipients_for_subject(enquiry.subject)
+    )
 
 
 def build_enquiry_email(enquiry):
@@ -140,6 +160,7 @@ def build_enquiry_email(enquiry):
         ('Phone', enquiry.phone),
         ('Company', enquiry.company),
         ('Subject', enquiry.subject),
+        ('Region', (enquiry.region or 'global').replace('-', ' ').title()),
         ('Source', source),
         ('Received', enquiry.created_at.strftime('%d %b %Y, %H:%M UTC') if enquiry.created_at else ''),
     ]

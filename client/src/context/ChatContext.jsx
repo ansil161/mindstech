@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback, useMemo, useRef } from 'react';
 import chatApi from '../api/chatApi';
+import { useRegion } from './RegionContext.jsx';
 
 export const ChatContext = createContext(null);
 
@@ -122,6 +123,12 @@ export const ChatProvider = ({ children }) => {
     () => `session_${Math.random().toString(36).substr(2, 9)}`
   );
 
+  // Read through a ref so the memoised send handler always submits the
+  // region the visitor has selected now, not the one at first render.
+  const { regionSlug } = useRegion();
+  const regionSlugRef = useRef(regionSlug);
+  useEffect(() => { regionSlugRef.current = regionSlug; }, [regionSlug]);
+
   // Enquiry collection state
   const [enquiryState, setEnquiryState]       = useState(ENQUIRY_IDLE);
   const [collectedData, setCollectedData]     = useState({});
@@ -223,6 +230,7 @@ export const ChatProvider = ({ children }) => {
               name:  updated.name,
               email: updated.email,
               phone: updated.phone,
+              region: regionSlugRef.current,
             });
             setEnquiryStateSynced(ENQUIRY_DONE);
             setTimeout(() => {

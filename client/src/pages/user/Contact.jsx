@@ -184,7 +184,9 @@ const Contact = () => {
         phone: phone || 'N/A',
         email,
         subject,
-        message: msg
+        message: msg,
+        // Routes the notification to this region's inbox ('global' → main inbox).
+        region: regionSlug,
       });
       setSubmitSuccess(true);
       setName('');

@@ -305,6 +305,7 @@ MS_GRAPH_CLIENT_SECRET = os.getenv('MS_GRAPH_CLIENT_SECRET', '')
 MS_GRAPH_SENDER = os.getenv('MS_GRAPH_SENDER', '')
 ENQUIRY_EMAIL_TO = os.getenv('ENQUIRY_EMAIL_TO', '')
 ENQUIRY_EMAIL_ROUTES = os.getenv('ENQUIRY_EMAIL_ROUTES', '')
+ENQUIRY_EMAIL_REGION_ROUTES = os.getenv('ENQUIRY_EMAIL_REGION_ROUTES', '')
 
 
 # Production Security Headers (Active when DEBUG is False)

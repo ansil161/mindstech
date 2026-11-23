@@ -19,6 +19,9 @@ class Enquiry(models.Model):
     subject = models.CharField(max_length=150)
     message = models.TextField()
     source = models.CharField(max_length=10, choices=SOURCE_CHOICES, default='website')
+    # Slug of the region the visitor had selected (e.g. 'india'); blank = Global.
+    # Decides which regional inbox the notification email goes to.
+    region = models.CharField(max_length=50, blank=True, default='')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
     created_at = models.DateTimeField(auto_now_add=True)
 

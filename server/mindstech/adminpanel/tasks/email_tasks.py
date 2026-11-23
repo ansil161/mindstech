@@ -21,7 +21,7 @@ def send_enquiry_notification_task(self, enquiry_id: int):
     except Enquiry.DoesNotExist:
         return
 
-    to = email_service.recipients_for_subject(enquiry.subject)
+    to = email_service.recipients_for_enquiry(enquiry)
     if not to:
         logger.warning('Enquiry %s not emailed: ENQUIRY_EMAIL_TO is empty.', enquiry_id)
         return
