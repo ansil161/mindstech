@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 
 from ..models import Enquiry
 from ..serializers import EnquirySerializer, EnquiryStatusUpdateSerializer
-from ..tasks.email_tasks import send_enquiry_notification_task
+from ..tasks.email_tasks import send_enquiry_acknowledgement_task, send_enquiry_notification_task
 
 logger = logging.getLogger(__name__)
 
@@ -18,10 +18,11 @@ logger = logging.getLogger(__name__)
 def _queue_enquiry_email(enquiry_id):
     # The enquiry is already saved, so a broker outage must not fail the
     # visitor's submission; it stays visible in the admin Enquiries tab.
-    try:
-        send_enquiry_notification_task.delay(enquiry_id)
-    except Exception:
-        logger.exception('Could not queue email for enquiry %s', enquiry_id)
+    for task in (send_enquiry_notification_task, send_enquiry_acknowledgement_task):
+        try:
+            task.delay(enquiry_id)
+        except Exception:
+            logger.exception('Could not queue %s for enquiry %s', task.name, enquiry_id)
 
 
 class EnquirySubmitView(APIView):

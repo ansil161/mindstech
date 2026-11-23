@@ -180,3 +180,36 @@ def build_enquiry_email(enquiry):
     )
     subject = f'Website enquiry: {enquiry.subject} — {enquiry.name}'
     return subject, html
+
+
+def build_acknowledgement_email(enquiry):
+    """(subject, html) for the thank-you email sent to the person who enquired."""
+    first_name = escape((enquiry.name or '').split(' ')[0] or 'there')
+    region = (enquiry.region or '').replace('-', ' ').title()
+    team = f'our {escape(region)} team' if region and region != 'Global' else 'our team'
+
+    # The chatbot stores a placeholder rather than a real message, so only
+    # echo the enquiry back when the visitor actually wrote one.
+    summary = ''
+    if enquiry.source != 'chatbot' and enquiry.message:
+        summary = (
+            '<p style="margin:20px 0 6px;color:#666">For your reference, here is a copy of your enquiry:</p>'
+            f'<p style="margin:0 0 6px"><strong>Subject:</strong> {escape(enquiry.subject)}</p>'
+            '<div style="padding:12px 14px;background:#f5f5f5;border-radius:6px">'
+            f'{escape(enquiry.message).replace(chr(10), "<br>")}</div>'
+        )
+
+    html = (
+        '<div style="font-family:Segoe UI,Arial,sans-serif;font-size:14px;line-height:1.6;color:#111;max-width:600px">'
+        f'<p>Dear {first_name},</p>'
+        '<p>Thank you for contacting Mindstec. We have received your enquiry, and '
+        f'{team} will review it and get back to you as soon as possible.</p>'
+        '<p>If you have any further details to share in the meantime, simply reply to this email.</p>'
+        f'{summary}'
+        '<p style="margin-top:24px">Kind regards,<br><strong>The Mindstec Team</strong><br>'
+        '<a href="https://mindstec.com" style="color:#CC0001">mindstec.com</a></p>'
+        '<p style="color:#999;font-size:12px;margin-top:24px">You are receiving this email because '
+        'this address was used to submit an enquiry on mindstec.com. If this was not you, please ignore this email.</p>'
+        '</div>'
+    )
+    return 'Thank you for contacting Mindstec', html

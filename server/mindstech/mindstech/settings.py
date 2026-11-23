@@ -306,6 +306,8 @@ MS_GRAPH_SENDER = os.getenv('MS_GRAPH_SENDER', '')
 ENQUIRY_EMAIL_TO = os.getenv('ENQUIRY_EMAIL_TO', '')
 ENQUIRY_EMAIL_ROUTES = os.getenv('ENQUIRY_EMAIL_ROUTES', '')
 ENQUIRY_EMAIL_REGION_ROUTES = os.getenv('ENQUIRY_EMAIL_REGION_ROUTES', '')
+# Thank-you email to the person who enquired.
+ENQUIRY_ACK_ENABLED = os.getenv('ENQUIRY_ACK_ENABLED', 'True').lower() in ('true', '1', 't', 'yes')
 
 
 # Production Security Headers (Active when DEBUG is False)
