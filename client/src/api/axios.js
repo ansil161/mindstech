@@ -39,11 +39,22 @@ const rejectIfHtml = (response) => {
   return null;
 };
 
-const toFallbackError = (error) => ({
-  success: false,
-  message: error.response?.data?.message || error.message || 'An unexpected error occurred.',
-  errors: error.response?.data?.errors || {},
-});
+// Views that return `serializer.errors` directly send a bare field map
+// ({ phone: ['…'] }) rather than the { message, errors } envelope; keep it as
+// `errors` so forms can show the real reason instead of a generic message.
+const toFallbackError = (error) => {
+  const data = error.response?.data;
+  const bareFieldErrors =
+    data && typeof data === 'object' && !Array.isArray(data) && !('message' in data) && !('errors' in data)
+      ? data
+      : null;
+  return {
+    success: false,
+    status: error.response?.status,
+    message: data?.message || error.message || 'An unexpected error occurred.',
+    errors: data?.errors || bareFieldErrors || {},
+  };
+};
 
 /**
  * Client for the `/admin/public/*` endpoints, which are AllowAny and are read

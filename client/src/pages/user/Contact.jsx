@@ -181,7 +181,7 @@ const Contact = () => {
     try {
       await axios.post('/admin/enquiries/submit/', {
         name,
-        phone: phone || 'N/A',
+        phone: phone.trim(),
         email,
         subject,
         message: msg,
@@ -196,16 +196,14 @@ const Contact = () => {
       setSubject('General enquiries');
     } catch (err) {
       console.error(err);
-      const errorData = err.response?.data;
+      // The API client normalises failures to { message, errors }, where
+      // errors is the serializer's field map. Show the first field's reason
+      // (e.g. "Message must be at least 10 characters."), else a generic line.
       let errorMsg = t('contact.form.error_generic');
-      if (errorData) {
-        if (typeof errorData === 'object') {
-          const firstKey = Object.keys(errorData)[0];
-          const firstVal = errorData[firstKey];
-          errorMsg = Array.isArray(firstVal) ? `${firstKey}: ${firstVal[0]}` : `${firstKey}: ${firstVal}`;
-        } else if (typeof errorData === 'string') {
-          errorMsg = errorData;
-        }
+      const fieldErrors = err?.errors && typeof err.errors === 'object' ? err.errors : null;
+      const firstVal = fieldErrors ? Object.values(fieldErrors)[0] : null;
+      if (firstVal) {
+        errorMsg = Array.isArray(firstVal) ? String(firstVal[0]) : String(firstVal);
       }
       setSubmitError(errorMsg);
     } finally {

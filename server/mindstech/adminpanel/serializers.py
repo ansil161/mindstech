@@ -10,6 +10,8 @@ class EnquirySerializer(serializers.ModelSerializer):
             'subject', 'message', 'source', 'region', 'status', 'created_at',
         ]
         read_only_fields = ['id', 'status', 'created_at']
+        # Phone is optional on the contact form.
+        extra_kwargs = {'phone': {'required': False, 'allow_blank': True}}
 
     def validate_region(self, value):
         return strip_tags(value or '').strip().lower()[:50]
@@ -33,7 +35,11 @@ class EnquirySerializer(serializers.ModelSerializer):
         return strip_tags(value).strip()
 
     def validate_phone(self, value):
-        cleaned = strip_tags(value).strip()
+        cleaned = strip_tags(value or '').strip()
+        # Optional field. Older builds of the form sent the literal 'N/A' for
+        # an empty phone, which was then rejected and failed the whole enquiry.
+        if cleaned.upper() in ('', 'N/A', 'NA'):
+            return ''
         if not any(char.isdigit() for char in cleaned):
             raise serializers.ValidationError("Phone number must contain digits.")
         return cleaned
