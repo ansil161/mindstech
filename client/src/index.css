@@ -1878,6 +1878,24 @@ blockquote {
   color: var(--grey);
 }
 
+/* Logos are pre-rendered white (public/assets/img/brands/strip/) and dimmed
+   to sit at the same weight as the text names, brightening with them on
+   hover. A fixed height keeps the row even; max-width stops long wordmarks
+   (Blustream, Sonance) from dwarfing compact marks. */
+.strip span.strip-logo img {
+  display: block;
+  height: 26px;
+  width: auto;
+  max-width: 150px;
+  object-fit: contain;
+  opacity: .5;
+  transition: opacity .3s;
+}
+
+.strip:hover span.strip-logo img {
+  opacity: .8;
+}
+
 /* A permanently-scrolling strip is exactly what reduced-motion is for. Holding
    it still keeps every name readable — the marquee is decoration, and the same
    twelve manufacturers are listed twice in the markup for the seamless loop. */

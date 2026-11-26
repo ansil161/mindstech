@@ -15,6 +15,7 @@ import SolutionGrid from '../../components/common/SolutionGrid/SolutionGrid.jsx'
 import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.jsx';
 import { getFallbackSolutions, getSolutionMeta } from '../../constants/solutions.js';
 import WaveBackdrop from '../../components/common/WaveBackdrop/WaveBackdrop.jsx';
+import { BRAND_STRIP } from '../../constants/brandStrip.js';
 import { safeFromTo } from '../../utils/gsapSafe';
 import {
   ACTIVE_OFFICES,
@@ -1102,8 +1103,23 @@ const Home = () => {
       {/* BRAND TICKER STRIP */}
       <div className="strip" aria-label="Represented manufacturers">
         <div className="strip-track">
-          <span>Amino</span><span>AtlasIED</span><span>Aurora</span><span>Avocor</span><span>Blustream</span><span>Bluefin</span><span>B-Tech</span><span>Cambium</span><span>Christie</span><span>Datapath</span><span>Delta</span><span>GoGet</span><span>Horion</span><span>Humelab</span><span>Iport</span><span>Kordz</span><span>Lemco</span><span>Magnum</span><span>MTC</span><span>Netgear</span><span>Polywall</span><span>PTZ Optics</span><span>RDL</span><span>RTI</span><span>SalrayWorks</span><span>Sapling</span><span>SCT</span><span>Smartsign</span><span>Sonance</span><span>T1V</span><span>Telycam</span><span>Vitec</span><span>Vizrt</span><span>Wavex</span>
-          <span aria-hidden="true">Amino</span><span aria-hidden="true">AtlasIED</span><span aria-hidden="true">Aurora</span><span aria-hidden="true">Avocor</span><span aria-hidden="true">Blustream</span><span aria-hidden="true">Bluefin</span><span aria-hidden="true">B-Tech</span><span aria-hidden="true">Cambium</span><span aria-hidden="true">Christie</span><span aria-hidden="true">Datapath</span><span aria-hidden="true">Delta</span><span aria-hidden="true">GoGet</span><span aria-hidden="true">Horion</span><span aria-hidden="true">Humelab</span><span aria-hidden="true">Iport</span><span aria-hidden="true">Kordz</span><span aria-hidden="true">Lemco</span><span aria-hidden="true">Magnum</span><span aria-hidden="true">MTC</span><span aria-hidden="true">Netgear</span><span aria-hidden="true">Polywall</span><span aria-hidden="true">PTZ Optics</span><span aria-hidden="true">RDL</span><span aria-hidden="true">RTI</span><span aria-hidden="true">SalrayWorks</span><span aria-hidden="true">Sapling</span><span aria-hidden="true">SCT</span><span aria-hidden="true">Smartsign</span><span aria-hidden="true">Sonance</span><span aria-hidden="true">T1V</span><span aria-hidden="true">Telycam</span><span aria-hidden="true">Vitec</span><span aria-hidden="true">Vizrt</span><span aria-hidden="true">Wavex</span>
+          {/* Listed twice for the seamless loop (the track scrolls -50%); the
+              second copy is hidden from assistive tech. */}
+          {[false, true].map((isCopy) =>
+            BRAND_STRIP.map((brand) => (
+              <span
+                key={`${isCopy ? 'copy-' : ''}${brand.name}`}
+                className={brand.logo ? 'strip-logo' : undefined}
+                aria-hidden={isCopy || undefined}
+              >
+                {brand.logo ? (
+                  <img src={brand.logo} alt={isCopy ? '' : brand.name} decoding="async" />
+                ) : (
+                  brand.name
+                )}
+              </span>
+            ))
+          )}
         </div>
       </div>
 
