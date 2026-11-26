@@ -1879,16 +1879,17 @@ blockquote {
 }
 
 /* Logos are pre-rendered white (public/assets/img/brands/strip/) and dimmed
-   to sit at the same weight as the text names, brightening with them on
-   hover. A fixed height keeps the row even; max-width stops long wordmarks
-   (Blustream, Sonance) from dwarfing compact marks. */
+   to the strip's quiet grey, brightening when the strip pauses on hover.
+   Width/height come from stripLogoSize() in constants/brandStrip.js, which
+   gives every logo the same visual area inside an equal-width slot. */
+.strip span.strip-logo {
+  min-height: 40px;
+}
+
 .strip span.strip-logo img {
   display: block;
-  height: 26px;
-  width: auto;
-  max-width: 150px;
-  object-fit: contain;
-  opacity: .5;
+  flex-shrink: 0;
+  opacity: .55;
   transition: opacity .3s;
 }
 
@@ -1898,7 +1899,7 @@ blockquote {
 
 /* A permanently-scrolling strip is exactly what reduced-motion is for. Holding
    it still keeps every name readable — the marquee is decoration, and the same
-   twelve manufacturers are listed twice in the markup for the seamless loop. */
+   manufacturers are listed twice in the markup for the seamless loop. */
 @media (prefers-reduced-motion: reduce) {
   .strip-track {
     animation: none;

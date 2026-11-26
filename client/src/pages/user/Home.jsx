@@ -15,7 +15,7 @@ import SolutionGrid from '../../components/common/SolutionGrid/SolutionGrid.jsx'
 import SolutionIcon from '../../components/common/SolutionIcons/SolutionIcons.jsx';
 import { getFallbackSolutions, getSolutionMeta } from '../../constants/solutions.js';
 import WaveBackdrop from '../../components/common/WaveBackdrop/WaveBackdrop.jsx';
-import { BRAND_STRIP } from '../../constants/brandStrip.js';
+import { BRAND_STRIP, STRIP_SLOT_W, stripLogoSize, stripLogoSrc } from '../../constants/brandStrip.js';
 import { safeFromTo } from '../../utils/gsapSafe';
 import {
   ACTIVE_OFFICES,
@@ -1106,19 +1106,25 @@ const Home = () => {
           {/* Listed twice for the seamless loop (the track scrolls -50%); the
               second copy is hidden from assistive tech. */}
           {[false, true].map((isCopy) =>
-            BRAND_STRIP.map((brand) => (
-              <span
-                key={`${isCopy ? 'copy-' : ''}${brand.name}`}
-                className={brand.logo ? 'strip-logo' : undefined}
-                aria-hidden={isCopy || undefined}
-              >
-                {brand.logo ? (
-                  <img src={brand.logo} alt={isCopy ? '' : brand.name} decoding="async" />
-                ) : (
-                  brand.name
-                )}
-              </span>
-            ))
+            BRAND_STRIP.map((brand) => {
+              const { width, height } = stripLogoSize(brand.ratio);
+              return (
+                <span
+                  key={`${isCopy ? 'copy-' : ''}${brand.slug}`}
+                  className="strip-logo"
+                  aria-hidden={isCopy || undefined}
+                >
+                  <img
+                    src={stripLogoSrc(brand.slug)}
+                    alt={isCopy ? '' : brand.name}
+                    width={width}
+                    height={height}
+                    style={{ marginInline: (STRIP_SLOT_W - width) / 2 }}
+                    decoding="async"
+                  />
+                </span>
+              );
+            })
           )}
         </div>
       </div>
