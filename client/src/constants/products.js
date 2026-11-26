@@ -235,7 +235,7 @@ export const BRANDS = [
     name: 'RDL',
     cat: 'audio',
     descKey: 'partners.brands.b7',
-    img: '/assets/uploads/2025/04/RDL-1.png',
+    img: '/assets/img/brands/rdl-logo.svg',
     blurb: 'Professional audio and AV interfacing modules.',
     about:
       'Radio Design Labs builds the small, reliable modules that make a professional audio system work: format conversion, level matching, distribution, mixing and control, in rack, wall and under-table formats. They are the parts that turn a set of specified boxes into a system that passes commissioning.',
